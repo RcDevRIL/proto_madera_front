@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:logger/logger.dart';
 import 'package:proto_madera_front/bloc_helpers/bloc_provider.dart';
 import 'package:proto_madera_front/bloc_widgets/bloc_state_builder.dart';
 import 'package:proto_madera_front/blocs/authentication/authentication_bloc.dart';
@@ -14,6 +15,8 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  final log = Logger();
+
   ///
   /// Prevents the use of the "back" button
   ///
@@ -59,7 +62,19 @@ class _HomePageState extends State<HomePage> {
                   return Stack(
                     children: <Widget>[
                       Center(
-                        child: Text("PAGE PRINCIPALE"),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: <Widget>[
+                            Text("PAGE PRINCIPALE"),
+                            RaisedButton(
+                              onPressed: () {
+                                log.d('COUCOU JE SUIS UN LOG');
+                              },
+                              child: Text("Log me"),
+                            ),
+                          ],
+                        ),
                       ),
                     ],
                   );

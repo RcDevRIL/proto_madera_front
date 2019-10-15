@@ -3,7 +3,7 @@ import 'package:proto_madera_front/blocs/authentication/authentication_bloc.dart
 import 'package:proto_madera_front/blocs/authentication/authentication_state.dart';
 import 'package:proto_madera_front/blocs/decision/decision_state_action.dart';
 import 'package:proto_madera_front/ui/pages/authentication_page.dart';
-import 'package:proto_madera_front/ui/pages/home_page.dart';
+import 'package:proto_madera_front/ui/pages/home-page.dart';
 
 ///
 /// Business Logic related to the DecisionPage
