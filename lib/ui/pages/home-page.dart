@@ -73,6 +73,12 @@ class _HomePageState extends State<HomePage> {
                               },
                               child: Text("Log me"),
                             ),
+                            RaisedButton(
+                              onPressed: () {
+                                Navigator.of(context).pushNamed("/settings");
+                              },
+                              child: Text("Lien vers Settings"),
+                            ),
                           ],
                         ),
                       ),

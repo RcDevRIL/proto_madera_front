@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 
+// Default Font Family
+const String FontNameDefault = 'Poppins';
+
 class Colors {
 
   const Colors();
@@ -42,31 +45,40 @@ class TextStyles {
 
   static const TextStyle appBarTitle = const TextStyle(
     color: Colors.appBarTitle,
-    fontFamily: 'Poppins',
+    fontFamily: FontNameDefault,
     fontWeight: FontWeight.w600,
     fontSize: 36.0
   );
 
   static const TextStyle patientTitle = const TextStyle(
     color: Colors.patientTitle,
-    fontFamily: 'Poppins',
+    fontFamily: FontNameDefault,
     fontWeight: FontWeight.w600,
     fontSize: 24.0
   );
 
+
   static const TextStyle patientLocation = const TextStyle(
     color: Colors.patientLocation,
-    fontFamily: 'Poppins',
+    fontFamily: FontNameDefault,
     fontWeight: FontWeight.w300,
     fontSize: 14.0
   );
 
   static const TextStyle patientDistance = const TextStyle(
     color: Colors.patientDistance,
-    fontFamily: 'Poppins',
+    fontFamily: FontNameDefault,
     fontWeight: FontWeight.w300,
     fontSize: 12.0
   );
 
 
 }
+
+
+const AppBarTextStyle = TextStyle(
+  fontFamily: FontNameDefault,
+  fontWeight: FontWeight.w300,
+  fontSize: 16.0,
+  color: Colors.appBarTitle,
+);

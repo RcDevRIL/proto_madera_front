@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:proto_madera_front/ui/pages/widgets/appbar_madera.dart';
 
 class SettingsPage extends StatefulWidget {
   static const routeName = '/settings';
@@ -12,19 +13,20 @@ class _SettingsPageState extends State<SettingsPage> {
   Widget build(BuildContext context) {
     final args = ModalRoute.of(context).settings.arguments;
 
-    return new Scaffold(
-      backgroundColor: Colors.blueGrey,
-      appBar: AppBar(
-        title: Text("Paramètres de l'application"),
-        centerTitle: false,
-      ),
-      body: new Stack(
-        children: <Widget>[
-          Center(
-            child: Text("PAGE DES PARAMETRES"),
-          ),
-        ],
-      ),
+    return SafeArea(
+      child: Scaffold(
+        backgroundColor: Colors.blueGrey,
+        appBar: AppBarMadera(
+          title: Text("Paramètres de l'application"),
+        ),
+        body: Stack(
+          children: <Widget>[
+            Center(
+              child: Text("PAGE DES PARAMETRES"),
+            ),
+          ],
+        ),
+      )
     );
   }
 }
