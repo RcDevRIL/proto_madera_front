@@ -1,3 +1,9 @@
+/**
+ * FORK D'UN PROJET OPEN SOURCE
+ * 
+ * AUTEUR :
+ *      Didier BOELENS - (https://github.com/boeledi/blocs)
+ */
 import 'dart:async';
 
 import 'package:proto_madera_front/bloc_helpers/bloc_provider.dart';

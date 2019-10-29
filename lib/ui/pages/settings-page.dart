@@ -12,21 +12,30 @@ class _SettingsPageState extends State<SettingsPage> {
   @override
   Widget build(BuildContext context) {
     final args = ModalRoute.of(context).settings.arguments;
-
+    //il faudrait s'inspirer de home-page.dart pour faire en sorte d'avoir un feedback
+    // lorsqu'on clique sur le bouton de déconnexion
+    // à faire sur tout les pages donc je pense
+    // puisque ce sera accessible dans le menu de navigation qu'on peut ouvrir de n'importe ou
     return SafeArea(
-      child: Scaffold(
-        backgroundColor: Colors.blueGrey,
-        appBar: AppBarMadera(
-          title: Text("Paramètres de l'application"),
-        ),
-        body: Stack(
-          children: <Widget>[
-            Center(
-              child: Text("PAGE DES PARAMETRES"),
+        child: Scaffold(
+      backgroundColor: Colors.blueGrey,
+      body: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: <Widget>[
+          AppBarMadera(), //visiblement on ne peut pas le mettre dans le champ appBar du Scaffold.. alors voila !!
+          SizedBox(
+            height: 250.0,
+          ),
+          Center(
+            child: Stack(
+              children: <Widget>[
+                Text("PAGE DES PARAMETRES"),
+              ],
             ),
-          ],
-        ),
-      )
-    );
+          ),
+        ],
+      ),
+    ));
   }
 }

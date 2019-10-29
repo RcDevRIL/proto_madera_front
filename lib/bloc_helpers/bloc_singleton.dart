@@ -1,8 +1,9 @@
 /**
+ * FORK D'UN PROJET OPEN SOURCE
+ * 
  * AUTEUR :
  *      Didier BOELENS - (https://github.com/boeledi/blocs)
  */
-
 import 'package:rxdart/rxdart.dart';
 
 class GlobalBloc {
@@ -17,7 +18,7 @@ class GlobalBloc {
   /// Singleton factory
   ///
   static final GlobalBloc _bloc = new GlobalBloc._internal();
-  factory GlobalBloc(){
+  factory GlobalBloc() {
     return _bloc;
   }
   GlobalBloc._internal();
@@ -25,7 +26,7 @@ class GlobalBloc {
   ///
   /// Resource disposal
   ///
-  void dispose(){
+  void dispose() {
     _controller?.close();
   }
 }
