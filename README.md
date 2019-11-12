@@ -1,3 +1,4 @@
+[![Codemagic build status](https://api.codemagic.io/apps/5da43b8a9f20ef13ab7a2017/5da43b8a9f20ef13ab7a2016/status_badge.svg)](https://codemagic.io/apps/5da43b8a9f20ef13ab7a2017/5da43b8a9f20ef13ab7a2016/latest_build)
 # proto_madera_front - README V0.1
 
 Welcome on our development repository for our graduation project!! 
