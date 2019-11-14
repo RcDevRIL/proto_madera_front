@@ -26,7 +26,7 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    final args = ModalRoute.of(context).settings.arguments;
+    // final args = ModalRoute.of(context).settings.arguments;
     AuthenticationBloc bloc = BlocProvider.of<AuthenticationBloc>(context);
     return WillPopScope(
       onWillPop: _onWillPopScope,
