@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+
 import 'package:proto_madera_front/ui/pages/widgets/log_out_button.dart';
 
 class AppBarMadera extends StatelessWidget {

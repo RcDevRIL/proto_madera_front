@@ -1,53 +1,48 @@
-import 'package:proto_madera_front/bloc_helpers/bloc_provider.dart';
-import 'package:proto_madera_front/bloc_widgets/bloc_state_builder.dart';
-import 'package:proto_madera_front/blocs/authentication/authentication_bloc.dart';
-import 'package:proto_madera_front/blocs/authentication/authentication_state.dart';
-import 'package:proto_madera_front/ui/pages/authentication_page.dart';
-import 'package:proto_madera_front/ui/pages/home-page.dart';
 import 'package:flutter/material.dart';
 
+class DecisionPage extends StatelessWidget {
+  static const routeName = '/decision';
+  @override
+  Widget build(BuildContext context) {
+    return Container();
+  }
+}
+// TODO: Je laisse car je me dis que y aura peut etre un peu de logique en "haut" de l'application??
+//       Avant ça servait à afficher la page init, login, ou home en fonction de l'état des bloc auth et appinit
+
+/* import 'package:proto_madera_front/blocs/authentication/authentication_state.dart';
 class DecisionPage extends StatefulWidget {
   static const routeName = '/decision';
   @override
-  DecisionPageState createState() {
-    return new DecisionPageState();
-  }
+  _DecisionPageState createState() => _DecisionPageState();
 }
 
-class DecisionPageState extends State<DecisionPage> {
-  AuthenticationState oldAuthenticationState;
+class _DecisionPageState extends State<DecisionPage> {
+  //added to prepare for scaling
+  @override
+  void initState() {
+    super.initState();
+  }
+
+  //added to prepare for scaling
+  @override
+  void dispose() {
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
-    AuthenticationBloc bloc = BlocProvider.of<AuthenticationBloc>(context);
-    return BlocEventStateBuilder<AuthenticationState>(
-        bloc: bloc,
-        builder: (BuildContext context, AuthenticationState state) {
-          if (state != oldAuthenticationState) {
-            oldAuthenticationState = state;
-
-            if (state.isAuthenticated) {
-              _redirectToPage(context, HomePage());
-            } else if (state.isAuthenticating || state.hasFailed) {
-              //do nothing
-            } else {
-              _redirectToPage(context, AuthenticationPage());
-            }
-          }
-
-          // This page does not need to display anything since it will
-          // always remain behind any active page (and thus 'hidden').
-          return Container();
-        });
+    // This page does not need to display anything since it will
+    // always remain behind any active page (and thus 'hidden').
+    return Container();
   }
+} */
+/* void _redirectToPage(BuildContext context, Widget page) {
+  WidgetsBinding.instance.addPostFrameCallback((_) {
+    MaterialPageRoute newRoute =
+        MaterialPageRoute(builder: (BuildContext context) => page);
 
-  void _redirectToPage(BuildContext context, Widget page) {
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      MaterialPageRoute newRoute =
-          MaterialPageRoute(builder: (BuildContext context) => page);
-
-      Navigator.of(context)
-          .pushAndRemoveUntil(newRoute, ModalRoute.withName('/decision'));
-    });
-  }
-}
+    Navigator.of(context)
+        .pushAndRemoveUntil(newRoute, ModalRoute.withName('/decision'));
+  });
+} */

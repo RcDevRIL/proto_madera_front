@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+
 import 'package:proto_madera_front/ui/pages/widgets/appbar_madera.dart';
 
 class SettingsPage extends StatefulWidget {
@@ -11,9 +12,9 @@ class SettingsPage extends StatefulWidget {
 class _SettingsPageState extends State<SettingsPage> {
   @override
   Widget build(BuildContext context) {
-    final args = ModalRoute.of(context).settings.arguments;
+    //final args = ModalRoute.of(context).settings.arguments;
     //il faudrait s'inspirer de home-page.dart pour faire en sorte d'avoir un feedback
-    // lorsqu'on clique sur le bouton de déconnexion
+    // lorsqu'on clique sur le bouton de déconnexion (le circularprogress suivi d'un "check" bleu. du coup marche plus comme on a enlevé les blocs!)
     // à faire sur tout les pages donc je pense
     // puisque ce sera accessible dans le menu de navigation qu'on peut ouvrir de n'importe ou
     return SafeArea(

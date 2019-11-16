@@ -1,27 +1,23 @@
-import 'package:proto_madera_front/bloc_widgets/bloc_state_builder.dart';
-import 'package:proto_madera_front/blocs/application_initialization/application_initialization_bloc.dart';
-import 'package:proto_madera_front/blocs/application_initialization/application_initialization_event.dart';
-import 'package:proto_madera_front/blocs/application_initialization/application_initialization_state.dart';
 import 'package:flutter/material.dart';
 
+import 'package:proto_madera_front/ui/pages/widgets/my_LPI.dart';
+
 class InitializationPage extends StatefulWidget {
+  static const routeName = '/init';
   @override
   _InitializationPageState createState() => _InitializationPageState();
 }
 
 class _InitializationPageState extends State<InitializationPage> {
-  ApplicationInitializationBloc bloc;
-
+  //added to prepare for scaling
   @override
   void initState() {
     super.initState();
-    bloc = ApplicationInitializationBloc();
-    bloc.emitEvent(ApplicationInitializationEvent());
   }
 
+  //added to prepare for scaling
   @override
   void dispose() {
-    bloc?.dispose();
     super.dispose();
   }
 
@@ -30,31 +26,19 @@ class _InitializationPageState extends State<InitializationPage> {
     return SafeArea(
       child: Scaffold(
         backgroundColor: Colors.blueGrey,
-        body: Container(
-          child: Center(
-            child: BlocEventStateBuilder<ApplicationInitializationState>(
-              bloc: bloc,
-              builder:
-                  (BuildContext context, ApplicationInitializationState state) {
-                if (state.isInitialized) {
-                  //
-                  // Once the initialization is complete, let's move to another page
-                  //
-                  WidgetsBinding.instance.addPostFrameCallback((_) {
-                    Navigator.of(context).pushReplacementNamed('/decision');
-                  });
-                }
-
-                return Center(
-                  child: Container(
-                    width: MediaQuery.of(context).size.width / 2,
-                    child: LinearProgressIndicator(
-                      backgroundColor: Colors.red,
-                      value: (state.progress) / 100,
-                    ),
-                  ),
-                );
-              },
+        body: Center(
+          child: Container(
+            width: MediaQuery.of(context).size.width / 2,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                Image(
+                  image: AssetImage("assets/img/logo-madera.png"),
+                ),
+                MyLinearProgressIndicator(
+                  backgroundColor: Colors.blueGrey,
+                ),
+              ],
             ),
           ),
         ),
