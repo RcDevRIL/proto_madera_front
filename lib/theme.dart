@@ -4,10 +4,10 @@ import 'package:flutter/material.dart';
 const String FontNameDefault = 'Poppins';
 
 class Colors {
-
   const Colors();
 
-
+  static const Color appBarMainColor = Color.fromRGBO(109, 243, 115, 0.33);
+  static const Color iconsMainColor = Color.fromRGBO(39, 72, 0, 1.0);
   static const Color customBlue = const Color(0xFF0097A7);
   static const Color lightBlue = const Color(0xFF56C8D8);
   static const Color darkBlue = const Color(0xFF006978);
@@ -29,7 +29,6 @@ class Colors {
   static const Color patientDistance = const Color(0x66FFFFFF);
   static const Color patientResumePageCard = const Color(0xff006978);
   static const Color patientResumePageCardBorder = const Color(0xff56c8d8);
-
 }
 
 class Dimens {
@@ -40,41 +39,32 @@ class Dimens {
 }
 
 class TextStyles {
-
   const TextStyles();
 
   static const TextStyle appBarTitle = const TextStyle(
-    color: Colors.appBarTitle,
-    fontFamily: FontNameDefault,
-    fontWeight: FontWeight.w600,
-    fontSize: 36.0
-  );
+      color: Colors.appBarTitle,
+      fontFamily: FontNameDefault,
+      fontWeight: FontWeight.w600,
+      fontSize: 36.0);
 
   static const TextStyle patientTitle = const TextStyle(
-    color: Colors.patientTitle,
-    fontFamily: FontNameDefault,
-    fontWeight: FontWeight.w600,
-    fontSize: 24.0
-  );
-
+      color: Colors.patientTitle,
+      fontFamily: FontNameDefault,
+      fontWeight: FontWeight.w600,
+      fontSize: 24.0);
 
   static const TextStyle patientLocation = const TextStyle(
-    color: Colors.patientLocation,
-    fontFamily: FontNameDefault,
-    fontWeight: FontWeight.w300,
-    fontSize: 14.0
-  );
+      color: Colors.patientLocation,
+      fontFamily: FontNameDefault,
+      fontWeight: FontWeight.w300,
+      fontSize: 14.0);
 
   static const TextStyle patientDistance = const TextStyle(
-    color: Colors.patientDistance,
-    fontFamily: FontNameDefault,
-    fontWeight: FontWeight.w300,
-    fontSize: 12.0
-  );
-
-
+      color: Colors.patientDistance,
+      fontFamily: FontNameDefault,
+      fontWeight: FontWeight.w300,
+      fontSize: 12.0);
 }
-
 
 const AppBarTextStyle = TextStyle(
   fontFamily: FontNameDefault,
