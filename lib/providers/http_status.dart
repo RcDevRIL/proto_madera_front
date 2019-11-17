@@ -1,0 +1,4 @@
+enum HttpStatus {
+  ONLINE,
+  OFFLINE,
+}

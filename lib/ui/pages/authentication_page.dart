@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:logger/logger.dart';
+import 'package:proto_madera_front/providers/provider_login.dart';
 
 import 'package:proto_madera_front/services/authentication/login_form_bloc.dart';
 import 'package:proto_madera_front/ui/pages/home_page.dart';
+import 'package:provider/provider.dart';
 
 // import 'package:proto_madera_front/ui/pages/widgets/pending_action.dart';
 
@@ -122,28 +124,26 @@ class _AuthenticationPageState extends State<AuthenticationPage> {
       ),
     );
 
-    children.add(StreamBuilder<Object>(
-        stream: _loginFormBloc.emailValidation,
-        builder: (context, snapshot) {
-          return Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Container(
-              width: /* MediaQuery.of(context).size.width / 2 */ 200.0,
-              height: 80.5,
-              child: TextField(
-                onChanged: _loginFormBloc.onEmailChanged,
-                controller: _emailController,
-                keyboardType: TextInputType.emailAddress,
-                decoration: InputDecoration(
-                  border: OutlineInputBorder(),
-                  hintText: "Enter email",
-                  labelText: "Email",
-                  errorText: snapshot.error,
-                ),
-              ),
+    children.add(StreamBuilder<Object>(builder: (context, snapshot) {
+      return Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Container(
+          width: /* MediaQuery.of(context).size.width / 2 */ 200.0,
+          height: 80.5,
+          child: TextField(
+            onChanged: _loginFormBloc.onEmailChanged,
+            controller: _emailController,
+            keyboardType: TextInputType.emailAddress,
+            decoration: InputDecoration(
+              border: OutlineInputBorder(),
+              hintText: "Enter email",
+              labelText: "Email",
+              errorText: snapshot.error,
             ),
-          );
-        }));
+          ),
+        ),
+      );
+    }));
     children.add(
       Row(
         crossAxisAlignment: CrossAxisAlignment.center,
@@ -201,26 +201,23 @@ class _AuthenticationPageState extends State<AuthenticationPage> {
           return Padding(
               padding: const EdgeInsets.all(8.0),
               child: RaisedButton(
-                child: Text('Connexion'),
-                color: Color.fromRGBO(139, 195, 74, 1.0),
-                textColor: Colors.white,
-                elevation: 5.0,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(8.0),
-                  side: BorderSide(
-                    color: Color.fromRGBO(117, 117, 117, 0.5),
-                    width: 2.0,
+                  child: Text('Connexion'),
+                  color: Color.fromRGBO(139, 195, 74, 1.0),
+                  textColor: Colors.white,
+                  elevation: 5.0,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(8.0),
+                    side: BorderSide(
+                      color: Color.fromRGBO(117, 117, 117, 0.5),
+                      width: 2.0,
+                    ),
                   ),
-                ),
-                onPressed: (snapshot.hasData && snapshot.data == true)
-                    ? () {
-                        //TODO Emettre un évènement de connexion
-                        //genre login(_emailController.text,_passwordController.text);
-                        log.d("LOGIN EVENT");
-                        _redirectToPage(context, HomePage());
-                      }
-                    : null,
-              ));
+                  onPressed: () async => await Provider.of<ProviderLogin>(context)
+                      .connection(
+                          _emailController.text, _passwordController.text)
+                      .then((value) => value
+                          ? _redirectToPage(context, HomePage())
+                          : print('Connection failed'))));
         }));
 
     return Padding(
