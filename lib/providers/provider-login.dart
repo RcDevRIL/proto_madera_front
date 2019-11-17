@@ -1,5 +1,3 @@
-import 'dart:ffi';
-
 /**
  * Inspired from "Flutter: Firebase Login Using Provider: package"
  * https://medium.com/flutter-community/flutter-firebase-login-using-provider-package-54ee4e5083c7
@@ -13,19 +11,16 @@ import 'dart:ffi';
 
 import 'package:flutter/cupertino.dart';
 
-enum Status { 
+enum Status {
   Uninitialized, // Au moment du splashScreen
   Unauthenticated, // Sur la page de login
   Authenticating, // Lors du clic sur le bouton "Connexion"
   Authenticated, // Arrivé sur la Home Page
-  }
+}
 
 class ProviderLogin with ChangeNotifier {
   String _user;
   Status _status = Status.Uninitialized;
-
-  // On changera au besoin
-  String title = "Madera App";
 
   Status get status => _status;
   String get user => _user;

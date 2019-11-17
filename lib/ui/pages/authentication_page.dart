@@ -1,13 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:logger/logger.dart';
+import 'package:proto_madera_front/providers/provider-navigation.dart';
 
 import 'package:proto_madera_front/services/authentication/login_form_bloc.dart';
 import 'package:proto_madera_front/ui/pages/home_page.dart';
+import 'package:proto_madera_front/ui/pages/widgets/my_widgets.dart';
+import 'package:provider/provider.dart';
 
 // import 'package:proto_madera_front/ui/pages/widgets/pending_action.dart';
 
 class AuthenticationPage extends StatefulWidget {
+  static const routeName = '/auth';
   @override
   _AuthenticationPageState createState() => _AuthenticationPageState();
 }
@@ -48,54 +52,62 @@ class _AuthenticationPageState extends State<AuthenticationPage> {
       onWillPop: _onWillPopScope,
       child: SafeArea(
         child: Scaffold(
-          drawer: Drawer(
-            child: Text("Test"),
-          ),
-          appBar: AppBar(
-            centerTitle: true,
-            title: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: <Widget>[
-                Text(
-                  "Bienvenue sur l'application métier Madera !",
-                  style: TextStyle(
-                    fontSize: 24,
-                    color: Color.fromRGBO(39, 72, 0, 1.0),
+          backgroundColor: Colors.white,
+          body: Stack(
+            children: <Widget>[
+              Container(
+                margin: EdgeInsets.only(
+                    top: MediaQuery.of(context).devicePixelRatio *
+                        28), //taille de l'appBar
+                decoration: BoxDecoration(
+                  image: DecorationImage(
+                      colorFilter: ColorFilter.mode(
+                          Color.fromRGBO(255, 255, 255, 0.5),
+                          BlendMode.modulate),
+                      fit: BoxFit.fitWidth,
+                      image: AssetImage("assets/img/madera.JPG")),
+                ),
+              ),
+              Center(
+                child: Padding(
+                  padding: EdgeInsets.all(0.0),
+                  child: Center(
+                    child: SingleChildScrollView(
+                      child: Container(
+                        width: 250,
+                        margin: EdgeInsets.all(8.0),
+                        padding: EdgeInsets.all(12.0),
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          border: Border.all(
+                            color: Colors.black,
+                            style: BorderStyle.solid,
+                            width: 2.0,
+                          ),
+                          borderRadius: BorderRadius.circular(10.0),
+                          // gradient: LinearGradient(
+                          //   colors: <Color>[Colors.white, Colors.black87],
+                          //   stops: <double>[0.1, 0.9],
+                          // ),
+                        ),
+                        child: Column(
+                          children: _buildForm(context),
+                        ),
+                      ),
+                    ),
                   ),
                 ),
-                Image(
-                  image: AssetImage("assets/img/logo-madera.png"),
-                ),
-              ],
-            ),
-          ),
-          body: Container(
-            child: _buildForm(context),
+              ),
+              AppBarMadera(),
+              //visiblement on ne peut pas le mettre dans le champ appBar du Scaffold.. alors voila !!
+            ],
           ),
         ),
       ),
     );
   }
 
-  Widget _buildForm(BuildContext c) {
-    /* BlocEventStateBuilder<AuthenticationState>(
-              bloc: bloc,
-              builder: (BuildContext context, AuthenticationState state) {
-                if (state.isAuthenticating) {
-                  return PendingAction();
-                } 
-
-                if (state.isAuthenticated) {
-                  return Container(
-                      color: Colors.black87,
-                      child: Center(
-                          child: Icon(
-                        Icons.check_circle,
-                        color: Colors.cyan,
-                        size: 50.0,
-                      )));
-                }*/
-
+  List<Widget> _buildForm(BuildContext c) {
     List<Widget> children = <Widget>[];
 
     children.add(Row(
@@ -223,48 +235,7 @@ class _AuthenticationPageState extends State<AuthenticationPage> {
               ));
         }));
 
-    return Padding(
-      padding: EdgeInsets.all(4.0),
-      child: Stack(
-        children: <Widget>[
-          Opacity(
-            opacity: 0.5,
-            child: Container(
-              decoration: BoxDecoration(
-                image: DecorationImage(
-                    fit: BoxFit.fitWidth,
-                    image: AssetImage("assets/img/madera.JPG")),
-              ),
-            ),
-          ),
-          Center(
-            child: SingleChildScrollView(
-              child: Container(
-                width: 250,
-                margin: EdgeInsets.all(8.0),
-                padding: EdgeInsets.all(12.0),
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  border: Border.all(
-                    color: Colors.black,
-                    style: BorderStyle.solid,
-                    width: 2.0,
-                  ),
-                  borderRadius: BorderRadius.circular(10.0),
-                  // gradient: LinearGradient(
-                  //   colors: <Color>[Colors.white, Colors.black87],
-                  //   stops: <double>[0.1, 0.9],
-                  // ),
-                ),
-                child: Column(
-                  children: children,
-                ),
-              ),
-            ),
-          ),
-        ],
-      ),
-    );
+    return children;
   }
 
   void _redirectToPage(BuildContext context, Widget page) {
@@ -275,5 +246,7 @@ class _AuthenticationPageState extends State<AuthenticationPage> {
       Navigator.of(context)
           .pushAndRemoveUntil(newRoute, ModalRoute.withName('/decision'));
     });
+    var maderaNav = Provider.of<MaderaNav>(context);
+    maderaNav.updateCurrent(page.runtimeType);
   }
 }

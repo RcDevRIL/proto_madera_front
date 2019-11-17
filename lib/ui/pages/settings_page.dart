@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:proto_madera_front/providers/provider-navigation.dart';
 
 import 'package:proto_madera_front/ui/pages/widgets/appbar_madera.dart';
+import 'package:proto_madera_front/ui/pages/widgets/custom-drawer.dart';
+import 'package:provider/provider.dart';
+import 'package:proto_madera_front/theme.dart' as cTheme;
 
 class SettingsPage extends StatefulWidget {
   static const routeName = '/settings';
@@ -10,33 +14,40 @@ class SettingsPage extends StatefulWidget {
 }
 
 class _SettingsPageState extends State<SettingsPage> {
+  ///
+  /// Prevents the use of the "back" button
+  ///
+  Future<bool> _onWillPopScope() async {
+    return false;
+  }
+
   @override
   Widget build(BuildContext context) {
     //final args = ModalRoute.of(context).settings.arguments;
-    //il faudrait s'inspirer de home-page.dart pour faire en sorte d'avoir un feedback
-    // lorsqu'on clique sur le bouton de déconnexion (le circularprogress suivi d'un "check" bleu. du coup marche plus comme on a enlevé les blocs!)
-    // à faire sur tout les pages donc je pense
-    // puisque ce sera accessible dans le menu de navigation qu'on peut ouvrir de n'importe ou
-    return SafeArea(
+    return WillPopScope(
+      onWillPop: _onWillPopScope,
+      child: SafeArea(
         child: Scaffold(
-      backgroundColor: Colors.blueGrey,
-      body: Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        mainAxisAlignment: MainAxisAlignment.start,
-        children: <Widget>[
-          AppBarMadera(), //visiblement on ne peut pas le mettre dans le champ appBar du Scaffold.. alors voila !!
-          SizedBox(
-            height: 250.0,
+          backgroundColor: Colors.blueGrey,
+          body: Stack(
+            children: <Widget>[
+              Center(
+                child: Consumer<MaderaNav>(
+                  builder: (_, mN, c) => Text(
+                    mN.pageTitle,
+                    style: cTheme.TextStyles.appBarTitle,
+                  ),
+                ),
+              ),
+              Padding(
+                padding: EdgeInsets.only(left: 72.0),
+                child: AppBarMadera(),
+              ),
+              CustomDrawer(),
+            ],
           ),
-          Center(
-            child: Stack(
-              children: <Widget>[
-                Text("PAGE DES PARAMETRES"),
-              ],
-            ),
-          ),
-        ],
+        ),
       ),
-    ));
+    );
   }
 }

@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:proto_madera_front/ui/pages/widgets/my_LPI.dart';
 
 class InitializationPage extends StatefulWidget {
-  static const routeName = '/init';
+  static const routeName = '/';
   @override
   _InitializationPageState createState() => _InitializationPageState();
 }

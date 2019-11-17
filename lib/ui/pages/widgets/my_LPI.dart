@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:logger/logger.dart';
+import 'package:proto_madera_front/providers/provider-navigation.dart';
 
 import 'package:proto_madera_front/ui/pages/authentication_page.dart';
+import 'package:provider/provider.dart';
 
 class MyLinearProgressIndicator extends StatefulWidget {
   final Color backgroundColor;
@@ -19,6 +21,7 @@ class _MyLinearProgressIndicatorState extends State<MyLinearProgressIndicator>
   Animation<double> progressAnimation;
   final Color backgroundColor;
   final log = Logger();
+  var maderaNav;
 
   _MyLinearProgressIndicatorState(this.backgroundColor);
 
@@ -60,13 +63,15 @@ class _MyLinearProgressIndicatorState extends State<MyLinearProgressIndicator>
     );
   }
 
+  // à la base j'essayais de mettre cette méthode dans la class MaderaNav, mais ça faisait des bugs.
   void _redirectToPage(BuildContext context, Widget page) {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       MaterialPageRoute newRoute =
           MaterialPageRoute(builder: (BuildContext context) => page);
-
       Navigator.of(context)
           .pushAndRemoveUntil(newRoute, ModalRoute.withName('/decision'));
+      maderaNav = Provider.of<MaderaNav>(context);
+      maderaNav.updateCurrent(page.runtimeType);
     });
   }
 }

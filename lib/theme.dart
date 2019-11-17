@@ -17,7 +17,7 @@ class Colors {
   static const Color primaryTextColor = const Color(0xFF000000);
   static const Color secondaryTextColor = const Color(0xFFFFFFFF);
 
-  static const Color appBarTitle = const Color(0xFFFFFFFF);
+  static const Color appBarTitle = const Color.fromRGBO(39, 72, 0, 1.0);
   static const Color appBarIconColor = const Color(0xFFFFFFFF);
 
   static const Color patientCard2 = const Color(0xFF434273);
@@ -29,6 +29,11 @@ class Colors {
   static const Color patientDistance = const Color(0x66FFFFFF);
   static const Color patientResumePageCard = const Color(0xff006978);
   static const Color patientResumePageCardBorder = const Color(0xff56c8d8);
+
+  static const Color selectedColor = Color(0xFF4AC8EA);
+  static const Color drawerBackgroundColor = Color(0xFF272D34);
+  static const Color white = Color.fromRGBO(255, 255, 255, 0.0);
+  static const Color white70 = Color.fromRGBO(255, 255, 255, 0.7);
 }
 
 class Dimens {
@@ -44,8 +49,8 @@ class TextStyles {
   static const TextStyle appBarTitle = const TextStyle(
       color: Colors.appBarTitle,
       fontFamily: FontNameDefault,
-      fontWeight: FontWeight.w600,
-      fontSize: 36.0);
+      fontWeight: FontWeight.w900,
+      fontSize: 26.0);
 
   static const TextStyle patientTitle = const TextStyle(
       color: Colors.patientTitle,
@@ -64,11 +69,10 @@ class TextStyles {
       fontFamily: FontNameDefault,
       fontWeight: FontWeight.w300,
       fontSize: 12.0);
-}
 
-const AppBarTextStyle = TextStyle(
-  fontFamily: FontNameDefault,
-  fontWeight: FontWeight.w300,
-  fontSize: 16.0,
-  color: Colors.appBarTitle,
-);
+  static const TextStyle listTileDefaultTextStyle = TextStyle(
+      color: Colors.white70, fontSize: 20.0, fontWeight: FontWeight.w400);
+
+  static const TextStyle listTileSelectedTextStyle = TextStyle(
+      color: Colors.white, fontSize: 20.0, fontWeight: FontWeight.w600);
+}
