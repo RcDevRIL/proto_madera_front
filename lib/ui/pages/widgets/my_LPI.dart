@@ -21,7 +21,6 @@ class _MyLinearProgressIndicatorState extends State<MyLinearProgressIndicator>
   Animation<double> progressAnimation;
   final Color backgroundColor;
   final log = Logger();
-  var maderaNav;
 
   _MyLinearProgressIndicatorState(this.backgroundColor);
 
@@ -68,9 +67,8 @@ class _MyLinearProgressIndicatorState extends State<MyLinearProgressIndicator>
     WidgetsBinding.instance.addPostFrameCallback((_) {
       MaterialPageRoute newRoute =
           MaterialPageRoute(builder: (BuildContext context) => page);
-      Navigator.of(context)
-          .pushAndRemoveUntil(newRoute, ModalRoute.withName('/decision'));
-      maderaNav = Provider.of<MaderaNav>(context);
+      Navigator.of(context).pushReplacement(newRoute);
+      var maderaNav = Provider.of<MaderaNav>(context);
       maderaNav.updateCurrent(page.runtimeType);
     });
   }

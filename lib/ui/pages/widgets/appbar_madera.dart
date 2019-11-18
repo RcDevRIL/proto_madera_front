@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:proto_madera_front/providers/provider-navigation.dart';
-
-import 'package:proto_madera_front/ui/pages/widgets/log_out_button.dart';
 import 'package:provider/provider.dart';
+
+import 'package:proto_madera_front/providers/provider-navigation.dart';
 import 'package:proto_madera_front/theme.dart' as cTheme;
 
 class AppBarMadera extends StatefulWidget {
@@ -33,26 +32,19 @@ class _AppBarMaderaState extends State<AppBarMadera> {
           color: Color.fromRGBO(39, 72, 0, 1.0),
         ),
         // leading: Container(),
-        title: Container(
-          height: 100.0,
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: <Widget>[
-              Consumer<MaderaNav>(
-                builder: (_, mN, child) => Text(
-                  mN.pageTitle,
-                  style: cTheme.TextStyles.appBarTitle,
-                ),
-              ),
-              Image(
-                image: AssetImage("assets/img/logo-madera.png"),
-              ),
-            ],
+        title: Consumer<MaderaNav>(
+          builder: (_, mN, child) => Text(
+            mN.pageTitle,
+            style: cTheme.TextStyles.appBarTitle,
           ),
         ),
-        centerTitle: true,
-        //actions: <Widget>[],
+        centerTitle: false,
+        actions: <Widget>[
+          Image(
+            image: AssetImage("assets/img/logo-madera.png"),
+            //je l'ai mis dans le champ "actions" comme ça pas besoin de faire de Row dans le "title"
+          ),
+        ],
       ),
     );
   }

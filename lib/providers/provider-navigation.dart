@@ -34,14 +34,21 @@ class MaderaNav with ChangeNotifier {
     return _pageTitle;
   }
 
+  @override
+  String toString() {
+    //overwritten for convenience
+    return '"$_pageTitle", $_pageIndex';
+  }
+
   void updateCurrent(Type page) {
     switch (page) {
       case HomePage:
         {
           _pageTitle = 'Page d\'accueil';
           _pageIndex = 0;
-          log.d(
-              'Updating current navigation properties:\n"$_pageTitle", $_pageIndex                    '); //pleins d'espaces car pb avec le package logger
+          log.d('Updating current navigation properties:                        \n' +
+              this.toString() +
+              '                    '); //pleins d'espaces car pb avec le package logger
         }
         break;
       case AuthenticationPage:
@@ -49,7 +56,9 @@ class MaderaNav with ChangeNotifier {
           _pageTitle = "Bienvenue sur l'application métier MADERA !";
           _pageIndex = -1;
           log.d(
-              'Updating current navigation properties:\n"$_pageTitle", $_pageIndex                    ');
+              'Updating current navigation properties:                        \n' +
+                  this.toString() +
+                  '                    ');
         }
         break;
       case SettingsPage:
@@ -57,13 +66,15 @@ class MaderaNav with ChangeNotifier {
           _pageTitle = "Paramètres";
           _pageIndex = 4;
           log.d(
-              'Updating current navigation properties:\n"$_pageTitle", $_pageIndex                    ');
+              'Updating current navigation properties:                        \n' +
+                  this.toString() +
+                  '                    ');
         }
         break;
 
       default:
         {
-          log.d("default");
+          log.e("updateCurrent ERROR                        ");
           _pageTitle = "default";
           _pageIndex = -1;
         }

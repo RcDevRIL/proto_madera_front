@@ -1,14 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:logger/logger.dart';
-import 'package:proto_madera_front/providers/provider-navigation.dart';
+import 'package:provider/provider.dart';
 
 import 'package:proto_madera_front/services/authentication/login_form_bloc.dart';
 import 'package:proto_madera_front/ui/pages/home_page.dart';
 import 'package:proto_madera_front/ui/pages/widgets/my_widgets.dart';
-import 'package:provider/provider.dart';
-
-// import 'package:proto_madera_front/ui/pages/widgets/pending_action.dart';
+import 'package:proto_madera_front/providers/provider-navigation.dart';
 
 class AuthenticationPage extends StatefulWidget {
   static const routeName = '/auth';
@@ -69,31 +66,26 @@ class _AuthenticationPageState extends State<AuthenticationPage> {
                 ),
               ),
               Center(
-                child: Padding(
-                  padding: EdgeInsets.all(0.0),
-                  child: Center(
-                    child: SingleChildScrollView(
-                      child: Container(
-                        width: 250,
-                        margin: EdgeInsets.all(8.0),
-                        padding: EdgeInsets.all(12.0),
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          border: Border.all(
-                            color: Colors.black,
-                            style: BorderStyle.solid,
-                            width: 2.0,
-                          ),
-                          borderRadius: BorderRadius.circular(10.0),
-                          // gradient: LinearGradient(
-                          //   colors: <Color>[Colors.white, Colors.black87],
-                          //   stops: <double>[0.1, 0.9],
-                          // ),
-                        ),
-                        child: Column(
-                          children: _buildForm(context),
-                        ),
+                child: SingleChildScrollView(
+                  child: Container(
+                    width: 250,
+                    margin: EdgeInsets.all(8.0),
+                    padding: EdgeInsets.all(12.0),
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      border: Border.all(
+                        color: Colors.black,
+                        style: BorderStyle.solid,
+                        width: 2.0,
                       ),
+                      borderRadius: BorderRadius.circular(10.0),
+                      // gradient: LinearGradient(
+                      //   colors: <Color>[Colors.greenAccent, Colors.white],
+                      //   stops: <double>[0.0, 0.2],
+                      // ),
+                    ),
+                    child: Column(
+                      children: _buildForm(context),
                     ),
                   ),
                 ),
@@ -238,15 +230,14 @@ class _AuthenticationPageState extends State<AuthenticationPage> {
     return children;
   }
 
+  // à la base j'essayais de mettre cette méthode dans la class MaderaNav, mais ça faisait des bugs.
   void _redirectToPage(BuildContext context, Widget page) {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       MaterialPageRoute newRoute =
           MaterialPageRoute(builder: (BuildContext context) => page);
-
-      Navigator.of(context)
-          .pushAndRemoveUntil(newRoute, ModalRoute.withName('/decision'));
+      Navigator.of(context).pushReplacement(newRoute);
+      var maderaNav = Provider.of<MaderaNav>(context);
+      maderaNav.updateCurrent(page.runtimeType);
     });
-    var maderaNav = Provider.of<MaderaNav>(context);
-    maderaNav.updateCurrent(page.runtimeType);
   }
 }

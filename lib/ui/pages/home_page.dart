@@ -34,6 +34,7 @@ class _HomePageState extends State<HomePage> {
       onWillPop: _onWillPopScope,
       child: SafeArea(
         child: Scaffold(
+          backgroundColor: Colors.blueGrey,
           body: _buildHomePage(context),
         ),
       ),
@@ -83,8 +84,7 @@ class _HomePageState extends State<HomePage> {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       MaterialPageRoute newRoute =
           MaterialPageRoute(builder: (BuildContext context) => page);
-      Navigator.of(context)
-          .pushAndRemoveUntil(newRoute, ModalRoute.withName('/decision'));
+      Navigator.of(context).pushReplacement(newRoute);
       var maderaNav = Provider.of<MaderaNav>(context);
       maderaNav.updateCurrent(page.runtimeType);
     });

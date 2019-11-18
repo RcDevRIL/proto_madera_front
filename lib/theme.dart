@@ -6,7 +6,7 @@ const String FontNameDefault = 'Poppins';
 class Colors {
   const Colors();
 
-  static const Color appBarMainColor = Color.fromRGBO(109, 243, 115, 0.33);
+  static const Color appBarMainColor = Color.fromRGBO(109, 243, 115, 1.0);
   static const Color iconsMainColor = Color.fromRGBO(39, 72, 0, 1.0);
   static const Color customBlue = const Color(0xFF0097A7);
   static const Color lightBlue = const Color(0xFF56C8D8);
@@ -30,9 +30,10 @@ class Colors {
   static const Color patientResumePageCard = const Color(0xff006978);
   static const Color patientResumePageCardBorder = const Color(0xff56c8d8);
 
-  static const Color selectedColor = Color(0xFF4AC8EA);
+  static const Color selectedColor = /* Color(0xFF4AC8EA) */ Color
+      .fromRGBO(109, 243, 115, 1.0);
   static const Color drawerBackgroundColor = Color(0xFF272D34);
-  static const Color white = Color.fromRGBO(255, 255, 255, 0.0);
+  static const Color white = Color.fromRGBO(255, 255, 255, 1.0);
   static const Color white70 = Color.fromRGBO(255, 255, 255, 0.7);
 }
 
