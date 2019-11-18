@@ -1,15 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:proto_madera_front/ui/pages/home_page.dart';
 import 'package:provider/provider.dart';
 
 import 'package:proto_madera_front/providers/provider-navigation.dart';
 import 'package:proto_madera_front/theme.dart' as cTheme;
 
-class AppBarMadera extends StatefulWidget {
-  @override
-  _AppBarMaderaState createState() => _AppBarMaderaState();
-}
-
-class _AppBarMaderaState extends State<AppBarMadera> {
+class AppBarMadera extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -26,8 +22,8 @@ class _AppBarMaderaState extends State<AppBarMadera> {
       ),
       child: AppBar(
         primary: true,
-        elevation: 50.0,
-        backgroundColor: Color.fromRGBO(109, 243, 115, 0.33),
+        elevation: cTheme.Dimens.appBarElevation,
+        backgroundColor: cTheme.Colors.appBarMainColor,
         iconTheme: IconThemeData(
           color: Color.fromRGBO(39, 72, 0, 1.0),
         ),
@@ -40,12 +36,25 @@ class _AppBarMaderaState extends State<AppBarMadera> {
         ),
         centerTitle: false,
         actions: <Widget>[
-          Image(
-            image: AssetImage("assets/img/logo-madera.png"),
-            //je l'ai mis dans le champ "actions" comme ça pas besoin de faire de Row dans le "title"
+          FlatButton(
+            onPressed: () => _redirectToPage(context, HomePage()),
+            child: Image(
+              image: AssetImage("assets/img/logo-madera.png"),
+              //je l'ai mis dans le champ "actions" comme ça pas besoin de faire de Row dans le "title"
+            ),
           ),
         ],
       ),
     );
+  } // à la base j'essayais de mettre cette méthode dans la class MaderaNav, mais ça faisait des bugs.
+
+  void _redirectToPage(BuildContext context, Widget page) {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      MaterialPageRoute newRoute =
+          MaterialPageRoute(builder: (BuildContext context) => page);
+      Navigator.of(context).pushReplacement(newRoute);
+      var maderaNav = Provider.of<MaderaNav>(context);
+      maderaNav.updateCurrent(page.runtimeType);
+    });
   }
 }

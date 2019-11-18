@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:proto_madera_front/providers/provider-navigation.dart';
+
 import 'package:proto_madera_front/theme.dart' as cTheme;
-import 'package:provider/provider.dart';
 
 class CollapsingListTile extends StatefulWidget {
   final String title;
@@ -27,7 +26,9 @@ class _CollapsingListTileState extends State<CollapsingListTile> {
   @override
   void initState() {
     super.initState();
-    widthAnimation = Tween<double>(begin: 72.0, end: 220.0)
+    widthAnimation = Tween<double>(
+            begin: cTheme.Dimens.drawerMinWitdh,
+            end: cTheme.Dimens.drawerMaxWidth)
         .animate(widget.animationController);
     sizedBoxAnimation = Tween<double>(begin: 0.0, end: 10.0)
         .animate(widget.animationController);
@@ -35,7 +36,6 @@ class _CollapsingListTileState extends State<CollapsingListTile> {
 
   @override
   Widget build(BuildContext context) {
-    var maderaNav = Provider.of<MaderaNav>(context);
     return InkWell(
       onTap: widget.onTap,
       child: Container(
@@ -55,12 +55,12 @@ class _CollapsingListTileState extends State<CollapsingListTile> {
               color: widget.isSelected
                   ? cTheme.Colors.selectedColor
                   : Colors.white30,
-              size: 40.0,
+              size: cTheme.Dimens.drawerIconSize,
             ),
             SizedBox(
               width: sizedBoxAnimation.value,
             ),
-            (widthAnimation.value >= 220)
+            (widthAnimation.value >= cTheme.Dimens.drawerMaxWidth)
                 ? Text(
                     widget.title,
                     style: widget.isSelected

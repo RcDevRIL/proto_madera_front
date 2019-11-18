@@ -1,26 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:logger/logger.dart';
-import 'package:proto_madera_front/providers/provider-navigation.dart';
-import 'package:proto_madera_front/ui/pages/pages.dart';
-import 'package:proto_madera_front/ui/pages/widgets/appbar_madera.dart';
-import 'package:proto_madera_front/ui/pages/widgets/custom-drawer.dart';
-
-import 'package:proto_madera_front/ui/pages/widgets/log_out_button.dart';
 import 'package:provider/provider.dart';
 
-class HomePage extends StatefulWidget {
+import 'package:proto_madera_front/providers/provider-navigation.dart';
+import 'package:proto_madera_front/ui/pages/pages.dart';
+import 'package:proto_madera_front/ui/pages/widgets/custom_widgets.dart';
+import 'package:proto_madera_front/theme.dart' as cTheme;
+
+class HomePage extends StatelessWidget {
   static const routeName = '/home';
-
-  @override
-  _HomePageState createState() => _HomePageState();
-}
-
-class _HomePageState extends State<HomePage> {
   final log = Logger();
-  var _maderaNav;
 
   ///
-  /// Prevents the use of the "back" button
+  /// Prevents the use of the 'back' button
   ///
   Future<bool> _onWillPopScope() async {
     return false;
@@ -28,8 +20,6 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    // final args = ModalRoute.of(context).settings.arguments;
-    _maderaNav = Provider.of<MaderaNav>(context);
     return WillPopScope(
       onWillPop: _onWillPopScope,
       child: SafeArea(
@@ -46,31 +36,98 @@ class _HomePageState extends State<HomePage> {
       child: Stack(
         children: <Widget>[
           Padding(
-            padding: const EdgeInsets.all(72.0), // 72.0 : largeur drawer
+            padding: const EdgeInsets.only(left: cTheme.Dimens.drawerMinWitdh),
             child: Center(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
-                mainAxisAlignment: MainAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: <Widget>[
-                  Text("PAGE PRINCIPALE"),
-                  RaisedButton(
-                    onPressed: () {
-                      log.d('COUCOU JE SUIS UN LOG');
-                    },
-                    child: Text("Log me"),
+                  Consumer<MaderaNav>(
+                    builder: (_, mN, c) => Text(
+                      mN.pageTitle,
+                      style: cTheme.TextStyles.appBarTitle,
+                    ),
                   ),
-                  RaisedButton(
-                    onPressed: () {
-                      _redirectToPage(context, SettingsPage());
-                    },
-                    child: Text("Lien vers Settings"),
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: <Widget>[
+                      Container(
+                        height: 150.0,
+                        width: 150.0,
+                        child: RaisedButton(
+                          onPressed: () {
+                            _redirectToPage(context, Quote());
+                          },
+                          child: Text('Création de devis'),
+                        ),
+                      ),
+                      Container(
+                        height: 150.0,
+                        width: 150.0,
+                        child: RaisedButton(
+                          onPressed: () {
+                            _redirectToPage(context, QuoteOverview());
+                          },
+                          child: Text('Suivi de devis'),
+                        ),
+                      ),
+                      Container(
+                        height: 150.0,
+                        width: 150.0,
+                        child: RaisedButton(
+                          onPressed: () {
+                            _redirectToPage(context, SettingsPage());
+                          },
+                          child: Text('Paramètres'),
+                        ),
+                      ),
+                    ],
+                  ),
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: <Widget>[
+                      Container(
+                        height: 150.0,
+                        width: 150.0,
+                        child: RaisedButton(
+                          onPressed: () {
+                            log.d('COUCOU JE SUIS UN LOG');
+                          },
+                          child: Text('Log me'),
+                        ),
+                      ),
+                      Container(
+                        height: 150.0,
+                        width: 150.0,
+                        child: RaisedButton(
+                          onPressed: () {
+                            log.d('COUCOU JE SUIS UN LOG');
+                          },
+                          child: Text('Log me'),
+                        ),
+                      ),
+                      Container(
+                        height: 150.0,
+                        width: 150.0,
+                        child: RaisedButton(
+                          onPressed: () {
+                            _redirectToPage(context, NotificationPage());
+                          },
+                          child: Text('Lien vers Notifications'),
+                        ),
+                      ),
+                    ],
                   ),
                 ],
               ),
             ),
           ),
           Padding(
-            padding: EdgeInsets.only(left: 72.0),
+            padding: EdgeInsets.only(
+              left: cTheme.Dimens.drawerMinWitdh,
+            ),
             child: AppBarMadera(),
           ),
           CustomDrawer(),

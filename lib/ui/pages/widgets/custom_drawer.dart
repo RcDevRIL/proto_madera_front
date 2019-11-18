@@ -1,12 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:logger/logger.dart';
-import 'package:proto_madera_front/ui/pages/home_page.dart';
-import 'package:proto_madera_front/ui/pages/pages.dart';
-import 'package:proto_madera_front/ui/pages/widgets/log_out_button.dart';
 import 'package:provider/provider.dart';
+import 'package:proto_madera_front/ui/pages/pages.dart';
 import 'package:proto_madera_front/providers/provider-navigation.dart';
 import 'package:proto_madera_front/theme.dart' as cTheme;
-import 'package:proto_madera_front/ui/pages/widgets/collapsing-list-tile.dart';
+import 'package:proto_madera_front/ui/pages/widgets/custom_widgets.dart';
 
 class CustomDrawer extends StatefulWidget {
   @override
@@ -15,9 +13,7 @@ class CustomDrawer extends StatefulWidget {
 
 class _CustomDrawerState extends State<CustomDrawer>
     with SingleTickerProviderStateMixin {
-  double maxWidth = 220.0;
-  double minWidth = 72.0;
-  bool isCollapsed = false;
+  bool isCollapsed;
   AnimationController _animationController;
   Animation<double> widthAnimation;
   int currentSelectedItem = 0;
@@ -27,11 +23,14 @@ class _CustomDrawerState extends State<CustomDrawer>
   @override
   void initState() {
     super.initState();
+    isCollapsed = false;
     _animationController = AnimationController(
       vsync: this,
       duration: Duration(milliseconds: 350),
     );
-    widthAnimation = Tween<double>(begin: minWidth, end: maxWidth)
+    widthAnimation = Tween<double>(
+            begin: cTheme.Dimens.drawerMinWitdh,
+            end: cTheme.Dimens.drawerMaxWidth)
         .animate(_animationController);
   }
 
@@ -43,7 +42,7 @@ class _CustomDrawerState extends State<CustomDrawer>
       builder: (context, w) {
         return Material(
           type: MaterialType.canvas,
-          elevation: 50.0,
+          elevation: cTheme.Dimens.appBarElevation,
           child: Container(
             width: widthAnimation.value,
             color: cTheme.Colors.drawerBackgroundColor,
@@ -51,6 +50,9 @@ class _CustomDrawerState extends State<CustomDrawer>
               // crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
+                SizedBox(
+                  height: 8.0,
+                ),
                 CollapsingListTile(
                   title: "Test Name",
                   icon: Icons.person,
@@ -72,36 +74,44 @@ class _CustomDrawerState extends State<CustomDrawer>
                     itemBuilder: (c, i) {
                       return CollapsingListTile(
                         onTap: () {
-                          if (!isCollapsed) {
-                            //bizarrement c'est quand isCollapsed=false qu'il ne faut rien faire...y a quelque chose que j'ai fait a l'envers
-                            setState(() {});
-                          } else {
-                            switch (i) {
-                              case 0:
-                                {
-                                  _redirectToPage(context, HomePage());
-                                }
-                                break;
-                              case 4:
-                                {
-                                  _redirectToPage(context, SettingsPage());
-                                }
-                                break;
+                          switch (i) {
+                            case 0:
+                              {
+                                _redirectToPage(context, HomePage());
+                              }
+                              break;
+                            case 1:
+                              {
+                                _redirectToPage(context, Quote());
+                              }
+                              break;
+                            case 2:
+                              {
+                                _redirectToPage(context, QuoteOverview());
+                              }
+                              break;
+                            case 3:
+                              {
+                                _redirectToPage(context, NotificationPage());
+                              }
+                              break;
+                            case 4:
+                              {
+                                _redirectToPage(context, SettingsPage());
+                              }
+                              break;
 
-                              /* 
-                                                              default:
-                                                                {
-                                                                  maderaNav.redirectToPage(context, HomePage());
-                                                                }
-                                                                break; */
-                            }
-
-                            setState(() {
-                              currentSelectedItem = i;
-                            });
+                            default:
+                              {
+                                maderaNav.redirectToPage(context, HomePage());
+                              }
+                              break;
                           }
+                          setState(() {
+                            currentSelectedItem = i;
+                          });
                         },
-                        isSelected: _isCurrent(i),
+                        isSelected: maderaNav.pageIndex == i,
                         title: navigationItems[i].title,
                         icon: navigationItems[i].iconData,
                         animationController: _animationController,
@@ -123,6 +133,12 @@ class _CustomDrawerState extends State<CustomDrawer>
                   title: 'Déconnexion',
                   icon: Icons.exit_to_app,
                 ),
+                Divider(
+                  color: Colors.grey,
+                  height: 40.0,
+                  indent: 12.0,
+                  endIndent: 12.0,
+                ),
                 FlatButton(
                   padding: EdgeInsets.all(0.0),
                   onPressed: () {
@@ -141,7 +157,7 @@ class _CustomDrawerState extends State<CustomDrawer>
                   ),
                 ),
                 SizedBox(
-                  height: 50.0,
+                  height: 20.0,
                 ),
               ],
             ),
@@ -149,12 +165,6 @@ class _CustomDrawerState extends State<CustomDrawer>
         );
       },
     );
-  }
-
-  bool _isCurrent(int i) {
-    bool b = false;
-
-    return maderaNav.pageIndex == i;
   }
 
   void _redirectToPage(BuildContext context, Widget page) {

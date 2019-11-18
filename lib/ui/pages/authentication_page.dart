@@ -4,8 +4,9 @@ import 'package:provider/provider.dart';
 
 import 'package:proto_madera_front/services/authentication/login_form_bloc.dart';
 import 'package:proto_madera_front/ui/pages/home_page.dart';
-import 'package:proto_madera_front/ui/pages/widgets/my_widgets.dart';
+import 'package:proto_madera_front/ui/pages/widgets/custom_widgets.dart';
 import 'package:proto_madera_front/providers/provider-navigation.dart';
+import 'package:proto_madera_front/theme.dart' as cTheme;
 
 class AuthenticationPage extends StatefulWidget {
   static const routeName = '/auth';
@@ -66,24 +67,24 @@ class _AuthenticationPageState extends State<AuthenticationPage> {
                 ),
               ),
               Center(
-                child: SingleChildScrollView(
-                  child: Container(
-                    width: 250,
-                    margin: EdgeInsets.all(8.0),
-                    padding: EdgeInsets.all(12.0),
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      border: Border.all(
-                        color: Colors.black,
-                        style: BorderStyle.solid,
-                        width: 2.0,
-                      ),
-                      borderRadius: BorderRadius.circular(10.0),
-                      // gradient: LinearGradient(
-                      //   colors: <Color>[Colors.greenAccent, Colors.white],
-                      //   stops: <double>[0.0, 0.2],
-                      // ),
+                child: Container(
+                  width: cTheme.Dimens.loginFormWidth,
+                  margin: EdgeInsets.all(8.0),
+                  padding: EdgeInsets.all(12.0),
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    border: Border.all(
+                      color: Colors.black,
+                      style: BorderStyle.solid,
+                      width: 2.0,
                     ),
+                    borderRadius: BorderRadius.circular(10.0),
+                    // gradient: LinearGradient(
+                    //   colors: <Color>[Colors.greenAccent, Colors.white],
+                    //   stops: <double>[0.0, 0.2],
+                    // ),
+                  ),
+                  child: SingleChildScrollView(
                     child: Column(
                       children: _buildForm(context),
                     ),
@@ -102,22 +103,18 @@ class _AuthenticationPageState extends State<AuthenticationPage> {
   List<Widget> _buildForm(BuildContext c) {
     List<Widget> children = <Widget>[];
 
-    children.add(Row(
-      crossAxisAlignment: CrossAxisAlignment.center,
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: <Widget>[
-        Icon(
-          Icons.person,
+    children.add(new LabelledIcon(
+      icon: Icon(
+        Icons.person,
+        color: Color.fromRGBO(39, 72, 0, 1.0),
+      ),
+      text: Text(
+        "Identifiant",
+        style: TextStyle(
+          fontSize: 24,
           color: Color.fromRGBO(39, 72, 0, 1.0),
         ),
-        Text(
-          "Identifiant",
-          style: TextStyle(
-            fontSize: 24,
-            color: Color.fromRGBO(39, 72, 0, 1.0),
-          ),
-        ),
-      ],
+      ),
     ));
 
     children.add(
@@ -149,22 +146,18 @@ class _AuthenticationPageState extends State<AuthenticationPage> {
           );
         }));
     children.add(
-      Row(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: <Widget>[
-          Icon(
-            Icons.lock,
+      LabelledIcon(
+        icon: Icon(
+          Icons.lock,
+          color: Color.fromRGBO(39, 72, 0, 1.0),
+        ),
+        text: Text(
+          "Mot de passe",
+          style: TextStyle(
+            fontSize: 24,
             color: Color.fromRGBO(39, 72, 0, 1.0),
           ),
-          Text(
-            "Mot de passe",
-            style: TextStyle(
-              fontSize: 24,
-              color: Color.fromRGBO(39, 72, 0, 1.0),
-            ),
-          ),
-        ],
+        ),
       ),
     );
 

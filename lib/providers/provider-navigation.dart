@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:logger/logger.dart';
+
 import 'package:proto_madera_front/ui/pages/authentication_page.dart';
 import 'package:proto_madera_front/ui/pages/home_page.dart';
 import 'package:proto_madera_front/ui/pages/pages.dart';
@@ -13,7 +14,7 @@ class NavigationModel {
 const List<NavigationModel> navigationItems = [
   NavigationModel(title: "Accueil", iconData: Icons.apps),
   NavigationModel(title: "Outil Devis", iconData: Icons.assignment),
-  NavigationModel(title: "Search", iconData: Icons.search),
+  NavigationModel(title: "Suivi Devis", iconData: Icons.search),
   NavigationModel(title: "Notifications", iconData: Icons.notifications),
   NavigationModel(title: "Settings", iconData: Icons.settings),
 ];
@@ -65,6 +66,36 @@ class MaderaNav with ChangeNotifier {
         {
           _pageTitle = "Paramètres";
           _pageIndex = 4;
+          log.d(
+              'Updating current navigation properties:                        \n' +
+                  this.toString() +
+                  '                    ');
+        }
+        break;
+      case NotificationPage:
+        {
+          _pageTitle = "Page des notification";
+          _pageIndex = 3;
+          log.d(
+              'Updating current navigation properties:                        \n' +
+                  this.toString() +
+                  '                    ');
+        }
+        break;
+      case Quote:
+        {
+          _pageTitle = "Outil de création de devis";
+          _pageIndex = 1;
+          log.d(
+              'Updating current navigation properties:                        \n' +
+                  this.toString() +
+                  '                    ');
+        }
+        break;
+      case QuoteOverview:
+        {
+          _pageTitle = "Suivi des devis enregistrés";
+          _pageIndex = 2;
           log.d(
               'Updating current navigation properties:                        \n' +
                   this.toString() +

@@ -5,14 +5,14 @@ import 'package:proto_madera_front/ui/pages/widgets/custom_widgets.dart';
 import 'package:provider/provider.dart';
 import 'package:proto_madera_front/theme.dart' as cTheme;
 
-class SettingsPage extends StatefulWidget {
-  static const routeName = '/settings';
+class Quote extends StatefulWidget {
+  static const routeName = '/quote';
 
   @override
-  _SettingsPageState createState() => _SettingsPageState();
+  _QuoteState createState() => _QuoteState();
 }
 
-class _SettingsPageState extends State<SettingsPage> {
+class _QuoteState extends State<Quote> {
   ///
   /// Prevents the use of the "back" button
   ///

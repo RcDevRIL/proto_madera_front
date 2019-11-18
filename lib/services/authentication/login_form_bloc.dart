@@ -5,8 +5,9 @@
  *      Didier BOELENS - (https://github.com/boeledi/blocs)
  */
 import 'dart:async';
-import 'package:proto_madera_front/validators/validators.dart';
 import 'package:rxdart/rxdart.dart';
+
+import 'package:proto_madera_front/validators/validators.dart';
 
 class LoginFormBloc extends Object with EmailValidator, PasswordValidator {
   final BehaviorSubject<String> _emailController = BehaviorSubject<String>();

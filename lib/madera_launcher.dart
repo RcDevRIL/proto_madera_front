@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:provider/provider.dart';
 import 'package:proto_madera_front/providers/provider-login.dart';
 import 'package:proto_madera_front/providers/provider-navigation.dart';
 
 import 'package:proto_madera_front/ui/pages/pages.dart';
-import 'package:proto_madera_front/theme.dart' as CustomTheme;
-import 'package:provider/provider.dart';
+import 'package:proto_madera_front/theme.dart' as cTheme;
 
 class MaderaApp extends StatelessWidget {
   @override
@@ -29,9 +29,9 @@ class MaderaApp extends StatelessWidget {
             primarySwatch: Colors.green,
             appBarTheme: AppBarTheme(
               iconTheme: IconThemeData(
-                color: CustomTheme.Colors.iconsMainColor,
+                color: cTheme.Colors.iconsMainColor,
               ),
-              color: CustomTheme.Colors.appBarMainColor,
+              color: cTheme.Colors.appBarMainColor,
             ),
           ),
           initialRoute: InitializationPage.routeName,
@@ -39,6 +39,9 @@ class MaderaApp extends StatelessWidget {
             InitializationPage.routeName: (context) => InitializationPage(),
             SettingsPage.routeName: (context) => SettingsPage(),
             HomePage.routeName: (context) => HomePage(),
+            Quote.routeName: (context) => Quote(),
+            QuoteOverview.routeName: (context) => QuoteOverview(),
+            NotificationPage.routeName: (context) => NotificationPage()
           },
         ));
   }
