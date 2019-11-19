@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:proto_madera_front/providers/provider-navigation.dart';
+import 'package:provider/provider.dart';
 
 import 'package:proto_madera_front/ui/pages/widgets/custom_widgets.dart';
-import 'package:provider/provider.dart';
+import 'package:proto_madera_front/providers/provider-navigation.dart';
 import 'package:proto_madera_front/theme.dart' as cTheme;
 
 class Quote extends StatefulWidget {

@@ -5,20 +5,6 @@ import 'package:proto_madera_front/ui/pages/authentication_page.dart';
 import 'package:proto_madera_front/ui/pages/home_page.dart';
 import 'package:proto_madera_front/ui/pages/pages.dart';
 
-class NavigationModel {
-  final String title;
-  final IconData iconData;
-  const NavigationModel({this.iconData, this.title});
-}
-
-const List<NavigationModel> navigationItems = [
-  NavigationModel(title: "Accueil", iconData: Icons.apps),
-  NavigationModel(title: "Outil Devis", iconData: Icons.assignment),
-  NavigationModel(title: "Suivi Devis", iconData: Icons.search),
-  NavigationModel(title: "Notifications", iconData: Icons.notifications),
-  NavigationModel(title: "Settings", iconData: Icons.settings),
-];
-
 class MaderaNav with ChangeNotifier {
   var _pageTitle;
   var _pageIndex;
@@ -43,39 +29,19 @@ class MaderaNav with ChangeNotifier {
 
   void updateCurrent(Type page) {
     switch (page) {
-      case HomePage:
+      case AuthenticationPage:
         {
-          _pageTitle = 'Page d\'accueil';
-          _pageIndex = 0;
+          _pageTitle = 'Bienvenue sur l\'application métier MADERA !';
+          _pageIndex = -1;
           log.d('Updating current navigation properties:                        \n' +
               this.toString() +
               '                    '); //pleins d'espaces car pb avec le package logger
         }
         break;
-      case AuthenticationPage:
+      case HomePage:
         {
-          _pageTitle = "Bienvenue sur l'application métier MADERA !";
-          _pageIndex = -1;
-          log.d(
-              'Updating current navigation properties:                        \n' +
-                  this.toString() +
-                  '                    ');
-        }
-        break;
-      case SettingsPage:
-        {
-          _pageTitle = "Paramètres";
-          _pageIndex = 4;
-          log.d(
-              'Updating current navigation properties:                        \n' +
-                  this.toString() +
-                  '                    ');
-        }
-        break;
-      case NotificationPage:
-        {
-          _pageTitle = "Page des notification";
-          _pageIndex = 3;
+          _pageTitle = 'Page d\'accueil';
+          _pageIndex = 0;
           log.d(
               'Updating current navigation properties:                        \n' +
                   this.toString() +
@@ -102,10 +68,32 @@ class MaderaNav with ChangeNotifier {
                   '                    ');
         }
         break;
+      case NotificationPage:
+        {
+          _pageTitle = "Page des notification";
+          _pageIndex = 3;
+          log.d(
+              'Updating current navigation properties:                        \n' +
+                  this.toString() +
+                  '                    ');
+        }
+        break;
+      case SettingsPage:
+        {
+          _pageTitle = "Paramètres";
+          _pageIndex = 4;
+          log.d(
+              'Updating current navigation properties:                        \n' +
+                  this.toString() +
+                  '                    ');
+        }
+        break;
 
       default:
         {
-          log.e("updateCurrent ERROR                        ");
+          log.e("MaderaNav.updateCurrent() ERROR:                        \n\tpage.runtimeType : " +
+              "$page                        \n" +
+              "Navigator properties reset to default.                        ");
           _pageTitle = "default";
           _pageIndex = -1;
         }

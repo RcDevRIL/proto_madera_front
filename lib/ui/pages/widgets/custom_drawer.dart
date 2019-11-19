@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:logger/logger.dart';
 import 'package:provider/provider.dart';
-import 'package:proto_madera_front/ui/pages/pages.dart';
+
 import 'package:proto_madera_front/providers/provider-navigation.dart';
-import 'package:proto_madera_front/theme.dart' as cTheme;
 import 'package:proto_madera_front/ui/pages/widgets/custom_widgets.dart';
+import 'package:proto_madera_front/ui/pages/pages.dart';
+import 'package:proto_madera_front/providers/models/navigation_model.dart';
+import 'package:proto_madera_front/theme.dart' as cTheme;
 
 class CustomDrawer extends StatefulWidget {
   @override
@@ -23,7 +25,7 @@ class _CustomDrawerState extends State<CustomDrawer>
   @override
   void initState() {
     super.initState();
-    isCollapsed = false;
+    isCollapsed = true;
     _animationController = AnimationController(
       vsync: this,
       duration: Duration(milliseconds: 350),
@@ -145,8 +147,8 @@ class _CustomDrawerState extends State<CustomDrawer>
                     setState(() {
                       isCollapsed = !isCollapsed;
                       isCollapsed
-                          ? _animationController.forward()
-                          : _animationController.reverse();
+                          ? _animationController.reverse()
+                          : _animationController.forward();
                     });
                   },
                   child: AnimatedIcon(
@@ -167,15 +169,13 @@ class _CustomDrawerState extends State<CustomDrawer>
     );
   }
 
+  // à la base j'essayais de mettre cette méthode dans la class MaderaNav, mais ça faisait des bugs.
   void _redirectToPage(BuildContext context, Widget page) {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       MaterialPageRoute newRoute =
           MaterialPageRoute(builder: (BuildContext context) => page);
-      /* Navigator.pop(context);
-      Navigator.of(context).popAndPushNamed(newRoute.settings.name);
-       */
-      Navigator.of(context)
-          .pushAndRemoveUntil(newRoute, ModalRoute.withName('/decision'));
+      Navigator.of(context).pushReplacement(newRoute);
+      var maderaNav = Provider.of<MaderaNav>(context);
       maderaNav.updateCurrent(page.runtimeType);
     });
   }

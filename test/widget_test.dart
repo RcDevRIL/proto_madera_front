@@ -7,24 +7,55 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-
-import 'package:proto_madera_front/main.dart';
+import 'package:proto_madera_front/providers/providers.dart';
+import 'package:proto_madera_front/ui/pages/pages.dart';
+import 'package:proto_madera_front/ui/pages/widgets/custom_widgets.dart';
+import 'package:provider/provider.dart';
 
 void main() {
-  testWidgets('Counter increments smoke test', (WidgetTester tester) async {
-    // Build our app and trigger a frame.
-    await tester.pumpWidget(MyApp());
+  final MaderaNav providerNavigation = MaderaNav();
+  group('Tests', () {
+    testWidgets('first test', (WidgetTester tester) async {
+      Widget testWidget = MediaQuery(
+          data: MediaQueryData(),
+          child: ChangeNotifierProvider.value(
+              value: providerNavigation,
+              child: MaterialApp(home: AppBarMadera())));
+      // Build our app and trigger a frame.
+      await tester.pumpWidget(testWidget);
+      // Simplest test, useless for now, just to make build pass on codemagic.
+      expect(find.text("default"), findsOneWidget);
+    });
 
-    // Verify that our counter starts at 0.
-    expect(find.text('0'), findsOneWidget);
-    expect(find.text('1'), findsNothing);
-
-    // Tap the '+' icon and trigger a frame.
-    await tester.tap(find.byIcon(Icons.add));
-    await tester.pump();
-
-    // Verify that our counter has incremented.
-    expect(find.text('0'), findsNothing);
-    expect(find.text('1'), findsOneWidget);
+    test('Update route state', () async {
+      int index = providerNavigation.pageIndex;
+      String title = providerNavigation.pageTitle;
+      expect(-1, index);
+      expect('default', title);
+      providerNavigation.updateCurrent(AuthenticationPage);
+      index = providerNavigation.pageIndex;
+      title = providerNavigation.pageTitle;
+      expect(-1, index);
+      expect("Bienvenue sur l'application métier MADERA !", title);
+      providerNavigation.updateCurrent(HomePage);
+      index = providerNavigation.pageIndex;
+      title = providerNavigation.pageTitle;
+      expect(0, index);
+      expect("Page d'accueil", title);
+      providerNavigation.updateCurrent(ChangeNotifier);
+      index = providerNavigation.pageIndex;
+      title = providerNavigation.pageTitle;
+      expect(-1, index);
+      expect('default', title);
+    });
+    /* test('connection test', (WidgetTester tester) async {
+      // Lancer le back-end
+      ProviderLogin providerLogin = new ProviderLogin();
+      // ahhhhhhhhh un mot de passe en clairrrrrrrr
+      // TODO Penser à ajouter un utilisateur de test
+      await providerLogin
+          .connection('ladouce.fabien', '123456')
+          .then((value) => expect(true, value));
+    }); */
   });
 }

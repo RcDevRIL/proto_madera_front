@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:flutter/material.dart' show Color, FontWeight, TextStyle;
 
 // Default Font Family
 const String FontNameDefault = 'Poppins';

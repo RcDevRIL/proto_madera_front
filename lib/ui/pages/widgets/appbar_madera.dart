@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:proto_madera_front/ui/pages/home_page.dart';
 import 'package:provider/provider.dart';
 
 import 'package:proto_madera_front/providers/provider-navigation.dart';
+import 'package:proto_madera_front/ui/pages/home_page.dart';
 import 'package:proto_madera_front/theme.dart' as cTheme;
 
 class AppBarMadera extends StatelessWidget {
@@ -36,12 +36,20 @@ class AppBarMadera extends StatelessWidget {
         ),
         centerTitle: false,
         actions: <Widget>[
-          FlatButton(
-            onPressed: () => _redirectToPage(context, HomePage()),
-            child: Image(
-              image: AssetImage("assets/img/logo-madera.png"),
-              //je l'ai mis dans le champ "actions" comme ça pas besoin de faire de Row dans le "title"
-            ),
+          Consumer<MaderaNav>(
+            builder: (_, mN, child) => mN.pageIndex !=
+                    -1 // si page login ou bug, on ne veux pas de bouton qui redirige à l'accueil
+                ? FlatButton(
+                    onPressed: () => _redirectToPage(context, HomePage()),
+                    child: Image(
+                      image: AssetImage("assets/img/logo-madera.png"),
+                      //je l'ai mis dans le champ "actions" comme ça pas besoin de faire de Row dans le "title"
+                    ),
+                  )
+                : Image(
+                    image: AssetImage("assets/img/logo-madera.png"),
+                    //je l'ai mis dans le champ "actions" comme ça pas besoin de faire de Row dans le "title"
+                  ),
           ),
         ],
       ),

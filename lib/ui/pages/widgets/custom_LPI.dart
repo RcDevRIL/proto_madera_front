@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:logger/logger.dart';
-import 'package:proto_madera_front/providers/provider-navigation.dart';
-
-import 'package:proto_madera_front/ui/pages/authentication_page.dart';
 import 'package:provider/provider.dart';
+
+import 'package:proto_madera_front/providers/provider-navigation.dart';
+import 'package:proto_madera_front/ui/pages/authentication_page.dart';
 
 class MyLinearProgressIndicator extends StatefulWidget {
   final Color backgroundColor;
