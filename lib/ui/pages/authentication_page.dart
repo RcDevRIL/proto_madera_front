@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:logger/logger.dart';
 import 'package:provider/provider.dart';
 
@@ -92,6 +93,14 @@ class _AuthenticationPageState extends State<AuthenticationPage> {
                 ),
               ),
               AppBarMadera(),
+              Align(
+                alignment: Alignment(-0.95, -0.75),
+                  child: FloatingActionButton(
+                    onPressed: () => SystemChannels.platform.invokeMethod('SystemNavigator.pop'),
+                    tooltip: "Fermer l'application",
+                    child: Icon(Icons.power_settings_new),
+                ),
+              )
               //visiblement on ne peut pas le mettre dans le champ appBar du Scaffold.. alors voila !!
             ],
           ),
