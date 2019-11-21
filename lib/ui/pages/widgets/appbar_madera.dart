@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import 'package:proto_madera_front/providers/provider-navigation.dart';
+import 'package:proto_madera_front/ui/pages/widgets/exit_button.dart';
 import 'package:proto_madera_front/ui/pages/home_page.dart';
 import 'package:proto_madera_front/theme.dart' as cTheme;
 
@@ -20,24 +21,22 @@ class AppBarMadera extends StatelessWidget {
         height: MediaQuery.of(context).devicePixelRatio * 28,
         width: MediaQuery.of(context).size.width,
       ),
-      child: AppBar(
-        primary: true,
-        elevation: cTheme.Dimens.appBarElevation,
-        backgroundColor: cTheme.Colors.appBarMainColor,
-        iconTheme: IconThemeData(
-          color: Color.fromRGBO(39, 72, 0, 1.0),
-        ),
-        // leading: Container(),
-        title: Consumer<MaderaNav>(
-          builder: (_, mN, child) => Text(
+      child: Consumer<MaderaNav>(
+        builder: (_, mN, child) => AppBar(
+          primary: true,
+          elevation: cTheme.Dimens.appBarElevation,
+          backgroundColor: cTheme.Colors.appBarMainColor,
+          iconTheme: IconThemeData(
+            color: Color.fromRGBO(39, 72, 0, 1.0),
+          ),
+          leading: mN.pageIndex == -1 ? ExitButton() : null,
+          title: Text(
             mN.pageTitle,
             style: cTheme.TextStyles.appBarTitle,
           ),
-        ),
-        centerTitle: false,
-        actions: <Widget>[
-          Consumer<MaderaNav>(
-            builder: (_, mN, child) => mN.pageIndex !=
+          centerTitle: false,
+          actions: <Widget>[
+            mN.pageIndex !=
                     -1 // si page login ou bug, on ne veux pas de bouton qui redirige à l'accueil
                 ? FlatButton(
                     onPressed: () => _redirectToPage(context, HomePage()),
@@ -50,8 +49,8 @@ class AppBarMadera extends StatelessWidget {
                     image: AssetImage("assets/img/logo-madera.png"),
                     //je l'ai mis dans le champ "actions" comme ça pas besoin de faire de Row dans le "title"
                   ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   } // à la base j'essayais de mettre cette méthode dans la class MaderaNav, mais ça faisait des bugs.

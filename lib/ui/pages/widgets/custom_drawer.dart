@@ -19,8 +19,7 @@ class _CustomDrawerState extends State<CustomDrawer>
   AnimationController _animationController;
   Animation<double> widthAnimation;
   int currentSelectedItem = 0;
-  var maderaNav;
-  var log = Logger();
+  final log = Logger();
 
   @override
   void initState() {
@@ -38,7 +37,6 @@ class _CustomDrawerState extends State<CustomDrawer>
 
   @override
   Widget build(BuildContext context) {
-    maderaNav = Provider.of<MaderaNav>(context);
     return AnimatedBuilder(
       animation: widthAnimation,
       builder: (context, w) {
@@ -74,49 +72,51 @@ class _CustomDrawerState extends State<CustomDrawer>
                       );
                     },
                     itemBuilder: (c, i) {
-                      return CollapsingListTile(
-                        onTap: () {
-                          switch (i) {
-                            case 0:
-                              {
-                                _redirectToPage(context, HomePage());
-                              }
-                              break;
-                            case 1:
-                              {
-                                _redirectToPage(context, Quote());
-                              }
-                              break;
-                            case 2:
-                              {
-                                _redirectToPage(context, QuoteOverview());
-                              }
-                              break;
-                            case 3:
-                              {
-                                _redirectToPage(context, NotificationPage());
-                              }
-                              break;
-                            case 4:
-                              {
-                                _redirectToPage(context, SettingsPage());
-                              }
-                              break;
+                      return Consumer<MaderaNav>(
+                        builder: (c, mN, child) => CollapsingListTile(
+                          onTap: () {
+                            switch (i) {
+                              case 0:
+                                {
+                                  _redirectToPage(context, HomePage());
+                                }
+                                break;
+                              case 1:
+                                {
+                                  _redirectToPage(context, Quote());
+                                }
+                                break;
+                              case 2:
+                                {
+                                  _redirectToPage(context, QuoteOverview());
+                                }
+                                break;
+                              case 3:
+                                {
+                                  _redirectToPage(context, NotificationPage());
+                                }
+                                break;
+                              case 4:
+                                {
+                                  _redirectToPage(context, SettingsPage());
+                                }
+                                break;
 
-                            default:
-                              {
-                                maderaNav.redirectToPage(context, HomePage());
-                              }
-                              break;
-                          }
-                          setState(() {
-                            currentSelectedItem = i;
-                          });
-                        },
-                        isSelected: maderaNav.pageIndex == i,
-                        title: navigationItems[i].title,
-                        icon: navigationItems[i].iconData,
-                        animationController: _animationController,
+                              default:
+                                {
+                                  _redirectToPage(context, HomePage());
+                                }
+                                break;
+                            }
+                            setState(() {
+                              currentSelectedItem = i;
+                            });
+                          },
+                          isSelected: mN.pageIndex == i,
+                          title: navigationItems[i].title,
+                          icon: navigationItems[i].iconData,
+                          animationController: _animationController,
+                        ),
                       );
                     },
                     itemCount: navigationItems.length,
@@ -124,7 +124,7 @@ class _CustomDrawerState extends State<CustomDrawer>
                 ),
                 CollapsingListTile(
                   onTap: () {
-                    if (isCollapsed) {
+                    if (!isCollapsed) {
                       //TODO Emettre un évènement de déconnexion
                       log.d("LOGOUT EVENT");
                       _redirectToPage(context, AuthenticationPage());
