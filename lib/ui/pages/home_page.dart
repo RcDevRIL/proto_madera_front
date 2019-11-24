@@ -57,7 +57,7 @@ class HomePage extends StatelessWidget {
                         width: 150.0,
                         child: RaisedButton(
                           onPressed: () {
-                            _redirectToPage(context, Quote());
+                            MaderaNav().redirectToPage(context, Quote());
                           },
                           child: Text('Création de devis'),
                         ),
@@ -67,7 +67,7 @@ class HomePage extends StatelessWidget {
                         width: 150.0,
                         child: RaisedButton(
                           onPressed: () {
-                            _redirectToPage(context, QuoteOverview());
+                            MaderaNav().redirectToPage(context, QuoteOverview());
                           },
                           child: Text('Suivi de devis'),
                         ),
@@ -77,7 +77,7 @@ class HomePage extends StatelessWidget {
                         width: 150.0,
                         child: RaisedButton(
                           onPressed: () {
-                            _redirectToPage(context, SettingsPage());
+                            MaderaNav().redirectToPage(context, SettingsPage());
                           },
                           child: Text('Paramètres'),
                         ),
@@ -113,7 +113,7 @@ class HomePage extends StatelessWidget {
                         width: 150.0,
                         child: RaisedButton(
                           onPressed: () {
-                            _redirectToPage(context, NotificationPage());
+                            MaderaNav().redirectToPage(context, NotificationPage());
                           },
                           child: Text('Lien vers Notifications'),
                         ),
@@ -137,13 +137,13 @@ class HomePage extends StatelessWidget {
   }
 
   // à la base j'essayais de mettre cette méthode dans la class MaderaNav, mais ça faisait des bugs.
-  void _redirectToPage(BuildContext context, Widget page) {
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      MaterialPageRoute newRoute =
-          MaterialPageRoute(builder: (BuildContext context) => page);
-      Navigator.of(context).pushReplacement(newRoute);
-      var maderaNav = Provider.of<MaderaNav>(context);
-      maderaNav.updateCurrent(page.runtimeType);
-    });
-  }
+  // void _redirectToPage(BuildContext context, Widget page) {
+  //   WidgetsBinding.instance.addPostFrameCallback((_) {
+  //     MaterialPageRoute newRoute =
+  //         MaterialPageRoute(builder: (BuildContext context) => page);
+  //     Navigator.of(context).pushReplacement(newRoute);
+  //     var maderaNav = Provider.of<MaderaNav>(context);
+  //     maderaNav.updateCurrent(page.runtimeType);
+  //   });
+  // }
 }

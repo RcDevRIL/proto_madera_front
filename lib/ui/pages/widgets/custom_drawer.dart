@@ -78,33 +78,33 @@ class _CustomDrawerState extends State<CustomDrawer>
                             switch (i) {
                               case 0:
                                 {
-                                  _redirectToPage(context, HomePage());
+                                  MaderaNav().redirectToPage(context, HomePage());
                                 }
                                 break;
                               case 1:
                                 {
-                                  _redirectToPage(context, Quote());
+                                  MaderaNav().redirectToPage(context, Quote());
                                 }
                                 break;
                               case 2:
                                 {
-                                  _redirectToPage(context, QuoteOverview());
+                                  MaderaNav().redirectToPage(context, QuoteOverview());
                                 }
                                 break;
                               case 3:
                                 {
-                                  _redirectToPage(context, NotificationPage());
+                                  MaderaNav().redirectToPage(context, NotificationPage());
                                 }
                                 break;
                               case 4:
                                 {
-                                  _redirectToPage(context, SettingsPage());
+                                  MaderaNav().redirectToPage(context, SettingsPage());
                                 }
                                 break;
 
                               default:
                                 {
-                                  _redirectToPage(context, HomePage());
+                                  MaderaNav().redirectToPage(context, HomePage());
                                 }
                                 break;
                             }
@@ -127,7 +127,7 @@ class _CustomDrawerState extends State<CustomDrawer>
                     if (!isCollapsed) {
                       //TODO Emettre un évènement de déconnexion
                       log.d("LOGOUT EVENT");
-                      _redirectToPage(context, AuthenticationPage());
+                      MaderaNav().redirectToPage(context, AuthenticationPage());
                     }
                   },
                   animationController: _animationController,
@@ -170,13 +170,13 @@ class _CustomDrawerState extends State<CustomDrawer>
   }
 
   // à la base j'essayais de mettre cette méthode dans la class MaderaNav, mais ça faisait des bugs.
-  void _redirectToPage(BuildContext context, Widget page) {
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      MaterialPageRoute newRoute =
-          MaterialPageRoute(builder: (BuildContext context) => page);
-      Navigator.of(context).pushReplacement(newRoute);
-      var maderaNav = Provider.of<MaderaNav>(context);
-      maderaNav.updateCurrent(page.runtimeType);
-    });
-  }
+  // void _redirectToPage(BuildContext context, Widget page) {
+  //   WidgetsBinding.instance.addPostFrameCallback((_) {
+  //     MaterialPageRoute newRoute =
+  //         MaterialPageRoute(builder: (BuildContext context) => page);
+  //     Navigator.of(context).pushReplacement(newRoute);
+  //     var maderaNav = Provider.of<MaderaNav>(context);
+  //     maderaNav.updateCurrent(page.runtimeType);
+  //   });
+  // }
 }

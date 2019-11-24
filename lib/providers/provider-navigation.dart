@@ -4,6 +4,7 @@ import 'package:logger/logger.dart';
 import 'package:proto_madera_front/ui/pages/authentication_page.dart';
 import 'package:proto_madera_front/ui/pages/home_page.dart';
 import 'package:proto_madera_front/ui/pages/pages.dart';
+import 'package:provider/provider.dart';
 
 class MaderaNav with ChangeNotifier {
   var _pageTitle;
@@ -100,6 +101,16 @@ class MaderaNav with ChangeNotifier {
         break;
     }
     notifyListeners();
+  }
+
+  void redirectToPage(BuildContext context, Widget page) {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      MaterialPageRoute newRoute =
+          MaterialPageRoute(builder: (BuildContext context) => page);
+      Navigator.of(context).pushReplacement(newRoute);
+      var maderaNav = Provider.of<MaderaNav>(context);
+      maderaNav.updateCurrent(page.runtimeType);
+    });
   }
 
   @override

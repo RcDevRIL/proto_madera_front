@@ -39,7 +39,7 @@ class AppBarMadera extends StatelessWidget {
             mN.pageIndex !=
                     -1 // si page login ou bug, on ne veux pas de bouton qui redirige à l'accueil
                 ? FlatButton(
-                    onPressed: () => _redirectToPage(context, HomePage()),
+                    onPressed: () => MaderaNav().redirectToPage(context, HomePage()),
                     child: Image(
                       image: AssetImage("assets/img/logo-madera.png"),
                       //je l'ai mis dans le champ "actions" comme ça pas besoin de faire de Row dans le "title"
@@ -55,13 +55,13 @@ class AppBarMadera extends StatelessWidget {
     );
   } // à la base j'essayais de mettre cette méthode dans la class MaderaNav, mais ça faisait des bugs.
 
-  void _redirectToPage(BuildContext context, Widget page) {
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      MaterialPageRoute newRoute =
-          MaterialPageRoute(builder: (BuildContext context) => page);
-      Navigator.of(context).pushReplacement(newRoute);
-      var maderaNav = Provider.of<MaderaNav>(context);
-      maderaNav.updateCurrent(page.runtimeType);
-    });
-  }
+  // void _redirectToPage(BuildContext context, Widget page) {
+  //   WidgetsBinding.instance.addPostFrameCallback((_) {
+  //     MaterialPageRoute newRoute =
+  //         MaterialPageRoute(builder: (BuildContext context) => page);
+  //     Navigator.of(context).pushReplacement(newRoute);
+  //     var maderaNav = Provider.of<MaderaNav>(context);
+  //     maderaNav.updateCurrent(page.runtimeType);
+  //   });
+  // }
 }
