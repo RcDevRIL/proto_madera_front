@@ -22,12 +22,10 @@ void main() {
       expect(find.text("HOME PAGE"), findsOneWidget);
     });
 
-    test('connection test', (WidgetTester tester) async {
+    test('connection test', () {
       // Lancer le back-end
       ProviderLogin providerLogin = new ProviderLogin();
-      await providerLogin
-          .ping()
-          .then((value) => expect(true, value));
+      expect(providerLogin.ping(), completion(true));
     });
   });
 }
