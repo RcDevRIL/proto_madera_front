@@ -25,10 +25,8 @@ void main() {
     test('connection test', (WidgetTester tester) async {
       // Lancer le back-end
       ProviderLogin providerLogin = new ProviderLogin();
-      // ahhhhhhhhh un mot de passe en clairrrrrrrr
-      // TODO Penser à ajouter un utilisateur de test
       await providerLogin
-          .connection('ladouce.fabien', '123456')
+          .ping()
           .then((value) => expect(true, value));
     });
   });

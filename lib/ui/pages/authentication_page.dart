@@ -195,30 +195,37 @@ class _AuthenticationPageState extends State<AuthenticationPage> {
           );
         }));
 
-    children.add(StreamBuilder<bool>(
+    children.add(
+      StreamBuilder<bool>(
         stream: _loginFormBloc.login,
         builder: (context, snapshot) {
           return Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: RaisedButton(
-                  child: Text('Connexion'),
-                  color: Color.fromRGBO(139, 195, 74, 1.0),
-                  textColor: Colors.white,
-                  elevation: 5.0,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(8.0),
-                    side: BorderSide(
-                      color: Color.fromRGBO(117, 117, 117, 0.5),
-                      width: 2.0,
-                    ),
+            padding: const EdgeInsets.all(8.0),
+            child: RaisedButton(
+              child: Text('Connexion'),
+              color: Color.fromRGBO(139, 195, 74, 1.0),
+              textColor: Colors.white,
+              elevation: 5.0,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(8.0),
+                side: BorderSide(
+                  color: Color.fromRGBO(117, 117, 117, 0.5),
+                  width: 2.0,
+                ),
+              ),
+              onPressed: () async => await Provider.of<ProviderLogin>(context)
+                  .connection(_emailController.text, _passwordController.text)
+                  .then(
+                    (value) => value
+                        ? _redirectToPage(context, HomePage())
+                    //TODO afficher message erreur
+                        : print('Connection failed'),
                   ),
-                  onPressed: () async => await Provider.of<ProviderLogin>(context)
-                      .connection(
-                          _emailController.text, _passwordController.text)
-                      .then((value) => value
-                          ? _redirectToPage(context, HomePage())
-                          : print('Connection failed'))));
-        }));
+            ),
+          );
+        },
+      ),
+    );
 
     return Padding(
       padding: EdgeInsets.all(4.0),

@@ -11,13 +11,7 @@ class ProviderLogin with ChangeNotifier {
   HttpStatus status = HttpStatus.OFFLINE;
   //TODO Externaliser les url dans un autre fichier ?
   // Url localhost Fab
-  var url = "http://10.0.2.2:8081/madera/authentification";
-  // TODO suivant votre config l'adresse peut changer
-  // TODO Faut vraiment qu'on déploie un serveur avec une bdd
-  // Url localhost David
-  //var url = "http://10.0.2.2:8081/madera/authentification";
-  // Url localhost Romain
-  //var url = "http://10.0.2.2:8081/madera/authentification";
+  var url = "http://10.0.2.2:8081/madera";
 
   Future<bool> connection(String login, password) async {
     var bytes = utf8.encode(password);
@@ -32,12 +26,29 @@ class ProviderLogin with ChangeNotifier {
     } catch (e) {
       log.e("Error when tryiing to connect:\n" + e.toString());
     }
-    //TODO Ajouter au logger ?
     if (response?.statusCode == 200 && response.body != 'false') {
       this.status = HttpStatus.ONLINE;
       return true;
+    }if (response.body == 'false') {
+      this.status = HttpStatus.UNAUTHORIZED;
     }
     this.status = HttpStatus.OFFLINE;
+    return false;
+  }
+
+  // Méthode pour vérifier si le serveur est joignable, vérification à effectuer
+  // avant chaque méthode faisant des appels serveurs, sauf si le status est déjà offline
+  Future<bool> ping() async {
+    try {
+      var response = await http.get(url);
+      if (response.statusCode == 200) {
+        this.status = HttpStatus.ONLINE;
+        return true;
+      }
+    } catch (exception) {
+      this.status = HttpStatus.OFFLINE;
+      throw new Exception('Connection');
+    }
     return false;
   }
 }
