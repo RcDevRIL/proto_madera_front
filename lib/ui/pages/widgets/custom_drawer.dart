@@ -73,38 +73,39 @@ class _CustomDrawerState extends State<CustomDrawer>
                     },
                     itemBuilder: (c, i) {
                       return Consumer<MaderaNav>(
-                        builder: (c, mN, child) => CollapsingListTile(
+                        builder: (context, mN, child) => CollapsingListTile(
                           onTap: () {
                             switch (i) {
                               case 0:
                                 {
-                                  MaderaNav().redirectToPage(context, HomePage());
+                                  mN.redirectToPage(context, HomePage());
                                 }
                                 break;
                               case 1:
                                 {
-                                  MaderaNav().redirectToPage(context, Quote());
+                                  mN.redirectToPage(context, Quote());
                                 }
                                 break;
                               case 2:
                                 {
-                                  MaderaNav().redirectToPage(context, QuoteOverview());
+                                  mN.redirectToPage(context, QuoteOverview());
                                 }
                                 break;
                               case 3:
                                 {
-                                  MaderaNav().redirectToPage(context, NotificationPage());
+                                  mN.redirectToPage(
+                                      context, NotificationPage());
                                 }
                                 break;
                               case 4:
                                 {
-                                  MaderaNav().redirectToPage(context, SettingsPage());
+                                  mN.redirectToPage(context, SettingsPage());
                                 }
                                 break;
 
                               default:
                                 {
-                                  MaderaNav().redirectToPage(context, HomePage());
+                                  mN.redirectToPage(context, HomePage());
                                 }
                                 break;
                             }
@@ -127,7 +128,8 @@ class _CustomDrawerState extends State<CustomDrawer>
                     if (!isCollapsed) {
                       //TODO Emettre un évènement de déconnexion
                       log.d("LOGOUT EVENT");
-                      MaderaNav().redirectToPage(context, AuthenticationPage());
+                      Provider.of<MaderaNav>(context)
+                          .redirectToPage(context, AuthenticationPage());
                     }
                   },
                   animationController: _animationController,
@@ -168,15 +170,4 @@ class _CustomDrawerState extends State<CustomDrawer>
       },
     );
   }
-
-  // à la base j'essayais de mettre cette méthode dans la class MaderaNav, mais ça faisait des bugs.
-  // void _redirectToPage(BuildContext context, Widget page) {
-  //   WidgetsBinding.instance.addPostFrameCallback((_) {
-  //     MaterialPageRoute newRoute =
-  //         MaterialPageRoute(builder: (BuildContext context) => page);
-  //     Navigator.of(context).pushReplacement(newRoute);
-  //     var maderaNav = Provider.of<MaderaNav>(context);
-  //     maderaNav.updateCurrent(page.runtimeType);
-  //   });
-  // }
 }

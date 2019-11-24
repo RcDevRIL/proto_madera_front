@@ -215,7 +215,8 @@ class _AuthenticationPageState extends State<AuthenticationPage> {
                         //TODO Emettre un évènement de connexion
                         //genre login(_emailController.text,_passwordController.text);
                         log.d("LOGIN EVENT");
-                        MaderaNav().redirectToPage(context, HomePage());
+                        Provider.of<MaderaNav>(context)
+                            .redirectToPage(context, HomePage());
                       }
                     : null,
               ));
@@ -223,15 +224,4 @@ class _AuthenticationPageState extends State<AuthenticationPage> {
 
     return children;
   }
-
-  // à la base j'essayais de mettre cette méthode dans la class MaderaNav, mais ça faisait des bugs.
-  // void _redirectToPage(BuildContext context, Widget page) {
-  //   WidgetsBinding.instance.addPostFrameCallback((_) {
-  //     MaterialPageRoute newRoute =
-  //         MaterialPageRoute(builder: (BuildContext context) => page);
-  //     Navigator.of(context).pushReplacement(newRoute);
-  //     var maderaNav = Provider.of<MaderaNav>(context);
-  //     maderaNav.updateCurrent(page.runtimeType);
-  //   });
-  // }
 }

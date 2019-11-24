@@ -38,89 +38,89 @@ class HomePage extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.only(left: cTheme.Dimens.drawerMinWitdh),
             child: Center(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: <Widget>[
-                  Consumer<MaderaNav>(
-                    builder: (_, mN, c) => Text(
+              child: Consumer<MaderaNav>(
+                builder: (context, mN, child) => Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: <Widget>[
+                    Text(
                       mN.pageTitle,
                       style: cTheme.TextStyles.appBarTitle,
                     ),
-                  ),
-                  Row(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: <Widget>[
-                      Container(
-                        height: 150.0,
-                        width: 150.0,
-                        child: RaisedButton(
-                          onPressed: () {
-                            MaderaNav().redirectToPage(context, Quote());
-                          },
-                          child: Text('Création de devis'),
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: <Widget>[
+                        Container(
+                          height: 150.0,
+                          width: 150.0,
+                          child: RaisedButton(
+                            onPressed: () {
+                              mN.redirectToPage(context, Quote());
+                            },
+                            child: Text('Création de devis'),
+                          ),
                         ),
-                      ),
-                      Container(
-                        height: 150.0,
-                        width: 150.0,
-                        child: RaisedButton(
-                          onPressed: () {
-                            MaderaNav().redirectToPage(context, QuoteOverview());
-                          },
-                          child: Text('Suivi de devis'),
+                        Container(
+                          height: 150.0,
+                          width: 150.0,
+                          child: RaisedButton(
+                            onPressed: () {
+                              mN.redirectToPage(context, QuoteOverview());
+                            },
+                            child: Text('Suivi de devis'),
+                          ),
                         ),
-                      ),
-                      Container(
-                        height: 150.0,
-                        width: 150.0,
-                        child: RaisedButton(
-                          onPressed: () {
-                            MaderaNav().redirectToPage(context, SettingsPage());
-                          },
-                          child: Text('Paramètres'),
+                        Container(
+                          height: 150.0,
+                          width: 150.0,
+                          child: RaisedButton(
+                            onPressed: () {
+                              mN.redirectToPage(context, SettingsPage());
+                            },
+                            child: Text('Paramètres'),
+                          ),
                         ),
-                      ),
-                    ],
-                  ),
-                  Row(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: <Widget>[
-                      Container(
-                        height: 150.0,
-                        width: 150.0,
-                        child: RaisedButton(
-                          onPressed: () {
-                            log.d('COUCOU JE SUIS UN LOG');
-                          },
-                          child: Text('Log me'),
+                      ],
+                    ),
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: <Widget>[
+                        Container(
+                          height: 150.0,
+                          width: 150.0,
+                          child: RaisedButton(
+                            onPressed: () {
+                              log.d('COUCOU JE SUIS UN LOG');
+                            },
+                            child: Text('Log me'),
+                          ),
                         ),
-                      ),
-                      Container(
-                        height: 150.0,
-                        width: 150.0,
-                        child: RaisedButton(
-                          onPressed: () {
-                            log.d('COUCOU JE SUIS UN LOG');
-                          },
-                          child: Text('Log me'),
+                        Container(
+                          height: 150.0,
+                          width: 150.0,
+                          child: RaisedButton(
+                            onPressed: () {
+                              log.d('COUCOU JE SUIS UN LOG');
+                            },
+                            child: Text('Log me'),
+                          ),
                         ),
-                      ),
-                      Container(
-                        height: 150.0,
-                        width: 150.0,
-                        child: RaisedButton(
-                          onPressed: () {
-                            MaderaNav().redirectToPage(context, NotificationPage());
-                          },
-                          child: Text('Lien vers Notifications'),
+                        Container(
+                          height: 150.0,
+                          width: 150.0,
+                          child: RaisedButton(
+                            onPressed: () {
+                              mN.redirectToPage(context, NotificationPage());
+                            },
+                            child: Text('Lien vers Notifications'),
+                          ),
                         ),
-                      ),
-                    ],
-                  ),
-                ],
+                      ],
+                    ),
+                  ],
+                ),
               ),
             ),
           ),
