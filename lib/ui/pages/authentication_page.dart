@@ -158,8 +158,8 @@ class _AuthenticationPageState extends State<AuthenticationPage> {
             fontSize: 24,
             color: Color.fromRGBO(39, 72, 0, 1.0),
           ),
-        ],
       ),
+    ),
     );
 
     children.add(
