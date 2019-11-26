@@ -26,7 +26,7 @@ class Dimens {
   //  à  terme il faudra utiliser directement dans le code des MediaQuery.of(context).size,etc.
   static const drawerMinWitdh = 72.0;
   static const drawerMaxWidth = 220.0;
-  static const drawerIconSize = 40.0;
+  static const drawerIconSize = 30.0;
   static const patientHeight = 150.0;
   static const loginFormWidth = 250.0;
   static const appBarElevation = 50.0;
@@ -56,4 +56,3 @@ class TextStyles {
     fontSize: 20.0,
   );
 }
-
