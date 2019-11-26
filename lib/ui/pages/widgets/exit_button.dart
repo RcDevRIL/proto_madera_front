@@ -16,8 +16,9 @@ class ExitButton extends StatelessWidget {
       onPressed: () => SystemChannels.platform.invokeMethod(
           'SystemNavigator.pop'), //Ajouter un dialog :) Dialog()      showDialog()
       tooltip: "Fermer l'application",
-      icon: Icon(
-        Icons.power_settings_new,
+      icon: ImageIcon(
+        AssetImage("assets/img/icons/off.png"),
+        color: cTheme.Colors.appBarTitle,
       ),
       color: cTheme.Colors.appBarTitle,
       iconSize: 32.0,

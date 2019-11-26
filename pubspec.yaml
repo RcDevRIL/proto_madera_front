@@ -29,6 +29,7 @@ flutter:
    - assets/img/index.jpg
    - assets/img/logo-madera.png
    - assets/img/madera.JPG
+   - assets/img/icons/off.png
 
   # TODO Trancher sur l'utilité des infos ci-dessous. A supprimer sur master de toute manière!
   # An image asset can refer to one or more resolution-specific "variants", see
