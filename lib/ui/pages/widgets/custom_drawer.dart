@@ -83,7 +83,7 @@ class _CustomDrawerState extends State<CustomDrawer>
                                 break;
                               case 1:
                                 {
-                                  mN.redirectToPage(context, Quote());
+                                  mN.redirectToPage(context, QuoteCreation());
                                 }
                                 break;
                               case 2:

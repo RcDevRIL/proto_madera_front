@@ -49,7 +49,7 @@ class MaderaNav with ChangeNotifier {
                   '                    ');
         }
         break;
-      case Quote:
+      case QuoteCreation:
         {
           _pageTitle = "Outil de création de devis";
           _pageIndex = 1;

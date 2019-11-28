@@ -42,12 +42,29 @@ class _QuoteState extends State<Quote> {
           backgroundColor: Colors.blueGrey,
           body: Stack(
             children: <Widget>[
-              Center(
-                child: Consumer<MaderaNav>(
-                  builder: (_, mN, c) => Text(
-                    mN.pageTitle,
-                    style: cTheme.TextStyles.appBarTitle,
-                  ),
+              Padding(
+                padding: EdgeInsets.fromLTRB(cTheme.Dimens.drawerMinWitdh, MediaQuery.of(context).size.height / 12, 0, 0),
+                child: Center(
+                  /** Centre de la page */
+                  child: Container(
+                    padding: EdgeInsets.all(8.0),
+                    width: cTheme.Dimens.containerWidth,
+                    height: cTheme.Dimens.containerHeight,
+                    color: cTheme.Colors.containerBackground,
+                    child: Align(
+                      alignment: Alignment.bottomRight,
+                      child: RaisedButton(
+                        onPressed: () {},
+                        child: LabelledIcon(
+                          icon: Icon(Icons.check),
+                          text: Text("Valider"),
+                        ),
+                        // icon: Icon(Icons.check),
+                        // label: Text("Valider"),
+                        // backgroundColor: Colors.green,
+                      ),
+                    ),
+                   ),
                 ),
               ),
               Padding(
@@ -62,7 +79,7 @@ class _QuoteState extends State<Quote> {
     );
   }
 
-/*   // à la base j'essayais de mettre cette méthode dans la class MaderaNav, mais ça faisait des bugs.
+/*   // Ã  la base j'essayais de mettre cette mÃ©thode dans la class MaderaNav, mais Ã§a faisait des bugs.
   void _redirectToPage(BuildContext context, Widget page) {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       MaterialPageRoute newRoute =
