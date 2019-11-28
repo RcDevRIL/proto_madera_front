@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:logger/logger.dart';
+import 'package:proto_madera_front/ui/pages/quote.dart';
 import 'package:proto_madera_front/ui/pages/widgets/madera_button.dart';
 import 'package:provider/provider.dart';
 
@@ -14,6 +16,7 @@ class QuoteCreation extends StatefulWidget {
 }
 
 class _QuoteCreationState extends State<QuoteCreation> {
+  final log = Logger();
   ///
   /// Prevents the use of the "back" button
   ///
@@ -57,7 +60,11 @@ class _QuoteCreationState extends State<QuoteCreation> {
                         child: Align(
                           alignment: Alignment.bottomRight,
                           child: MaderaButton(
-                            onPressed: () {},
+                            onPressed: () {
+                              log.d("Quote Creation");
+                              Provider.of<MaderaNav>(context)
+                              .redirectToPage(context, Quote());
+                            },
                             child: LabelledIcon(
                               mASize: MainAxisSize.min,
                               icon: Icon(Icons.check),

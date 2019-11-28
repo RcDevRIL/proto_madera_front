@@ -1,3 +1,5 @@
+import 'dart:collection';
+
 import 'package:flutter/material.dart';
 
 class LabelledIcon extends StatelessWidget {
@@ -7,7 +9,7 @@ class LabelledIcon extends StatelessWidget {
 
   const LabelledIcon(
       {Key key,
-      @required this.mASize,
+      this.mASize,
       @required this.icon,
       @required this.text})
       : super(key: key);
@@ -17,7 +19,7 @@ class LabelledIcon extends StatelessWidget {
     return Row(
       crossAxisAlignment: CrossAxisAlignment.center,
       mainAxisAlignment: MainAxisAlignment.center,
-      mainAxisSize: mASize,
+      mainAxisSize: mASize != null ? mASize : MainAxisSize.min,
       children: <Widget>[
         icon,
         text,

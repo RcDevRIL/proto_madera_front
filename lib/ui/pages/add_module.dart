@@ -1,21 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:logger/logger.dart';
-import 'package:proto_madera_front/ui/pages/add_module.dart';
-import 'package:proto_madera_front/ui/pages/widgets/madera_button.dart';
-import 'package:provider/provider.dart';
+import 'package:proto_madera_front/ui/pages/pages.dart';
 
 import 'package:proto_madera_front/ui/pages/widgets/custom_widgets.dart';
 import 'package:proto_madera_front/providers/provider-navigation.dart';
 import 'package:proto_madera_front/theme.dart' as cTheme;
+import 'package:proto_madera_front/ui/pages/widgets/madera_button.dart';
+import 'package:provider/provider.dart';
 
-class Quote extends StatefulWidget {
-  static const routeName = '/quote';
+
+class AddModule extends StatefulWidget {
+  static const routeName = '/add_module';
 
   @override
-  _QuoteState createState() => _QuoteState();
+  _AddModuleState createState() => _AddModuleState();
 }
 
-class _QuoteState extends State<Quote> {
+class _AddModuleState extends State<AddModule> {
   final log = Logger();
   ///
   /// Prevents the use of the "back" button
@@ -38,7 +39,6 @@ class _QuoteState extends State<Quote> {
 
   @override
   Widget build(BuildContext context) {
-    //final args = ModalRoute.of(context).settings.arguments;
     return WillPopScope(
       onWillPop: _onWillPopScope,
       child: SafeArea(
@@ -49,23 +49,22 @@ class _QuoteState extends State<Quote> {
               Padding(
                 padding: EdgeInsets.fromLTRB(cTheme.Dimens.drawerMinWitdh, MediaQuery.of(context).size.height / 12, 0, 0),
                 child: Center(
-                  /** Centre de la page */
                   child: Container(
                     padding: EdgeInsets.all(8.0),
                     width: cTheme.Dimens.containerWidth,
                     height: cTheme.Dimens.containerHeight,
                     color: cTheme.Colors.containerBackground,
                     child: Align(
-                      alignment: Alignment.bottomLeft,
+                      alignment: Alignment.bottomRight,
                       child: MaderaButton(
                         onPressed: () {
-                          log.d("Adding Module for this quote");
+                          log.d('Module added to quote');
                           Provider.of<MaderaNav>(context)
-                          .redirectToPage(context, AddModule());
+                          .redirectToPage(context, Quote());
                         },
                         child: LabelledIcon(
-                          icon: Icon(Icons.add),
-                          text: Text("Ajouter module"),
+                          icon: Icon(Icons.check),
+                          text: Text("Valider"),
                         ),
                       ),
                     ),

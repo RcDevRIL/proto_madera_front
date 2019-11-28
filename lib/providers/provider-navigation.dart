@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:logger/logger.dart';
+import 'package:proto_madera_front/ui/pages/add_module.dart';
 
 import 'package:proto_madera_front/ui/pages/authentication_page.dart';
 import 'package:proto_madera_front/ui/pages/home_page.dart';
@@ -29,6 +30,16 @@ class MaderaNav with ChangeNotifier {
   }
 
   void updateCurrent(Type page) {
+    /**
+     * Index pages :
+     * -1 : AuthenticationPage
+     * 0 : HomePage
+     * 1 : QuoteCreation
+     * 2 : QuoteOverview
+     * 3 : NotificationPage
+     * 4 : SettingsPage
+     * 5 : Quote
+     */
     switch (page) {
       case AuthenticationPage:
         {
@@ -89,7 +100,26 @@ class MaderaNav with ChangeNotifier {
                   '                    ');
         }
         break;
-
+      case Quote:
+        {
+          _pageTitle = "Edition de devis";
+          _pageIndex = 5;
+          log.d(
+              'Updating current navigation properties:                        \n' +
+                  this.toString() +
+                  '                    ');
+        }
+        break;
+      case AddModule:
+        {
+          _pageTitle = "Ajout de module";
+          _pageIndex = 6;
+          log.d(
+              'Updating current navigation properties:                        \n' +
+                  this.toString() +
+                  '                    ');
+        }
+        break;
       default:
         {
           log.e("MaderaNav.updateCurrent() ERROR:                        \n\tpage.runtimeType : " +
