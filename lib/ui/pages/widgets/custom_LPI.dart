@@ -33,7 +33,8 @@ class _MyLinearProgressIndicatorState extends State<MyLinearProgressIndicator>
       ..addStatusListener((status) {
         log.d('$status');
         if (status == AnimationStatus.completed) {
-          _redirectToPage(context, AuthenticationPage());
+          Provider.of<MaderaNav>(context)
+              .redirectToPage(context, AuthenticationPage());
         } else if (status == AnimationStatus.dismissed) {
           progressController.forward();
         }
@@ -60,16 +61,5 @@ class _MyLinearProgressIndicatorState extends State<MyLinearProgressIndicator>
         value: progressAnimation.value,
       ),
     );
-  }
-
-  // à la base j'essayais de mettre cette méthode dans la class MaderaNav, mais ça faisait des bugs.
-  void _redirectToPage(BuildContext context, Widget page) {
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      MaterialPageRoute newRoute =
-          MaterialPageRoute(builder: (BuildContext context) => page);
-      Navigator.of(context).pushReplacement(newRoute);
-      var maderaNav = Provider.of<MaderaNav>(context);
-      maderaNav.updateCurrent(page.runtimeType);
-    });
   }
 }

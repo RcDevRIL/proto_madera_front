@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:logger/logger.dart';
+import 'package:proto_madera_front/ui/pages/widgets/madera_button.dart';
 import 'package:provider/provider.dart';
 
 import 'package:proto_madera_front/services/authentication/login_form_bloc.dart';
@@ -193,45 +194,26 @@ class _AuthenticationPageState extends State<AuthenticationPage> {
           );
         }));
 
-    children.add(StreamBuilder<bool>(
+    children.add(
+      StreamBuilder<bool>(
         stream: _loginFormBloc.login,
         builder: (context, snapshot) {
-          return Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: RaisedButton(
-                child: Text('Connexion'),
-                color: Color.fromRGBO(139, 195, 74, 1.0),
-                textColor: Colors.white,
-                elevation: 5.0,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(8.0),
-                  side: BorderSide(
-                    color: Color.fromRGBO(117, 117, 117, 0.5),
-                    width: 2.0,
-                  ),
-                ),
-                onPressed: (snapshot.hasData && snapshot.data == true)
-                    ? () {
-                        //TODO Emettre un évènement de connexion
-                        //genre login(_emailController.text,_passwordController.text);
-                        log.d("LOGIN EVENT");
-                        _redirectToPage(context, HomePage());
-                      }
-                    : null,
-              ));
-        }));
+          return MaderaButton(
+            onPressed: (snapshot.hasData && snapshot.data == true)
+                ? () {
+                    //TODO Emettre un évènement de connexion
+                    //genre login(_emailController.text,_passwordController.text);
+                    log.d("LOGIN EVENT");
+                    Provider.of<MaderaNav>(context)
+                        .redirectToPage(context, HomePage());
+                  }
+                : null,
+            child: Text('Connexion'),
+          );
+        },
+      ),
+    );
 
     return children;
-  }
-
-  // à la base j'essayais de mettre cette méthode dans la class MaderaNav, mais ça faisait des bugs.
-  void _redirectToPage(BuildContext context, Widget page) {
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      MaterialPageRoute newRoute =
-          MaterialPageRoute(builder: (BuildContext context) => page);
-      Navigator.of(context).pushReplacement(newRoute);
-      var maderaNav = Provider.of<MaderaNav>(context);
-      maderaNav.updateCurrent(page.runtimeType);
-    });
   }
 }

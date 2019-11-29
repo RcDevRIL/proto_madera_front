@@ -18,6 +18,8 @@ class Colors {
   static const Color drawerBackgroundColor = Color(0xFF272D34);
   static const Color white = Color.fromRGBO(255, 255, 255, 1.0);
   static const Color white70 = Color.fromRGBO(255, 255, 255, 0.7);
+
+  static const Color containerBackground = Color.fromRGBO(255, 255, 255, 1);
 }
 
 class Dimens {
@@ -27,9 +29,12 @@ class Dimens {
   static const drawerMinWitdh = 72.0;
   static const drawerMaxWidth = 220.0;
   static const drawerIconSize = 40.0;
-  static const patientHeight = 150.0;
+  static const containerHeight = 500.0;
+  static const containerWidth = 1000.0;
   static const loginFormWidth = 250.0;
   static const appBarElevation = 50.0;
+  static const quoteButtonWidth = 300.0;
+  static const quoteButtonHeight = 300.0;
 }
 
 class TextStyles {

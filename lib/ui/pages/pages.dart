@@ -5,3 +5,4 @@ export 'settings_page.dart';
 export 'quote.dart';
 export 'quote_overview.dart';
 export 'notification_page.dart';
+export 'quote_creation.dart';

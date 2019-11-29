@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:logger/logger.dart';
+import 'package:proto_madera_front/ui/pages/add_module.dart';
 
 import 'package:proto_madera_front/ui/pages/authentication_page.dart';
 import 'package:proto_madera_front/ui/pages/home_page.dart';
 import 'package:proto_madera_front/ui/pages/pages.dart';
+import 'package:provider/provider.dart';
 
 class MaderaNav with ChangeNotifier {
   var _pageTitle;
@@ -28,6 +30,16 @@ class MaderaNav with ChangeNotifier {
   }
 
   void updateCurrent(Type page) {
+    /**
+     * Index pages :
+     * -1 : AuthenticationPage
+     * 0 : HomePage
+     * 1 : QuoteCreation
+     * 2 : QuoteOverview
+     * 3 : NotificationPage
+     * 4 : SettingsPage
+     * 5 : Quote
+     */
     switch (page) {
       case AuthenticationPage:
         {
@@ -48,7 +60,7 @@ class MaderaNav with ChangeNotifier {
                   '                    ');
         }
         break;
-      case Quote:
+      case QuoteCreation:
         {
           _pageTitle = "Outil de création de devis";
           _pageIndex = 1;
@@ -88,7 +100,26 @@ class MaderaNav with ChangeNotifier {
                   '                    ');
         }
         break;
-
+      case Quote:
+        {
+          _pageTitle = "Edition de devis";
+          _pageIndex = 5;
+          log.d(
+              'Updating current navigation properties:                        \n' +
+                  this.toString() +
+                  '                    ');
+        }
+        break;
+      case AddModule:
+        {
+          _pageTitle = "Ajout de module";
+          _pageIndex = 6;
+          log.d(
+              'Updating current navigation properties:                        \n' +
+                  this.toString() +
+                  '                    ');
+        }
+        break;
       default:
         {
           log.e("MaderaNav.updateCurrent() ERROR:                        \n\tpage.runtimeType : " +
@@ -100,6 +131,16 @@ class MaderaNav with ChangeNotifier {
         break;
     }
     notifyListeners();
+  }
+
+  void redirectToPage(BuildContext context, Widget page) {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      MaterialPageRoute newRoute =
+          MaterialPageRoute(builder: (BuildContext context) => page);
+      Navigator.of(context).pushReplacement(newRoute);
+      var maderaNav = Provider.of<MaderaNav>(context);
+      maderaNav.updateCurrent(page.runtimeType);
+    });
   }
 
   @override
