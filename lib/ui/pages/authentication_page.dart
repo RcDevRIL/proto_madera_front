@@ -9,6 +9,7 @@ import 'package:proto_madera_front/ui/pages/home_page.dart';
 import 'package:proto_madera_front/ui/pages/widgets/custom_widgets.dart';
 import 'package:proto_madera_front/providers/provider-navigation.dart';
 import 'package:proto_madera_front/theme.dart' as cTheme;
+import 'package:proto_madera_front/providers/provider_login.dart';
 
 class AuthenticationPage extends StatefulWidget {
   static const routeName = '/auth';
@@ -125,28 +126,26 @@ class _AuthenticationPageState extends State<AuthenticationPage> {
       ),
     );
 
-    children.add(StreamBuilder<Object>(
-        stream: _loginFormBloc.emailValidation,
-        builder: (context, snapshot) {
-          return Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Container(
-              width: /* MediaQuery.of(context).size.width / 2 */ 200.0,
-              height: 80.5,
-              child: TextField(
-                onChanged: _loginFormBloc.onEmailChanged,
-                controller: _emailController,
-                keyboardType: TextInputType.emailAddress,
-                decoration: InputDecoration(
-                  border: OutlineInputBorder(),
-                  hintText: "Enter email",
-                  labelText: "Email",
-                  errorText: snapshot.error,
-                ),
-              ),
+    children.add(StreamBuilder<Object>(builder: (context, snapshot) {
+      return Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Container(
+          width: /* MediaQuery.of(context).size.width / 2 */ 200.0,
+          height: 80.5,
+          child: TextField(
+            onChanged: _loginFormBloc.onEmailChanged,
+            controller: _emailController,
+            keyboardType: TextInputType.emailAddress,
+            decoration: InputDecoration(
+              border: OutlineInputBorder(),
+              hintText: "Enter email",
+              labelText: "Email",
+              errorText: snapshot.error,
             ),
-          );
-        }));
+          ),
+        ),
+      );
+    }));
     children.add(
       LabelledIcon(
         icon: Icon(
@@ -194,25 +193,25 @@ class _AuthenticationPageState extends State<AuthenticationPage> {
           );
         }));
 
-    children.add(
-      StreamBuilder<bool>(
+    children.add(StreamBuilder<bool>(
         stream: _loginFormBloc.login,
         builder: (context, snapshot) {
           return MaderaButton(
+            //TODO: validation ne fonctionne pas
             onPressed: (snapshot.hasData && snapshot.data == true)
-                ? () {
-                    //TODO Emettre un évènement de connexion
-                    //genre login(_emailController.text,_passwordController.text);
-                    log.d("LOGIN EVENT");
-                    Provider.of<MaderaNav>(context)
-                        .redirectToPage(context, HomePage());
-                  }
+                ? () async => await Provider.of<ProviderLogin>(context)
+                    .connection(_emailController.text, _passwordController.text)
+                    .then(
+                      (value) => value
+                          ? Provider.of<MaderaNav>(context)
+                              .redirectToPage(context, HomePage())
+                          //TODO afficher message erreur
+                          : print('Connection failed'),
+                    )
                 : null,
             child: Text('Connexion'),
           );
-        },
-      ),
-    );
+        }));
 
     return children;
   }
