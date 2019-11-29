@@ -214,6 +214,10 @@ class _AuthenticationPageState extends State<AuthenticationPage> {
                 ),
               ),
               onPressed: () async => await Provider.of<ProviderLogin>(context)
+              // .ping().then((onValue){
+              //   !onValue ? 
+              //   print("Connecion Failed") : print("Connexion OK");
+              // }),
                   .connection(_emailController.text, _passwordController.text)
                   .then(
                     (value) => value

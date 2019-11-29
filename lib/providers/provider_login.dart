@@ -12,6 +12,7 @@ class ProviderLogin with ChangeNotifier {
   //TODO Externaliser les url dans un autre fichier ?
   // Url localhost Fab
   var url = "http://10.0.2.2:8081/madera";
+  // var url = "https://google.com";
 
   Future<bool> connection(String login, password) async {
     var bytes = utf8.encode(password);
@@ -19,7 +20,7 @@ class ProviderLogin with ChangeNotifier {
     var response;
     try {
       response = await http.post(
-        url,
+        url + '/authentification',
         headers: {'Content-type': 'application/json'},
         body: jsonEncode({'login': login, 'password': digest.toString()}),
       );

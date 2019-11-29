@@ -22,10 +22,24 @@ void main() {
       expect(find.text("HOME PAGE"), findsOneWidget);
     });
 
+    // test('connection test', () {
+    //   // Lancer le back-end
+    //   ProviderLogin providerLogin = new ProviderLogin();
+    //   expect(providerLogin.ping(), completion(true));
+    // });
+
+    // test('connection test', () async {
+    //   // Lancer le back-end
+    //   ProviderLogin providerLogin = new ProviderLogin();
+    //   providerLogin
+    //       .connection('testuser', '123456')
+    //       .then((value) => expectAsync(value, true));
+    // });
+
     test('connection test', () {
       // Lancer le back-end
       ProviderLogin providerLogin = new ProviderLogin();
-      expect(providerLogin.ping(), completion(true));
-    });
+      expect(providerLogin.connection('testuser', '123456'), completion(true));
+  });
   });
 }

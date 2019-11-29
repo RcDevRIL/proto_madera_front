@@ -1,7 +1,8 @@
 import 'dart:async';
 
 //const String _kEmailRule = r"^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$";
-const String _kRule = r"^[a-zA-Z0-9_.+-]*@[a-zA-Z0-9-]*\.[a-zA-Z0-9-.]*$";
+// const String _kRule = r"^[a-zA-Z0-9_.+-]*@[a-zA-Z0-9-]*\.[a-zA-Z0-9-.]*$";
+const String _kRule = r"^[a-z]*$";
 
 class EmailValidator {
   final StreamTransformer<String, String> validateEmail =
