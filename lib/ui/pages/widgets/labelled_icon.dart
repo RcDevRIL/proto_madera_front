@@ -1,5 +1,3 @@
-import 'dart:collection';
-
 import 'package:flutter/material.dart';
 
 class LabelledIcon extends StatelessWidget {
@@ -8,10 +6,7 @@ class LabelledIcon extends StatelessWidget {
   final MainAxisSize mASize;
 
   const LabelledIcon(
-      {Key key,
-      this.mASize,
-      @required this.icon,
-      @required this.text})
+      {Key key, this.mASize, @required this.icon, @required this.text})
       : super(key: key);
 
   @override
