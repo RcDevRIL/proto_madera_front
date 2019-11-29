@@ -18,7 +18,7 @@ class AppBarMadera extends StatelessWidget {
         minWidth: MediaQuery.of(context).size.width,
       ), */
           BoxConstraints.tightFor(
-        height: MediaQuery.of(context).devicePixelRatio * 28,
+        height: MediaQuery.of(context).size.height / 12,
         width: MediaQuery.of(context).size.width,
       ),
       child: Consumer<MaderaNav>(

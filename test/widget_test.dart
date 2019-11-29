@@ -48,14 +48,17 @@ void main() {
       expect(-1, index);
       expect('default', title);
     });
-    /* test('connection test', (WidgetTester tester) async {
+    /* test('connection test', ()  {
       // Lancer le back-end
       ProviderLogin providerLogin = new ProviderLogin();
-      // ahhhhhhhhh un mot de passe en clairrrrrrrr
-      // TODO Penser à ajouter un utilisateur de test
       await providerLogin
-          .connection('ladouce.fabien', '123456')
+          .connection('testuser', '123456')
           .then((value) => expect(true, value));
     }); */
+    test('connection test', () {
+      // Lancer le back-end
+      ProviderLogin providerLogin = new ProviderLogin();
+      expect(providerLogin.connection('testuser', '123456'), completion(true));
+    });
   });
 }

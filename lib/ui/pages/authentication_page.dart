@@ -57,8 +57,8 @@ class _AuthenticationPageState extends State<AuthenticationPage> {
             children: <Widget>[
               Container(
                 margin: EdgeInsets.only(
-                    top: MediaQuery.of(context).devicePixelRatio *
-                        28), //taille de l'appBar
+                  top: MediaQuery.of(context).size.height / 12,
+                ), //taille de l'appBar
                 decoration: BoxDecoration(
                   image: DecorationImage(
                       colorFilter: ColorFilter.mode(
@@ -159,8 +159,8 @@ class _AuthenticationPageState extends State<AuthenticationPage> {
             fontSize: 24,
             color: Color.fromRGBO(39, 72, 0, 1.0),
           ),
+        ),
       ),
-    ),
     );
 
     children.add(

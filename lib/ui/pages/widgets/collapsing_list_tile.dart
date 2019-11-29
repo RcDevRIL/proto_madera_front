@@ -49,6 +49,10 @@ class _CollapsingListTileState extends State<CollapsingListTile> {
         margin: EdgeInsets.symmetric(horizontal: 8.0),
         padding: EdgeInsets.symmetric(horizontal: 8.0, vertical: 8.0),
         child: Row(
+          mainAxisAlignment:
+              (widthAnimation.value >= cTheme.Dimens.drawerMaxWidth)
+                  ? MainAxisAlignment.start
+                  : MainAxisAlignment.center,
           children: <Widget>[
             Icon(
               widget.icon,

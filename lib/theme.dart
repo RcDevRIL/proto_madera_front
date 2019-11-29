@@ -61,4 +61,3 @@ class TextStyles {
     fontSize: 20.0,
   );
 }
-
