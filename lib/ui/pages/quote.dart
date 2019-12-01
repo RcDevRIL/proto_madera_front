@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:logger/logger.dart';
 import 'package:proto_madera_front/ui/pages/add_module.dart';
+import 'package:proto_madera_front/ui/pages/quote_overview.dart';
 import 'package:proto_madera_front/ui/pages/widgets/madera_button.dart';
 import 'package:provider/provider.dart';
 
@@ -17,6 +18,7 @@ class Quote extends StatefulWidget {
 
 class _QuoteState extends State<Quote> {
   final log = Logger();
+
   ///
   /// Prevents the use of the "back" button
   ///
@@ -47,7 +49,8 @@ class _QuoteState extends State<Quote> {
           body: Stack(
             children: <Widget>[
               Padding(
-                padding: EdgeInsets.fromLTRB(cTheme.Dimens.drawerMinWitdh, MediaQuery.of(context).size.height / 12, 0, 0),
+                padding: EdgeInsets.fromLTRB(cTheme.Dimens.drawerMinWitdh,
+                    MediaQuery.of(context).size.height / 12, 0, 0),
                 child: Center(
                   /** Centre de la page */
                   child: Container(
@@ -61,13 +64,31 @@ class _QuoteState extends State<Quote> {
                         onPressed: () {
                           log.d("Adding Module for this quote");
                           Provider.of<MaderaNav>(context)
-                          .redirectToPage(context, AddModule());
+                              .redirectToPage(context, AddModule());
                         },
                         child: LabelledIcon(
                           icon: Icon(Icons.add),
                           text: Text("Ajouter module"),
                         ),
                       ),
+                    ),
+                  ),
+                ),
+              ),
+              Align(
+                alignment: Alignment.bottomRight,
+                child: Padding(
+                  padding: const EdgeInsets.fromLTRB(0, 0, cTheme.Dimens.buttonPaddingRight, cTheme.Dimens.buttonPaddingBottom),
+                  child: MaderaButton(
+                    // TODO: Redirect to Quote Overview
+                    onPressed: () {
+                      log.d("Validating Quote");
+                      Provider.of<MaderaNav>(context)
+                        .redirectToPage(context, QuoteOverview());
+                    },
+                    child: LabelledIcon(
+                      icon: Icon(Icons.check),
+                      text: Text("Valider le devis"),
                     ),
                   ),
                 ),

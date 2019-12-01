@@ -35,6 +35,8 @@ class Dimens {
   static const appBarElevation = 50.0;
   static const quoteButtonWidth = 300.0;
   static const quoteButtonHeight = 300.0;
+  static const buttonPaddingRight = 10.0;
+  static const buttonPaddingBottom = 10.0;
 }
 
 class TextStyles {
