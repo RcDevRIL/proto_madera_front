@@ -5,14 +5,14 @@ import 'package:proto_madera_front/providers/provider-navigation.dart';
 import 'package:proto_madera_front/ui/pages/widgets/custom_widgets.dart';
 import 'package:proto_madera_front/theme.dart' as cTheme;
 
-class SettingsPage extends StatefulWidget {
-  static const routeName = '/settings';
+class NotificationPage extends StatefulWidget {
+  static const routeName = '/bell';
 
   @override
-  _SettingsPageState createState() => _SettingsPageState();
+  _NotificationPageState createState() => _NotificationPageState();
 }
 
-class _SettingsPageState extends State<SettingsPage> {
+class _NotificationPageState extends State<NotificationPage> {
   ///
   /// Prevents the use of the "back" button
   ///
