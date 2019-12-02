@@ -7,6 +7,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:proto_madera_front/providers/provider_bdd.dart';
 import 'package:proto_madera_front/providers/providers.dart';
 import 'package:proto_madera_front/ui/pages/pages.dart';
 import 'package:proto_madera_front/ui/pages/widgets/custom_widgets.dart';
@@ -58,9 +59,22 @@ void main() {
     test('connection test', () {
       // TODO Faire en sorte de faire le test via la page auth, remplissage auto formulaire clic auto "Connexion"
       // Lancer le back-end
-      ProviderLogin providerLogin = new ProviderLogin();
+      ProviderLogin providerLogin = ProviderLogin();
       expect(providerLogin.connection('testuser', '123456'),
           completion(false)); //should be completion(true)
+    });
+    test('logout test', () {
+      // TODO Faire en sorte de faire le test via la page auth, remplissage auto formulaire clic auto "Connexion"
+      // Lancer le back-end
+      ProviderLogin providerLogin = ProviderLogin();
+      expect(providerLogin.logout('testToken'),
+          completion(true)); //should be completion(true)
+    });
+    test('last sync date test', () {
+      var date = DateTime.now();
+      MaderaDB providerSynchro = MaderaDB();
+
+      expect(date.isAfter(DateTime.parse(providerSynchro.lastSyncDate)), true);
     });
   });
 }

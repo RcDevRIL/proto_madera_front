@@ -10,14 +10,7 @@ class AppBarMadera extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      constraints:
-          /* BoxConstraints(
-        maxHeight: MediaQuery.of(context).devicePixelRatio * 28,
-        minHeight: MediaQuery.of(context).devicePixelRatio * 28,
-        maxWidth: MediaQuery.of(context).size.width,
-        minWidth: MediaQuery.of(context).size.width,
-      ), */
-          BoxConstraints.tightFor(
+      constraints: BoxConstraints.tightFor(
         height: MediaQuery.of(context).size.height / 12,
         width: MediaQuery.of(context).size.width,
       ),
@@ -42,12 +35,10 @@ class AppBarMadera extends StatelessWidget {
                     onPressed: () => mN.redirectToPage(context, HomePage()),
                     child: Image(
                       image: AssetImage("assets/img/logo-madera.png"),
-                      //je l'ai mis dans le champ "actions" comme ça pas besoin de faire de Row dans le "title"
                     ),
                   )
                 : Image(
                     image: AssetImage("assets/img/logo-madera.png"),
-                    //je l'ai mis dans le champ "actions" comme ça pas besoin de faire de Row dans le "title"
                   ),
           ],
         ),

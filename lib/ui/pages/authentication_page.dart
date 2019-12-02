@@ -126,26 +126,41 @@ class _AuthenticationPageState extends State<AuthenticationPage> {
       ),
     );
 
-    children.add(StreamBuilder<Object>(builder: (context, snapshot) {
-      return Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Container(
-          width: /* MediaQuery.of(context).size.width / 2 */ 200.0,
-          height: 80.5,
-          child: TextField(
-            onChanged: _loginFormBloc.onEmailChanged,
-            controller: _emailController,
-            keyboardType: TextInputType.emailAddress,
-            decoration: InputDecoration(
-              border: OutlineInputBorder(),
-              hintText: "Enter email",
-              labelText: "Email",
-              errorText: snapshot.error,
+    children.add(StreamBuilder<Object>(
+        stream: _loginFormBloc.emailValidation,
+        builder: (context, snapshot) {
+          return Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Container(
+              width: /* MediaQuery.of(context).size.width / 2 */ 200.0,
+              height: 80.5,
+              child: TextField(
+                onChanged: _loginFormBloc.onEmailChanged,
+                onSubmitted: _emailController.text.isNotEmpty &&
+                        _passwordController.text.isNotEmpty
+                    ? (email) async => await Provider.of<ProviderLogin>(context)
+                        .connection(
+                            _emailController.text, _passwordController.text)
+                        .then(
+                          (value) => value
+                              ? Provider.of<MaderaNav>(context)
+                                  .redirectToPage(context, HomePage())
+                              //TODO afficher message erreur
+                              : print('Connection failed'),
+                        )
+                    : null,
+                controller: _emailController,
+                keyboardType: TextInputType.emailAddress,
+                decoration: InputDecoration(
+                  border: OutlineInputBorder(),
+                  hintText: "Enter email",
+                  labelText: "Email",
+                  errorText: snapshot.error,
+                ),
+              ),
             ),
-          ),
-        ),
-      );
-    }));
+          );
+        }));
     children.add(
       LabelledIcon(
         icon: Icon(
@@ -178,6 +193,20 @@ class _AuthenticationPageState extends State<AuthenticationPage> {
               height: 80.5,
               child: TextField(
                 onChanged: _loginFormBloc.onPasswordChanged,
+                onSubmitted: _emailController.text.isNotEmpty &&
+                        _passwordController.text.isNotEmpty
+                    ? (password) async =>
+                        await Provider.of<ProviderLogin>(context)
+                            .connection(
+                                _emailController.text, _passwordController.text)
+                            .then(
+                              (value) => value
+                                  ? Provider.of<MaderaNav>(context)
+                                      .redirectToPage(context, HomePage())
+                                  //TODO afficher message erreur
+                                  : print('Connection failed'),
+                            )
+                    : null,
                 controller: _passwordController,
                 keyboardType: TextInputType.text,
                 obscureText: true,
@@ -199,7 +228,7 @@ class _AuthenticationPageState extends State<AuthenticationPage> {
           return MaderaButton(
             //TODO: validation ne fonctionne pas
             onPressed: (snapshot.hasData && snapshot.data == true)
-                ? () async => await Provider.of<ProviderLogin>(context)
+                ? () => Provider.of<ProviderLogin>(context)
                     .connection(_emailController.text, _passwordController.text)
                     .then(
                       (value) => value

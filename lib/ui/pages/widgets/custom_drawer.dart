@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:logger/logger.dart';
 import 'package:provider/provider.dart';
 
-import 'package:proto_madera_front/providers/provider-navigation.dart';
+import 'package:proto_madera_front/providers/providers.dart';
 import 'package:proto_madera_front/ui/pages/widgets/custom_widgets.dart';
 import 'package:proto_madera_front/ui/pages/pages.dart';
 import 'package:proto_madera_front/providers/models/navigation_model.dart';
@@ -127,7 +127,8 @@ class _CustomDrawerState extends State<CustomDrawer>
                   onTap: () {
                     if (!isCollapsed) {
                       //TODO Emettre un évènement de déconnexion
-                      log.d("LOGOUT EVENT");
+                      Provider.of<ProviderLogin>(context)
+                          .logout("6j18-6j6j-186j");
                       Provider.of<MaderaNav>(context)
                           .redirectToPage(context, AuthenticationPage());
                     }

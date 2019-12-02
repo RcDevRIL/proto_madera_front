@@ -15,12 +15,12 @@ class MaderaApp extends StatelessWidget {
     MaderaNav providerNavigation = MaderaNav();
     return MultiProvider(
         providers: [
-          ChangeNotifierProvider.value(
-            value: providerLogin,
+          ChangeNotifierProvider(
+            builder: (context) => providerLogin,
           ),
-          ChangeNotifierProvider.value(
-            value: providerNavigation,
-          )
+          ChangeNotifierProvider(
+            builder: (context) => providerNavigation,
+          ),
         ],
         child: MaterialApp(
           title: providerNavigation.pageTitle,

@@ -60,6 +60,8 @@ This will trigger the execution of tests. Depending on your IDE, you should see 
 * [provider] - The package used for handling state and logic of the app
 * [rxdart] - The package used for handling streams
 * [logger] - The package used for logging utilities
+* [http] - The package used for making HTTP requests
+* [crypto] - The package used to encrypt passwords
 
 ## Contributing
 
@@ -90,6 +92,8 @@ This project is licensed under the GNU GENERAL PUBLIC LICENSE - see the [LICENSE
 [provider]: https://pub.dev/packages/provider
 [rxdart]: https://pub.dev/packages/rxdart
 [logger]: https://pub.dev/packages/logger
+[http]: https://pub.dev/packages/http
+[crypto]: https://pub.dev/packages/crypto
 [RcDevRIL]: https://github.com/RcDevRIL
 [BoiteSphinx]: https://github.com/BoiteSphinx
 [LadouceFabien]: https://github.com/LadouceFabien

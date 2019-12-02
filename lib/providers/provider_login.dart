@@ -1,9 +1,9 @@
+import 'package:flutter/material.dart';
 import 'dart:convert';
-
 import 'package:crypto/crypto.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart' as http;
 import 'package:logger/logger.dart';
+
 import 'package:proto_madera_front/providers/http_status.dart';
 
 class ProviderLogin with ChangeNotifier {
@@ -13,6 +13,8 @@ class ProviderLogin with ChangeNotifier {
   // Url localhost Fab
   var url = "http://10.0.2.2:8081/madera";
   // var url = "https://google.com";
+
+  HttpStatus get getStatus => status ??= HttpStatus.OFFLINE;
 
   Future<bool> connection(String login, password) async {
     var bytes = utf8.encode(password);
@@ -30,7 +32,8 @@ class ProviderLogin with ChangeNotifier {
     if (response?.statusCode == 200 && response.body != 'false') {
       this.status = HttpStatus.ONLINE;
       return true;
-    }if (response.body == 'false') {
+    }
+    if (response.body == 'false') {
       this.status = HttpStatus.UNAUTHORIZED;
     }
     this.status = HttpStatus.OFFLINE;
@@ -51,5 +54,13 @@ class ProviderLogin with ChangeNotifier {
       throw new Exception('Connection');
     }
     return false;
+  }
+
+  Future<bool> logout(String token) async {
+    //TODO Call API to remove token on remote bdd
+    //TODO Remove token on local bdd
+    log.d('User logged out. Remove token : $token');
+    this.status = HttpStatus.OFFLINE;
+    return true;
   }
 }

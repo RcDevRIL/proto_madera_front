@@ -13,15 +13,9 @@ class MaderaNav with ChangeNotifier {
 
   final log = Logger();
 
-  int get pageIndex {
-    if (_pageIndex == null) _pageIndex = -1;
-    return _pageIndex;
-  }
+  int get pageIndex => _pageIndex ??= -1;
 
-  String get pageTitle {
-    if (_pageTitle == null) _pageTitle = 'default';
-    return _pageTitle;
-  }
+  String get pageTitle => _pageTitle ??= 'default';
 
   @override
   String toString() {
