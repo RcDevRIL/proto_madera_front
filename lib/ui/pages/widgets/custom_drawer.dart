@@ -126,7 +126,6 @@ class _CustomDrawerState extends State<CustomDrawer>
                 CollapsingListTile(
                   onTap: () {
                     if (!isCollapsed) {
-                      //TODO Emettre un évènement de déconnexion
                       Provider.of<ProviderLogin>(context)
                           .logout("6j18-6j6j-186j");
                       Provider.of<MaderaNav>(context)

@@ -226,7 +226,6 @@ class _AuthenticationPageState extends State<AuthenticationPage> {
         stream: _loginFormBloc.login,
         builder: (context, snapshot) {
           return MaderaButton(
-            //TODO: validation ne fonctionne pas
             onPressed: (snapshot.hasData && snapshot.data == true)
                 ? () => Provider.of<ProviderLogin>(context)
                     .connection(_emailController.text, _passwordController.text)

@@ -64,11 +64,8 @@ void main() {
           completion(false)); //should be completion(true)
     });
     test('logout test', () {
-      // TODO Faire en sorte de faire le test via la page auth, remplissage auto formulaire clic auto "Connexion"
-      // Lancer le back-end
       ProviderLogin providerLogin = ProviderLogin();
-      expect(providerLogin.logout('testToken'),
-          completion(true)); //should be completion(true)
+      expect(providerLogin.logout('testToken'), completion(true));
     });
     test('last sync date test', () {
       var date = DateTime.now();
