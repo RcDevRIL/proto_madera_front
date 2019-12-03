@@ -3,6 +3,8 @@ import 'dart:convert';
 import 'package:crypto/crypto.dart';
 import 'package:http/http.dart' as http;
 import 'package:logger/logger.dart';
+import 'package:proto_madera_front/database/dao/utilisateur_dao.dart';
+import 'package:proto_madera_front/database/madera_database.dart';
 
 import 'package:proto_madera_front/providers/http_status.dart';
 
@@ -19,6 +21,9 @@ class ProviderLogin with ChangeNotifier {
   // Url localhost Fab
   var url = "http://10.0.2.2:8081/madera";
   // var url = "https://cesi-madera.fr/madera";
+  //TODO A revoir, faut que je regarde au travail
+  static MaderaDatabase db = new MaderaDatabase();
+  UtilisateurDao utilisateurDao = new UtilisateurDao(db);
 
   HttpStatus get getStatus => status ??= HttpStatus.OFFLINE;
 
@@ -68,5 +73,9 @@ class ProviderLogin with ChangeNotifier {
     log.d('User logged out. Remove token : $token');
     this.status = HttpStatus.OFFLINE;
     return true;
+  }
+
+  void addUser(String login, String token) {
+    //TODO Je completerais demain
   }
 }
