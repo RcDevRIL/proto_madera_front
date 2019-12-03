@@ -1,5 +1,8 @@
-# proto_madera_front - README V0.2.3
-[![Codemagic build status][]][latest_build]
+# proto_madera_front - README V1.0
+__Build status by branch__
+* __master :__ [![M_Codemagic build status][]][M_latest_build]
+* __int :__ [![I_Codemagic build status][]][I_latest_build]
+* __dev :__ [![D_Codemagic build status][]][D_latest_build]
 
 Welcome on our development repository for our graduation project!! 
 
@@ -83,8 +86,12 @@ This project is licensed under the GNU GENERAL PUBLIC LICENSE - see the [LICENSE
 
 * As I mentionned before, this is still a work in progress. :upside_down_face:
 
-[Codemagic build status]: https://api.codemagic.io/apps/5da43b8a9f20ef13ab7a2017/5da43b8a9f20ef13ab7a2016/status_badge.svg
-[latest_build]: https://codemagic.io/apps/5da43b8a9f20ef13ab7a2017/5da43b8a9f20ef13ab7a2016/latest_build
+[M_Codemagic build status]: https://api.codemagic.io/apps/5da43b8a9f20ef13ab7a2017/5da43b8a9f20ef13ab7a2016/status_badge.svg
+[M_latest_build]: https://codemagic.io/apps/5da43b8a9f20ef13ab7a2017/5da43b8a9f20ef13ab7a2016/latest_build
+[I_Codemagic build status]: https://api.codemagic.io/apps/5da43b8a9f20ef13ab7a2017/5da5ac909f20ef30cdc3db79/status_badge.svg
+[I_latest_build]: https://codemagic.io/apps/5da43b8a9f20ef13ab7a2017/5da5ac909f20ef30cdc3db79/latest_build
+[D_Codemagic build status]: https://api.codemagic.io/apps/5da43b8a9f20ef13ab7a2017/5da5ad409f20ef6c879feffc/status_badge.svg
+[D_latest_build]: https://codemagic.io/apps/5da43b8a9f20ef13ab7a2017/5da5ad409f20ef6c879feffc/latest_build
 [Flutter "get started"]: https://flutter.dev/get-started/
 [Github root]: https://github.com/RcDevRIL/proto_madera_front/
 [test]: https://github.com/RcDevRIL/proto_madera_front/tree/master/test
