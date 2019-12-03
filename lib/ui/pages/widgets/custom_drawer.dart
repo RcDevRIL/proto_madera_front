@@ -8,6 +8,12 @@ import 'package:proto_madera_front/ui/pages/pages.dart';
 import 'package:proto_madera_front/providers/models/navigation_model.dart';
 import 'package:proto_madera_front/theme.dart' as cTheme;
 
+///
+/// Widget personnalisé pour une barre de navigation extensible
+///
+/// @author HELIOT David, CHEVALLIER Romain, LADOUCE Fabien
+/// @version 0.2-RELEASE
+///
 class CustomDrawer extends StatefulWidget {
   @override
   _CustomDrawerState createState() => _CustomDrawerState();

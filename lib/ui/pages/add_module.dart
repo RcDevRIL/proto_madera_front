@@ -8,7 +8,12 @@ import 'package:proto_madera_front/theme.dart' as cTheme;
 import 'package:proto_madera_front/ui/pages/widgets/madera_button.dart';
 import 'package:provider/provider.dart';
 
-
+///
+/// Page "Ajout de module"
+///
+/// @author HELIOT David, CHEVALLIER Romain, LADOUCE Fabien
+/// @version 0.2-RELEASE
+///
 class AddModule extends StatefulWidget {
   static const routeName = '/add_module';
 
@@ -18,6 +23,7 @@ class AddModule extends StatefulWidget {
 
 class _AddModuleState extends State<AddModule> {
   final log = Logger();
+
   ///
   /// Prevents the use of the "back" button
   ///
@@ -47,7 +53,8 @@ class _AddModuleState extends State<AddModule> {
           body: Stack(
             children: <Widget>[
               Padding(
-                padding: EdgeInsets.fromLTRB(cTheme.Dimens.drawerMinWitdh, MediaQuery.of(context).size.height / 12, 0, 0),
+                padding: EdgeInsets.fromLTRB(cTheme.Dimens.drawerMinWitdh,
+                    MediaQuery.of(context).size.height / 12, 0, 0),
                 child: Center(
                   child: Container(
                     padding: EdgeInsets.all(8.0),
@@ -60,7 +67,7 @@ class _AddModuleState extends State<AddModule> {
                         onPressed: () {
                           log.d('Module added to quote');
                           Provider.of<MaderaNav>(context)
-                          .redirectToPage(context, Quote());
+                              .redirectToPage(context, Quote());
                         },
                         child: LabelledIcon(
                           icon: Icon(Icons.check),

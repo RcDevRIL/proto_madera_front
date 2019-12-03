@@ -8,6 +8,12 @@ import 'package:proto_madera_front/providers/provider-navigation.dart';
 import 'package:proto_madera_front/ui/pages/widgets/custom_widgets.dart';
 import 'package:proto_madera_front/theme.dart' as cTheme;
 
+///
+/// Page "Outil de création de devis"
+///
+/// @author HELIOT David, CHEVALLIER Romain, LADOUCE Fabien
+/// @version 0.2-RELEASE
+///
 class QuoteCreation extends StatefulWidget {
   static const routeName = '/quote_create';
 
@@ -17,6 +23,7 @@ class QuoteCreation extends StatefulWidget {
 
 class _QuoteCreationState extends State<QuoteCreation> {
   final log = Logger();
+
   ///
   /// Prevents the use of the "back" button
   ///
@@ -63,7 +70,7 @@ class _QuoteCreationState extends State<QuoteCreation> {
                             onPressed: () {
                               log.d("Quote Creation");
                               Provider.of<MaderaNav>(context)
-                              .redirectToPage(context, Quote());
+                                  .redirectToPage(context, Quote());
                             },
                             child: LabelledIcon(
                               mASize: MainAxisSize.min,

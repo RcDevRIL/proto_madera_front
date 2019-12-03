@@ -7,6 +7,12 @@ import 'package:proto_madera_front/ui/pages/home_page.dart';
 import 'package:proto_madera_front/ui/pages/pages.dart';
 import 'package:provider/provider.dart';
 
+///
+/// Provider permettant de gérer l'état de la navigation
+///
+/// @author HELIOT David, CHEVALLIER Romain, LADOUCE Fabien
+/// @version 0.2-RELEASE
+///
 class MaderaNav with ChangeNotifier {
   var _pageTitle;
   var _pageIndex;
@@ -76,7 +82,7 @@ class MaderaNav with ChangeNotifier {
         break;
       case NotificationPage:
         {
-          _pageTitle = "Page des notification";
+          _pageTitle = "Page des notifications";
           _pageIndex = 3;
           log.d(
               'Updating current navigation properties:                        \n' +

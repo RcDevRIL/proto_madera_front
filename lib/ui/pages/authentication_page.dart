@@ -11,6 +11,12 @@ import 'package:proto_madera_front/providers/provider-navigation.dart';
 import 'package:proto_madera_front/theme.dart' as cTheme;
 import 'package:proto_madera_front/providers/provider_login.dart';
 
+///
+/// Page d'authentification
+///
+/// @author HELIOT David, CHEVALLIER Romain, LADOUCE Fabien
+/// @version 0.2-RELEASE
+///
 class AuthenticationPage extends StatefulWidget {
   static const routeName = '/auth';
   @override

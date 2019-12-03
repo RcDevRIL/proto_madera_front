@@ -1,14 +1,14 @@
-/**
- * FORK D'UN PROJET OPEN SOURCE
- * 
- * AUTEUR :
- *      Didier BOELENS - (https://github.com/boeledi/blocs)
- */
 import 'dart:async';
 import 'package:rxdart/rxdart.dart';
 
 import 'package:proto_madera_front/validators/validators.dart';
 
+///
+/// FORK D'UN PROJET OPEN SOURCE
+///
+/// AUTEUR :
+///     Didier BOELENS - (https://github.com/boeledi/blocs)
+///
 class LoginFormBloc extends Object with EmailValidator, PasswordValidator {
   final BehaviorSubject<String> _emailController = BehaviorSubject<String>();
   final BehaviorSubject<String> _passwordController = BehaviorSubject<String>();

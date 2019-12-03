@@ -6,6 +6,14 @@ import 'package:proto_madera_front/providers/providers.dart';
 import 'package:proto_madera_front/ui/pages/pages.dart';
 import 'package:proto_madera_front/theme.dart' as cTheme;
 
+///
+/// Premier Widget de l'application.
+/// - Configuration Providers
+/// - Configuration routing
+///
+/// @author HELIOT David, CHEVALLIER Romain, LADOUCE Fabien
+/// @version 0.2-RELEASE
+///
 class MaderaApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {

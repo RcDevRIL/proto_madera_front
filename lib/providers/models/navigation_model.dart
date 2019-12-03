@@ -1,5 +1,11 @@
 import 'package:flutter/material.dart';
 
+///
+/// Modèle permettant de lier une page à un icône
+///
+/// @author HELIOT David, CHEVALLIER Romain, LADOUCE Fabien
+/// @version 0.2-RELEASE
+///
 class NavigationModel {
   final String title;
   final IconData iconData;

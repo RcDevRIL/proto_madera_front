@@ -8,6 +8,12 @@ import 'package:proto_madera_front/ui/pages/pages.dart';
 import 'package:proto_madera_front/ui/pages/widgets/custom_widgets.dart';
 import 'package:proto_madera_front/theme.dart' as cTheme;
 
+///
+/// Page d'accueil de l'application
+///
+/// @author HELIOT David, CHEVALLIER Romain, LADOUCE Fabien
+/// @version 0.2-RELEASE
+///
 class HomePage extends StatelessWidget {
   static const routeName = '/home';
   final log = Logger();
@@ -62,14 +68,14 @@ class HomePage extends StatelessWidget {
                         //       onPressed: () {},
                         //       child: Icon(Icons.note_add, size: 50.0,),
                         //     ),
-                            
+
                         //     Text("Création de devis"),
                         //   ],
                         // ),
-                              // icon: Icon(Icons.note_add),
-                              // label: Text('Création de devis'),
-                          // ),
-                          
+                        // icon: Icon(Icons.note_add),
+                        // label: Text('Création de devis'),
+                        // ),
+
                         Container(
                           height: 150.0,
                           width: 150.0,

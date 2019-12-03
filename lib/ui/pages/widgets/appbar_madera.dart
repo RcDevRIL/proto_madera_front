@@ -6,6 +6,12 @@ import 'package:proto_madera_front/ui/pages/widgets/exit_button.dart';
 import 'package:proto_madera_front/ui/pages/home_page.dart';
 import 'package:proto_madera_front/theme.dart' as cTheme;
 
+///
+/// Widget personnalisé pour une "AppBar" personnalisée
+///
+/// @author HELIOT David, CHEVALLIER Romain, LADOUCE Fabien
+/// @version 0.2-RELEASE
+///
 class AppBarMadera extends StatelessWidget {
   @override
   Widget build(BuildContext context) {

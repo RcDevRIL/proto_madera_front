@@ -5,6 +5,12 @@ import 'package:proto_madera_front/providers/provider-navigation.dart';
 import 'package:proto_madera_front/ui/pages/widgets/custom_widgets.dart';
 import 'package:proto_madera_front/theme.dart' as cTheme;
 
+///
+/// Page de "Suivi des devis enregistrés"
+///
+/// @author HELIOT David, CHEVALLIER Romain, LADOUCE Fabien
+/// @version 0.2-RELEASE
+///
 class QuoteOverview extends StatefulWidget {
   static const routeName = '/quoteOverview';
 
@@ -61,15 +67,4 @@ class _QuoteOverviewState extends State<QuoteOverview> {
       ),
     );
   }
-
-/*   // à la base j'essayais de mettre cette méthode dans la class MaderaNav, mais ça faisait des bugs.
-  void _redirectToPage(BuildContext context, Widget page) {
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      MaterialPageRoute newRoute =
-          MaterialPageRoute(builder: (BuildContext context) => page);
-      Navigator.of(context).pushReplacement(newRoute);
-      var maderaNav = Provider.of<MaderaNav>(context);
-      maderaNav.updateCurrent(page.runtimeType);
-    });
-  } */
 }

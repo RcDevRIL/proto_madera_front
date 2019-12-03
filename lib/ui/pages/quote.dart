@@ -8,6 +8,12 @@ import 'package:proto_madera_front/ui/pages/widgets/custom_widgets.dart';
 import 'package:proto_madera_front/providers/provider-navigation.dart';
 import 'package:proto_madera_front/theme.dart' as cTheme;
 
+///
+/// Page de "Edition de devis"
+///
+/// @author HELIOT David, CHEVALLIER Romain, LADOUCE Fabien
+/// @version 0.2-RELEASE
+///
 class Quote extends StatefulWidget {
   static const routeName = '/quote';
 
@@ -17,6 +23,7 @@ class Quote extends StatefulWidget {
 
 class _QuoteState extends State<Quote> {
   final log = Logger();
+
   ///
   /// Prevents the use of the "back" button
   ///
@@ -47,7 +54,8 @@ class _QuoteState extends State<Quote> {
           body: Stack(
             children: <Widget>[
               Padding(
-                padding: EdgeInsets.fromLTRB(cTheme.Dimens.drawerMinWitdh, MediaQuery.of(context).size.height / 12, 0, 0),
+                padding: EdgeInsets.fromLTRB(cTheme.Dimens.drawerMinWitdh,
+                    MediaQuery.of(context).size.height / 12, 0, 0),
                 child: Center(
                   /** Centre de la page */
                   child: Container(
@@ -61,7 +69,7 @@ class _QuoteState extends State<Quote> {
                         onPressed: () {
                           log.d("Adding Module for this quote");
                           Provider.of<MaderaNav>(context)
-                          .redirectToPage(context, AddModule());
+                              .redirectToPage(context, AddModule());
                         },
                         child: LabelledIcon(
                           icon: Icon(Icons.add),
