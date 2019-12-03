@@ -17,13 +17,13 @@ dependencies:
   provider: ^3.1.0+1
   http: ^0.12.0+2
   crypto: ^2.1.3
-  sqflite: any
-  moor: any
+  sqflite:
+  moor_flutter: ^2.0.0
 
 
 dev_dependencies:
-  moor_generator: any
-  build_runner: any
+  moor_generator:
+  build_runner:
   flutter_test:
     sdk: flutter
 
