@@ -48,8 +48,7 @@ class ProviderLogin with ChangeNotifier {
       this.status = HttpStatus.ONLINE;
       Map resp = jsonDecode(response.body);
       addUser(login, resp['token']);
-      UtilisateurData user = await utilisateurDao.getUser(login);
-      print(user);
+      await synchroReferentiel();
       return true;
     }
     if (response.body == 'false') {
@@ -85,6 +84,22 @@ class ProviderLogin with ChangeNotifier {
   }
 
   void addUser(String login, String token) {
-    utilisateurDao.insertUser(UtilisateurCompanion(login: Value(login), token: Value(token)));
+    utilisateurDao.insertUser(
+        UtilisateurCompanion(login: Value(login), token: Value(token)));
+  }
+
+  //Synchro referentiel
+  void synchroReferentiel() async {
+    UtilisateurData utilisateurData = await utilisateurDao.getUser();
+    String token = utilisateurData.token;
+    var response;
+    try {
+      //TODO passer en param la derniere date de synchro ?
+      response = await http.get(url + '/referentiel',
+          headers: {'Authorization': 'Bearer $token'});
+    } catch (e) {
+      log.e("Error when tryiing to connect:\n" + e.toString());
+    }
+    print(response.body);
   }
 }

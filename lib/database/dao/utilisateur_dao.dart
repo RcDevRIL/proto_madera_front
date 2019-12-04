@@ -9,16 +9,13 @@ class UtilisateurDao extends DatabaseAccessor<MaderaDatabase>
     with _$UtilisateurDaoMixin {
   UtilisateurDao(MaderaDatabase db) : super(db);
 
+  //Ajoute ou remplace l'utilisateur
   void insertUser(UtilisateurCompanion entry) {
-    into(utilisateur).insert(entry);
+    into(utilisateur).insert(entry, orReplace: true);
   }
 
-  //TODO Temporaire le limit 1
-  Future<UtilisateurData> getUser(String login) async {
-    return (select(utilisateur)
-          ..where((user) => user.login.equals(login))
-          ..limit(1))
-        .getSingle();
+  Future<UtilisateurData> getUser() async {
+    return (select(utilisateur)).getSingle();
   }
 
   //Supprime l'utilisateur

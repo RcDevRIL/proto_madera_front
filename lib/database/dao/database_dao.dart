@@ -12,7 +12,7 @@ class DatabaseDao extends DatabaseAccessor<MaderaDatabase> with _$DatabaseDaoMix
 
   //Méthode suppresion bdd
   void drop() {
-    delete(utilisateur);
+    delete(utilisateur).go();
   }
 
 }
