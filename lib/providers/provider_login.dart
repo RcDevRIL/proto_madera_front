@@ -5,6 +5,7 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:logger/logger.dart';
 import 'package:moor_flutter/moor_flutter.dart';
+import 'package:proto_madera_front/database/dao/composant_dao.dart';
 import 'package:proto_madera_front/database/dao/database_dao.dart';
 import 'package:proto_madera_front/database/dao/utilisateur_dao.dart';
 import 'package:proto_madera_front/database/madera_database.dart';
@@ -28,6 +29,7 @@ class ProviderLogin with ChangeNotifier {
   static MaderaDatabase db = new MaderaDatabase();
   UtilisateurDao utilisateurDao = new UtilisateurDao(db);
   DatabaseDao databaseDao = new DatabaseDao(db);
+  ComposantDao composantDao = new ComposantDao(db);
 
   HttpStatus get getStatus => status ??= HttpStatus.OFFLINE;
 
@@ -100,6 +102,22 @@ class ProviderLogin with ChangeNotifier {
     } catch (e) {
       log.e("Error when tryiing to connect:\n" + e.toString());
     }
-    print(response.body);
+    if (response.statusCode == 200) {
+      var data = jsonDecode(response.body);
+      //TODO temporaire sera dans une méthode à part plus tard
+      List<dynamic> listComposant = data['composant'];
+      List<ComposantCompanion> listComposantCompanion = new List();
+      listComposant.forEach(
+        (composant) => listComposantCompanion.add(
+          ComposantCompanion(
+            composantId: Value(composant['composantId']),
+            libelle: Value(composant['libelle']),
+            section: Value(composant['section'].toString()),
+          ),
+        ),
+      );
+      composantDao.insertAll(listComposantCompanion);
+    }
+    //TODO Renvoyer un message d'erreur
   }
 }

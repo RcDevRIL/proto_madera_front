@@ -1,9 +1,9 @@
 import 'package:moor_flutter/moor_flutter.dart';
-import 'package:proto_madera_front/database/tables/utilisateur.dart';
+import 'package:proto_madera_front/database/tables.dart';
 
 part 'madera_database.g.dart';
 
-@UseMoor(tables: [Utilisateur])
+@UseMoor(tables: [Utilisateur, Composant])
 class MaderaDatabase extends _$MaderaDatabase {
   MaderaDatabase()
       : super(
@@ -13,4 +13,6 @@ class MaderaDatabase extends _$MaderaDatabase {
         );
   @override
   int get schemaVersion => 1;
+
+  //TODO modifier un truc
 }
