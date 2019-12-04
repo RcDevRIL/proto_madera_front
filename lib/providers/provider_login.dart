@@ -2,7 +2,10 @@ import 'package:flutter/material.dart';
 import 'dart:convert';
 import 'package:crypto/crypto.dart';
 import 'package:http/http.dart' as http;
+import 'dart:convert';
 import 'package:logger/logger.dart';
+import 'package:moor_flutter/moor_flutter.dart';
+import 'package:proto_madera_front/database/dao/database_dao.dart';
 import 'package:proto_madera_front/database/dao/utilisateur_dao.dart';
 import 'package:proto_madera_front/database/madera_database.dart';
 
@@ -24,6 +27,7 @@ class ProviderLogin with ChangeNotifier {
   //TODO A revoir, faut que je regarde au travail
   static MaderaDatabase db = new MaderaDatabase();
   UtilisateurDao utilisateurDao = new UtilisateurDao(db);
+  DatabaseDao databaseDao = new DatabaseDao(db);
 
   HttpStatus get getStatus => status ??= HttpStatus.OFFLINE;
 
@@ -42,10 +46,15 @@ class ProviderLogin with ChangeNotifier {
     }
     if (response?.statusCode == 200 && response.body != 'false') {
       this.status = HttpStatus.ONLINE;
+      Map resp = jsonDecode(response.body);
+      addUser(login, resp['token']);
+      UtilisateurData user = await utilisateurDao.getUser(login);
+      print(user);
       return true;
     }
     if (response.body == 'false') {
       this.status = HttpStatus.UNAUTHORIZED;
+      return false;
     }
     this.status = HttpStatus.OFFLINE;
     return false;
@@ -76,6 +85,6 @@ class ProviderLogin with ChangeNotifier {
   }
 
   void addUser(String login, String token) {
-    //TODO Je completerais demain
+    utilisateurDao.insertUser(UtilisateurCompanion(login: Value(login), token: Value(token)));
   }
 }

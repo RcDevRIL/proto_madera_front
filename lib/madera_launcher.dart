@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:provider/provider.dart';
-
 import 'package:proto_madera_front/providers/providers.dart';
-import 'package:proto_madera_front/ui/pages/pages.dart';
 import 'package:proto_madera_front/theme.dart' as cTheme;
+import 'package:proto_madera_front/ui/pages/pages.dart';
+import 'package:provider/provider.dart';
 
 ///
 /// Premier Widget de l'application.
