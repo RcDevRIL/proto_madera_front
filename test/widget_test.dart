@@ -69,7 +69,7 @@ void main() {
     });
     test('last sync date test', () {
       var date = DateTime.now();
-      MaderaDB providerSynchro = MaderaDB();
+      ProviderBdd providerSynchro = ProviderBdd();
 
       expect(date.isAfter(DateTime.parse(providerSynchro.lastSyncDate)), true);
     });
