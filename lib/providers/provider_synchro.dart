@@ -5,6 +5,7 @@ import 'package:http/http.dart' as http;
 import 'package:logger/logger.dart';
 import 'package:proto_madera_front/constants/url.dart';
 import 'package:proto_madera_front/database/dao/composant_dao.dart';
+import 'package:proto_madera_front/database/dao/gamme_dao.dart';
 import 'package:proto_madera_front/database/dao/utilisateur_dao.dart';
 import 'package:proto_madera_front/database/madera_database.dart';
 
@@ -14,6 +15,7 @@ class ProviderSynchro with ChangeNotifier {
   static MaderaDatabase db = new MaderaDatabase();
   UtilisateurDao utilisateurDao = new UtilisateurDao(db);
   ComposantDao composantDao = new ComposantDao(db);
+  GammeDao gammeDao = new GammeDao(db);
 
   //Synchro referentiel
   void synchroReferentiel() async {
@@ -33,8 +35,11 @@ class ProviderSynchro with ChangeNotifier {
       List<ComposantData> listComposant = (data['composant'] as List)
           .map((a) => ComposantData.fromJson(a))
           .toList();
-
+      List<GammeData> listGamme = (data['gammes'] as List)
+        .map((b) => GammeData.fromJson(b))
+        .toList();
       composantDao.insertAll(listComposant);
+      gammeDao.insertAll(listGamme);
     } else {
       log.e("Erreur lors de la synchronisation des données");
     }

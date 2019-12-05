@@ -3,7 +3,7 @@ import 'package:proto_madera_front/database/tables.dart';
 
 part 'madera_database.g.dart';
 
-@UseMoor(tables: [Utilisateur, Composant])
+@UseMoor(tables: [Utilisateur, Composant, Gamme])
 class MaderaDatabase extends _$MaderaDatabase {
   MaderaDatabase()
       : super(
