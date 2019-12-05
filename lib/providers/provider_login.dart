@@ -2,12 +2,9 @@ import 'package:flutter/material.dart';
 import 'dart:convert';
 import 'package:crypto/crypto.dart';
 import 'package:http/http.dart' as http;
-import 'dart:convert';
 import 'package:logger/logger.dart';
 import 'package:moor_flutter/moor_flutter.dart';
 import 'package:proto_madera_front/constants/url.dart';
-import 'package:proto_madera_front/database/dao/composant_dao.dart';
-import 'package:proto_madera_front/database/dao/database_dao.dart';
 import 'package:proto_madera_front/database/dao/utilisateur_dao.dart';
 import 'package:proto_madera_front/database/madera_database.dart';
 
