@@ -3,10 +3,19 @@ import 'package:moor_flutter/moor_flutter.dart';
 
 class Composant extends Table {
   IntColumn get composantId => integer()();
-  //TODO composantGroupe . Stocker que l'id + le libelle?
+  //ComposantGroupe
+  @JsonKey("composantGroupe.composantGroupeId")
+  IntColumn get composantGroupeId => integer()();
+  @JsonKey("composantGroupe.libelleGroupe")
+  TextColumn get libelleGroupe => text()();
   TextColumn get libelle => text()();
-  //TODO Composantrefentiel ?
-  //TODO Attention doit être en double ou float
-  TextColumn get section => text()();
+  //ComposantReferentiel
+  @JsonKey('composantReferentiel.composantReferentielId')
+  IntColumn get composantReferentielId => integer()();
+  @JsonKey('composantReferentiel.caracteristiqueReferentiel')
+  TextColumn get caracteristiqueReferentiel => text()();
+  @JsonKey('composantReferentiel.uniteUsage')
+  TextColumn get uniteUsage => text()();
+  RealColumn get section => real()();
   
 }

@@ -5,6 +5,7 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:logger/logger.dart';
 import 'package:moor_flutter/moor_flutter.dart';
+import 'package:proto_madera_front/constants/url.dart';
 import 'package:proto_madera_front/database/dao/composant_dao.dart';
 import 'package:proto_madera_front/database/dao/database_dao.dart';
 import 'package:proto_madera_front/database/dao/utilisateur_dao.dart';
@@ -21,15 +22,8 @@ import 'package:proto_madera_front/providers/http_status.dart';
 class ProviderLogin with ChangeNotifier {
   final log = Logger();
   HttpStatus status = HttpStatus.OFFLINE;
-  //TODO Externaliser les url dans un autre fichier ?
-  // Url localhost Fab
-  var url = "http://10.0.2.2:8081/madera";
-  // var url = "https://cesi-madera.fr/madera";
-  //TODO A revoir, faut que je regarde au travail
   static MaderaDatabase db = new MaderaDatabase();
   UtilisateurDao utilisateurDao = new UtilisateurDao(db);
-  DatabaseDao databaseDao = new DatabaseDao(db);
-  ComposantDao composantDao = new ComposantDao(db);
 
   HttpStatus get getStatus => status ??= HttpStatus.OFFLINE;
 
@@ -39,7 +33,7 @@ class ProviderLogin with ChangeNotifier {
     var response;
     try {
       response = await http.post(
-        url + '/authentification',
+        urlAuthentification,
         headers: {'Content-type': 'application/json'},
         body: jsonEncode({'login': login, 'password': digest.toString()}),
       );
@@ -50,7 +44,6 @@ class ProviderLogin with ChangeNotifier {
       this.status = HttpStatus.ONLINE;
       Map resp = jsonDecode(response.body);
       addUser(login, resp['token']);
-      await synchroReferentiel();
       return true;
     }
     if (response.body == 'false') {
@@ -65,7 +58,7 @@ class ProviderLogin with ChangeNotifier {
   // avant chaque méthode faisant des appels serveurs, sauf si le status est déjà offline
   Future<bool> ping() async {
     try {
-      var response = await http.get(url);
+      var response = await http.get(baseUrl);
       if (response.statusCode == 200) {
         this.status = HttpStatus.ONLINE;
         return true;
@@ -88,36 +81,5 @@ class ProviderLogin with ChangeNotifier {
   void addUser(String login, String token) {
     utilisateurDao.insertUser(
         UtilisateurCompanion(login: Value(login), token: Value(token)));
-  }
-
-  //Synchro referentiel
-  void synchroReferentiel() async {
-    UtilisateurData utilisateurData = await utilisateurDao.getUser();
-    String token = utilisateurData.token;
-    var response;
-    try {
-      //TODO passer en param la derniere date de synchro ?
-      response = await http.get(url + '/referentiel',
-          headers: {'Authorization': 'Bearer $token'});
-    } catch (e) {
-      log.e("Error when tryiing to connect:\n" + e.toString());
-    }
-    if (response.statusCode == 200) {
-      var data = jsonDecode(response.body);
-      //TODO temporaire sera dans une méthode à part plus tard
-      List<dynamic> listComposant = data['composant'];
-      List<ComposantCompanion> listComposantCompanion = new List();
-      listComposant.forEach(
-        (composant) => listComposantCompanion.add(
-          ComposantCompanion(
-            composantId: Value(composant['composantId']),
-            libelle: Value(composant['libelle']),
-            section: Value(composant['section'].toString()),
-          ),
-        ),
-      );
-      composantDao.insertAll(listComposantCompanion);
-    }
-    //TODO Renvoyer un message d'erreur
   }
 }

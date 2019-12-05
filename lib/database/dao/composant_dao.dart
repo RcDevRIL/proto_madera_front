@@ -9,7 +9,7 @@ class ComposantDao extends DatabaseAccessor<MaderaDatabase>
     with _$ComposantDaoMixin {
   ComposantDao(MaderaDatabase db) : super(db);
 
-  void insertAll(List<ComposantCompanion> listEntry) {
+  void insertAll(List<ComposantData> listEntry) {
     into(composant).insertAll(listEntry);
   }
 }

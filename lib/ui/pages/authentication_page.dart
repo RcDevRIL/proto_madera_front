@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:logger/logger.dart';
+import 'package:proto_madera_front/providers/provider_synchro.dart';
 import 'package:proto_madera_front/ui/pages/widgets/madera_button.dart';
 import 'package:provider/provider.dart';
 
@@ -232,17 +233,22 @@ class _AuthenticationPageState extends State<AuthenticationPage> {
         stream: _loginFormBloc.login,
         builder: (context, snapshot) {
           return MaderaButton(
-            onPressed: (snapshot.hasData && snapshot.data == true)
-                ? () => Provider.of<ProviderLogin>(context)
-                    .connection(_emailController.text, _passwordController.text)
-                    .then(
-                      (value) => value
-                          ? Provider.of<MaderaNav>(context)
-                              .redirectToPage(context, HomePage())
-                          //TODO afficher message erreur
-                          : print('Connection failed'),
-                    )
-                : null,
+            onPressed: () async {
+              if ((snapshot.hasData && snapshot.data == true)) {
+                bool isLogin = await Provider.of<ProviderLogin>(context)
+                    .connection(
+                        _emailController.text, _passwordController.text);
+                if (isLogin) {
+                  //TODO Afficher un message d'erreur si données non récup ?
+                  Provider.of<ProviderSynchro>(context).synchroReferentiel();
+                  //TODO Ajouter synchroProjet également
+                  Provider.of<MaderaNav>(context)
+                      .redirectToPage(context, HomePage());
+                } else {
+
+                }
+              }
+            },
             child: Text('Connexion'),
           );
         }));
