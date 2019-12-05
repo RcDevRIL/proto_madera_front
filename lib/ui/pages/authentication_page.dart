@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:logger/logger.dart';
+import 'package:proto_madera_front/providers/http_status.dart';
 import 'package:proto_madera_front/providers/provider_synchro.dart';
 import 'package:proto_madera_front/ui/pages/widgets/madera_button.dart';
 import 'package:provider/provider.dart';
@@ -235,10 +236,10 @@ class _AuthenticationPageState extends State<AuthenticationPage> {
           return MaderaButton(
             onPressed: () async {
               if ((snapshot.hasData && snapshot.data == true)) {
-                bool isLogin = await Provider.of<ProviderLogin>(context)
+                await Provider.of<ProviderLogin>(context)
                     .connection(
                         _emailController.text, _passwordController.text);
-                if (isLogin) {
+                if (Provider.of<ProviderLogin>(context).getStatus == HttpStatus.ONLINE) {
                   //TODO Afficher un message d'erreur si données non récup ?
                   Provider.of<ProviderSynchro>(context).synchroReferentiel();
                   //TODO Ajouter synchroProjet également
