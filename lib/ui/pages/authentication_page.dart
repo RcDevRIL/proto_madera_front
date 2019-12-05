@@ -236,17 +236,37 @@ class _AuthenticationPageState extends State<AuthenticationPage> {
           return MaderaButton(
             onPressed: () async {
               if ((snapshot.hasData && snapshot.data == true)) {
-                await Provider.of<ProviderLogin>(context)
-                    .connection(
-                        _emailController.text, _passwordController.text);
-                if (Provider.of<ProviderLogin>(context).getStatus == HttpStatus.ONLINE) {
-                  //TODO Afficher un message d'erreur si données non récup ?
-                  Provider.of<ProviderSynchro>(context).synchroReferentiel();
-                  //TODO Ajouter synchroProjet également
-                  Provider.of<MaderaNav>(context)
-                      .redirectToPage(context, HomePage());
-                } else {
-
+                await Provider.of<ProviderLogin>(context).connection(
+                    _emailController.text, _passwordController.text);
+                switch (Provider.of<ProviderLogin>(context).getStatus) {
+                  case HttpStatus.AUTHORIZED:
+                    {
+                      //TODO Afficher un message d'erreur si données non récup ?
+                      Provider.of<ProviderSynchro>(context)
+                          .synchroReferentiel();
+                      //TODO Ajouter synchroProjet également
+                      Provider.of<MaderaNav>(context)
+                          .redirectToPage(context, HomePage());
+                    }
+                    break;
+                  case HttpStatus.OFFLINE:
+                    {
+                      //TODO showDialog(can't reach server)
+                    }
+                    break;
+                  case HttpStatus.ONLINE:
+                    {
+                      //TODO showDialog(wrong ids)
+                    }
+                    break;
+                  case HttpStatus.UNAUTHORIZED:
+                    {
+                      // TODO: Handle this case.
+                    }
+                    break;
+                  default:
+                    {}
+                    break;
                 }
               }
             },
