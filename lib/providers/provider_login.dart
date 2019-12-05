@@ -40,18 +40,23 @@ class ProviderLogin with ChangeNotifier {
     } catch (e) {
       log.e("Error when tryiing to connect:\n" + e.toString());
     }
-    if (response?.statusCode == 200 && response.body != 'false') {
+
+    if (response?.statusCode == 200) {
       this.status = HttpStatus.ONLINE;
-      Map resp = jsonDecode(response.body);
-      addUser(login, resp['token']);
+      if (response.body != 'false') {
+        this.status = HttpStatus.AUTHORIZED;
+        Map resp = jsonDecode(response.body);
+        addUser(login, resp['token']);
+      }
       return true;
     }
-    if (response.body == 'false') {
+    if (response?.statusCode == 200 && response.body == 'false') {
       this.status = HttpStatus.UNAUTHORIZED;
       return false;
+    } else {
+      this.status = HttpStatus.OFFLINE;
+      return false;
     }
-    this.status = HttpStatus.OFFLINE;
-    return false;
   }
 
   // Méthode pour vérifier si le serveur est joignable, vérification à effectuer

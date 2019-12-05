@@ -1,5 +1,6 @@
 enum HttpStatus {
   ONLINE,
   OFFLINE,
+  AUTHORIZED,
   UNAUTHORIZED,
 }
