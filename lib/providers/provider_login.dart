@@ -74,10 +74,25 @@ class ProviderLogin with ChangeNotifier {
 
   Future<bool> logout(String token) async {
     //TODO Call API to remove token on remote bdd
-    //TODO Remove token on local bdd
-    log.d('User logged out. Remove token : $token');
-    this.status = HttpStatus.OFFLINE;
-    return true;
+    UtilisateurData utilisateurData = await utilisateurDao.getUser();
+    var token = utilisateurData.token;
+    var response;
+    try {
+      response = await http.post(
+        urlDeconnection,
+        headers: {'Content-Type': 'application/json', 'Authorization': 'Bearer $token'},
+        body: utilisateurData.login,
+      );
+    } catch (exception) {
+      log.e("Error when tryiing to deconnect:\n" + exception.toString());
+    }
+    if (response?.statusCode == 200) {
+      //Supprime l'utilisateur (token et login) localement
+      utilisateurDao.deleteUser();
+      log.d('User logged out. Remove token : $token');
+      this.status = HttpStatus.OFFLINE;
+      return true;
+    }
   }
 
   void addUser(String login, String token) {

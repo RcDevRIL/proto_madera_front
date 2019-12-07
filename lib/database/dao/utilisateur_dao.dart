@@ -20,8 +20,8 @@ class UtilisateurDao extends DatabaseAccessor<MaderaDatabase>
     return (select(utilisateur)).getSingle();
   }
 
-  //Supprime l'utilisateur
-  void deleteUser(String login) {
-    delete(utilisateur).where((user) => user.login.equals(login));
+  //Supprime le contenu de utilisateur
+  void deleteUser() {
+    delete(utilisateur).go();
   }
 }
