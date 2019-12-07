@@ -1,13 +1,12 @@
-import 'package:flutter/material.dart';
 import 'dart:convert';
+
 import 'package:crypto/crypto.dart';
+import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:logger/logger.dart';
-import 'package:moor_flutter/moor_flutter.dart';
 import 'package:proto_madera_front/constants/url.dart';
 import 'package:proto_madera_front/database/dao/utilisateur_dao.dart';
 import 'package:proto_madera_front/database/madera_database.dart';
-
 import 'package:proto_madera_front/providers/http_status.dart';
 
 ///
@@ -40,11 +39,10 @@ class ProviderLogin with ChangeNotifier {
 
     if (response?.statusCode == 200) {
       this.status = HttpStatus.ONLINE;
-      if (response.body != 'false') {
-        this.status = HttpStatus.AUTHORIZED;
-        Map resp = jsonDecode(response.body);
-        addUser(login, resp['token']);
-      }
+      this.status = HttpStatus.AUTHORIZED;
+      UtilisateurData utilisateurData =
+          UtilisateurData.fromJson(jsonDecode(response.body));
+      utilisateurDao.insertUser(utilisateurData);
       return true;
     }
     if (response?.statusCode == 401) {
@@ -80,7 +78,10 @@ class ProviderLogin with ChangeNotifier {
     try {
       response = await http.post(
         urlDeconnection,
-        headers: {'Content-Type': 'application/json', 'Authorization': 'Bearer $token'},
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer $token'
+        },
         body: utilisateurData.login,
       );
     } catch (exception) {
@@ -93,10 +94,5 @@ class ProviderLogin with ChangeNotifier {
       this.status = HttpStatus.OFFLINE;
       return true;
     }
-  }
-
-  void addUser(String login, String token) {
-    utilisateurDao.insertUser(
-        UtilisateurCompanion(login: Value(login), token: Value(token)));
   }
 }

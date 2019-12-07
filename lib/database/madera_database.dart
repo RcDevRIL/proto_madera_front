@@ -8,11 +8,18 @@ class MaderaDatabase extends _$MaderaDatabase {
   MaderaDatabase()
       : super(
           FlutterQueryExecutor.inDatabaseFolder(
-            path: 'db.sqlite',
+            path: 'madera_db.sqlite',
           ),
         );
+  //Si modification du schéma alors le schemaVersion prend +1
   @override
   int get schemaVersion => 1;
 
-  //TODO modifier un truc
+  @override
+  MigrationStrategy get migration => MigrationStrategy(onCreate: (Migrator m) {
+        return m.createAllTables();
+      }, onUpgrade: (Migrator m, int from, int to) async {
+        //Suivant le schema de version met à jour la bdd
+
+      });
 }

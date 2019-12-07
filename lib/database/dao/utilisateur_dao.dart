@@ -10,7 +10,7 @@ class UtilisateurDao extends DatabaseAccessor<MaderaDatabase>
   UtilisateurDao(MaderaDatabase db) : super(db);
 
   //Ajoute ou remplace l'utilisateur
-  void insertUser(UtilisateurCompanion entry) {
+  void insertUser(UtilisateurData entry) {
     //TODO temporaire
     delete(utilisateur).go();
     into(utilisateur).insert(entry);
