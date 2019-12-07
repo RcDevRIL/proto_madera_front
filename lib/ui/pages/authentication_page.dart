@@ -251,17 +251,20 @@ class _AuthenticationPageState extends State<AuthenticationPage> {
                     break;
                   case HttpStatus.OFFLINE:
                     {
-                      //TODO showDialog(can't reach server)
+                      showPopup(context, 'Erreur réseau',
+                          'Le serveur n' ' est pas joignable.');
                     }
                     break;
                   case HttpStatus.ONLINE:
                     {
-                      //TODO showDialog(wrong ids)
+                      showPopup(context, 'Erreur d' 'authentification',
+                          'Le login et / ou le mot de passe sont incorrects');
                     }
                     break;
                   case HttpStatus.UNAUTHORIZED:
                     {
-                      // TODO: Handle this case.
+                      showPopup(context, 'Autorisation requise',
+                          'Vous n' ' êtes pas autorisé');
                     }
                     break;
                   default:
@@ -275,5 +278,28 @@ class _AuthenticationPageState extends State<AuthenticationPage> {
         }));
 
     return children;
+  }
+
+  void showPopup(BuildContext context, String title, String message) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text(
+            '$title',
+            style: TextStyle(color: Colors.red),
+          ),
+          content: Text('$message'),
+          actions: <Widget>[
+            MaderaButton(
+              child: Text('OK'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
   }
 }

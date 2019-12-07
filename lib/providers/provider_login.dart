@@ -47,7 +47,7 @@ class ProviderLogin with ChangeNotifier {
       }
       return true;
     }
-    if (response?.statusCode == 200 && response.body == 'false') {
+    if (response?.statusCode == 401) {
       this.status = HttpStatus.UNAUTHORIZED;
       return false;
     } else {
