@@ -13,13 +13,22 @@ class MaderaDatabase extends _$MaderaDatabase {
         );
   //Si modification du schéma alors le schemaVersion prend +1
   @override
-  int get schemaVersion => 1;
+  int get schemaVersion => 4;
 
   @override
   MigrationStrategy get migration => MigrationStrategy(onCreate: (Migrator m) {
         return m.createAllTables();
       }, onUpgrade: (Migrator m, int from, int to) async {
+        //Actif que si le schemaVersion change
         //Suivant le schema de version met à jour la bdd
-
+        if(from <= 2) {
+          //Met à jour composant
+          m.deleteTable('composant');
+          m.createTable(composant);
+        }
+        if(from <= 4) {
+          m.deleteTable('gamme');
+          m.createTable(gamme);
+        }
       });
 }

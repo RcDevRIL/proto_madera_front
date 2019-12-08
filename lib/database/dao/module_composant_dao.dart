@@ -10,6 +10,7 @@ class ModuleComposantDao extends DatabaseAccessor<MaderaDatabase> with _$ModuleC
   ModuleComposantDao(MaderaDatabase db) : super(db);
 
   void insertAll(List<ModuleComposantData> listModuleComposant) {
+    delete(moduleComposant).go();
     into(moduleComposant).insertAll(listModuleComposant);
   }
 }

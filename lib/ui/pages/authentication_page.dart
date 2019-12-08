@@ -203,17 +203,7 @@ class _AuthenticationPageState extends State<AuthenticationPage> {
                 onChanged: _loginFormBloc.onPasswordChanged,
                 onSubmitted: _emailController.text.isNotEmpty &&
                         _passwordController.text.isNotEmpty
-                    ? (password) async =>
-                        await Provider.of<ProviderLogin>(context)
-                            .connection(
-                                _emailController.text, _passwordController.text)
-                            .then(
-                              (value) => value
-                                  ? Provider.of<MaderaNav>(context)
-                                      .redirectToPage(context, HomePage())
-                                  //TODO afficher message erreur
-                                  : print('Connection failed'),
-                            )
+                    ? (password) async => submit()
                     : null,
                 controller: _passwordController,
                 keyboardType: TextInputType.text,
@@ -236,41 +226,7 @@ class _AuthenticationPageState extends State<AuthenticationPage> {
           return MaderaButton(
             onPressed: () async {
               if ((snapshot.hasData && snapshot.data == true)) {
-                await Provider.of<ProviderLogin>(context).connection(
-                    _emailController.text, _passwordController.text);
-                switch (Provider.of<ProviderLogin>(context).getStatus) {
-                  case HttpStatus.AUTHORIZED:
-                    {
-                      //TODO Afficher un message d'erreur si données non récup ?
-                      Provider.of<ProviderSynchro>(context)
-                          .synchroReferentiel();
-                      //TODO Ajouter synchroProjet également
-                      Provider.of<MaderaNav>(context)
-                          .redirectToPage(context, HomePage());
-                    }
-                    break;
-                  case HttpStatus.OFFLINE:
-                    {
-                      showPopup(context, 'Erreur réseau',
-                          'Le serveur n' ' est pas joignable.');
-                    }
-                    break;
-                  case HttpStatus.ONLINE:
-                    {
-                      showPopup(context, 'Erreur d' 'authentification',
-                          'Le login et / ou le mot de passe sont incorrects');
-                    }
-                    break;
-                  case HttpStatus.UNAUTHORIZED:
-                    {
-                      showPopup(context, 'Autorisation requise',
-                          'Vous n' ' êtes pas autorisé');
-                    }
-                    break;
-                  default:
-                    {}
-                    break;
-                }
+                submit();
               }
             },
             child: Text('Connexion'),
@@ -278,6 +234,42 @@ class _AuthenticationPageState extends State<AuthenticationPage> {
         }));
 
     return children;
+  }
+
+  void submit() async {
+    await Provider.of<ProviderLogin>(context)
+        .connection(_emailController.text, _passwordController.text);
+    switch (Provider.of<ProviderLogin>(context).getStatus) {
+      case HttpStatus.AUTHORIZED:
+        {
+          //TODO Afficher un message d'erreur si données non récup ?
+          Provider.of<ProviderSynchro>(context).synchroReferentiel();
+          Provider.of<MaderaNav>(context).redirectToPage(context, HomePage());
+          //TODO Ajouter synchroProjet également
+        }
+        break;
+      case HttpStatus.OFFLINE:
+        {
+          showPopup(
+              context, 'Erreur réseau', 'Le serveur n' ' est pas joignable.');
+        }
+        break;
+      case HttpStatus.ONLINE:
+        {
+          showPopup(context, 'Erreur d' 'authentification',
+              'Le login et / ou le mot de passe sont incorrects');
+        }
+        break;
+      case HttpStatus.UNAUTHORIZED:
+        {
+          showPopup(
+              context, 'Autorisation requise', 'Vous n' ' êtes pas autorisé');
+        }
+        break;
+      default:
+        {}
+        break;
+    }
   }
 
   void showPopup(BuildContext context, String title, String message) {

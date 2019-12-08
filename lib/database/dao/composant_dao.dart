@@ -10,6 +10,7 @@ class ComposantDao extends DatabaseAccessor<MaderaDatabase>
   ComposantDao(MaderaDatabase db) : super(db);
 
   void insertAll(List<ComposantData> listEntry) {
+    delete(composant).go();
     into(composant).insertAll(listEntry);
   }
 }

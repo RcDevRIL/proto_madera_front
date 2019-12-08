@@ -8,13 +8,10 @@ class Module extends Table {
 
   //Module referentiel
 
-  @JsonKey("moduleReferentiel.moduleReferentielId")
   IntColumn get moduleReferentielId => integer()();
 
-  @JsonKey("moduleReferentiel.caracteristiqueReferentiel")
   TextColumn get caracteristiqueReferentiel => text()();
 
-  @JsonKey("moduleReferentiel.uniteUsage")
   TextColumn get uniteUsage => text()();
 
   //Nom du module

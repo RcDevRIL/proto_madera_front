@@ -10,6 +10,7 @@ class ModuleDao extends DatabaseAccessor<MaderaDatabase> with _$ModuleDaoMixin {
   ModuleDao(MaderaDatabase db) : super(db);
 
   void insertAll(List<ModuleData> listModule) {
+    delete(module).go();
     into(module).insertAll(listModule);
   }
 }

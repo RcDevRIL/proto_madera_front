@@ -10,6 +10,7 @@ class GammeDao extends DatabaseAccessor<MaderaDatabase>
   GammeDao(MaderaDatabase db) : super(db);
 
   void insertAll(List<GammeData> listEntry) {
+    delete(gamme).go();
     into(gamme).insertAll(listEntry);
   }
 }

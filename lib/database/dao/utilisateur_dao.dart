@@ -11,12 +11,11 @@ class UtilisateurDao extends DatabaseAccessor<MaderaDatabase>
 
   //Ajoute ou remplace l'utilisateur
   void insertUser(UtilisateurData entry) {
-    //TODO temporaire
     delete(utilisateur).go();
     into(utilisateur).insert(entry);
   }
 
-  Future<UtilisateurData> getUser() async {
+  Future<UtilisateurData> getUser() {
     return (select(utilisateur)).getSingle();
   }
 
