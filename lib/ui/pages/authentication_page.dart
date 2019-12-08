@@ -243,7 +243,7 @@ class _AuthenticationPageState extends State<AuthenticationPage> {
       case HttpStatus.AUTHORIZED:
         {
           //TODO Afficher un message d'erreur si données non récup ?
-          Provider.of<ProviderSynchro>(context).synchroReferentiel();
+          Provider.of<ProviderSynchro>(context).synchro();
           Provider.of<MaderaNav>(context).redirectToPage(context, HomePage());
           //TODO Ajouter synchroProjet également
         }
