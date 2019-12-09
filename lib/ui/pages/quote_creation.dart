@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:logger/logger.dart';
 import 'package:proto_madera_front/ui/pages/quote.dart';
 import 'package:proto_madera_front/ui/pages/widgets/madera_button.dart';
@@ -84,7 +85,7 @@ class _QuoteCreationState extends State<QuoteCreation> {
                                         child: TextField(
                                           controller: TextEditingController(
                                               text:
-                                                  "D-0945194"), // Va être généré automatiquement à l'avenir
+                                                  DateFormat('yyyy-MM-dd').format(DateTime.now())), // Va être généré automatiquement à l'avenir
                                           keyboardType: TextInputType.text,
                                           enabled: false,
                                           decoration: InputDecoration(
