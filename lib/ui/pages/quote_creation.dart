@@ -56,54 +56,59 @@ class _QuoteCreationState extends State<QuoteCreation> {
                       width: cTheme.Dimens.containerWidth,
                       height: cTheme.Dimens.containerHeight,
                       color: cTheme.Colors.containerBackground,
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: <Widget>[
-                          Align(
-                            alignment: Alignment.center,
-                            child: Text("Devis"),
-                          ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceAround,
-                            children: <Widget>[
-                              Card(
-                                child: Column(
-                                  children: <Widget>[
-                                    LabelledIcon(
-                                      icon: Icon(Icons.calendar_today),
-                                      text: Text("Date de création"),
-                                    ),
-                                    SizedBox(height: 6.0),
-                                    Container(
-                                      color: Colors.grey[200],
-                                      width: cTheme.Dimens.cardSizeSmall,
-                                      height: cTheme.Dimens.cardHeight,
-                                      child: TextField(
-                                        controller: TextEditingController(text: "D-0945194"), // Va être généré automatiquement à l'avenir
-                                        keyboardType: TextInputType.text,
-                                        enabled: false,
-                                        decoration: InputDecoration(
-                                          border: OutlineInputBorder(),
-                                        ),
+                      padding: EdgeInsets.only(top: 20),
+                      child: SingleChildScrollView(
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: <Widget>[
+                            Align(
+                              alignment: Alignment.center,
+                              child: Text("Devis"),
+                            ),
+                            SizedBox(height: 30),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceAround,
+                              children: <Widget>[
+                                Card(
+                                  child: Column(
+                                    children: <Widget>[
+                                      LabelledIcon(
+                                        icon: Icon(Icons.calendar_today),
+                                        text: Text("Date de création"),
                                       ),
-                                    )
-                                  ],
+                                      SizedBox(height: 6.0),
+                                      Container(
+                                        color: Colors.grey[200],
+                                        width: cTheme.Dimens.cardSizeSmall,
+                                        height: cTheme.Dimens.cardHeight,
+                                        child: TextField(
+                                          controller: TextEditingController(
+                                              text:
+                                                  "D-0945194"), // Va être généré automatiquement à l'avenir
+                                          keyboardType: TextInputType.text,
+                                          enabled: false,
+                                          decoration: InputDecoration(
+                                            border: OutlineInputBorder(),
+                                          ),
+                                        ),
+                                      )
+                                    ],
+                                  ),
                                 ),
-                              ),
-                              Card(
-                                child: Column(
-                                  children: <Widget>[
-                                    LabelledIcon(
-                                      icon: Icon(Icons.person),
-                                      text: Text("ID. Client"),
-                                    ),
-                                    SizedBox(height: 6.0),
-                                    Container(
-                                      color: Colors.grey[200],
-                                      width: cTheme.Dimens.cardSizeMedium,
-                                      height: cTheme.Dimens.cardHeight,
-                                      child: TextField(
-                                        /**
+                                Card(
+                                  child: Column(
+                                    children: <Widget>[
+                                      LabelledIcon(
+                                        icon: Icon(Icons.person),
+                                        text: Text("ID. Client"),
+                                      ),
+                                      SizedBox(height: 6.0),
+                                      Container(
+                                        color: Colors.grey[200],
+                                        width: cTheme.Dimens.cardSizeMedium,
+                                        height: cTheme.Dimens.cardHeight,
+                                        child: TextField(
+                                          /**
                                          * Ici j'aurais pensé ecrire le nom du client
                                          * e.g.: DUPONT
                                          * Une liste de tous les clients qui ont un nom contenant "DUPONT" apparaitrait
@@ -111,101 +116,107 @@ class _QuoteCreationState extends State<QuoteCreation> {
                                          * 
                                          * Comme cela quand on accéderait aux devis d'un client spécifique, on renseignerait
                                          */
-                                        controller: TextEditingController(text: "C-018465454"), // Va être généré automatiquement à l'avenir
-                                        keyboardType: TextInputType.text,
-                                        decoration: InputDecoration(
-                                          border: OutlineInputBorder(),
+                                          controller: TextEditingController(
+                                              text:
+                                                  "C-018465454"), // Va être généré automatiquement à l'avenir
+                                          keyboardType: TextInputType.text,
+                                          decoration: InputDecoration(
+                                            border: OutlineInputBorder(),
+                                          ),
+                                        ),
+                                      )
+                                    ],
+                                  ),
+                                )
+                              ],
+                            ),
+                            SizedBox(height: 30),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: <Widget>[
+                                Card(
+                                  child: Column(
+                                    children: <Widget>[
+                                      Align(
+                                        alignment: Alignment.centerLeft,
+                                        child: LabelledIcon(
+                                          icon: Icon(Icons.info),
+                                          text: Text("ID. Projet"),
                                         ),
                                       ),
-                                    )
-                                  ],
-                                ),
-                              )
-                            ],
-                          ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: <Widget>[
-                              Card(
-                                child: Column(
-                                  children: <Widget>[
-                                    Align(
-                                      alignment: Alignment.centerLeft,
-                                      child: LabelledIcon(
-                                      icon: Icon(Icons.info),
-                                      text: Text("ID. Projet"),
-                                    ),
-                                    ),
-                                    SizedBox(height: 6.0),
-                                    Container(
-                                      color: Colors.grey[200],
-                                      width: cTheme.Dimens.cardSizeLarge,
-                                      height: cTheme.Dimens.cardHeight,
-                                      child: TextField(
-                                        controller: TextEditingController(text: "P-01655651"),
-                                        keyboardType: TextInputType.text,
-                                        decoration: InputDecoration(
-                                          border: OutlineInputBorder(),
+                                      SizedBox(height: 6.0),
+                                      Container(
+                                        color: Colors.grey[200],
+                                        width: cTheme.Dimens.cardSizeLarge,
+                                        height: cTheme.Dimens.cardHeight,
+                                        child: TextField(
+                                          controller: TextEditingController(
+                                              text: "P-01655651"),
+                                          keyboardType: TextInputType.text,
+                                          decoration: InputDecoration(
+                                            border: OutlineInputBorder(),
+                                          ),
+                                        ),
+                                      )
+                                    ],
+                                  ),
+                                )
+                              ],
+                            ),
+                            SizedBox(height: 30),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: <Widget>[
+                                Card(
+                                  child: Column(
+                                    children: <Widget>[
+                                      Align(
+                                        alignment: Alignment.centerLeft,
+                                        child: LabelledIcon(
+                                          icon: Icon(Icons.info),
+                                          text: Text("Description Projet"),
                                         ),
                                       ),
-                                    )
-                                  ],
-                                ),
-                              )
-                            ],
-                          ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: <Widget>[
-                              Card(
-                                child: Column(
-                                  children: <Widget>[
-                                    Align(
-                                      alignment: Alignment.centerLeft,
-                                      child: LabelledIcon(
-                                      icon: Icon(Icons.info),
-                                      text: Text("Description Projet"),
-                                    ),
-                                    ),
-                                    SizedBox(height: 6.0),
-                                    Container(
-                                      color: Colors.grey[200],
-                                      width: cTheme.Dimens.cardSizeLarge,
-                                      height: cTheme.Dimens.cardHeightLarge,
-                                      child: TextField(
-                                        keyboardType: TextInputType.multiline,
-                                        maxLines: 5,
-                                        decoration: InputDecoration(
-                                          border: OutlineInputBorder(),
+                                      SizedBox(height: 6.0),
+                                      Container(
+                                        color: Colors.grey[200],
+                                        width: cTheme.Dimens.cardSizeLarge,
+                                        height: cTheme.Dimens.cardHeightLarge,
+                                        child: TextField(
+                                          keyboardType: TextInputType.multiline,
+                                          maxLines: 5,
+                                          decoration: InputDecoration(
+                                            border: OutlineInputBorder(),
+                                          ),
                                         ),
-                                      ),
-                                    )
-                                  ],
-                                ),
-                              )
-                            ],
-                          ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.end,
-                            children: <Widget>[
-                              Align(
-                                alignment: Alignment.bottomRight,
-                                child: MaderaButton(
-                                  onPressed: () {
-                                    log.d("Quote Creation");
-                                    Provider.of<MaderaNav>(context)
-                                        .redirectToPage(context, Quote());
-                                  },
-                                  child: LabelledIcon(
-                                    mASize: MainAxisSize.min,
-                                    icon: Icon(Icons.check),
-                                    text: Text("Valider"),
+                                      )
+                                    ],
+                                  ),
+                                )
+                              ],
+                            ),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.end,
+                              children: <Widget>[
+                                Align(
+                                  alignment: Alignment.bottomRight,
+                                  child: MaderaButton(
+                                    onPressed: () {
+                                      log.d("Quote Creation");
+                                      Provider.of<MaderaNav>(context)
+                                          .redirectToPage(context, Quote());
+                                    },
+                                    child: LabelledIcon(
+                                      mASize: MainAxisSize.min,
+                                      icon: Icon(Icons.check),
+                                      text: Text("Valider"),
+                                    ),
                                   ),
                                 ),
-                              ),
-                            ],
-                          ),
-                        ],
+                              ],
+                            ),
+                          ],
+                        ),
                       ),
                     ),
                   ),
