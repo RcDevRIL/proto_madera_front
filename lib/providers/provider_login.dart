@@ -42,7 +42,7 @@ class ProviderLogin with ChangeNotifier {
       this.status = HttpStatus.AUTHORIZED;
       UtilisateurData utilisateurData =
           UtilisateurData.fromJson(jsonDecode(response.body));
-      utilisateurDao.insertUser(utilisateurData);
+      await utilisateurDao.insertUser(utilisateurData);
       return true;
     }
     if (response?.statusCode == 401) {
@@ -71,7 +71,6 @@ class ProviderLogin with ChangeNotifier {
   }
 
   Future<bool> logout(String token) async {
-    //TODO Call API to remove token on remote bdd
     UtilisateurData utilisateurData = await utilisateurDao.getUser();
     var token = utilisateurData.token;
     var response;
