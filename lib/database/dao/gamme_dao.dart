@@ -9,8 +9,8 @@ class GammeDao extends DatabaseAccessor<MaderaDatabase>
     with _$GammeDaoMixin {
   GammeDao(MaderaDatabase db) : super(db);
 
-  void insertAll(List<GammeData> listEntry) {
-    delete(gamme).go();
-    into(gamme).insertAll(listEntry);
+  Future insertAll(List<GammeData> listEntry) async {
+    await delete(gamme).go();
+    await into(gamme).insertAll(listEntry);
   }
 }

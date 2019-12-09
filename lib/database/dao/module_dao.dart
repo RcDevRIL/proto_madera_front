@@ -9,8 +9,8 @@ part 'module_dao.g.dart';
 class ModuleDao extends DatabaseAccessor<MaderaDatabase> with _$ModuleDaoMixin {
   ModuleDao(MaderaDatabase db) : super(db);
 
-  void insertAll(List<ModuleData> listModule) {
-    delete(module).go();
-    into(module).insertAll(listModule);
+  Future insertAll(List<ModuleData> listModule) async{
+    await delete(module).go();
+    await into(module).insertAll(listModule);
   }
 }

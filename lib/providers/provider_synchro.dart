@@ -16,6 +16,7 @@ class ProviderSynchro with ChangeNotifier {
   GammeDao gammeDao = new GammeDao(db);
   ModuleDao moduleDao = new ModuleDao(db);
   ModuleComposantDao moduleComposantDao = new ModuleComposantDao(db);
+  DevisEtatDao devisEtatDao = new DevisEtatDao(db);
 
   void synchro() {
     synchroReferentiel();
@@ -52,12 +53,17 @@ class ProviderSynchro with ChangeNotifier {
               .map((d) => ModuleComposantData.fromJson(d))
               .toList();
 
+      List<DevisEtatData> listDevisEtat = (data['devisEtat'] as List)
+          .map((e) => DevisEtatData.fromJson(e))
+          .toList();
+
       //TODO Supprimer le contenu des tables à chaque synchro ?
       //Insertion des données en base
-      composantDao.insertAll(listComposant);
-      gammeDao.insertAll(listGamme);
-      moduleDao.insertAll(listModule);
-      moduleComposantDao.insertAll(listModuleComposant);
+      await composantDao.insertAll(listComposant);
+      await gammeDao.insertAll(listGamme);
+      await moduleDao.insertAll(listModule);
+      await moduleComposantDao.insertAll(listModuleComposant);
+      await devisEtatDao.insertAll(listDevisEtat);
     } else {
       log.e("Erreur lors de la synchronisation des données");
     }

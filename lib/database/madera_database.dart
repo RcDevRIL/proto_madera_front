@@ -3,7 +3,7 @@ import 'package:proto_madera_front/database/tables.dart';
 
 part 'madera_database.g.dart';
 
-@UseMoor(tables: [Utilisateur, Composant, Gamme, Module, ModuleComposant])
+@UseMoor(tables: [Utilisateur, Composant, Gamme, Module, ModuleComposant, DevisEtat])
 class MaderaDatabase extends _$MaderaDatabase {
   MaderaDatabase()
       : super(
@@ -13,7 +13,7 @@ class MaderaDatabase extends _$MaderaDatabase {
         );
   //Si modification du schéma alors le schemaVersion prend +1
   @override
-  int get schemaVersion => 4;
+  int get schemaVersion => 5;
 
   @override
   MigrationStrategy get migration => MigrationStrategy(onCreate: (Migrator m) {
@@ -29,6 +29,9 @@ class MaderaDatabase extends _$MaderaDatabase {
         if(from <= 4) {
           m.deleteTable('gamme');
           m.createTable(gamme);
+        }
+        if(from <= 5) {
+          m.createTable(devisEtat);
         }
       });
 }

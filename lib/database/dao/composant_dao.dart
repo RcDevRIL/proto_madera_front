@@ -9,8 +9,8 @@ class ComposantDao extends DatabaseAccessor<MaderaDatabase>
     with _$ComposantDaoMixin {
   ComposantDao(MaderaDatabase db) : super(db);
 
-  void insertAll(List<ComposantData> listEntry) {
-    delete(composant).go();
-    into(composant).insertAll(listEntry);
+  Future insertAll(List<ComposantData> listEntry) async {
+    await delete(composant).go();
+    await into(composant).insertAll(listEntry);
   }
 }
