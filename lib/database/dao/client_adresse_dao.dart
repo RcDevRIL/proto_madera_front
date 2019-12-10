@@ -8,4 +8,9 @@ part 'client_adresse_dao.g.dart';
 class ClientAdresseDao extends DatabaseAccessor<MaderaDatabase>
     with _$ClientAdresseDaoMixin {
   ClientAdresseDao(MaderaDatabase db) : super(db);
+
+  Future insertAll(List<ClientAdresseData> listClientAdresse) async {
+    await delete(clientAdresse).go();
+    await into(clientAdresse).insertAll(listClientAdresse);
+  }
 }

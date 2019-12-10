@@ -11,6 +11,7 @@ class Projet extends Table {
 
   TextColumn get refProjet => text().withLength(min: 0, max: 45)();
 
+  //TODO Marche pas (probleme de serialization, je regarderais demain
   DateTimeColumn get dateProjet => dateTime()();
 
   RealColumn get prix => real()();

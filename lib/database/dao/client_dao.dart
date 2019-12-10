@@ -7,4 +7,9 @@ part 'client_dao.g.dart';
 @UseDao(tables: [Client])
 class ClientDao extends DatabaseAccessor<MaderaDatabase> with _$ClientDaoMixin {
   ClientDao(MaderaDatabase db) : super(db);
+
+  Future insertAll(List<ClientData> listClient) async {
+    await delete(client).go();
+    await into(client).insertAll(listClient);
+  }
 }

@@ -8,4 +8,9 @@ part 'projet_module_dao.g.dart';
 @UseDao(tables: [ProjetModule])
 class ProjetModuleDao extends DatabaseAccessor<MaderaDatabase> with _$ProjetModuleDaoMixin {
   ProjetModuleDao(MaderaDatabase db) : super(db);
+
+  Future insertAll(List<ProjetModuleData> listProjetModule) async {
+    await delete(projetModule).go();
+    await into(projetModule).insertAll(listProjetModule);
+  }
 }

@@ -17,6 +17,11 @@ class ProviderSynchro with ChangeNotifier {
   ModuleDao moduleDao = new ModuleDao(db);
   ModuleComposantDao moduleComposantDao = new ModuleComposantDao(db);
   DevisEtatDao devisEtatDao = new DevisEtatDao(db);
+  ClientDao clientDao = new ClientDao(db);
+  ClientAdresseDao clientAdresseDao = new ClientAdresseDao(db);
+  AdresseDao adresseDao = new AdresseDao(db);
+  ProjetDao projetDao = new ProjetDao(db);
+  ProjetModuleDao projetModuleDao = new ProjetModuleDao(db);
 
   void synchro() {
     synchroReferentiel();
@@ -65,7 +70,7 @@ class ProviderSynchro with ChangeNotifier {
       await moduleComposantDao.insertAll(listModuleComposant);
       await devisEtatDao.insertAll(listDevisEtat);
     } else {
-      log.e("Erreur lors de la synchronisation des données");
+      log.e("Erreur lors de la synchronisation des données (referentiel)");
     }
     //TODO Renvoyer un message d'erreur
   }
@@ -84,7 +89,31 @@ class ProviderSynchro with ChangeNotifier {
       log.e("Erreur lors de la synchronisation des données");
     }
     if (response.statusCode == 200) {
-      print('OK');
+      var data = jsonDecode(response.body);
+      List<ClientData> listClient = (data['client'] as List)
+        .map((f) => ClientData.fromJson(f))
+        .toList();
+      List<ClientAdresseData> listClientAdresse = (data['clientAdresse'] as List)
+        .map((g) => ClientAdresseData.fromJson(g))
+      .toList();
+
+      List<AdresseData> listAdresse = (data['adresse'] as List)
+        .map((h) => AdresseData.fromJson(h)).toList();
+
+      List<ProjetData> listProjet = (data['projet'] as List)
+        .map((i) => ProjetData.fromJson(i)).toList();
+
+      List<ProjetModuleData> listProjetModule = (data['projetModule'] as List)
+        .map((j) => ProjetModuleData.fromJson(j)).toList();
+
+      await clientDao.insertAll(listClient);
+      await clientAdresseDao.insertAll(listClientAdresse);
+      await adresseDao.insertAll(listAdresse);
+      await projetDao.insertAll(listProjet);
+      await projetModuleDao.insertAll(listProjetModule);
+    } else {
+      log.e("Erreur lors de la synchronisation des données (data)");
     }
+    //TODO Renvoyer message d'erreur ?
   }
 }
