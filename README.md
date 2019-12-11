@@ -23,6 +23,7 @@ This README will guide you through the setup and deployment of this application 
 * [X] Packages used to run the app
 * [X] How to install/run app on device
 * [X] How to run tests
+* [ ] How to generate [moor_flutter] code
 * [ ] How to ...
 
 ##### Prerequisites
@@ -65,6 +66,8 @@ This will trigger the execution of tests. Depending on your IDE, you should see 
 * [logger] - The package used for logging utilities
 * [http] - The package used for making HTTP requests
 * [crypto] - The package used to encrypt passwords
+* [moor_flutter] - The package used to...
+* [build_runner] - The package used under  "dev dependencies" to...
 
 ## Contributing
 
@@ -101,6 +104,8 @@ This project is licensed under the GNU GENERAL PUBLIC LICENSE - see the [LICENSE
 [logger]: https://pub.dev/packages/logger
 [http]: https://pub.dev/packages/http
 [crypto]: https://pub.dev/packages/crypto
+[moor_flutter]: https://pub.dev/packages/moor_flutter
+[build_runner]: https://pub.dev/packages/build_runner
 [RcDevRIL]: https://github.com/RcDevRIL
 [BoiteSphinx]: https://github.com/BoiteSphinx
 [LadouceFabien]: https://github.com/LadouceFabien
