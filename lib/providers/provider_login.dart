@@ -92,6 +92,8 @@ class ProviderLogin with ChangeNotifier {
       log.d('User logged out. Remove token : $token');
       this.status = HttpStatus.OFFLINE;
       return true;
+    } else {
+      return false;
     }
   }
 }
