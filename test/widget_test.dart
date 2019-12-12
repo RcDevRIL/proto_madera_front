@@ -65,7 +65,7 @@ void main() {
     });
     test('logout test', () {
       ProviderLogin providerLogin = ProviderLogin();
-      expect(providerLogin.logout('testToken'), completion(true));
+      expect(providerLogin.logout(), completion(true));
     });
     test('last sync date test', () {
       var date = DateTime.now();

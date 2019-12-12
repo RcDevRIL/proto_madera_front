@@ -70,7 +70,7 @@ class ProviderLogin with ChangeNotifier {
     return false;
   }
 
-  Future<bool> logout(String token) async {
+  Future<bool> logout() async {
     UtilisateurData utilisateurData = await utilisateurDao.getUser();
     var token = utilisateurData.token;
     var response;

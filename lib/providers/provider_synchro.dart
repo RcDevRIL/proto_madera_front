@@ -90,21 +90,31 @@ class ProviderSynchro with ChangeNotifier {
     }
     if (response.statusCode == 200) {
       var data = jsonDecode(response.body);
-      List<ClientData> listClient = (data['client'] as List)
-        .map((f) => ClientData.fromJson(f))
-        .toList();
-      List<ClientAdresseData> listClientAdresse = (data['clientAdresse'] as List)
-        .map((g) => ClientAdresseData.fromJson(g))
-      .toList();
+      List<ClientData> listClient =
+          (data['client'] as List).map((f) => ClientData.fromJson(f)).toList();
+      List<ClientAdresseData> listClientAdresse =
+          (data['clientAdresse'] as List)
+              .map((g) => ClientAdresseData.fromJson(g))
+              .toList();
 
       List<AdresseData> listAdresse = (data['adresse'] as List)
-        .map((h) => AdresseData.fromJson(h)).toList();
+          .map((h) => AdresseData.fromJson(h))
+          .toList();
 
       List<ProjetData> listProjet = (data['projet'] as List)
-        .map((i) => ProjetData.fromJson(i)).toList();
+          .map(
+            (i) => i
+              ..update(
+                'dateProjet',
+                (k) => DateTime.parse(k).millisecondsSinceEpoch,
+              ),
+          )
+          .map((i) => ProjetData.fromJson(i))
+          .toList();
 
       List<ProjetModuleData> listProjetModule = (data['projetModule'] as List)
-        .map((j) => ProjetModuleData.fromJson(j)).toList();
+          .map((j) => ProjetModuleData.fromJson(j))
+          .toList();
 
       await clientDao.insertAll(listClient);
       await clientAdresseDao.insertAll(listClientAdresse);
