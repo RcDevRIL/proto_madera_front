@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 import 'package:logger/logger.dart';
 import 'package:proto_madera_front/ui/pages/quote.dart';
 import 'package:proto_madera_front/ui/pages/widgets/madera_button.dart';
@@ -17,6 +16,10 @@ class QuoteCreation extends StatefulWidget {
 }
 
 class _QuoteCreationState extends State<QuoteCreation> {
+  static var now = DateTime.now();
+  final String dateCreationProjet = now.year.toString() 
+                      + "-" + now.month.toString()
+                      + "-" + now.day.toString();
   final log = Logger();
 
   ///
@@ -84,8 +87,9 @@ class _QuoteCreationState extends State<QuoteCreation> {
                                         height: cTheme.Dimens.cardHeight,
                                         child: TextField(
                                           controller: TextEditingController(
-                                              text:
-                                                  DateFormat('yyyy-MM-dd').format(DateTime.now())), // Va être généré automatiquement à l'avenir
+                                              text: dateCreationProjet
+                                                  //DateFormat('yyyy-MM-dd').format(DateTime.now()) // Va être généré automatiquement à l'avenir
+                                                  ), 
                                           keyboardType: TextInputType.text,
                                           enabled: false,
                                           decoration: InputDecoration(
@@ -119,7 +123,7 @@ class _QuoteCreationState extends State<QuoteCreation> {
                                          */
                                           controller: TextEditingController(
                                               text:
-                                                  "C-018465454"), // Va être généré automatiquement à l'avenir
+                                                  "2"), // Va être généré automatiquement à l'avenir
                                           keyboardType: TextInputType.text,
                                           decoration: InputDecoration(
                                             border: OutlineInputBorder(),
@@ -152,7 +156,7 @@ class _QuoteCreationState extends State<QuoteCreation> {
                                         height: cTheme.Dimens.cardHeight,
                                         child: TextField(
                                           controller: TextEditingController(
-                                              text: "P-01655651"),
+                                              text: "1"),
                                           keyboardType: TextInputType.text,
                                           decoration: InputDecoration(
                                             border: OutlineInputBorder(),
