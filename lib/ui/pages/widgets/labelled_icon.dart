@@ -23,6 +23,9 @@ class LabelledIcon extends StatelessWidget {
       mainAxisSize: mASize != null ? mASize : MainAxisSize.min,
       children: <Widget>[
         icon,
+        SizedBox(
+          width: 5.0,
+        ),
         text,
       ],
     );

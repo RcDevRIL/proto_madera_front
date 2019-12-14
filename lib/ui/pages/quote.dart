@@ -63,7 +63,7 @@ class _QuoteState extends State<Quote> {
                     padding: EdgeInsets.all(8.0),
                     width: cTheme.Dimens.containerWidth,
                     height: cTheme.Dimens.containerHeight,
-                    color: cTheme.Colors.containerBackground,
+                    color: cTheme.Colors.containerBackgroundLinearStart,
                     child: Align(
                       alignment: Alignment.bottomLeft,
                       child: MaderaButton(
@@ -84,13 +84,17 @@ class _QuoteState extends State<Quote> {
               Align(
                 alignment: Alignment.bottomRight,
                 child: Padding(
-                  padding: const EdgeInsets.fromLTRB(0, 0, cTheme.Dimens.buttonPaddingRight, cTheme.Dimens.buttonPaddingBottom),
+                  padding: const EdgeInsets.fromLTRB(
+                      0,
+                      0,
+                      cTheme.Dimens.buttonPaddingRight,
+                      cTheme.Dimens.buttonPaddingBottom),
                   child: MaderaButton(
                     // TODO: Redirect to Quote Overview
                     onPressed: () {
                       log.d("Validating Quote");
                       Provider.of<MaderaNav>(context)
-                        .redirectToPage(context, QuoteOverview());
+                          .redirectToPage(context, QuoteOverview());
                     },
                     child: LabelledIcon(
                       icon: Icon(Icons.check),

@@ -23,9 +23,11 @@ class QuoteCreation extends StatefulWidget {
 
 class _QuoteCreationState extends State<QuoteCreation> {
   static var now = DateTime.now();
-  final String dateCreationProjet = now.year.toString() 
-                      + "-" + now.month.toString()
-                      + "-" + now.day.toString();
+  final String dateCreationProjet = now.year.toString() +
+      "-" +
+      now.month.toString() +
+      "-" +
+      now.day.toString();
   final log = Logger();
 
   ///
@@ -54,7 +56,7 @@ class _QuoteCreationState extends State<QuoteCreation> {
       onWillPop: _onWillPopScope,
       child: SafeArea(
         child: Scaffold(
-          backgroundColor: Colors.blueGrey,
+          backgroundColor: Colors.white,
           body: Stack(
             children: <Widget>[
               Padding(
@@ -65,7 +67,28 @@ class _QuoteCreationState extends State<QuoteCreation> {
                     builder: (context, mN, w) => Container(
                       width: cTheme.Dimens.containerWidth,
                       height: cTheme.Dimens.containerHeight,
-                      color: cTheme.Colors.containerBackground,
+                      // color: cTheme.Colors.containerBackgroundLinearStart,
+                      decoration: BoxDecoration(
+                          boxShadow: [
+                            BoxShadow(
+                              blurRadius: 5.0,
+                              color: Colors.grey,
+                              offset: Offset(10.0, 10.0),
+                            ),
+                            BoxShadow(
+                              blurRadius: 5.0,
+                              color: Colors.grey,
+                              offset: Offset(0.0, 00.0),
+                            ),
+                          ],
+                          gradient: LinearGradient(
+                            colors: [
+                              cTheme.Colors.containerBackgroundLinearStart,
+                              cTheme.Colors.containerBackgroundLinearEnd
+                            ],
+                            begin: Alignment(0.0, -1.0),
+                            end: Alignment(0.0, 0.0),
+                          )),
                       padding: EdgeInsets.only(top: 20),
                       child: SingleChildScrollView(
                         child: Column(
@@ -73,137 +96,116 @@ class _QuoteCreationState extends State<QuoteCreation> {
                           children: <Widget>[
                             Align(
                               alignment: Alignment.center,
-                              child: Text("Devis"),
+                              child: Text("Devis",
+                                  style: cTheme.TextStyles.appBarTitle.copyWith(
+                                    fontSize: 32.0,
+                                  )),
                             ),
-                            SizedBox(height: 30),
+                            SizedBox(height: 30.0),
                             Row(
                               mainAxisAlignment: MainAxisAlignment.spaceAround,
                               children: <Widget>[
-                                Card(
-                                  child: Column(
-                                    children: <Widget>[
-                                      LabelledIcon(
-                                        icon: Icon(Icons.calendar_today),
-                                        text: Text("Date de création"),
+                                MaderaCard(
+                                  cardWidth: cTheme.Dimens.cardSizeSmall,
+                                  cardHeight: cTheme.Dimens.cardHeight,
+                                  enable: false,
+                                  textInputType: TextInputType.text,
+                                  autoText: dateCreationProjet,
+                                  defaultText: '14/12/2019',
+                                  labelledIcon: LabelledIcon(
+                                    icon: Icon(
+                                      Icons.calendar_today,
+                                      color: cTheme.Colors.appBarTitle,
+                                    ),
+                                    text: Text(
+                                      "Date de création",
+                                      style: cTheme.TextStyles.appBarTitle
+                                          .copyWith(
+                                        fontSize: 13.0,
+                                        fontWeight: FontWeight.w600,
                                       ),
-                                      SizedBox(height: 6.0),
-                                      Container(
-                                        color: Colors.grey[200],
-                                        width: cTheme.Dimens.cardSizeSmall,
-                                        height: cTheme.Dimens.cardHeight,
-                                        child: TextField(
-                                          controller: TextEditingController(
-                                              text: dateCreationProjet
-                                                  //DateFormat('yyyy-MM-dd').format(DateTime.now()) // Va être généré automatiquement à l'avenir
-                                                  ), 
-                                          keyboardType: TextInputType.text,
-                                          enabled: false,
-                                          decoration: InputDecoration(
-                                            border: OutlineInputBorder(),
-                                          ),
-                                        ),
-                                      )
-                                    ],
+                                    ),
                                   ),
                                 ),
-                                Card(
-                                  child: Column(
-                                    children: <Widget>[
-                                      LabelledIcon(
-                                        icon: Icon(Icons.person),
-                                        text: Text("ID. Client"),
+                                MaderaCard(
+                                  cardWidth: cTheme.Dimens.cardSizeMedium,
+                                  cardHeight: cTheme.Dimens.cardHeight,
+                                  enable: false,
+                                  textInputType: TextInputType.text,
+                                  autoText: '2',
+                                  defaultText: '-1',
+                                  labelledIcon: LabelledIcon(
+                                    icon: Icon(
+                                      Icons.person,
+                                      color: cTheme.Colors.appBarTitle,
+                                    ),
+                                    text: Text(
+                                      "ID. Client",
+                                      style: cTheme.TextStyles.appBarTitle
+                                          .copyWith(
+                                        fontSize: 13.0,
+                                        fontWeight: FontWeight.w600,
                                       ),
-                                      SizedBox(height: 6.0),
-                                      Container(
-                                        color: Colors.grey[200],
-                                        width: cTheme.Dimens.cardSizeMedium,
-                                        height: cTheme.Dimens.cardHeight,
-                                        child: TextField(
-                                          /**
-                                         * Ici j'aurais pensé ecrire le nom du client
-                                         * e.g.: DUPONT
-                                         * Une liste de tous les clients qui ont un nom contenant "DUPONT" apparaitrait
-                                         * Et au clic sur une des proposition, l'ID du client s'insère dans cet input
-                                         * 
-                                         * Comme cela quand on accéderait aux devis d'un client spécifique, on renseignerait
-                                         */
-                                          controller: TextEditingController(
-                                              text:
-                                                  "2"), // Va être généré automatiquement à l'avenir
-                                          keyboardType: TextInputType.text,
-                                          decoration: InputDecoration(
-                                            border: OutlineInputBorder(),
-                                          ),
-                                        ),
-                                      )
-                                    ],
+                                    ),
                                   ),
-                                )
+                                ),
                               ],
                             ),
                             SizedBox(height: 30),
                             Row(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: <Widget>[
-                                Card(
-                                  child: Column(
-                                    children: <Widget>[
-                                      Align(
-                                        alignment: Alignment.centerLeft,
-                                        child: LabelledIcon(
-                                          icon: Icon(Icons.info),
-                                          text: Text("ID. Projet"),
-                                        ),
+                                MaderaCard(
+                                  cardHeight: cTheme.Dimens.cardHeight,
+                                  cardWidth: cTheme.Dimens.cardSizeLarge,
+                                  enable: false,
+                                  textInputType: TextInputType.text,
+                                  defaultText: '1',
+                                  autoText: '1',
+                                  labelledIcon: LabelledIcon(
+                                    icon: Icon(
+                                      Icons.info,
+                                      color: cTheme.Colors.appBarTitle,
+                                    ),
+                                    text: Text(
+                                      "ID. Projet",
+                                      style: cTheme.TextStyles.appBarTitle
+                                          .copyWith(
+                                        fontSize: 13.0,
+                                        fontWeight: FontWeight.w600,
                                       ),
-                                      SizedBox(height: 6.0),
-                                      Container(
-                                        color: Colors.grey[200],
-                                        width: cTheme.Dimens.cardSizeLarge,
-                                        height: cTheme.Dimens.cardHeight,
-                                        child: TextField(
-                                          controller: TextEditingController(
-                                              text: "1"),
-                                          keyboardType: TextInputType.text,
-                                          decoration: InputDecoration(
-                                            border: OutlineInputBorder(),
-                                          ),
-                                        ),
-                                      )
-                                    ],
+                                    ),
                                   ),
-                                )
+                                ),
                               ],
                             ),
                             SizedBox(height: 30),
                             Row(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: <Widget>[
-                                Card(
-                                  child: Column(
-                                    children: <Widget>[
-                                      Align(
-                                        alignment: Alignment.centerLeft,
-                                        child: LabelledIcon(
-                                          icon: Icon(Icons.info),
-                                          text: Text("Description Projet"),
-                                        ),
+                                MaderaCard(
+                                  cardHeight: cTheme.Dimens.cardHeightLarge,
+                                  cardWidth: cTheme.Dimens.cardSizeLarge,
+                                  enable: true,
+                                  textInputType: TextInputType.multiline,
+                                  maxLine: 5,
+                                  defaultText:
+                                      'Rentrez la description du projet ici',
+                                  labelledIcon: LabelledIcon(
+                                    icon: Icon(
+                                      Icons.info,
+                                      color: cTheme.Colors.appBarTitle,
+                                    ),
+                                    text: Text(
+                                      "Description Projet",
+                                      style: cTheme.TextStyles.appBarTitle
+                                          .copyWith(
+                                        fontSize: 13.0,
+                                        fontWeight: FontWeight.w600,
                                       ),
-                                      SizedBox(height: 6.0),
-                                      Container(
-                                        color: Colors.grey[200],
-                                        width: cTheme.Dimens.cardSizeLarge,
-                                        height: cTheme.Dimens.cardHeightLarge,
-                                        child: TextField(
-                                          keyboardType: TextInputType.multiline,
-                                          maxLines: 5,
-                                          decoration: InputDecoration(
-                                            border: OutlineInputBorder(),
-                                          ),
-                                        ),
-                                      )
-                                    ],
+                                    ),
                                   ),
-                                )
+                                ),
                               ],
                             ),
                             Row(

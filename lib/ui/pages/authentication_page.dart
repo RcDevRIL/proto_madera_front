@@ -233,15 +233,17 @@ class _AuthenticationPageState extends State<AuthenticationPage> {
         builder: (context, snapshot) {
           return MaderaButton(
             onPressed: (snapshot.hasData && snapshot.data == true)
-                ? () => Provider.of<ProviderLogin>(context)
+                ? () =>
+                    /* Provider.of<ProviderLogin>(context)
                     .connection(_emailController.text, _passwordController.text)
                     .then(
                       (value) => value
-                          ? Provider.of<MaderaNav>(context)
-                              .redirectToPage(context, HomePage())
-                          //TODO afficher message erreur
-                          : print('Connection failed'),
-                    )
+                          ? */
+                    Provider.of<MaderaNav>(context)
+                        .redirectToPage(context, HomePage()
+                            //TODO afficher message erreur
+                            /* : print('Connection failed'), */
+                            )
                 : null,
             child: Text('Connexion'),
           );

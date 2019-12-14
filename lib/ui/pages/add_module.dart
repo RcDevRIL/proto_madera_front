@@ -60,7 +60,7 @@ class _AddModuleState extends State<AddModule> {
                     padding: EdgeInsets.all(8.0),
                     width: cTheme.Dimens.containerWidth,
                     height: cTheme.Dimens.containerHeight,
-                    color: cTheme.Colors.containerBackground,
+                    color: cTheme.Colors.containerBackgroundLinearStart,
                     child: Align(
                       alignment: Alignment.bottomRight,
                       child: MaderaButton(

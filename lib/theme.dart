@@ -19,7 +19,10 @@ class Colors {
   static const Color white = Color.fromRGBO(255, 255, 255, 1.0);
   static const Color white70 = Color.fromRGBO(255, 255, 255, 0.7);
 
-  static const Color containerBackground = Color.fromRGBO(255, 255, 255, 1);
+  static const Color containerBackgroundLinearStart =
+      Color.fromRGBO(178, 250, 180, 0.75);
+  static const Color containerBackgroundLinearEnd =
+      Color.fromRGBO(0, 150, 136, 0.75);
 }
 
 class Dimens {
