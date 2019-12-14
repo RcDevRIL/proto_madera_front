@@ -22,6 +22,7 @@ class ProviderSynchro with ChangeNotifier {
   AdresseDao adresseDao = new AdresseDao(db);
   ProjetDao projetDao = new ProjetDao(db);
   ProjetModuleDao projetModuleDao = new ProjetModuleDao(db);
+//TODO mettre les initialisations dans un @override initState()??
 
   void synchro() {
     synchroReferentiel();
