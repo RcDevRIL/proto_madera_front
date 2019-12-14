@@ -16,9 +16,7 @@ class ProviderLogin with ChangeNotifier {
   final log = Logger();
   HttpStatus status = HttpStatus.OFFLINE;
   //TODO Externaliser les url dans un autre fichier ?
-  // Url localhost Fab
-  var url = "http://10.0.2.2:8081/madera";
-  // var url = "https://cesi-madera.fr/madera";
+  var url = "https://cesi-madera.fr/madera";
 
   HttpStatus get getStatus => status ??= HttpStatus.OFFLINE;
 
