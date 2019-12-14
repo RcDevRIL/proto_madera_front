@@ -2,7 +2,7 @@ import 'dart:convert';
 
 import 'package:crypto/crypto.dart';
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
+import 'package:http/http.dart' show Client;
 import 'package:logger/logger.dart';
 import 'package:proto_madera_front/constants/url.dart';
 import 'package:proto_madera_front/database/dao/utilisateur_dao.dart';
@@ -16,6 +16,7 @@ import 'package:proto_madera_front/providers/http_status.dart';
 /// @version 0.2-RELEASE
 ///
 class ProviderLogin with ChangeNotifier {
+  Client http = new Client();
   final log = Logger();
   HttpStatus status = HttpStatus.OFFLINE;
   static MaderaDatabase db = new MaderaDatabase();
@@ -36,7 +37,6 @@ class ProviderLogin with ChangeNotifier {
     } catch (e) {
       log.e("Error when tryiing to connect:\n" + e.toString());
     }
-
     if (response?.statusCode == 200) {
       this.status = HttpStatus.ONLINE;
       this.status = HttpStatus.AUTHORIZED;
