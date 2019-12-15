@@ -32,12 +32,14 @@ class ProviderLogin with ChangeNotifier {
       );
     } catch (e) {
       log.e("Error when tryiing to connect:\n" + e.toString());
+      this.status = HttpStatus.OFFLINE;
+      return false;
     }
     if (response?.statusCode == 200 && response.body != 'false') {
       this.status = HttpStatus.ONLINE;
       return true;
     }
-    if (response.body == 'false') {
+    if (response?.body == 'false') {
       this.status = HttpStatus.UNAUTHORIZED;
     }
     this.status = HttpStatus.OFFLINE;
