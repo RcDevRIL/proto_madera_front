@@ -28,6 +28,8 @@ class _QuoteCreationState extends State<QuoteCreation> {
       now.month.toString() +
       "-" +
       now.day.toString();
+  TextEditingController descriptionTextController;
+
   final log = Logger();
 
   ///
@@ -41,12 +43,14 @@ class _QuoteCreationState extends State<QuoteCreation> {
   @override
   void initState() {
     super.initState();
+    descriptionTextController = TextEditingController();
   }
 
   //added to prepare for scaling
   @override
   void dispose() {
     super.dispose();
+    descriptionTextController?.dispose();
   }
 
   @override
@@ -60,8 +64,12 @@ class _QuoteCreationState extends State<QuoteCreation> {
           body: Stack(
             children: <Widget>[
               Padding(
-                padding: EdgeInsets.fromLTRB(cTheme.Dimens.drawerMinWitdh,
-                    MediaQuery.of(context).size.height / 12, 0, 0),
+                padding: EdgeInsets.fromLTRB(
+                  cTheme.Dimens.drawerMinWitdh,
+                  MediaQuery.of(context).size.height / 12,
+                  0,
+                  0,
+                ),
                 child: Center(
                   child: Consumer<MaderaNav>(
                     builder: (context, mN, w) => Container(
@@ -111,7 +119,7 @@ class _QuoteCreationState extends State<QuoteCreation> {
                                   enable: false,
                                   textInputType: TextInputType.text,
                                   autoText: dateCreationProjet,
-                                  defaultText: '14/12/2019',
+                                  defaultText: '2019-12-14',
                                   labelledIcon: LabelledIcon(
                                     icon: Icon(
                                       Icons.calendar_today,
@@ -188,7 +196,9 @@ class _QuoteCreationState extends State<QuoteCreation> {
                                   cardWidth: cTheme.Dimens.cardSizeLarge,
                                   enable: true,
                                   textInputType: TextInputType.multiline,
-                                  maxLine: 5,
+                                  maxLine: 25,
+                                  textEditingController:
+                                      descriptionTextController,
                                   defaultText:
                                       'Rentrez la description du projet ici',
                                   labelledIcon: LabelledIcon(
@@ -214,11 +224,17 @@ class _QuoteCreationState extends State<QuoteCreation> {
                                 Align(
                                   alignment: Alignment.bottomRight,
                                   child: MaderaButton(
-                                    onPressed: () {
-                                      log.d("Quote Creation");
-                                      Provider.of<MaderaNav>(context)
-                                          .redirectToPage(context, Quote());
-                                    },
+                                    onPressed: descriptionTextController
+                                            .text.isNotEmpty
+                                        ? () {
+                                            log.d(
+                                                descriptionTextController.text);
+                                            log.d("Quote Creation");
+                                            Provider.of<MaderaNav>(context)
+                                                .redirectToPage(
+                                                    context, Quote());
+                                          }
+                                        : null,
                                     child: LabelledIcon(
                                       mASize: MainAxisSize.min,
                                       icon: Icon(Icons.check),

@@ -32,7 +32,7 @@ class Dimens {
   static const drawerMinWitdh = 72.0;
   static const drawerMaxWidth = 220.0;
   static const drawerIconSize = 40.0;
-  static const containerHeight = 500.0;
+  static const containerHeight = 580.0;
   static const containerWidth = 1000.0;
   static const loginFormWidth = 250.0;
   static const appBarElevation = 50.0;
@@ -44,7 +44,7 @@ class Dimens {
   static const cardSizeMedium = 680.0;
   static const cardSizeLarge = 980.0;
   static const cardHeight = 35.0;
-  static const cardHeightLarge = 100.0;
+  static const cardHeightLarge = 350.0;
 }
 
 class TextStyles {

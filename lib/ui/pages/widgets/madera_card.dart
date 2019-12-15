@@ -11,7 +11,9 @@ class MaderaCard extends StatelessWidget {
   final int maxLine;
   final bool enable;
   final TextInputType textInputType;
+  final TextEditingController textEditingController;
 
+  //DateFormat('yyyy-MM-dd').format(DateTime.now()) // Va être généré automatiquement à l'avenir
   const MaderaCard({
     Key key,
     @required this.cardHeight,
@@ -20,12 +22,15 @@ class MaderaCard extends StatelessWidget {
     @required this.labelledIcon,
     @required this.textInputType,
     @required this.defaultText,
+    this.textEditingController,
     this.autoText,
     this.maxLine,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    if (null != autoText && null != textEditingController)
+      textEditingController.text = autoText;
     return Card(
       shape: RoundedRectangleBorder(
         side: BorderSide(
@@ -54,10 +59,11 @@ class MaderaCard extends StatelessWidget {
             ),
             child: TextField(
               maxLines: maxLine == null ? 1 : maxLine,
-              controller: TextEditingController(
-                text: autoText,
-                //DateFormat('yyyy-MM-dd').format(DateTime.now()) // Va être généré automatiquement à l'avenir
-              ),
+              controller: textEditingController != null
+                  ? textEditingController
+                  : TextEditingController(
+                      text: autoText,
+                    ),
               keyboardType: textInputType,
               enabled: enable,
               decoration: InputDecoration(
