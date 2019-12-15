@@ -23,6 +23,11 @@ dev_dependencies:
   flutter_test:
     sdk: flutter
 
+  flutter_launcher_icons: "^0.7.3"
+
+flutter_icons:
+  android: true 
+  image_path: "assets/img/icons/icon-madera.png"
 
 flutter:
 
