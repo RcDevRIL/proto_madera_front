@@ -1,10 +1,10 @@
-# proto_madera_front - README V1.0
+# proto_madera_front - README V1.2
 __Build status by branch__
 * __master :__ [![M_Codemagic build status][]][M_latest_build]
 * __int :__ [![I_Codemagic build status][]][I_latest_build]
 * __dev :__ [![D_Codemagic build status][]][D_latest_build]
 
-* __Tests coverage :__ ![Coverage](https://raw.githubusercontent.com/RcDevRIL/proto_madera_front/tree/readMe/coverage/covbadge.svg?sanitize=true)
+* __Tests coverage :__ ![Coverage](https://github.com/RcDevRIL/proto_madera_front/blob/readMe/coverage/covbadge.svg)
 
 Welcome on our development repository for our graduation project!! 
 
