@@ -27,7 +27,6 @@ class _AuthenticationPageState extends State<AuthenticationPage> {
   TextEditingController _emailController;
   TextEditingController _passwordController;
   LoginFormBloc _loginFormBloc;
-
   final log = Logger();
 
   ///
@@ -60,49 +59,48 @@ class _AuthenticationPageState extends State<AuthenticationPage> {
       child: SafeArea(
         child: Scaffold(
           backgroundColor: Colors.white,
-          body: Stack(
-            children: <Widget>[
-              Container(
-                margin: EdgeInsets.only(
-                  top: MediaQuery.of(context).size.height / 12,
-                ), //taille de l'appBar
-                decoration: BoxDecoration(
-                  image: DecorationImage(
-                      colorFilter: ColorFilter.mode(
-                          Color.fromRGBO(255, 255, 255, 0.5),
-                          BlendMode.modulate),
-                      fit: BoxFit.fitWidth,
-                      image: AssetImage("assets/img/madera.JPG")),
-                ),
-              ),
-              Center(
-                child: Container(
-                  width: cTheme.Dimens.loginFormWidth,
-                  margin: EdgeInsets.all(8.0),
-                  padding: EdgeInsets.all(12.0),
+          body: InkWell(
+            onTap: () => FocusScope.of(context).unfocus(),
+            child: Stack(
+              children: <Widget>[
+                Container(
+                  margin: EdgeInsets.only(
+                    top: MediaQuery.of(context).size.height / 12,
+                  ), //taille de l'appBar
                   decoration: BoxDecoration(
-                    color: Colors.white,
-                    border: Border.all(
-                      color: Colors.black,
-                      style: BorderStyle.solid,
-                      width: 2.0,
-                    ),
-                    borderRadius: BorderRadius.circular(10.0),
-                    // gradient: LinearGradient(
-                    //   colors: <Color>[Colors.greenAccent, Colors.white],
-                    //   stops: <double>[0.0, 0.2],
-                    // ),
+                    image: DecorationImage(
+                        colorFilter: ColorFilter.mode(
+                            Color.fromRGBO(255, 255, 255, 0.5),
+                            BlendMode.modulate),
+                        fit: BoxFit.fitWidth,
+                        image: AssetImage("assets/img/madera.JPG")),
                   ),
-                  child: SingleChildScrollView(
-                    child: Column(
-                      children: _buildForm(context),
+                ),
+                Center(
+                  child: Container(
+                    width: cTheme.Dimens.loginFormWidth,
+                    margin: EdgeInsets.all(8.0),
+                    padding: EdgeInsets.all(12.0),
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      border: Border.all(
+                        color: Colors.black,
+                        style: BorderStyle.solid,
+                        width: 2.0,
+                      ),
+                      borderRadius: BorderRadius.circular(10.0),
+                    ),
+                    child: SingleChildScrollView(
+                      child: Column(
+                        children: _buildForm(context),
+                      ),
                     ),
                   ),
                 ),
-              ),
-              AppBarMadera(),
-              //visiblement on ne peut pas le mettre dans le champ appBar du Scaffold.. alors voila !!
-            ],
+                AppBarMadera(),
+                //visiblement on ne peut pas le mettre dans le champ appBar du Scaffold.. alors voila !!
+              ],
+            ),
           ),
         ),
       ),
@@ -159,8 +157,8 @@ class _AuthenticationPageState extends State<AuthenticationPage> {
                 keyboardType: TextInputType.emailAddress,
                 decoration: InputDecoration(
                   border: OutlineInputBorder(),
-                  hintText: "Enter email",
-                  labelText: "Email",
+                  hintText: "Enter login",
+                  labelText: "Login",
                   errorText: snapshot.error,
                 ),
               ),
@@ -233,17 +231,15 @@ class _AuthenticationPageState extends State<AuthenticationPage> {
         builder: (context, snapshot) {
           return MaderaButton(
             onPressed: (snapshot.hasData && snapshot.data == true)
-                ? () =>
-                    /* Provider.of<ProviderLogin>(context)
+                ? () => Provider.of<ProviderLogin>(context)
                     .connection(_emailController.text, _passwordController.text)
                     .then(
                       (value) => value
-                          ? */
-                    Provider.of<MaderaNav>(context)
-                        .redirectToPage(context, HomePage()
-                            //TODO afficher message erreur
-                            /* : print('Connection failed'), */
-                            )
+                          ? Provider.of<MaderaNav>(context)
+                              .redirectToPage(context, HomePage())
+                          //TODO afficher message erreur
+                          : print('Connection failed'),
+                    )
                 : null,
             child: Text('Connexion'),
           );

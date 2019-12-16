@@ -24,6 +24,7 @@ class Quote extends StatefulWidget {
 
 class _QuoteState extends State<Quote> {
   final log = Logger();
+  String dropdownValue = 'One';
 
   ///
   /// Prevents the use of the "back" button
@@ -51,7 +52,7 @@ class _QuoteState extends State<Quote> {
       onWillPop: _onWillPopScope,
       child: SafeArea(
         child: Scaffold(
-          backgroundColor: Colors.blueGrey,
+          backgroundColor: cTheme.Colors.white,
           body: Stack(
             children: <Widget>[
               Padding(
@@ -60,23 +61,71 @@ class _QuoteState extends State<Quote> {
                 child: Center(
                   /** Centre de la page */
                   child: Container(
-                    padding: EdgeInsets.all(8.0),
                     width: cTheme.Dimens.containerWidth,
                     height: cTheme.Dimens.containerHeight,
-                    color: cTheme.Colors.containerBackgroundLinearStart,
-                    child: Align(
-                      alignment: Alignment.bottomLeft,
-                      child: MaderaButton(
-                        onPressed: () {
-                          log.d("Adding Module for this quote");
-                          Provider.of<MaderaNav>(context)
-                              .redirectToPage(context, AddModule());
-                        },
-                        child: LabelledIcon(
-                          icon: Icon(Icons.add),
-                          text: Text("Ajouter module"),
+                    decoration: BoxDecoration(
+                        boxShadow: [
+                          BoxShadow(
+                            blurRadius: 5.0,
+                            color: Colors.grey,
+                            offset: Offset(10.0, 10.0),
+                          ),
+                          BoxShadow(
+                            blurRadius: 5.0,
+                            color: Colors.grey,
+                            offset: Offset(0.0, 00.0),
+                          ),
+                        ],
+                        gradient: LinearGradient(
+                          colors: [
+                            cTheme.Colors.containerBackgroundLinearStart,
+                            cTheme.Colors.containerBackgroundLinearEnd
+                          ],
+                          begin: Alignment(0.0, -1.0),
+                          end: Alignment(0.0, 0.0),
+                        )),
+                    padding: EdgeInsets.fromLTRB(4.0, 20.0, 4.0, 0.0),
+                    child: Column(
+                      children: <Widget>[
+                        DropdownButton<String>(
+                          value: dropdownValue,
+                          hint: Text(dropdownValue),
+                          icon: Icon(Icons.arrow_downward),
+                          iconSize: 24,
+                          elevation: 16,
+                          style: TextStyle(color: Colors.deepPurple),
+                          underline: Container(
+                            height: 2,
+                            color: Colors.deepPurpleAccent,
+                          ),
+                          onChanged: (String newValue) {
+                            setState(() {
+                              dropdownValue = newValue;
+                            });
+                          },
+                          items: <String>['One', 'Two', 'Free', 'Four']
+                              .map<DropdownMenuItem<String>>(
+                                  (String value) => DropdownMenuItem<String>(
+                                        value: value,
+                                        child: Text(value),
+                                      ))
+                              .toList(),
                         ),
-                      ),
+                        Align(
+                          alignment: Alignment.bottomLeft,
+                          child: MaderaButton(
+                            onPressed: () {
+                              log.d("Adding Module for this quote");
+                              Provider.of<MaderaNav>(context)
+                                  .redirectToPage(context, AddModule());
+                            },
+                            child: LabelledIcon(
+                              icon: Icon(Icons.add),
+                              text: Text("Ajouter module"),
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
                   ),
                 ),

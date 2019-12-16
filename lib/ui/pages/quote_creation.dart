@@ -22,13 +22,13 @@ class QuoteCreation extends StatefulWidget {
 }
 
 class _QuoteCreationState extends State<QuoteCreation> {
-  static var now = DateTime.now();
-  final String dateCreationProjet = now.year.toString() +
+  static var _now = DateTime.now();
+  final String dateCreationProjet = _now.year.toString() +
       "-" +
-      now.month.toString() +
+      _now.month.toString() +
       "-" +
-      now.day.toString();
-  TextEditingController descriptionTextController;
+      _now.day.toString();
+  TextEditingController _descriptionTextController;
 
   final log = Logger();
 
@@ -43,14 +43,14 @@ class _QuoteCreationState extends State<QuoteCreation> {
   @override
   void initState() {
     super.initState();
-    descriptionTextController = TextEditingController();
+    _descriptionTextController = TextEditingController();
   }
 
   //added to prepare for scaling
   @override
   void dispose() {
+    _descriptionTextController?.dispose();
     super.dispose();
-    descriptionTextController?.dispose();
   }
 
   @override
@@ -70,12 +70,12 @@ class _QuoteCreationState extends State<QuoteCreation> {
                   0,
                   0,
                 ),
-                child: Center(
-                  child: Consumer<MaderaNav>(
-                    builder: (context, mN, w) => Container(
+                child: InkWell(
+                  onTap: () => FocusScope.of(context).unfocus(),
+                  child: Center(
+                    child: Container(
                       width: cTheme.Dimens.containerWidth,
                       height: cTheme.Dimens.containerHeight,
-                      // color: cTheme.Colors.containerBackgroundLinearStart,
                       decoration: BoxDecoration(
                           boxShadow: [
                             BoxShadow(
@@ -97,21 +97,20 @@ class _QuoteCreationState extends State<QuoteCreation> {
                             begin: Alignment(0.0, -1.0),
                             end: Alignment(0.0, 0.0),
                           )),
-                      padding: EdgeInsets.only(top: 20),
+                      padding: EdgeInsets.fromLTRB(4.0, 20.0, 4.0, 0.0),
                       child: SingleChildScrollView(
                         child: Column(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: <Widget>[
                             Align(
                               alignment: Alignment.center,
-                              child: Text("Devis",
+                              child: Text('Informations générales',
                                   style: cTheme.TextStyles.appBarTitle.copyWith(
                                     fontSize: 32.0,
                                   )),
                             ),
                             SizedBox(height: 30.0),
                             Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceAround,
+                              mainAxisAlignment: MainAxisAlignment.start,
                               children: <Widget>[
                                 MaderaCard(
                                   cardWidth: cTheme.Dimens.cardSizeSmall,
@@ -126,7 +125,7 @@ class _QuoteCreationState extends State<QuoteCreation> {
                                       color: cTheme.Colors.appBarTitle,
                                     ),
                                     text: Text(
-                                      "Date de création",
+                                      "Date de \ncréation",
                                       style: cTheme.TextStyles.appBarTitle
                                           .copyWith(
                                         fontSize: 13.0,
@@ -140,7 +139,7 @@ class _QuoteCreationState extends State<QuoteCreation> {
                                   cardHeight: cTheme.Dimens.cardHeight,
                                   enable: false,
                                   textInputType: TextInputType.text,
-                                  autoText: '2',
+                                  autoText: 'ID: 2\tNom: Dupont',
                                   defaultText: '-1',
                                   labelledIcon: LabelledIcon(
                                     icon: Icon(
@@ -148,7 +147,7 @@ class _QuoteCreationState extends State<QuoteCreation> {
                                       color: cTheme.Colors.appBarTitle,
                                     ),
                                     text: Text(
-                                      "ID. Client",
+                                      "Références Client",
                                       style: cTheme.TextStyles.appBarTitle
                                           .copyWith(
                                         fontSize: 13.0,
@@ -198,7 +197,7 @@ class _QuoteCreationState extends State<QuoteCreation> {
                                   textInputType: TextInputType.multiline,
                                   maxLine: 25,
                                   textEditingController:
-                                      descriptionTextController,
+                                      _descriptionTextController,
                                   defaultText:
                                       'Rentrez la description du projet ici',
                                   labelledIcon: LabelledIcon(
@@ -224,11 +223,11 @@ class _QuoteCreationState extends State<QuoteCreation> {
                                 Align(
                                   alignment: Alignment.bottomRight,
                                   child: MaderaButton(
-                                    onPressed: descriptionTextController
+                                    onPressed: _descriptionTextController
                                             .text.isNotEmpty
                                         ? () {
-                                            log.d(
-                                                descriptionTextController.text);
+                                            log.d(_descriptionTextController
+                                                .text);
                                             log.d("Quote Creation");
                                             Provider.of<MaderaNav>(context)
                                                 .redirectToPage(

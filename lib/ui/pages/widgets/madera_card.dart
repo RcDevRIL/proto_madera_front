@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:proto_madera_front/ui/pages/widgets/labelled_icon.dart';
 import 'package:proto_madera_front/theme.dart' as cTheme;
 
-class MaderaCard extends StatelessWidget {
+class MaderaCard extends StatefulWidget {
   final String autoText;
   final String defaultText;
   final LabelledIcon labelledIcon;
@@ -28,9 +28,24 @@ class MaderaCard extends StatelessWidget {
   }) : super(key: key);
 
   @override
+  _MaderaCardState createState() => _MaderaCardState();
+}
+
+class _MaderaCardState extends State<MaderaCard> {
+  @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    if (null != autoText && null != textEditingController)
-      textEditingController.text = autoText;
+    if (null != widget.autoText && null != widget.textEditingController)
+      widget.textEditingController.text = widget.autoText;
     return Card(
       shape: RoundedRectangleBorder(
         side: BorderSide(
@@ -43,13 +58,17 @@ class MaderaCard extends StatelessWidget {
       color: Color.fromRGBO(224, 224, 224, 1.0),
       elevation: 8.0,
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           SizedBox(height: 6.0),
-          labelledIcon,
+          Padding(
+            padding: const EdgeInsets.only(left: 8.0),
+            child: widget.labelledIcon,
+          ),
           SizedBox(height: 6.0),
           Container(
-            width: cardWidth,
-            height: cardHeight,
+            width: widget.cardWidth,
+            height: widget.cardHeight,
             decoration: BoxDecoration(
               color: cTheme.Colors.white,
               borderRadius: BorderRadius.only(
@@ -58,16 +77,16 @@ class MaderaCard extends StatelessWidget {
               ),
             ),
             child: TextField(
-              maxLines: maxLine == null ? 1 : maxLine,
-              controller: textEditingController != null
-                  ? textEditingController
+              maxLines: widget.maxLine == null ? 1 : widget.maxLine,
+              controller: widget.textEditingController != null
+                  ? widget.textEditingController
                   : TextEditingController(
-                      text: autoText,
+                      text: widget.autoText,
                     ),
-              keyboardType: textInputType,
-              enabled: enable,
+              keyboardType: widget.textInputType,
+              enabled: widget.enable,
               decoration: InputDecoration(
-                hintText: autoText != null ? null : defaultText,
+                hintText: widget.autoText != null ? null : widget.defaultText,
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.only(
                     bottomRight: Radius.circular(20.0),
