@@ -4,6 +4,8 @@ __Build status by branch__
 * __int :__ [![I_Codemagic build status][]][I_latest_build]
 * __dev :__ [![D_Codemagic build status][]][D_latest_build]
 
+* __Tests coverage :__ ![Coverage](https://raw.githubusercontent.com/RcDevRIL/proto_madera_front/tree/readMe/coverage/covbadge.svg?sanitize=true)
+
 Welcome on our development repository for our graduation project!! 
 
     You will find here the Flutter mobile application that we produce for our graduation 
