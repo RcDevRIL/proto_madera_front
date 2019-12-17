@@ -133,7 +133,7 @@ class _CustomDrawerState extends State<CustomDrawer>
                   onTap: () {
                     if (!isCollapsed) {
                       Provider.of<ProviderLogin>(context)
-                          .logout("6j18-6j6j-186j");
+                          .logout();
                       Provider.of<MaderaNav>(context)
                           .redirectToPage(context, AuthenticationPage());
                     }

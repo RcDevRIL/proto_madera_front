@@ -1,9 +1,12 @@
-import 'package:flutter/material.dart';
 import 'dart:convert';
-import 'package:crypto/crypto.dart';
-import 'package:http/http.dart' as http;
-import 'package:logger/logger.dart';
 
+import 'package:crypto/crypto.dart';
+import 'package:flutter/material.dart';
+import 'package:http/http.dart' show Client;
+import 'package:logger/logger.dart';
+import 'package:proto_madera_front/constants/url.dart';
+import 'package:proto_madera_front/database/dao/utilisateur_dao.dart';
+import 'package:proto_madera_front/database/madera_database.dart';
 import 'package:proto_madera_front/providers/http_status.dart';
 
 ///
@@ -13,10 +16,11 @@ import 'package:proto_madera_front/providers/http_status.dart';
 /// @version 0.2-RELEASE
 ///
 class ProviderLogin with ChangeNotifier {
+  Client http = new Client();
   final log = Logger();
   HttpStatus status = HttpStatus.OFFLINE;
-  //TODO Externaliser les url dans un autre fichier ?
-  var url = "https://cesi-madera.fr/madera";
+  static MaderaDatabase db = new MaderaDatabase();
+  UtilisateurDao utilisateurDao = new UtilisateurDao(db);
 
   HttpStatus get getStatus => status ??= HttpStatus.OFFLINE;
 
@@ -26,7 +30,7 @@ class ProviderLogin with ChangeNotifier {
     var response;
     try {
       response = await http.post(
-        url + '/authentification',
+        urlAuthentification,
         headers: {'Content-type': 'application/json'},
         body: jsonEncode({'login': login, 'password': digest.toString()}),
       );
@@ -35,22 +39,28 @@ class ProviderLogin with ChangeNotifier {
       this.status = HttpStatus.OFFLINE;
       return false;
     }
-    if (response?.statusCode == 200 && response.body != 'false') {
+    if (response?.statusCode == 200) {
       this.status = HttpStatus.ONLINE;
+      this.status = HttpStatus.AUTHORIZED;
+      UtilisateurData utilisateurData =
+          UtilisateurData.fromJson(jsonDecode(response.body));
+      await utilisateurDao.insertUser(utilisateurData);
       return true;
     }
-    if (response?.body == 'false') {
+    if (response?.statusCode == 401) {
       this.status = HttpStatus.UNAUTHORIZED;
+      return false;
+    } else {
+      this.status = HttpStatus.OFFLINE;
+      return false;
     }
-    this.status = HttpStatus.OFFLINE;
-    return false;
   }
 
   // Méthode pour vérifier si le serveur est joignable, vérification à effectuer
   // avant chaque méthode faisant des appels serveurs, sauf si le status est déjà offline
   Future<bool> ping() async {
     try {
-      var response = await http.get(url);
+      var response = await http.get(baseUrl);
       if (response.statusCode == 200) {
         this.status = HttpStatus.ONLINE;
         return true;
@@ -62,11 +72,30 @@ class ProviderLogin with ChangeNotifier {
     return false;
   }
 
-  Future<bool> logout(String token) async {
-    //TODO Call API to remove token on remote bdd
-    //TODO Remove token on local bdd
-    log.d('User logged out. Remove token : $token');
-    this.status = HttpStatus.OFFLINE;
-    return true;
+  Future<bool> logout() async {
+    UtilisateurData utilisateurData = await utilisateurDao.getUser();
+    var token = utilisateurData.token;
+    var response;
+    try {
+      response = await http.post(
+        urlDeconnection,
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer $token'
+        },
+        body: utilisateurData.login,
+      );
+    } catch (exception) {
+      log.e("Error when tryiing to deconnect:\n" + exception.toString());
+    }
+    if (response?.statusCode == 200) {
+      //Supprime l'utilisateur (token et login) localement
+      utilisateurDao.deleteUser();
+      log.d('User logged out. Remove token : $token');
+      this.status = HttpStatus.OFFLINE;
+      return true;
+    } else {
+      return false;
+    }
   }
 }

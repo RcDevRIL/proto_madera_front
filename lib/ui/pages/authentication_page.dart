@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:logger/logger.dart';
+import 'package:proto_madera_front/providers/http_status.dart';
+import 'package:proto_madera_front/providers/provider_synchro.dart';
 import 'package:proto_madera_front/ui/pages/widgets/madera_button.dart';
 import 'package:provider/provider.dart';
 
@@ -201,17 +203,7 @@ class _AuthenticationPageState extends State<AuthenticationPage> {
                 onChanged: _loginFormBloc.onPasswordChanged,
                 onSubmitted: _emailController.text.isNotEmpty &&
                         _passwordController.text.isNotEmpty
-                    ? (password) async =>
-                        await Provider.of<ProviderLogin>(context)
-                            .connection(
-                                _emailController.text, _passwordController.text)
-                            .then(
-                              (value) => value
-                                  ? Provider.of<MaderaNav>(context)
-                                      .redirectToPage(context, HomePage())
-                                  //TODO afficher message erreur
-                                  : print('Connection failed'),
-                            )
+                    ? (password) async => submit()
                     : null,
                 controller: _passwordController,
                 keyboardType: TextInputType.text,
@@ -232,21 +224,74 @@ class _AuthenticationPageState extends State<AuthenticationPage> {
         stream: _loginFormBloc.login,
         builder: (context, snapshot) {
           return MaderaButton(
-            onPressed: (snapshot.hasData && snapshot.data == true)
-                ? () => Provider.of<ProviderLogin>(context)
-                    .connection(_emailController.text, _passwordController.text)
-                    .then(
-                      (value) => value
-                          ? Provider.of<MaderaNav>(context)
-                              .redirectToPage(context, HomePage())
-                          //TODO afficher message erreur
-                          : print('Connection failed'),
-                    )
-                : null,
+            onPressed: () async {
+              if ((snapshot.hasData && snapshot.data == true)) {
+                submit();
+              }
+            },
             child: Text('Connexion'),
           );
         }));
 
     return children;
+  }
+
+  void submit() async {
+    await Provider.of<ProviderLogin>(context)
+        .connection(_emailController.text, _passwordController.text);
+    switch (Provider.of<ProviderLogin>(context).getStatus) {
+      case HttpStatus.AUTHORIZED:
+        {
+          //TODO Afficher un message d'erreur si données non récup ?
+          Provider.of<ProviderSynchro>(context).synchro();
+          Provider.of<MaderaNav>(context).redirectToPage(context, HomePage());
+          //TODO Ajouter synchroProjet également
+        }
+        break;
+      case HttpStatus.OFFLINE:
+        {
+          showPopup(
+              context, 'Erreur réseau', 'Le serveur n' ' est pas joignable.');
+        }
+        break;
+      case HttpStatus.ONLINE:
+        {
+          showPopup(context, 'Erreur d' 'authentification',
+              'Le login et / ou le mot de passe sont incorrects');
+        }
+        break;
+      case HttpStatus.UNAUTHORIZED:
+        {
+          showPopup(
+              context, 'Autorisation requise', 'Vous n' ' êtes pas autorisé');
+        }
+        break;
+      default:
+        {}
+        break;
+    }
+  }
+
+  void showPopup(BuildContext context, String title, String message) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text(
+            '$title',
+            style: TextStyle(color: Colors.red),
+          ),
+          content: Text('$message'),
+          actions: <Widget>[
+            MaderaButton(
+              child: Text('OK'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
   }
 }
