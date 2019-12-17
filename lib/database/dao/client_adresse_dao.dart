@@ -11,6 +11,8 @@ class ClientAdresseDao extends DatabaseAccessor<MaderaDatabase>
 
   Future insertAll(List<ClientAdresseData> listClientAdresse) async {
     await delete(clientAdresse).go();
+    //TODO 'insertAll' is deprecated and shouldn't be used. Call batch() on a generated database, then use Batch.insertAll.
+//Try replacing the use of the deprecated member with the replacement.
     await into(clientAdresse).insertAll(listClientAdresse);
   }
 }

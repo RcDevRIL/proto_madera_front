@@ -146,16 +146,7 @@ class _AuthenticationPageState extends State<AuthenticationPage> {
                 onChanged: _loginFormBloc.onEmailChanged,
                 onSubmitted: _emailController.text.isNotEmpty &&
                         _passwordController.text.isNotEmpty
-                    ? (email) async => await Provider.of<ProviderLogin>(context)
-                        .connection(
-                            _emailController.text, _passwordController.text)
-                        .then(
-                          (value) => value
-                              ? Provider.of<MaderaNav>(context)
-                                  .redirectToPage(context, HomePage())
-                              //TODO afficher message erreur
-                              : print('Connection failed'),
-                        )
+                    ? (password) async => submit()
                     : null,
                 controller: _emailController,
                 keyboardType: TextInputType.emailAddress,
@@ -262,12 +253,14 @@ class _AuthenticationPageState extends State<AuthenticationPage> {
         break;
       case HttpStatus.UNAUTHORIZED:
         {
-          showPopup(
-              context, 'Autorisation requise', 'Vous n' ' êtes pas autorisé');
+          showPopup(context, 'Autorisation requise',
+              'Les identifiants sont incorrects');
         }
         break;
       default:
-        {}
+        {
+          showPopup(context, 'Default', 'Oups! Ceci ne devrait pas arriver...');
+        }
         break;
     }
   }

@@ -1,4 +1,3 @@
-
 import 'package:moor_flutter/moor_flutter.dart';
 import 'package:proto_madera_front/database/madera_database.dart';
 import 'package:proto_madera_front/database/tables/projet.dart';
@@ -11,6 +10,8 @@ class ProjetDao extends DatabaseAccessor<MaderaDatabase> with _$ProjetDaoMixin {
 
   Future insertAll(List<ProjetData> listProjet) async {
     await delete(projet).go();
+    //TODO 'insertAll' is deprecated and shouldn't be used. Call batch() on a generated database, then use Batch.insertAll.
+//Try replacing the use of the deprecated member with the replacement.
     await into(projet).insertAll(listProjet);
   }
 }

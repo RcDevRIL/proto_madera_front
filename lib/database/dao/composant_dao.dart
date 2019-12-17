@@ -11,6 +11,8 @@ class ComposantDao extends DatabaseAccessor<MaderaDatabase>
 
   Future insertAll(List<ComposantData> listEntry) async {
     await delete(composant).go();
+    //TODO 'insertAll' is deprecated and shouldn't be used. Call batch() on a generated database, then use Batch.insertAll.
+//Try replacing the use of the deprecated member with the replacement.
     await into(composant).insertAll(listEntry);
   }
 }
