@@ -115,10 +115,23 @@ class _QuoteCreationState extends State<QuoteCreation> {
                                 MaderaCard(
                                   cardWidth: cTheme.Dimens.cardSizeSmall,
                                   cardHeight: cTheme.Dimens.cardHeight,
-                                  enable: false,
-                                  textInputType: TextInputType.text,
-                                  autoText: dateCreationProjet,
-                                  defaultText: '2019-12-14',
+                                  child: TextField(
+                                    maxLines: 1,
+                                    controller: TextEditingController(
+                                      text: dateCreationProjet,
+                                    ),
+                                    keyboardType: TextInputType.text,
+                                    enabled: false,
+                                    decoration: InputDecoration(
+                                      hintText: '2019-12-14',
+                                      border: OutlineInputBorder(
+                                        borderRadius: BorderRadius.only(
+                                          bottomRight: Radius.circular(20.0),
+                                          bottomLeft: Radius.circular(20.0),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
                                   labelledIcon: LabelledIcon(
                                     icon: Icon(
                                       Icons.calendar_today,
@@ -137,10 +150,23 @@ class _QuoteCreationState extends State<QuoteCreation> {
                                 MaderaCard(
                                   cardWidth: cTheme.Dimens.cardSizeMedium,
                                   cardHeight: cTheme.Dimens.cardHeight,
-                                  enable: false,
-                                  textInputType: TextInputType.text,
-                                  autoText: 'ID: 2\tNom: Dupont',
-                                  defaultText: '-1',
+                                  child: TextField(
+                                    maxLines: 1,
+                                    controller: TextEditingController(
+                                      text: 'ID: 2\tNom: Dupont',
+                                    ),
+                                    keyboardType: TextInputType.text,
+                                    enabled: false,
+                                    decoration: InputDecoration(
+                                      hintText: '-1',
+                                      border: OutlineInputBorder(
+                                        borderRadius: BorderRadius.only(
+                                          bottomRight: Radius.circular(20.0),
+                                          bottomLeft: Radius.circular(20.0),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
                                   labelledIcon: LabelledIcon(
                                     icon: Icon(
                                       Icons.person,
@@ -165,10 +191,23 @@ class _QuoteCreationState extends State<QuoteCreation> {
                                 MaderaCard(
                                   cardHeight: cTheme.Dimens.cardHeight,
                                   cardWidth: cTheme.Dimens.cardSizeLarge,
-                                  enable: false,
-                                  textInputType: TextInputType.text,
-                                  defaultText: '1',
-                                  autoText: '1',
+                                  child: TextField(
+                                    maxLines: 1,
+                                    controller: TextEditingController(
+                                      text: '1',
+                                    ),
+                                    keyboardType: TextInputType.text,
+                                    enabled: false,
+                                    decoration: InputDecoration(
+                                      hintText: '100000',
+                                      border: OutlineInputBorder(
+                                        borderRadius: BorderRadius.only(
+                                          bottomRight: Radius.circular(20.0),
+                                          bottomLeft: Radius.circular(20.0),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
                                   labelledIcon: LabelledIcon(
                                     icon: Icon(
                                       Icons.info,
@@ -193,13 +232,22 @@ class _QuoteCreationState extends State<QuoteCreation> {
                                 MaderaCard(
                                   cardHeight: cTheme.Dimens.cardHeightLarge,
                                   cardWidth: cTheme.Dimens.cardSizeLarge,
-                                  enable: true,
-                                  textInputType: TextInputType.multiline,
-                                  maxLine: 25,
-                                  textEditingController:
-                                      _descriptionTextController,
-                                  defaultText:
-                                      'Rentrez la description du projet ici',
+                                  child: TextField(
+                                    maxLines: 25,
+                                    controller: _descriptionTextController,
+                                    keyboardType: TextInputType.multiline,
+                                    enabled: true,
+                                    decoration: InputDecoration(
+                                      hintText:
+                                          'Rentrez la description du projet ici',
+                                      border: OutlineInputBorder(
+                                        borderRadius: BorderRadius.only(
+                                          bottomRight: Radius.circular(20.0),
+                                          bottomLeft: Radius.circular(20.0),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
                                   labelledIcon: LabelledIcon(
                                     icon: Icon(
                                       Icons.info,

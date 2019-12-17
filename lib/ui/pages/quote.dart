@@ -58,74 +58,142 @@ class _QuoteState extends State<Quote> {
               Padding(
                 padding: EdgeInsets.fromLTRB(cTheme.Dimens.drawerMinWitdh,
                     MediaQuery.of(context).size.height / 12, 0, 0),
-                child: Center(
-                  /** Centre de la page */
-                  child: Container(
-                    width: cTheme.Dimens.containerWidth,
-                    height: cTheme.Dimens.containerHeight,
-                    decoration: BoxDecoration(
-                        boxShadow: [
-                          BoxShadow(
-                            blurRadius: 5.0,
-                            color: Colors.grey,
-                            offset: Offset(10.0, 10.0),
-                          ),
-                          BoxShadow(
-                            blurRadius: 5.0,
-                            color: Colors.grey,
-                            offset: Offset(0.0, 00.0),
-                          ),
-                        ],
-                        gradient: LinearGradient(
-                          colors: [
-                            cTheme.Colors.containerBackgroundLinearStart,
-                            cTheme.Colors.containerBackgroundLinearEnd
-                          ],
-                          begin: Alignment(0.0, -1.0),
-                          end: Alignment(0.0, 0.0),
-                        )),
-                    padding: EdgeInsets.fromLTRB(4.0, 20.0, 4.0, 0.0),
-                    child: Column(
-                      children: <Widget>[
-                        DropdownButton<String>(
-                          value: dropdownValue,
-                          hint: Text(dropdownValue),
-                          icon: Icon(Icons.arrow_downward),
-                          iconSize: 24,
-                          elevation: 16,
-                          style: TextStyle(color: Colors.deepPurple),
-                          underline: Container(
-                            height: 2,
-                            color: Colors.deepPurpleAccent,
-                          ),
-                          onChanged: (String newValue) {
-                            setState(() {
-                              dropdownValue = newValue;
-                            });
-                          },
-                          items: <String>['One', 'Two', 'Free', 'Four']
-                              .map<DropdownMenuItem<String>>(
-                                  (String value) => DropdownMenuItem<String>(
-                                        value: value,
-                                        child: Text(value),
-                                      ))
-                              .toList(),
-                        ),
-                        Align(
-                          alignment: Alignment.bottomLeft,
-                          child: MaderaButton(
-                            onPressed: () {
-                              log.d("Adding Module for this quote");
-                              Provider.of<MaderaNav>(context)
-                                  .redirectToPage(context, AddModule());
-                            },
-                            child: LabelledIcon(
-                              icon: Icon(Icons.add),
-                              text: Text("Ajouter module"),
+                child: InkWell(
+                  focusColor: Colors.transparent,
+                  onTap: () => FocusScope.of(context).unfocus(),
+                  child: Center(
+                    /** Centre de la page */
+                    child: Container(
+                      width: cTheme.Dimens.containerWidth,
+                      height: cTheme.Dimens.containerHeight,
+                      decoration: BoxDecoration(
+                          boxShadow: [
+                            BoxShadow(
+                              blurRadius: 5.0,
+                              color: Colors.grey,
+                              offset: Offset(10.0, 10.0),
                             ),
-                          ),
+                            BoxShadow(
+                              blurRadius: 5.0,
+                              color: Colors.grey,
+                              offset: Offset(0.0, 00.0),
+                            ),
+                          ],
+                          gradient: LinearGradient(
+                            colors: [
+                              cTheme.Colors.containerBackgroundLinearStart,
+                              cTheme.Colors.containerBackgroundLinearEnd
+                            ],
+                            begin: Alignment(0.0, -1.0),
+                            end: Alignment(0.0, 0.0),
+                          )),
+                      padding: EdgeInsets.fromLTRB(4.0, 20.0, 4.0, 0.0),
+                      child: SingleChildScrollView(
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: <Widget>[
+                            DropdownButton<String>(
+                              value: dropdownValue,
+                              hint: Text(dropdownValue),
+                              icon: Icon(Icons.arrow_downward),
+                              iconSize: 20,
+                              elevation: 16,
+                              style:
+                                  TextStyle(color: cTheme.Colors.appBarTitle),
+                              underline: Container(
+                                height: 2,
+                                width: 100.0,
+                                color: cTheme.Colors.appBarTitle,
+                              ),
+                              onChanged: (String newValue) {
+                                setState(() {
+                                  dropdownValue = newValue;
+                                });
+                              },
+                              items: <String>['One', 'Two', 'Free', 'Four']
+                                  .map<DropdownMenuItem<String>>(
+                                      (String value) =>
+                                          DropdownMenuItem<String>(
+                                            value: value,
+                                            child: Text(value),
+                                          ))
+                                  .toList(),
+                            ),
+                            Container(
+                              width: 500.0,
+                              child: DropdownButton<String>(
+                                value: dropdownValue,
+                                hint: Text(dropdownValue),
+                                icon: Icon(Icons.arrow_downward),
+                                iconSize: 20,
+                                elevation: 16,
+                                style:
+                                    TextStyle(color: cTheme.Colors.appBarTitle),
+                                underline: Container(
+                                  height: 2,
+                                  color: cTheme.Colors.appBarTitle,
+                                ),
+                                onChanged: (String newValue) {
+                                  setState(() {
+                                    dropdownValue = newValue;
+                                  });
+                                },
+                                items: <String>['One', 'Two', 'Free', 'Four']
+                                    .map<DropdownMenuItem<String>>(
+                                        (String value) =>
+                                            DropdownMenuItem<String>(
+                                              value: value,
+                                              child: Text(value),
+                                            ))
+                                    .toList(),
+                              ),
+                            ),
+                            SizedBox(
+                              height: 45.0,
+                            ),
+                            MaderaCard(
+                              cardHeight: cTheme.Dimens.cardHeightLarge,
+                              cardWidth: cTheme.Dimens.cardSizeLarge,
+                              child: Stack(
+                                children: <Widget>[
+                                  ListView.separated(
+                                    shrinkWrap: true,
+                                    itemCount: 10,
+                                    itemBuilder: (c, i) => ListTile(
+                                      title: Text('Item n°$i'),
+                                    ),
+                                    separatorBuilder: (c, i) => Divider(
+                                      color: Colors.green,
+                                    ),
+                                  ),
+                                  Align(
+                                    alignment: Alignment.bottomRight,
+                                    child: MaderaButton(
+                                      onPressed: () {
+                                        log.d("Adding Module for this quote");
+                                        Provider.of<MaderaNav>(context)
+                                            .redirectToPage(
+                                                context, AddModule());
+                                      },
+                                      child: LabelledIcon(
+                                        icon: Icon(Icons.add),
+                                        text: Text("Ajouter module"),
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              labelledIcon: LabelledIcon(
+                                icon: Icon(
+                                  Icons.format_list_bulleted,
+                                  color: cTheme.Colors.appBarTitle,
+                                ),
+                                text: Text('Liste des modules'),
+                              ),
+                            ),
+                          ],
                         ),
-                      ],
+                      ),
                     ),
                   ),
                 ),
