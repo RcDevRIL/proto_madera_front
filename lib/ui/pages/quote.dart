@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:logger/logger.dart';
 import 'package:proto_madera_front/ui/pages/add_module.dart';
 import 'package:proto_madera_front/ui/pages/quote_overview.dart';
+import 'package:proto_madera_front/ui/pages/widgets/madera_box.dart';
 import 'package:proto_madera_front/ui/pages/widgets/madera_button.dart';
 import 'package:provider/provider.dart';
 
@@ -90,62 +91,83 @@ class _QuoteState extends State<Quote> {
                       padding: EdgeInsets.fromLTRB(4.0, 20.0, 4.0, 0.0),
                       child: SingleChildScrollView(
                         child: Column(
-                          mainAxisAlignment: MainAxisAlignment.start,
                           children: <Widget>[
-                            DropdownButton<String>(
-                              value: dropdownValue,
-                              hint: Text(dropdownValue),
-                              icon: Icon(Icons.arrow_downward),
-                              iconSize: 20,
-                              elevation: 16,
-                              style:
-                                  TextStyle(color: cTheme.Colors.appBarTitle),
-                              underline: Container(
-                                height: 2,
-                                width: 100.0,
-                                color: cTheme.Colors.appBarTitle,
-                              ),
-                              onChanged: (String newValue) {
-                                setState(() {
-                                  dropdownValue = newValue;
-                                });
-                              },
-                              items: <String>['One', 'Two', 'Free', 'Four']
-                                  .map<DropdownMenuItem<String>>(
-                                      (String value) =>
-                                          DropdownMenuItem<String>(
-                                            value: value,
-                                            child: Text(value),
-                                          ))
-                                  .toList(),
-                            ),
-                            Container(
-                              width: 500.0,
-                              child: DropdownButton<String>(
-                                value: dropdownValue,
-                                hint: Text(dropdownValue),
-                                icon: Icon(Icons.arrow_downward),
-                                iconSize: 20,
-                                elevation: 16,
-                                style:
-                                    TextStyle(color: cTheme.Colors.appBarTitle),
-                                underline: Container(
-                                  height: 2,
-                                  color: cTheme.Colors.appBarTitle,
+                            Align(
+                              alignment: Alignment.center,
+                              child: Text('Projet',
+                                style: cTheme.TextStyles.appBarTitle.copyWith(
+                                  fontSize: 32.0
                                 ),
-                                onChanged: (String newValue) {
-                                  setState(() {
-                                    dropdownValue = newValue;
-                                  });
-                                },
-                                items: <String>['One', 'Two', 'Free', 'Four']
-                                    .map<DropdownMenuItem<String>>(
-                                        (String value) =>
-                                            DropdownMenuItem<String>(
-                                              value: value,
-                                              child: Text(value),
-                                            ))
-                                    .toList(),
+                              ),
+                            ),
+                            SizedBox(height: 30.0),
+                            Align(
+                              alignment: Alignment.centerLeft,
+                              child: MaderaBox(
+                                boxHeight: cTheme.Dimens.boxHeight,
+                                boxWidth: cTheme.Dimens.boxWidth,
+                                  child: DropdownButton<String>(
+                                    isExpanded: true,
+                                    value: dropdownValue,
+                                    hint: Center(child: Text(dropdownValue)),
+                                    icon: Icon(Icons.arrow_drop_down, color: cTheme.Colors.containerBackgroundLinearStart),
+                                    iconSize: 20,
+                                    elevation: 16,
+                                    style:
+                                        TextStyle(color: cTheme.Colors.appBarTitle),
+                                    underline: Container(
+                                      height: 2,
+                                      width: 100.0,
+                                      color: Colors.transparent,
+                                    ),
+                                    onChanged: (String newValue) {
+                                      setState(() {
+                                        dropdownValue = newValue;
+                                      });
+                                    },
+                                    items: <String>['One', 'Two', 'Free', 'Four']
+                                        .map<DropdownMenuItem<String>>(
+                                            (String value) =>
+                                                DropdownMenuItem<String>(
+                                                  value: value,
+                                                  child: Text(value),
+                                                ))
+                                        .toList(),
+                                ),
+                              ),
+                            ),
+                            SizedBox(height: 15.0),
+                            Align(
+                              alignment: Alignment.centerLeft,
+                              child: MaderaBox(
+                                boxWidth: cTheme.Dimens.boxWidth,
+                                boxHeight: cTheme.Dimens.boxHeight,
+                                child: DropdownButton<String>(
+                                  isExpanded: true,
+                                  value: dropdownValue,
+                                  hint: Center(child: Text(dropdownValue)),
+                                  icon: Icon(Icons.arrow_drop_down, color: cTheme.Colors.containerBackgroundLinearStart),
+                                  iconSize: 20,
+                                  elevation: 16,
+                                  style:
+                                      TextStyle(color: cTheme.Colors.appBarTitle),
+                                  underline: Container(
+                                    color: Colors.transparent,
+                                  ),
+                                  onChanged: (String newValue) {
+                                    setState(() {
+                                      dropdownValue = newValue;
+                                    });
+                                  },
+                                  items: <String>['One', 'Two', 'Free', 'Four']
+                                      .map<DropdownMenuItem<String>>(
+                                          (String value) =>
+                                              DropdownMenuItem<String>(
+                                                value: value,
+                                                child: Text(value),
+                                              ))
+                                      .toList(),
+                                ),
                               ),
                             ),
                             SizedBox(
@@ -198,28 +220,55 @@ class _QuoteState extends State<Quote> {
                   ),
                 ),
               ),
-              Align(
-                alignment: Alignment.bottomRight,
-                child: Padding(
-                  padding: const EdgeInsets.fromLTRB(
-                      0,
-                      0,
-                      cTheme.Dimens.buttonPaddingRight,
-                      cTheme.Dimens.buttonPaddingBottom),
-                  child: MaderaButton(
-                    // TODO: Redirect to Quote Overview
-                    onPressed: () {
-                      log.d("Validating Quote");
-                      Provider.of<MaderaNav>(context)
-                          .redirectToPage(context, QuoteOverview());
-                    },
-                    child: LabelledIcon(
-                      icon: Icon(Icons.check),
-                      text: Text("Valider le devis"),
+              Padding(
+                padding: EdgeInsets.fromLTRB(1200, MediaQuery.of(context).size.height / 7, 0, 0),
+                child: Column(
+                  children: <Widget>[
+                    Container(
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        border: Border.all(color: cTheme.Colors.containerBackgroundLinearStart, width: 2),
+                        color: cTheme.Colors.containerBackgroundLinearEnd
+                      ),
+                      child: IconButton(
+                        onPressed: () {},
+                        icon: Icon(Icons.check, color: cTheme.Colors.white,),
+                      ),
                     ),
-                  ),
-                ),
+                    SizedBox(height: 12),
+                    Container(
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        border: Border.all(color: cTheme.Colors.containerBackgroundLinearStart, width: 2),
+                        color: cTheme.Colors.containerBackgroundLinearEnd
+                      ),
+                      child: IconButton(
+                        onPressed: () {},
+                        icon: Icon(Icons.delete, color: cTheme.Colors.white,),
+                      ),
+                    )
+                  ],
+                )
               ),
+              // Align(
+              //   alignment: Alignment.topRight,
+              //   child: Padding(
+              //     padding: const EdgeInsets.fromLTRB(0, cTheme.Dimens.appBarElevation,
+              //         0,
+              //         0),
+              //     child: MaderaButton(
+              //       onPressed: () {
+              //         log.d("Validating Quote");
+              //         Provider.of<MaderaNav>(context)
+              //             .redirectToPage(context, QuoteOverview());
+              //       },
+              //       child: LabelledIcon(
+              //         icon: Icon(Icons.check),
+              //         text: Text("Valider le devis"),
+              //       ),
+              //     ),
+              //   ),
+              // ),
               Padding(
                 padding: EdgeInsets.only(left: cTheme.Dimens.drawerMinWitdh),
                 child: AppBarMadera(),

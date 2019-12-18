@@ -23,6 +23,9 @@ class Colors {
       Color.fromRGBO(178, 250, 180, 0.75);
   static const Color containerBackgroundLinearEnd =
       Color.fromRGBO(0, 150, 136, 0.75);
+  
+  static const Color boxBorder =
+      Color.fromRGBO(178, 250, 180, 1);
 }
 
 class Dimens {
@@ -45,6 +48,8 @@ class Dimens {
   static const cardSizeLarge = 980.0;
   static const cardHeight = 35.0;
   static const cardHeightLarge = 350.0;
+  static const boxWidth = 500.0;
+  static const boxHeight = 60.0;
 }
 
 class TextStyles {
