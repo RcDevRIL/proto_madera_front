@@ -1,10 +1,11 @@
-# proto_madera_front - README V1.2
+# proto_madera_front - README V1.3
 __Build status by branch__
 * __master :__ [![M_Codemagic build status][]][M_latest_build]
 * __int :__ [![I_Codemagic build status][]][I_latest_build]
 * __dev :__ [![D_Codemagic build status][]][D_latest_build]
 
-* __Tests coverage :__ ![Coverage](https://github.com/RcDevRIL/proto_madera_front/blob/readMe/coverage/covbadge.svg)
+__Tests coverage :__
+ ![Coverage](https://github.com/RcDevRIL/proto_madera_front/blob/int/coverage/covbadge.svg)
 
 Welcome on our development repository for our graduation project!! 
 
@@ -25,7 +26,7 @@ This README will guide you through the setup and deployment of this application 
 * [X] Packages used to run the app
 * [X] How to install/run app on device
 * [X] How to run tests
-* [ ] How to generate [moor_flutter] code
+* [X] How to generate [moor_flutter] code
 * [ ] How to ...
 
 ##### Prerequisites
@@ -37,10 +38,16 @@ What things you need to install and how to install them
 
 * Now you need to have the Flutter SDK to use CLI and run the app on device. Please refer to [Flutter "get started"] guide.
 
+*
+If you went through all the steps on [flutter.dev][Flutter "get started"] you should have your favorite editor with plugins installed to connect to your device easily.
 
 ## Run app on device
 
-If you went through all the steps on [flutter.dev][Flutter "get started"] you should have your favorite editor with plugins installed to connect to your device easily. 
+To enable easy database interactions, we chose [moor_flutter]. This package use the flutter code generator ([build_runner]) engine to reduce boilerplate for developers. So at this point, you should have 1k+ errors on the opened git repository. You need to run the proper command to generate missing code:
+
+* `flutter packages pub run build_runner build`
+
+Now you can consider building and running the app :upside_down_face:
 
 To start build/install, execute this command:
 
@@ -68,8 +75,9 @@ This will trigger the execution of tests. Depending on your IDE, you should see 
 * [logger] - The package used for logging utilities
 * [http] - The package used for making HTTP requests
 * [crypto] - The package used to encrypt passwords
-* [moor_flutter] - The package used to...
-* [build_runner] - The package used under  "dev dependencies" to...
+* [sqflite] - The package used to enable the creation and interactions on a "file-based" database ([SQLite] Flutter plugin)
+* [moor_flutter] - The package used to ease database interaction (based on [sqflite])
+* [build_runner] - The package used under  "dev dependencies" to let [moor_flutter] generate boilerplate code
 
 ## Contributing
 
@@ -93,8 +101,8 @@ This project is licensed under the GNU GENERAL PUBLIC LICENSE - see the [LICENSE
 
 [M_Codemagic build status]: https://api.codemagic.io/apps/5da43b8a9f20ef13ab7a2017/5da43b8a9f20ef13ab7a2016/status_badge.svg
 [M_latest_build]: https://codemagic.io/apps/5da43b8a9f20ef13ab7a2017/5da43b8a9f20ef13ab7a2016/latest_build
-[I_Codemagic build status]: https://api.codemagic.io/apps/5da43b8a9f20ef13ab7a2017/5da5ac909f20ef30cdc3db79/status_badge.svg
-[I_latest_build]: https://codemagic.io/apps/5da43b8a9f20ef13ab7a2017/5da5ac909f20ef30cdc3db79/latest_build
+[I_Codemagic build status]: https://api.codemagic.io/apps/5da43b8a9f20ef13ab7a2017/5df94e11306e03621e0b7799/status_badge.svg
+[I_latest_build]: https://codemagic.io/apps/5da43b8a9f20ef13ab7a2017/5df94e11306e03621e0b7799/latest_build
 [D_Codemagic build status]: https://api.codemagic.io/apps/5da43b8a9f20ef13ab7a2017/5da5ad409f20ef6c879feffc/status_badge.svg
 [D_latest_build]: https://codemagic.io/apps/5da43b8a9f20ef13ab7a2017/5da5ad409f20ef6c879feffc/latest_build
 [Flutter "get started"]: https://flutter.dev/get-started/
@@ -106,6 +114,7 @@ This project is licensed under the GNU GENERAL PUBLIC LICENSE - see the [LICENSE
 [logger]: https://pub.dev/packages/logger
 [http]: https://pub.dev/packages/http
 [crypto]: https://pub.dev/packages/crypto
+[sqflite]: https://pub.dev/packages/sqflite
 [moor_flutter]: https://pub.dev/packages/moor_flutter
 [build_runner]: https://pub.dev/packages/build_runner
 [RcDevRIL]: https://github.com/RcDevRIL
@@ -113,3 +122,4 @@ This project is licensed under the GNU GENERAL PUBLIC LICENSE - see the [LICENSE
 [LadouceFabien]: https://github.com/LadouceFabien
 [contributors]: https://github.com/RcDevRIL/proto_madera_front/contributors
 [LICENSE.md]: https://github.com/RcDevRIL/proto_madera_front/blob/master/LICENSE
+[SQLite]: https://www.sqlite.org
