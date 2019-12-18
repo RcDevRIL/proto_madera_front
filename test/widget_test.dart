@@ -1,22 +1,12 @@
-// This is a basic Flutter widget test.
-//
-// To perform an interaction with a widget in your test, use the WidgetTester
-// utility that Flutter provides. For example, you can send tap and scroll
-// gestures. You can also use WidgetTester to find child widgets in the widget
-// tree, read text, and verify that the values of widget properties are correct.
-
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:http/http.dart';
-import 'package:http/testing.dart';
+import 'package:provider/provider.dart';
+
 import 'package:proto_madera_front/providers/provider_bdd.dart';
 import 'package:proto_madera_front/providers/provider_synchro.dart';
 import 'package:proto_madera_front/providers/providers.dart';
 import 'package:proto_madera_front/ui/pages/pages.dart';
 import 'package:proto_madera_front/ui/pages/widgets/custom_widgets.dart';
-import 'package:provider/provider.dart';
 
 ///
 /// Point d'entrée de notre suite de tests unitaires.
