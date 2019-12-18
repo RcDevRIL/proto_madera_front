@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:proto_madera_front/providers/provider_synchro.dart';
-import 'package:proto_madera_front/providers/providers.dart';
-import 'package:proto_madera_front/theme.dart' as cTheme;
-import 'package:proto_madera_front/ui/pages/pages.dart';
 import 'package:provider/provider.dart';
+
+import 'package:proto_madera_front/providers/providers.dart';
+import 'package:proto_madera_front/ui/pages/pages.dart';
+import 'package:proto_madera_front/theme.dart' as cTheme;
 
 ///
 /// Premier Widget de l'application.
@@ -12,32 +12,36 @@ import 'package:provider/provider.dart';
 /// - Configuration routing
 ///
 /// @author HELIOT David, CHEVALLIER Romain, LADOUCE Fabien
-/// @version 0.2-RELEASE
 ///
+/// @version 0.3-PRERELEASE
 class MaderaApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     SystemChrome.setPreferredOrientations(
         [DeviceOrientation.landscapeRight, DeviceOrientation.landscapeLeft]);
+    MaderaNav maderaNav = new MaderaNav();
+    ProviderBdd providerBdd = new ProviderBdd();
     //TODO initialiser la base de données ici ?
-    ProviderLogin providerLogin = ProviderLogin();
-    ProviderSynchro providerSynchro = ProviderSynchro();
-    MaderaNav providerNavigation = MaderaNav();
     return MultiProvider(
         providers: [
-          ChangeNotifierProvider.value(
-            value: providerLogin,
+          ChangeNotifierProvider(
+            create: (c) => maderaNav,
           ),
-          ChangeNotifierProvider.value(
-            value: providerNavigation,
+          ChangeNotifierProvider(
+            create: (c) => providerBdd,
           ),
-          ChangeNotifierProvider.value(
-            value: providerSynchro,
+          ChangeNotifierProxyProvider<ProviderBdd, ProviderLogin>(
+            create: (context) => ProviderLogin(db: providerBdd.db),
+            update: (context, bdd, login) => ProviderLogin(db: bdd.db),
+          ),
+          ChangeNotifierProxyProvider<ProviderBdd, ProviderSynchro>(
+            create: (context) => ProviderSynchro(db: providerBdd.db),
+            update: (context, bdd, login) => ProviderSynchro(db: bdd.db),
           ),
         ],
         //TODO faire la redirection si l'utilisateur est déjà conneté ? Test en envoyant le token ?
         child: MaterialApp(
-          title: providerNavigation.pageTitle,
+          title: maderaNav.pageTitle,
           theme: ThemeData(
             primarySwatch: Colors.green,
             appBarTheme: AppBarTheme(

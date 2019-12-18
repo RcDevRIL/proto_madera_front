@@ -1,8 +1,15 @@
 import 'package:moor_flutter/moor_flutter.dart';
+
 import 'package:proto_madera_front/database/tables.dart';
 
 part 'madera_database.g.dart';
 
+///
+/// Class représentant notre base de donnée.
+///
+/// @author HELIOT David, CHEVALLIER Romain, LADOUCE Fabien
+///
+/// @version 0.3-PRERELEASE
 @UseMoor(tables: [
   Utilisateur,
   Composant,
@@ -45,7 +52,7 @@ class MaderaDatabase extends _$MaderaDatabase {
         if (from <= 5) {
           m.createTable(devisEtat);
         }
-        if(from <= 6) {
+        if (from <= 6) {
           m.createTable(client);
           m.createTable(clientAdresse);
           m.createTable(adresse);

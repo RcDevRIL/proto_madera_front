@@ -1,24 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:logger/logger.dart';
-import 'package:proto_madera_front/providers/http_status.dart';
-import 'package:proto_madera_front/providers/provider_synchro.dart';
-import 'package:proto_madera_front/ui/pages/widgets/madera_button.dart';
 import 'package:provider/provider.dart';
 
 import 'package:proto_madera_front/services/authentication/login_form_bloc.dart';
-import 'package:proto_madera_front/ui/pages/home_page.dart';
-import 'package:proto_madera_front/ui/pages/widgets/custom_widgets.dart';
-import 'package:proto_madera_front/providers/provider-navigation.dart';
+import 'package:proto_madera_front/ui/pages/pages.dart' show HomePage;
+import 'package:proto_madera_front/ui/pages/widgets/custom_widgets.dart'
+    show AppBarMadera, LabelledIcon, MaderaButton;
+import 'package:proto_madera_front/providers/providers.dart'
+    show MaderaNav, ProviderLogin, ProviderSynchro;
+import 'package:proto_madera_front/providers/http_status.dart';
 import 'package:proto_madera_front/theme.dart' as cTheme;
-import 'package:proto_madera_front/providers/provider_login.dart';
 
 ///
 /// Page d'authentification
 ///
 /// @author HELIOT David, CHEVALLIER Romain, LADOUCE Fabien
-/// @version 0.2-RELEASE
 ///
+/// @version 0.3-PRERELEASE
 class AuthenticationPage extends StatefulWidget {
   static const routeName = '/auth';
   @override
@@ -233,8 +232,21 @@ class _AuthenticationPageState extends State<AuthenticationPage> {
     switch (Provider.of<ProviderLogin>(context).getStatus) {
       case HttpStatus.AUTHORIZED:
         {
-          //TODO Afficher un message d'erreur si données non récup ?
-          Provider.of<ProviderSynchro>(context).synchro();
+          //on ne synchronise que si la date de dernière synchro est antérieure à la date actuelle
+          if (DateTime(
+                  DateTime.now().year, DateTime.now().month, DateTime.now().day)
+              .isAfter(DateTime.parse(
+                  Provider.of<ProviderSynchro>(context).refsLastSyncDate))) {
+            //TODO Afficher un message d'erreur si données non récup ?
+            Provider.of<ProviderSynchro>(context).synchroReferentiel();
+          }
+          if (DateTime(
+                  DateTime.now().year, DateTime.now().month, DateTime.now().day)
+              .isAfter(DateTime.parse(
+                  Provider.of<ProviderSynchro>(context).dataLastSyncDate))) {
+            //TODO Afficher un message d'erreur si données non récup ?
+            Provider.of<ProviderSynchro>(context).synchroData();
+          }
           Provider.of<MaderaNav>(context).redirectToPage(context, HomePage());
           //TODO Ajouter synchroProjet également
         }

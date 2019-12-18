@@ -1,19 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:logger/logger.dart';
-import 'package:proto_madera_front/ui/pages/pages.dart';
+import 'package:provider/provider.dart';
 
 import 'package:proto_madera_front/ui/pages/widgets/custom_widgets.dart';
-import 'package:proto_madera_front/providers/provider-navigation.dart';
+import 'package:proto_madera_front/providers/providers.dart' show MaderaNav;
+import 'package:proto_madera_front/ui/pages/pages.dart' show Quote;
 import 'package:proto_madera_front/theme.dart' as cTheme;
-import 'package:proto_madera_front/ui/pages/widgets/madera_button.dart';
-import 'package:provider/provider.dart';
 
 ///
 /// Page "Ajout de module"
 ///
 /// @author HELIOT David, CHEVALLIER Romain, LADOUCE Fabien
-/// @version 0.2-RELEASE
 ///
+/// @version 0.3-PRERELEASE
 class AddModule extends StatefulWidget {
   static const routeName = '/add_module';
 

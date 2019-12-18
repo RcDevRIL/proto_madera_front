@@ -6,8 +6,8 @@ import 'dart:async';
 ///  - Propage le paramètre si condition(s) OK
 ///
 /// @author HELIOT David, CHEVALLIER Romain, LADOUCE Fabien
-/// @version 0.2-RELEASE
 ///
+/// @version 0.3-PRERELEASE
 class PasswordValidator {
   final StreamTransformer<String, String> validatePassword =
       StreamTransformer<String, String>.fromHandlers(

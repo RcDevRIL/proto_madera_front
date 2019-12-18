@@ -1,16 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import 'package:proto_madera_front/providers/provider-navigation.dart';
-import 'package:proto_madera_front/ui/pages/widgets/custom_widgets.dart';
+import 'package:proto_madera_front/providers/providers.dart' show MaderaNav;
+import 'package:proto_madera_front/ui/pages/widgets/custom_widgets.dart'
+    show AppBarMadera, CustomDrawer;
 import 'package:proto_madera_front/theme.dart' as cTheme;
 
 ///
 /// "Page des notifications"
 ///
 /// @author HELIOT David, CHEVALLIER Romain, LADOUCE Fabien
-/// @version 0.2-RELEASE
 ///
+/// @version 0.3-PRERELEASE
 class NotificationPage extends StatefulWidget {
   static const routeName = '/bell';
 

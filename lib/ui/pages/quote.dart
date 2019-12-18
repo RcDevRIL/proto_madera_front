@@ -6,15 +6,15 @@ import 'package:proto_madera_front/ui/pages/widgets/madera_button.dart';
 import 'package:provider/provider.dart';
 
 import 'package:proto_madera_front/ui/pages/widgets/custom_widgets.dart';
-import 'package:proto_madera_front/providers/provider-navigation.dart';
+import 'package:proto_madera_front/providers/providers.dart' show MaderaNav;
 import 'package:proto_madera_front/theme.dart' as cTheme;
 
 ///
 /// Page de "Edition de devis"
 ///
 /// @author HELIOT David, CHEVALLIER Romain, LADOUCE Fabien
-/// @version 0.2-RELEASE
 ///
+/// @version 0.3-PRERELEASE
 class Quote extends StatefulWidget {
   static const routeName = '/quote';
 
@@ -84,13 +84,17 @@ class _QuoteState extends State<Quote> {
               Align(
                 alignment: Alignment.bottomRight,
                 child: Padding(
-                  padding: const EdgeInsets.fromLTRB(0, 0, cTheme.Dimens.buttonPaddingRight, cTheme.Dimens.buttonPaddingBottom),
+                  padding: const EdgeInsets.fromLTRB(
+                      0,
+                      0,
+                      cTheme.Dimens.buttonPaddingRight,
+                      cTheme.Dimens.buttonPaddingBottom),
                   child: MaderaButton(
                     // TODO: Redirect to Quote Overview
                     onPressed: () {
                       log.d("Validating Quote");
                       Provider.of<MaderaNav>(context)
-                        .redirectToPage(context, QuoteOverview());
+                          .redirectToPage(context, QuoteOverview());
                     },
                     child: LabelledIcon(
                       icon: Icon(Icons.check),

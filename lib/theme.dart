@@ -1,3 +1,11 @@
+///
+/// Ici se trouvent plusieurs classes constituant notre thème
+/// Certaines valeurs sont importés de Mockflow afin que l'interface corresponde à la maquette
+/// D'autres valeurs ont été créées lors du développement de ce prototype pour répondre au besoin de consistance d'UI
+///
+/// @author HELIOT David, CHEVALLIER Romain, LADOUCE Fabien
+///
+/// @version 0.3-PRERELEASE
 import 'package:flutter/material.dart' show Color, FontWeight, TextStyle;
 
 // Default Font Family

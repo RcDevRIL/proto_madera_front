@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:logger/logger.dart';
-import 'package:proto_madera_front/ui/pages/add_module.dart';
 
-import 'package:proto_madera_front/ui/pages/authentication_page.dart';
-import 'package:proto_madera_front/ui/pages/home_page.dart';
 import 'package:proto_madera_front/ui/pages/pages.dart';
 import 'package:provider/provider.dart';
 
@@ -11,8 +8,8 @@ import 'package:provider/provider.dart';
 /// Provider permettant de gérer l'état de la navigation
 ///
 /// @author HELIOT David, CHEVALLIER Romain, LADOUCE Fabien
-/// @version 0.2-RELEASE
 ///
+/// @version 0.3-PRERELEASE
 class MaderaNav with ChangeNotifier {
   var _pageTitle;
   var _pageIndex;
@@ -27,6 +24,11 @@ class MaderaNav with ChangeNotifier {
   String toString() {
     //overwritten for convenience
     return '"$_pageTitle", $_pageIndex';
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
   }
 
   void updateCurrent(Type page) {
@@ -141,10 +143,5 @@ class MaderaNav with ChangeNotifier {
       var maderaNav = Provider.of<MaderaNav>(context);
       maderaNav.updateCurrent(page.runtimeType);
     });
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
   }
 }

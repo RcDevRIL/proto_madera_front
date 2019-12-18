@@ -12,14 +12,23 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:http/http.dart';
 import 'package:http/testing.dart';
 import 'package:proto_madera_front/providers/provider_bdd.dart';
+import 'package:proto_madera_front/providers/provider_synchro.dart';
 import 'package:proto_madera_front/providers/providers.dart';
 import 'package:proto_madera_front/ui/pages/pages.dart';
 import 'package:proto_madera_front/ui/pages/widgets/custom_widgets.dart';
 import 'package:provider/provider.dart';
 
+///
+/// Point d'entrée de notre suite de tests unitaires.
+///
+/// @author HELIOT David, CHEVALLIER Romain, LADOUCE Fabien
+///
+/// @version 0.3-PRERELEASE
 void main() {
   final MaderaNav providerNavigation = MaderaNav();
-  final ProviderLogin providerLogin = ProviderLogin();
+  final ProviderBdd providerBdd = ProviderBdd();
+  final ProviderLogin providerLogin = ProviderLogin(db: providerBdd.db);
+  final ProviderSynchro providerSynchro = ProviderSynchro(db: providerBdd.db);
 
   group('Tests', () {
     testWidgets(
@@ -70,9 +79,9 @@ void main() {
     );
     test('last sync date test', () {
       var date = DateTime.now();
-      ProviderBdd providerSynchro = ProviderBdd();
 
-      expect(date.isAfter(DateTime.parse(providerSynchro.lastSyncDate)), true);
+      expect(
+          date.isAfter(DateTime.parse(providerSynchro.refsLastSyncDate)), true);
     });
 
     /// To run following tests, use command

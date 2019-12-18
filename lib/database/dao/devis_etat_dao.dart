@@ -15,4 +15,14 @@ class DevisEtatDao extends DatabaseAccessor<MaderaDatabase>
 //Try replacing the use of the deprecated member with the replacement.
     await into(devisEtat).insertAll(listDevisEtat);
   }
+
+  ///
+  /// Méthode utilisée pour récupérer les données dans la table devisEtat
+  ///
+  /// @author HELIOT David, CHEVALLIER Romain, LADOUCE Fabien
+  ///
+  /// @version 0.3-PRERELEASE
+  Future<List<DevisEtatData>> getDevisEtatData() async {
+    return select(devisEtat).get();
+  }
 }

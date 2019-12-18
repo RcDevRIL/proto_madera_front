@@ -1,8 +1,17 @@
-//TODO Séparer url prod et dev ?
-// String baseUrl = 'https://cesi-madera.fr/madera';
-String baseUrl = 'http://10.0.2.2:8081/madera';
+///
+/// Class permettant de stocker nos URLS
+///
+/// @authors HELIOT David, CHEVALLIER Romain, LADOUCE Fabien
+///
+/// @version 0.3-PRERELEASE
+class MaderaUrl {
+  const MaderaUrl();
 
-String urlAuthentification = baseUrl + '/authentification';
-String urlDeconnection = baseUrl + '/deconnection';
-String urlSynchroRef = baseUrl + '/referentiel';
-String urlSynchroData = baseUrl + '/synchro';
+  static const String baseUrl = 'https://cesi-madera.fr/madera';
+  // String baseUrl = 'http://10.0.2.2:8081/madera';
+
+  static const String urlAuthentification = baseUrl + '/authentification';
+  static const String urlDeconnection = baseUrl + '/deconnection';
+  static const String urlSynchroRef = baseUrl + '/referentiel';
+  static const String urlSynchroData = baseUrl + '/synchro';
+}

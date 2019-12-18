@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:logger/logger.dart';
-import 'package:proto_madera_front/ui/pages/quote.dart';
-import 'package:proto_madera_front/ui/pages/widgets/madera_button.dart';
 import 'package:provider/provider.dart';
 
-import 'package:proto_madera_front/providers/provider-navigation.dart';
+import 'package:proto_madera_front/providers/providers.dart' show MaderaNav;
+import 'package:proto_madera_front/ui/pages/pages.dart' show Quote;
 import 'package:proto_madera_front/ui/pages/widgets/custom_widgets.dart';
 import 'package:proto_madera_front/theme.dart' as cTheme;
 
@@ -12,8 +11,8 @@ import 'package:proto_madera_front/theme.dart' as cTheme;
 /// Page "Outil de création de devis"
 ///
 /// @author HELIOT David, CHEVALLIER Romain, LADOUCE Fabien
-/// @version 0.2-RELEASE
 ///
+/// @version 0.3-PRERELEASE
 class QuoteCreation extends StatefulWidget {
   static const routeName = '/quote_create';
 
@@ -23,9 +22,11 @@ class QuoteCreation extends StatefulWidget {
 
 class _QuoteCreationState extends State<QuoteCreation> {
   static var now = DateTime.now();
-  final String dateCreationProjet = now.year.toString() 
-                      + "-" + now.month.toString()
-                      + "-" + now.day.toString();
+  final String dateCreationProjet = now.year.toString() +
+      "-" +
+      now.month.toString() +
+      "-" +
+      now.day.toString();
   final log = Logger();
 
   ///
@@ -94,8 +95,8 @@ class _QuoteCreationState extends State<QuoteCreation> {
                                         child: TextField(
                                           controller: TextEditingController(
                                               text: dateCreationProjet
-                                                  //DateFormat('yyyy-MM-dd').format(DateTime.now()) // Va être généré automatiquement à l'avenir
-                                                  ), 
+                                              //DateFormat('yyyy-MM-dd').format(DateTime.now()) // Va être généré automatiquement à l'avenir
+                                              ),
                                           keyboardType: TextInputType.text,
                                           enabled: false,
                                           decoration: InputDecoration(
@@ -161,8 +162,8 @@ class _QuoteCreationState extends State<QuoteCreation> {
                                         width: cTheme.Dimens.cardSizeLarge,
                                         height: cTheme.Dimens.cardHeight,
                                         child: TextField(
-                                          controller: TextEditingController(
-                                              text: "1"),
+                                          controller:
+                                              TextEditingController(text: "1"),
                                           keyboardType: TextInputType.text,
                                           decoration: InputDecoration(
                                             border: OutlineInputBorder(),
