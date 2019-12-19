@@ -1,9 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:logger/logger.dart';
-import 'package:proto_madera_front/ui/pages/quote.dart';
-import 'package:proto_madera_front/ui/pages/widgets/madera_button.dart';
-import 'package:proto_madera_front/ui/pages/widgets/madera_scaffold.dart';
-import 'package:proto_madera_front/ui/pages/widgets/quote_gradient_frame.dart';
 import 'package:provider/provider.dart';
 
 import 'package:proto_madera_front/providers/providers.dart' show MaderaNav;
