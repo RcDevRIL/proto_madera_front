@@ -4,7 +4,8 @@ import 'package:provider/provider.dart';
 
 import 'package:proto_madera_front/ui/pages/widgets/custom_widgets.dart';
 import 'package:proto_madera_front/providers/providers.dart' show MaderaNav;
-import 'package:proto_madera_front/ui/pages/pages.dart' show AddModule;
+import 'package:proto_madera_front/ui/pages/pages.dart'
+    show AddModule, QuoteOverview;
 import 'package:proto_madera_front/theme.dart' as cTheme;
 
 ///
@@ -23,11 +24,13 @@ class Quote extends StatefulWidget {
 class _QuoteState extends State<Quote> {
   final log = Logger();
   String dropdownValue = 'One';
+  bool canValidateForm;
 
   //added to prepare for scaling
   @override
   void initState() {
     super.initState();
+    canValidateForm = false;
   }
 
   //added to prepare for scaling
@@ -77,6 +80,7 @@ class _QuoteState extends State<Quote> {
                       onChanged: (String newValue) {
                         setState(() {
                           dropdownValue = newValue;
+                          canValidateForm = true;
                         });
                       },
                       items: <String>['One', 'Two', 'Free', 'Four']
@@ -106,6 +110,7 @@ class _QuoteState extends State<Quote> {
                       onChanged: (String newValue) {
                         setState(() {
                           dropdownValue = newValue;
+                          canValidateForm = true;
                         });
                       },
                       items: <String>['One', 'Two', 'Free', 'Four']
@@ -168,18 +173,29 @@ class _QuoteState extends State<Quote> {
       stackAdditions: <Widget>[
         Padding(
           padding: EdgeInsets.fromLTRB(
-              1200, MediaQuery.of(context).size.height / 7, 0, 0),
+              1200, MediaQuery.of(context).size.height / 6, 0, 0),
           child: Column(
             children: <Widget>[
               Container(
                 decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    border: Border.all(
-                        color: cTheme.Colors.containerBackgroundLinearStart,
-                        width: 2),
-                    color: cTheme.Colors.containerBackgroundLinearEnd),
+                  shape: BoxShape.circle,
+                  border: Border.all(
+                      color: canValidateForm
+                          ? cTheme.Colors.containerBackgroundLinearStart
+                          : Colors.grey,
+                      width: 2),
+                  color: canValidateForm
+                      ? cTheme.Colors.containerBackgroundLinearEnd
+                      : Colors.grey,
+                ),
                 child: IconButton(
-                  onPressed: () {},
+                  onPressed: canValidateForm
+                      ? () {
+                          log.d("Quote Overview");
+                          Provider.of<MaderaNav>(context)
+                              .redirectToPage(context, QuoteOverview());
+                        }
+                      : null,
                   icon: Icon(
                     Icons.check,
                     color: cTheme.Colors.white,
