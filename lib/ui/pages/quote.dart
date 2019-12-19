@@ -4,6 +4,8 @@ import 'package:provider/provider.dart';
 
 import 'package:proto_madera_front/ui/pages/widgets/custom_widgets.dart';
 import 'package:proto_madera_front/providers/providers.dart' show MaderaNav;
+import 'package:proto_madera_front/ui/pages/pages.dart'
+    show AddModule, QuoteOverview;
 import 'package:proto_madera_front/theme.dart' as cTheme;
 
 ///
