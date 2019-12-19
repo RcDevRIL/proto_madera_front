@@ -8,9 +8,5 @@ import 'package:proto_madera_front/madera_launcher.dart';
 /// @author HELIOT David, CHEVALLIER Romain, LADOUCE Fabien
 ///
 /// @version 0.3-PRERELEASE
-void main() => {
-      runApp(
-        MaderaApp(),
-      )
-    };
+void main() => runApp(MaderaApp());
 //TODO Add Platform targetting logic

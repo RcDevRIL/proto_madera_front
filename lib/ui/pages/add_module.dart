@@ -22,6 +22,7 @@ class AddModule extends StatefulWidget {
 
 class _AddModuleState extends State<AddModule> {
   final log = Logger();
+  String dropdownValue = 'One';
 
   ///
   /// Prevents the use of the "back" button
@@ -48,29 +49,136 @@ class _AddModuleState extends State<AddModule> {
       onWillPop: _onWillPopScope,
       child: SafeArea(
         child: Scaffold(
-          backgroundColor: Colors.blueGrey,
+          backgroundColor: cTheme.Colors.white,
           body: Stack(
             children: <Widget>[
               Padding(
                 padding: EdgeInsets.fromLTRB(cTheme.Dimens.drawerMinWitdh,
                     MediaQuery.of(context).size.height / 12, 0, 0),
-                child: Center(
-                  child: Container(
-                    padding: EdgeInsets.all(8.0),
-                    width: cTheme.Dimens.containerWidth,
-                    height: cTheme.Dimens.containerHeight,
-                    color: cTheme.Colors.containerBackground,
-                    child: Align(
-                      alignment: Alignment.bottomRight,
-                      child: MaderaButton(
-                        onPressed: () {
-                          log.d('Module added to quote');
-                          Provider.of<MaderaNav>(context)
-                              .redirectToPage(context, Quote());
-                        },
-                        child: LabelledIcon(
-                          icon: Icon(Icons.check),
-                          text: Text("Valider"),
+                child: InkWell(
+                  focusColor: Colors.transparent,
+                  onTap: () => FocusScope.of(context).unfocus(),
+                  child: Center(
+                    /** Centre de la page */
+                    child: Container(
+                      width: cTheme.Dimens.containerWidth,
+                      height: cTheme.Dimens.containerHeight,
+                      decoration: BoxDecoration(
+                          boxShadow: [
+                            BoxShadow(
+                              blurRadius: 5.0,
+                              color: Colors.grey,
+                              offset: Offset(10.0, 10.0),
+                            ),
+                            BoxShadow(
+                              blurRadius: 5.0,
+                              color: Colors.grey,
+                              offset: Offset(0.0, 00.0),
+                            ),
+                          ],
+                          gradient: LinearGradient(
+                            colors: [
+                              cTheme.Colors.containerBackgroundLinearStart,
+                              cTheme.Colors.containerBackgroundLinearEnd
+                            ],
+                            begin: Alignment(0.0, -1.0),
+                            end: Alignment(0.0, 0.0),
+                          )),
+                      padding: EdgeInsets.fromLTRB(4.0, 20.0, 4.0, 0.0),
+                      child: SingleChildScrollView(
+                        child: Column(
+                          children: <Widget>[
+                            Align(
+                              alignment: Alignment.center,
+                              child: Text(
+                                'Ajouter module',
+                                style: cTheme.TextStyles.appBarTitle
+                                    .copyWith(fontSize: 32.0),
+                              ),
+                            ),
+                            SizedBox(height: 30.0),
+                            Row(
+                              children: <Widget>[
+                                Column(
+                                  children: <Widget>[
+                                    MaderaCard(
+                                      cardWidth: cTheme.Dimens.cardSizeSmall,
+                                      cardHeight: cTheme.Dimens.cardHeight,
+                                      child: TextField(
+                                        maxLines: 1,
+                                        keyboardType: TextInputType.text,
+                                        enabled: false,
+                                        decoration: InputDecoration(
+                                          hintText: 'Nom du module...',
+                                          border: OutlineInputBorder(
+                                            borderRadius: BorderRadius.only(
+                                              bottomRight:
+                                                  Radius.circular(20.0),
+                                              bottomLeft: Radius.circular(20.0),
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                      labelledIcon: LabelledIcon(
+                                        icon: Icon(
+                                          Icons.text_fields,
+                                          color: cTheme.Colors.appBarTitle,
+                                        ),
+                                        text: Text(
+                                          "Nom du module",
+                                          style: cTheme.TextStyles.appBarTitle
+                                              .copyWith(
+                                            fontSize: 13.0,
+                                            fontWeight: FontWeight.w600,
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                    MaderaDropDown(
+                                      boxHeight: cTheme.Dimens.boxHeight,
+                                      boxWidth: cTheme.Dimens.boxWidth,
+                                      child: DropdownButton<String>(
+                                        isExpanded: true,
+                                        value: dropdownValue,
+                                        hint:
+                                            Center(child: Text(dropdownValue)),
+                                        icon: Icon(Icons.arrow_drop_down,
+                                            color: cTheme.Colors
+                                                .containerBackgroundLinearStart),
+                                        iconSize: 20,
+                                        elevation: 16,
+                                        style: TextStyle(
+                                            color: cTheme.Colors.appBarTitle),
+                                        underline: Container(
+                                          height: 2,
+                                          width: 100.0,
+                                          color: Colors.transparent,
+                                        ),
+                                        onChanged: (String newValue) {
+                                          setState(() {
+                                            dropdownValue = newValue;
+                                          });
+                                        },
+                                        items: <String>[
+                                          'One',
+                                          'Two',
+                                          'Free',
+                                          'Four'
+                                        ]
+                                            .map<DropdownMenuItem<String>>(
+                                                (String value) =>
+                                                    DropdownMenuItem<String>(
+                                                      value: value,
+                                                      child: Text(value),
+                                                    ))
+                                            .toList(),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            ),
+                          ],
                         ),
                       ),
                     ),

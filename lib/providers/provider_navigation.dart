@@ -40,7 +40,8 @@ class MaderaNav with ChangeNotifier {
      * 2 : QuoteOverview
      * 3 : NotificationPage
      * 4 : SettingsPage
-     * 5 : Quote
+     * 1 : Quote
+     * 1 : AddModule
      */
     switch (page) {
       case AuthenticationPage:
@@ -105,7 +106,7 @@ class MaderaNav with ChangeNotifier {
       case Quote:
         {
           _pageTitle = "Edition de devis";
-          _pageIndex = 5;
+          _pageIndex = 1;
           log.d(
               'Updating current navigation properties:                        \n' +
                   this.toString() +
@@ -115,7 +116,7 @@ class MaderaNav with ChangeNotifier {
       case AddModule:
         {
           _pageTitle = "Ajout de module";
-          _pageIndex = 6;
+          _pageIndex = 1;
           log.d(
               'Updating current navigation properties:                        \n' +
                   this.toString() +

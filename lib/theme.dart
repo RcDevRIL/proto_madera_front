@@ -27,7 +27,12 @@ class Colors {
   static const Color white = Color.fromRGBO(255, 255, 255, 1.0);
   static const Color white70 = Color.fromRGBO(255, 255, 255, 0.7);
 
-  static const Color containerBackground = Color.fromRGBO(255, 255, 255, 1);
+  static const Color containerBackgroundLinearStart =
+      Color.fromRGBO(178, 250, 180, 0.75);
+  static const Color containerBackgroundLinearEnd =
+      Color.fromRGBO(0, 150, 136, 0.75);
+
+  static const Color boxBorder = Color.fromRGBO(178, 250, 180, 1);
 }
 
 class Dimens {
@@ -37,19 +42,22 @@ class Dimens {
   static const drawerMinWitdh = 72.0;
   static const drawerMaxWidth = 220.0;
   static const drawerIconSize = 40.0;
-  static const containerHeight = 500.0;
+  static const containerHeight = 580.0;
   static const containerWidth = 1000.0;
   static const loginFormWidth = 250.0;
   static const appBarElevation = 50.0;
   static const quoteButtonWidth = 300.0;
   static const quoteButtonHeight = 300.0;
   static const buttonPaddingRight = 10.0;
-  static const buttonPaddingBottom = 10.0;
-  static const cardSizeSmall = 280.0;
-  static const cardSizeMedium = 680.0;
+  static const buttonPaddingBottom = 0.0;
+  static const cardSizeSmall = 250.0;
+  static const cardSizeXSmall = 155.0;
+  static const cardSizeMedium = 821.0;
   static const cardSizeLarge = 980.0;
-  static const cardHeight = 35.0;
-  static const cardHeightLarge = 100.0;
+  static const cardHeight = 45.0;
+  static const cardHeightLarge = 450.0;
+  static const boxWidth = 250.0;
+  static const boxHeight = 60.0;
 }
 
 class TextStyles {

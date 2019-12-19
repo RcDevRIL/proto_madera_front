@@ -42,7 +42,7 @@ class ProviderLogin with ChangeNotifier {
         body: jsonEncode({'login': login, 'password': digest.toString()}),
       );
     } catch (e) {
-      log.e("Error when tryiing to connect:\n" + e.toString());
+      log.e("Error when trying to connect:\n" + e.toString());
       this.status = HttpStatus.OFFLINE;
       return false;
     }

@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:logger/logger.dart';
+import 'package:proto_madera_front/ui/pages/quote.dart';
+import 'package:proto_madera_front/ui/pages/widgets/madera_button.dart';
+import 'package:proto_madera_front/ui/pages/widgets/madera_scaffold.dart';
+import 'package:proto_madera_front/ui/pages/widgets/quote_gradient_frame.dart';
 import 'package:provider/provider.dart';
 
 import 'package:proto_madera_front/providers/providers.dart' show MaderaNav;
@@ -21,228 +25,275 @@ class QuoteCreation extends StatefulWidget {
 }
 
 class _QuoteCreationState extends State<QuoteCreation> {
-  static var now = DateTime.now();
-  final String dateCreationProjet = now.year.toString() +
-      "-" +
-      now.month.toString() +
-      "-" +
-      now.day.toString();
+  static final _now = DateTime.now();
+  final String dateCreationProjet =
+      DateTime(_now.year, _now.month, _now.day).toString().substring(0, 10);
+  TextEditingController _descriptionTextController;
+  ScrollController _formScrollController;
+  bool canValidateForm;
+
   final log = Logger();
 
-  ///
-  /// Prevents the use of the "back" button
-  ///
-  Future<bool> _onWillPopScope() async {
-    return false;
-  }
-
-  //added to prepare for scaling
   @override
   void initState() {
     super.initState();
+    _descriptionTextController = TextEditingController();
+    _formScrollController = ScrollController();
+    canValidateForm = false;
   }
 
-  //added to prepare for scaling
   @override
   void dispose() {
+    _descriptionTextController?.dispose();
+    _formScrollController?.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    //final args = ModalRoute.of(context).settings.arguments;
-    return WillPopScope(
-      onWillPop: _onWillPopScope,
-      child: SafeArea(
-        child: Scaffold(
-          backgroundColor: Colors.blueGrey,
-          body: Stack(
-            children: <Widget>[
-              Padding(
-                padding: EdgeInsets.fromLTRB(cTheme.Dimens.drawerMinWitdh,
-                    MediaQuery.of(context).size.height / 12, 0, 0),
-                child: Center(
-                  child: Consumer<MaderaNav>(
-                    builder: (context, mN, w) => Container(
-                      width: cTheme.Dimens.containerWidth,
-                      height: cTheme.Dimens.containerHeight,
-                      color: cTheme.Colors.containerBackground,
-                      padding: EdgeInsets.only(top: 20),
-                      child: SingleChildScrollView(
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: <Widget>[
-                            Align(
-                              alignment: Alignment.center,
-                              child: Text("Devis"),
+    return MaderaScaffold(
+      passedContext: context,
+      child: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: <Widget>[
+            Align(
+              alignment: Alignment.center,
+              child: Text('Informations générales',
+                  style: cTheme.TextStyles.appBarTitle.copyWith(
+                    fontSize: 32.0,
+                  )),
+            ),
+            GradientFrame(
+              child: SingleChildScrollView(
+                controller: _formScrollController,
+                child: Column(
+                  children: <Widget>[
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: <Widget>[
+                        MaderaCard(
+                          cardWidth: cTheme.Dimens.cardSizeXSmall,
+                          cardHeight: cTheme.Dimens.cardHeight,
+                          labelledIcon: LabelledIcon(
+                            icon: Icon(
+                              Icons.calendar_today,
+                              color: cTheme.Colors.appBarTitle,
                             ),
-                            SizedBox(height: 30),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceAround,
-                              children: <Widget>[
-                                Card(
-                                  child: Column(
-                                    children: <Widget>[
-                                      LabelledIcon(
-                                        icon: Icon(Icons.calendar_today),
-                                        text: Text("Date de création"),
-                                      ),
-                                      SizedBox(height: 6.0),
-                                      Container(
-                                        color: Colors.grey[200],
-                                        width: cTheme.Dimens.cardSizeSmall,
-                                        height: cTheme.Dimens.cardHeight,
-                                        child: TextField(
-                                          controller: TextEditingController(
-                                              text: dateCreationProjet
-                                              //DateFormat('yyyy-MM-dd').format(DateTime.now()) // Va être généré automatiquement à l'avenir
-                                              ),
-                                          keyboardType: TextInputType.text,
-                                          enabled: false,
-                                          decoration: InputDecoration(
-                                            border: OutlineInputBorder(),
-                                          ),
-                                        ),
-                                      )
-                                    ],
-                                  ),
+                            text: Text(
+                              "Date de création",
+                              style: cTheme.TextStyles.appBarTitle.copyWith(
+                                fontSize: 15.0,
+                                fontWeight: FontWeight.w900,
+                              ),
+                            ),
+                          ),
+                          child: TextField(
+                            textAlign: TextAlign.center,
+                            readOnly: true,
+                            style: TextStyle(
+                              fontWeight: FontWeight.w500,
+                            ),
+                            maxLines: 1,
+                            controller: TextEditingController(
+                              text: dateCreationProjet,
+                            ),
+                            keyboardType: TextInputType.text,
+                            enabled: false,
+                            decoration: InputDecoration(
+                              hintText: '2019-12-14',
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.only(
+                                  bottomRight: Radius.circular(20.0),
+                                  bottomLeft: Radius.circular(20.0),
                                 ),
-                                Card(
-                                  child: Column(
-                                    children: <Widget>[
-                                      LabelledIcon(
-                                        icon: Icon(Icons.person),
-                                        text: Text("ID. Client"),
-                                      ),
-                                      SizedBox(height: 6.0),
-                                      Container(
-                                        color: Colors.grey[200],
-                                        width: cTheme.Dimens.cardSizeMedium,
-                                        height: cTheme.Dimens.cardHeight,
-                                        child: TextField(
-                                          /**
-                                         * Ici j'aurais pensé ecrire le nom du client
-                                         * e.g.: DUPONT
-                                         * Une liste de tous les clients qui ont un nom contenant "DUPONT" apparaitrait
-                                         * Et au clic sur une des proposition, l'ID du client s'insère dans cet input
-                                         * 
-                                         * Comme cela quand on accéderait aux devis d'un client spécifique, on renseignerait
-                                         */
-                                          controller: TextEditingController(
-                                              text:
-                                                  "2"), // Va être généré automatiquement à l'avenir
-                                          keyboardType: TextInputType.text,
-                                          decoration: InputDecoration(
-                                            border: OutlineInputBorder(),
-                                          ),
-                                        ),
-                                      )
-                                    ],
-                                  ),
-                                )
-                              ],
+                              ),
                             ),
-                            SizedBox(height: 30),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: <Widget>[
-                                Card(
-                                  child: Column(
-                                    children: <Widget>[
-                                      Align(
-                                        alignment: Alignment.centerLeft,
-                                        child: LabelledIcon(
-                                          icon: Icon(Icons.info),
-                                          text: Text("ID. Projet"),
-                                        ),
-                                      ),
-                                      SizedBox(height: 6.0),
-                                      Container(
-                                        color: Colors.grey[200],
-                                        width: cTheme.Dimens.cardSizeLarge,
-                                        height: cTheme.Dimens.cardHeight,
-                                        child: TextField(
-                                          controller:
-                                              TextEditingController(text: "1"),
-                                          keyboardType: TextInputType.text,
-                                          decoration: InputDecoration(
-                                            border: OutlineInputBorder(),
-                                          ),
-                                        ),
-                                      )
-                                    ],
-                                  ),
-                                )
-                              ],
-                            ),
-                            SizedBox(height: 30),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: <Widget>[
-                                Card(
-                                  child: Column(
-                                    children: <Widget>[
-                                      Align(
-                                        alignment: Alignment.centerLeft,
-                                        child: LabelledIcon(
-                                          icon: Icon(Icons.info),
-                                          text: Text("Description Projet"),
-                                        ),
-                                      ),
-                                      SizedBox(height: 6.0),
-                                      Container(
-                                        color: Colors.grey[200],
-                                        width: cTheme.Dimens.cardSizeLarge,
-                                        height: cTheme.Dimens.cardHeightLarge,
-                                        child: TextField(
-                                          keyboardType: TextInputType.multiline,
-                                          maxLines: 5,
-                                          decoration: InputDecoration(
-                                            border: OutlineInputBorder(),
-                                          ),
-                                        ),
-                                      )
-                                    ],
-                                  ),
-                                )
-                              ],
-                            ),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.end,
-                              children: <Widget>[
-                                Align(
-                                  alignment: Alignment.bottomRight,
-                                  child: MaderaButton(
-                                    onPressed: () {
-                                      log.d("Quote Creation");
-                                      Provider.of<MaderaNav>(context)
-                                          .redirectToPage(context, Quote());
-                                    },
-                                    child: LabelledIcon(
-                                      mASize: MainAxisSize.min,
-                                      icon: Icon(Icons.check),
-                                      text: Text("Valider"),
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ],
+                          ),
                         ),
-                      ),
+                        MaderaCard(
+                          cardWidth: cTheme.Dimens.cardSizeMedium,
+                          cardHeight: cTheme.Dimens.cardHeight,
+                          child: TextField(
+                            maxLines: 1,
+                            controller: TextEditingController(
+                              text: 'ID: 2\tNom: Dupont',
+                            ),
+                            keyboardType: TextInputType.text,
+                            enabled: false,
+                            decoration: InputDecoration(
+                              hintText: '-1',
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.only(
+                                  bottomRight: Radius.circular(20.0),
+                                  bottomLeft: Radius.circular(20.0),
+                                ),
+                              ),
+                            ),
+                          ),
+                          labelledIcon: LabelledIcon(
+                            icon: Icon(
+                              Icons.person,
+                              color: cTheme.Colors.appBarTitle,
+                            ),
+                            text: Text(
+                              "Références Client",
+                              style: cTheme.TextStyles.appBarTitle.copyWith(
+                                fontSize: 15.0,
+                                fontWeight: FontWeight.w900,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
+                    SizedBox(height: 20.0),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: <Widget>[
+                        MaderaCard(
+                          cardHeight: cTheme.Dimens.cardHeight,
+                          cardWidth: cTheme.Dimens.cardSizeLarge,
+                          child: TextField(
+                            maxLines: 1,
+                            controller: TextEditingController(
+                              text: '1',
+                            ),
+                            keyboardType: TextInputType.text,
+                            enabled: false,
+                            decoration: InputDecoration(
+                              hintText: '100000',
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.only(
+                                  bottomRight: Radius.circular(20.0),
+                                  bottomLeft: Radius.circular(20.0),
+                                ),
+                              ),
+                            ),
+                          ),
+                          labelledIcon: LabelledIcon(
+                            icon: Icon(
+                              Icons.info,
+                              color: cTheme.Colors.appBarTitle,
+                            ),
+                            text: Text(
+                              "ID. Projet",
+                              style: cTheme.TextStyles.appBarTitle.copyWith(
+                                fontSize: 15.0,
+                                fontWeight: FontWeight.w900,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                    SizedBox(height: 20.0),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: <Widget>[
+                        MaderaCard(
+                          cardHeight: cTheme.Dimens.cardHeightLarge,
+                          cardWidth: cTheme.Dimens.cardSizeLarge,
+                          child: TextField(
+                            onTap: () => _formScrollController.jumpTo(
+                                _formScrollController.position.maxScrollExtent),
+                            maxLines: 25,
+                            controller: _descriptionTextController,
+                            onChanged: (text) {
+                              setState(() {
+                                text.isNotEmpty
+                                    ? canValidateForm = true
+                                    : canValidateForm = false;
+                              });
+                            },
+                            keyboardType: TextInputType.multiline,
+                            enabled: true,
+                            decoration: InputDecoration(
+                              hintText: 'Rentrez la description du projet ici',
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.only(
+                                  bottomRight: Radius.circular(20.0),
+                                  bottomLeft: Radius.circular(20.0),
+                                ),
+                              ),
+                            ),
+                          ),
+                          labelledIcon: LabelledIcon(
+                            icon: Icon(
+                              Icons.info,
+                              color: cTheme.Colors.appBarTitle,
+                            ),
+                            text: Text(
+                              "Description Projet",
+                              style: cTheme.TextStyles.appBarTitle.copyWith(
+                                fontSize: 15.0,
+                                fontWeight: FontWeight.w900,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+      stackAdditions: <Widget>[
+        Padding(
+          padding: EdgeInsets.fromLTRB(
+              1200, MediaQuery.of(context).size.height / 6, 0, 0),
+          child: Column(
+            children: <Widget>[
+              Container(
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  border: Border.all(
+                      color: canValidateForm
+                          ? cTheme.Colors.containerBackgroundLinearStart
+                          : Colors.grey,
+                      width: 2),
+                  color: canValidateForm
+                      ? cTheme.Colors.containerBackgroundLinearEnd
+                      : Colors.grey,
+                ),
+                child: IconButton(
+                  onPressed: canValidateForm
+                      ? () {
+                          log.d(_descriptionTextController.text);
+                          log.d("Quote Creation");
+                          Provider.of<MaderaNav>(context)
+                              .redirectToPage(context, Quote());
+                        }
+                      : null,
+                  icon: Icon(
+                    Icons.check,
+                    color: cTheme.Colors.white,
                   ),
                 ),
               ),
-              Padding(
-                padding: EdgeInsets.only(left: cTheme.Dimens.drawerMinWitdh),
-                child: AppBarMadera(),
-              ),
-              CustomDrawer(),
+              SizedBox(height: 12),
+              Container(
+                decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    border: Border.all(
+                        color: cTheme.Colors.containerBackgroundLinearStart,
+                        width: 2),
+                    color: cTheme.Colors.containerBackgroundLinearEnd),
+                child: IconButton(
+                  onPressed: () {},
+                  icon: Icon(
+                    Icons.delete,
+                    color: cTheme.Colors.white,
+                  ),
+                ),
+              )
             ],
           ),
         ),
-      ),
+      ],
     );
   }
 }
