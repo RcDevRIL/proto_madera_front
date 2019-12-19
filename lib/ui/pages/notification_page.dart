@@ -9,8 +9,8 @@ import 'package:proto_madera_front/theme.dart' as cTheme;
 /// "Page des notifications"
 ///
 /// @author HELIOT David, CHEVALLIER Romain, LADOUCE Fabien
-/// @version 0.2-RELEASE
 ///
+/// @version 0.3-PRERELEASE
 class NotificationPage extends StatefulWidget {
   static const routeName = '/bell';
 

@@ -1,20 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:logger/logger.dart';
-import 'package:proto_madera_front/ui/pages/pages.dart';
 
 import 'package:proto_madera_front/ui/pages/widgets/custom_widgets.dart';
-import 'package:proto_madera_front/providers/provider-navigation.dart';
 import 'package:proto_madera_front/theme.dart' as cTheme;
-import 'package:proto_madera_front/ui/pages/widgets/madera_box.dart';
-import 'package:proto_madera_front/ui/pages/widgets/madera_button.dart';
-import 'package:provider/provider.dart';
 
 ///
 /// Page "Ajout de module"
 ///
 /// @author HELIOT David, CHEVALLIER Romain, LADOUCE Fabien
-/// @version 0.2-RELEASE
 ///
+/// @version 0.3-PRERELEASE
 class AddModule extends StatefulWidget {
   static const routeName = '/add_module';
 
@@ -136,17 +131,21 @@ class _AddModuleState extends State<AddModule> {
                                         ),
                                       ),
                                     ),
-                                    MaderaBox(
+                                    MaderaDropDown(
                                       boxHeight: cTheme.Dimens.boxHeight,
                                       boxWidth: cTheme.Dimens.boxWidth,
                                       child: DropdownButton<String>(
                                         isExpanded: true,
                                         value: dropdownValue,
-                                        hint: Center(child: Text(dropdownValue)),
-                                        icon: Icon(Icons.arrow_drop_down, color: cTheme.Colors.containerBackgroundLinearStart),
+                                        hint:
+                                            Center(child: Text(dropdownValue)),
+                                        icon: Icon(Icons.arrow_drop_down,
+                                            color: cTheme.Colors
+                                                .containerBackgroundLinearStart),
                                         iconSize: 20,
                                         elevation: 16,
-                                        style: TextStyle(color: cTheme.Colors.appBarTitle),
+                                        style: TextStyle(
+                                            color: cTheme.Colors.appBarTitle),
                                         underline: Container(
                                           height: 2,
                                           width: 100.0,
@@ -157,14 +156,19 @@ class _AddModuleState extends State<AddModule> {
                                             dropdownValue = newValue;
                                           });
                                         },
-                                        items: <String>['One', 'Two', 'Free', 'Four']
-                                          .map<DropdownMenuItem<String>>(
-                                            (String value) =>
-                                              DropdownMenuItem<String>(
-                                                value: value,
-                                                child: Text(value),
-                                              ))
-                                              .toList(),
+                                        items: <String>[
+                                          'One',
+                                          'Two',
+                                          'Free',
+                                          'Four'
+                                        ]
+                                            .map<DropdownMenuItem<String>>(
+                                                (String value) =>
+                                                    DropdownMenuItem<String>(
+                                                      value: value,
+                                                      child: Text(value),
+                                                    ))
+                                            .toList(),
                                       ),
                                     ),
                                   ],

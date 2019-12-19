@@ -5,8 +5,8 @@ import 'package:flutter/material.dart';
 /// TODO Permet également de gérer la sauvegarde locale
 ///
 /// @author HELIOT David, CHEVALLIER Romain, LADOUCE Fabien
-/// @version 0.2-RELEASE
 ///
+/// @version 0.3-PRERELEASE
 class MaderaDB with ChangeNotifier {
   String _lastSyncDate;
 

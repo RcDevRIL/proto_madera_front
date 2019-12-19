@@ -11,8 +11,8 @@ import 'package:provider/provider.dart';
 /// Provider permettant de gérer l'état de la navigation
 ///
 /// @author HELIOT David, CHEVALLIER Romain, LADOUCE Fabien
-/// @version 0.2-RELEASE
 ///
+/// @version 0.3-PRERELEASE
 class MaderaNav with ChangeNotifier {
   var _pageTitle;
   var _pageIndex;

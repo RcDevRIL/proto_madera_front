@@ -9,8 +9,8 @@ import 'package:proto_madera_front/ui/pages/widgets/custom_LPI.dart';
 ///  - TODO faire progresser la barre de chargement en fonction de l'avancée des deux tâches précédentes
 ///
 /// @author HELIOT David, CHEVALLIER Romain, LADOUCE Fabien
-/// @version 0.2-RELEASE
 ///
+/// @version 0.3-PRERELEASE
 class InitializationPage extends StatefulWidget {
   static const routeName = '/';
   @override

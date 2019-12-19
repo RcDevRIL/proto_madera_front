@@ -12,8 +12,8 @@ import 'package:proto_madera_front/theme.dart' as cTheme;
 /// - Configuration routing
 ///
 /// @author HELIOT David, CHEVALLIER Romain, LADOUCE Fabien
-/// @version 0.2-RELEASE
 ///
+/// @version 0.3-PRERELEASE
 class MaderaApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {

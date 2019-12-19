@@ -1,16 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:proto_madera_front/theme.dart' as cTheme;
 
-/// A custom Box for inputs.
-/// 
-/// [MaderaBox] consists of a [Container] with a custom [background] color,
+/// A custom Box for dropdown lists inputs.
+///
+/// [MaderaDropDown] consists of a [Container] with a custom [background] color,
 /// rounded corners from a [BorderRadius] and a custom [Border].
-class MaderaBox extends StatefulWidget {
+///
+/// @author HELIOT David, CHEVALLIER Romain, LADOUCE Fabien
+///
+/// @version 0.3-PRERELEASE
+class MaderaDropDown extends StatefulWidget {
   final double boxWidth;
   final double boxHeight;
   final Widget child;
 
-  const MaderaBox({
+  const MaderaDropDown({
     Key key,
     this.boxWidth,
     this.boxHeight,
@@ -18,17 +22,17 @@ class MaderaBox extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  MaderaBoxState createState() => MaderaBoxState();
+  MaderaDropDownState createState() => MaderaDropDownState();
 }
 
-class MaderaBoxState extends State<MaderaBox> {
+class MaderaDropDownState extends State<MaderaDropDown> {
   @override
-  void initState() { 
+  void initState() {
     super.initState();
   }
 
   @override
-  void dispose() { 
+  void dispose() {
     super.dispose();
   }
 
@@ -39,13 +43,9 @@ class MaderaBoxState extends State<MaderaBox> {
       height: widget.boxHeight,
       padding: EdgeInsets.only(left: 8.0, right: 8.0),
       decoration: BoxDecoration(
-        border: Border.all(
-          color: cTheme.Colors.boxBorder,
-          width: 2.0
-        ),
-        borderRadius: BorderRadius.circular(20.0),
-        color: cTheme.Colors.white
-      ),
+          border: Border.all(color: cTheme.Colors.boxBorder, width: 2.0),
+          borderRadius: BorderRadius.circular(20.0),
+          color: cTheme.Colors.white),
       child: widget.child,
     );
   }

@@ -9,8 +9,8 @@ import 'package:proto_madera_front/ui/pages/authentication_page.dart';
 /// Widget personnalisé pour une barre de progression linéaire
 ///
 /// @author HELIOT David, CHEVALLIER Romain, LADOUCE Fabien
-/// @version 0.2-RELEASE
 ///
+/// @version 0.3-PRERELEASE
 class MyLinearProgressIndicator extends StatefulWidget {
   final Color backgroundColor;
 

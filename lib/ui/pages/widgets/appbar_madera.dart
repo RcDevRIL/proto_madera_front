@@ -10,8 +10,8 @@ import 'package:proto_madera_front/theme.dart' as cTheme;
 /// Widget personnalisé pour une "AppBar" personnalisée
 ///
 /// @author HELIOT David, CHEVALLIER Romain, LADOUCE Fabien
-/// @version 0.2-RELEASE
 ///
+/// @version 0.3-PRERELEASE
 class AppBarMadera extends StatelessWidget {
   @override
   Widget build(BuildContext context) {

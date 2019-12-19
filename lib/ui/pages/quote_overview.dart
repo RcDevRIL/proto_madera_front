@@ -9,8 +9,8 @@ import 'package:proto_madera_front/theme.dart' as cTheme;
 /// Page de "Suivi des devis enregistrés"
 ///
 /// @author HELIOT David, CHEVALLIER Romain, LADOUCE Fabien
-/// @version 0.2-RELEASE
 ///
+/// @version 0.3-PRERELEASE
 class QuoteOverview extends StatefulWidget {
   static const routeName = '/quoteOverview';
 

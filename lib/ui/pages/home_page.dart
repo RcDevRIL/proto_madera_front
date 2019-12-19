@@ -12,8 +12,8 @@ import 'package:proto_madera_front/theme.dart' as cTheme;
 /// Page d'accueil de l'application
 ///
 /// @author HELIOT David, CHEVALLIER Romain, LADOUCE Fabien
-/// @version 0.2-RELEASE
 ///
+/// @version 0.3-PRERELEASE
 class HomePage extends StatelessWidget {
   static const routeName = '/home';
   final log = Logger();

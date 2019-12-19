@@ -7,8 +7,8 @@ import 'package:proto_madera_front/theme.dart' as cTheme;
 /// Widget personnalisé pour un bouton qui ferme l'application
 ///
 /// @author HELIOT David, CHEVALLIER Romain, LADOUCE Fabien
-/// @version 0.2-RELEASE
 ///
+/// @version 0.3-PRERELEASE
 class ExitButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {

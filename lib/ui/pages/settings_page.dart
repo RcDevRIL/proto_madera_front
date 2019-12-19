@@ -9,8 +9,8 @@ import 'package:proto_madera_front/theme.dart' as cTheme;
 /// Page des paramètres de l'application
 ///
 /// @author HELIOT David, CHEVALLIER Romain, LADOUCE Fabien
-/// @version 0.2-RELEASE
 ///
+/// @version 0.3-PRERELEASE
 class SettingsPage extends StatefulWidget {
   static const routeName = '/settings';
 

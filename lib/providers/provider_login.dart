@@ -10,8 +10,8 @@ import 'package:proto_madera_front/providers/http_status.dart';
 /// Provider permettant de gérer la connexion au backend hébergé
 ///
 /// @author HELIOT David, CHEVALLIER Romain, LADOUCE Fabien
-/// @version 0.2-RELEASE
 ///
+/// @version 0.3-PRERELEASE
 class ProviderLogin with ChangeNotifier {
   final log = Logger();
   HttpStatus status = HttpStatus.OFFLINE;
