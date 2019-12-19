@@ -43,7 +43,8 @@ class Dimens {
   static const quoteButtonHeight = 300.0;
   static const buttonPaddingRight = 10.0;
   static const buttonPaddingBottom = 0.0;
-  static const cardSizeSmall = 110.0;
+  static const cardSizeSmall = 250.0;
+  static const cardXSizeSmall = 110.0;
   static const cardSizeMedium = 866.0;
   static const cardSizeLarge = 980.0;
   static const cardHeight = 35.0;

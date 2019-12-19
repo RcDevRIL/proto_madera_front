@@ -113,7 +113,7 @@ class _QuoteCreationState extends State<QuoteCreation> {
                               mainAxisAlignment: MainAxisAlignment.start,
                               children: <Widget>[
                                 MaderaCard(
-                                  cardWidth: cTheme.Dimens.cardSizeSmall,
+                                  cardWidth: cTheme.Dimens.cardXSizeSmall,
                                   cardHeight: cTheme.Dimens.cardHeight,
                                   child: TextField(
                                     maxLines: 1,

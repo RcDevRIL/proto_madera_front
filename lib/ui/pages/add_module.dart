@@ -5,6 +5,7 @@ import 'package:proto_madera_front/ui/pages/pages.dart';
 import 'package:proto_madera_front/ui/pages/widgets/custom_widgets.dart';
 import 'package:proto_madera_front/providers/provider-navigation.dart';
 import 'package:proto_madera_front/theme.dart' as cTheme;
+import 'package:proto_madera_front/ui/pages/widgets/madera_box.dart';
 import 'package:proto_madera_front/ui/pages/widgets/madera_button.dart';
 import 'package:provider/provider.dart';
 
@@ -23,6 +24,7 @@ class AddModule extends StatefulWidget {
 
 class _AddModuleState extends State<AddModule> {
   final log = Logger();
+  String dropdownValue = 'One';
 
   ///
   /// Prevents the use of the "back" button
@@ -90,10 +92,10 @@ class _AddModuleState extends State<AddModule> {
                           children: <Widget>[
                             Align(
                               alignment: Alignment.center,
-                              child: Text('Ajouter module',
-                                style: cTheme.TextStyles.appBarTitle.copyWith(
-                                  fontSize: 32.0
-                                ),
+                              child: Text(
+                                'Ajouter module',
+                                style: cTheme.TextStyles.appBarTitle
+                                    .copyWith(fontSize: 32.0),
                               ),
                             ),
                             SizedBox(height: 30.0),
@@ -102,37 +104,69 @@ class _AddModuleState extends State<AddModule> {
                                 Column(
                                   children: <Widget>[
                                     MaderaCard(
-                                  cardWidth: cTheme.Dimens.cardSizeSmall,
-                                  cardHeight: cTheme.Dimens.cardHeight,
-                                  child: TextField(
-                                    maxLines: 1,
-                                    keyboardType: TextInputType.text,
-                                    enabled: false,
-                                    decoration: InputDecoration(
-                                      hintText: 'Nom du module...',
-                                      border: OutlineInputBorder(
-                                        borderRadius: BorderRadius.only(
-                                          bottomRight: Radius.circular(20.0),
-                                          bottomLeft: Radius.circular(20.0),
+                                      cardWidth: cTheme.Dimens.cardSizeSmall,
+                                      cardHeight: cTheme.Dimens.cardHeight,
+                                      child: TextField(
+                                        maxLines: 1,
+                                        keyboardType: TextInputType.text,
+                                        enabled: false,
+                                        decoration: InputDecoration(
+                                          hintText: 'Nom du module...',
+                                          border: OutlineInputBorder(
+                                            borderRadius: BorderRadius.only(
+                                              bottomRight:
+                                                  Radius.circular(20.0),
+                                              bottomLeft: Radius.circular(20.0),
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                      labelledIcon: LabelledIcon(
+                                        icon: Icon(
+                                          Icons.text_fields,
+                                          color: cTheme.Colors.appBarTitle,
+                                        ),
+                                        text: Text(
+                                          "Nom du module",
+                                          style: cTheme.TextStyles.appBarTitle
+                                              .copyWith(
+                                            fontSize: 13.0,
+                                            fontWeight: FontWeight.w600,
+                                          ),
                                         ),
                                       ),
                                     ),
-                                  ),
-                                  labelledIcon: LabelledIcon(
-                                    icon: Icon(
-                                      Icons.text_fields,
-                                      color: cTheme.Colors.appBarTitle,
-                                    ),
-                                    text: Text(
-                                      "Nom du module",
-                                      style: cTheme.TextStyles.appBarTitle
-                                          .copyWith(
-                                        fontSize: 13.0,
-                                        fontWeight: FontWeight.w600,
+                                    MaderaBox(
+                                      boxHeight: cTheme.Dimens.boxHeight,
+                                      boxWidth: cTheme.Dimens.boxWidth,
+                                      child: DropdownButton<String>(
+                                        isExpanded: true,
+                                        value: dropdownValue,
+                                        hint: Center(child: Text(dropdownValue)),
+                                        icon: Icon(Icons.arrow_drop_down, color: cTheme.Colors.containerBackgroundLinearStart),
+                                        iconSize: 20,
+                                        elevation: 16,
+                                        style: TextStyle(color: cTheme.Colors.appBarTitle),
+                                        underline: Container(
+                                          height: 2,
+                                          width: 100.0,
+                                          color: Colors.transparent,
+                                        ),
+                                        onChanged: (String newValue) {
+                                          setState(() {
+                                            dropdownValue = newValue;
+                                          });
+                                        },
+                                        items: <String>['One', 'Two', 'Free', 'Four']
+                                          .map<DropdownMenuItem<String>>(
+                                            (String value) =>
+                                              DropdownMenuItem<String>(
+                                                value: value,
+                                                child: Text(value),
+                                              ))
+                                              .toList(),
                                       ),
                                     ),
-                                  ),
-                                ),
                                   ],
                                 ),
                               ],
