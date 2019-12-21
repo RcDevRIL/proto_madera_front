@@ -13,7 +13,7 @@ import 'package:proto_madera_front/theme.dart' as cTheme;
 ///
 /// @author HELIOT David, CHEVALLIER Romain, LADOUCE Fabien
 ///
-/// @version 0.3-PRERELEASE
+/// @version 0.3-RELEASE
 class MaderaApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -21,7 +21,6 @@ class MaderaApp extends StatelessWidget {
         [DeviceOrientation.landscapeRight, DeviceOrientation.landscapeLeft]);
     MaderaNav maderaNav = new MaderaNav();
     ProviderBdd providerBdd = new ProviderBdd();
-    //TODO initialiser la base de données ici ?
     return MultiProvider(
         providers: [
           ChangeNotifierProvider(

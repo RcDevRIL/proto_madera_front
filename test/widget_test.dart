@@ -14,7 +14,7 @@ import 'package:proto_madera_front/ui/pages/pages.dart';
 ///
 /// @author HELIOT David, CHEVALLIER Romain, LADOUCE Fabien
 ///
-/// @version 0.3-PRERELEASE
+/// @version 0.3-RELEASE
 void main() {
   final ProviderBdd providerBdd = ProviderBdd();
 
@@ -40,7 +40,6 @@ void main() {
         expect(find.text("default"), findsWidgets);
       },
     );
-
     test(
       'Update route state',
       () async {
@@ -71,14 +70,8 @@ void main() {
           ProviderSynchro(db: providerBdd.db);
       var date = DateTime.now();
 
-      expect(
-          date.isAfter(DateTime.parse(providerSynchro.refsLastSyncDate)), true);
+      expect(date.isAfter(providerSynchro.refsLastSyncDate), true);
     });
-
-    /// To run following tests, use command
-    /// 'flutter run test/widget_test.dart'
-    ///
-    /// TODO: replace by something working on flutter test command
     testWidgets(
       'ping test',
       (WidgetTester tester) async {
@@ -104,12 +97,9 @@ void main() {
         expect(providerLogin.ping(), completion(true));
       },
     );
-
     testWidgets(
       'connection test',
       (tester) async {
-        final ProviderSynchro providerSynchro =
-            ProviderSynchro(db: providerBdd.db);
         final ProviderLogin providerLogin = ProviderLogin(db: providerBdd.db)
           ..http = MockClient((request) async {
             //On set le contenu du body et le statusCode attendu, dans notre cas le token de connection
@@ -128,7 +118,6 @@ void main() {
           child: MultiProvider(
             providers: [
               ChangeNotifierProvider(create: (context) => providerLogin),
-              ChangeNotifierProvider(create: (context) => providerSynchro),
               ChangeNotifierProvider(create: (context) => providerNavigation),
             ],
             child: MaterialApp(
@@ -142,7 +131,6 @@ void main() {
             providerLogin.connection('testuser', '123456'), completion(true));
       },
     );
-
     testWidgets('logout test', (tester) async {
       final ProviderLogin providerLogin = ProviderLogin(db: providerBdd.db)
         ..http = MockClient((request) async {
@@ -165,6 +153,39 @@ void main() {
       await tester.pumpWidget(testWidget);
 
       expect(providerLogin.logout(), completion(true));
+    });
+    testWidgets('synchro globale test', (tester) async {
+      final MaderaNav providerNavigation = MaderaNav();
+      final ProviderSynchro providerSynchro =
+          ProviderSynchro(db: providerBdd.db)
+            ..http = MockClient((request) async {
+              //On set le contenu du body et le statusCode attendu, dans notre cas le token de connection
+              return Response('', 200);
+            });
+
+      Widget testWidget = MediaQuery(
+        data: MediaQueryData(),
+        child: MultiProvider(
+          providers: [
+            ChangeNotifierProvider(create: (context) => providerSynchro),
+            ChangeNotifierProvider(create: (context) => providerNavigation),
+          ],
+          child: MaterialApp(
+            home: HomePage(),
+          ),
+        ),
+      );
+      await tester.pumpWidget(testWidget);
+      DateTime now = DateTime.now();
+      await providerSynchro.synchro();
+      expect(providerSynchro.refsLastSyncDate.isBefore(now),
+          true); //isBefore parce qu'on compare a now() (yyyy-MM-dd HH:mm:SS), alors que les dates sont stockées sous la forme 'yyyy-MM-dd 00:00:00'
+
+      expect(providerSynchro.dataLastSyncDate.isBefore(now), true);
+      await providerSynchro
+          .synchro(); // checker les logs (expect: 'Synchronisations déjà effectuées!') éventuellement utiliser package test_process pour tester la valeurs des logs?
+      expect(providerSynchro.refsLastSyncDate.isBefore(now), true);
+      expect(providerSynchro.dataLastSyncDate.isBefore(now), true);
     });
   });
 }

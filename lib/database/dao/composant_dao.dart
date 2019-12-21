@@ -9,10 +9,8 @@ class ComposantDao extends DatabaseAccessor<MaderaDatabase>
     with _$ComposantDaoMixin {
   ComposantDao(MaderaDatabase db) : super(db);
 
-  Future insertAll(List<ComposantData> listEntry) async {
+  Future insertAll(List<ComposantData> listComposant) async {
     await delete(composant).go();
-    //TODO 'insertAll' is deprecated and shouldn't be used. Call batch() on a generated database, then use Batch.insertAll.
-//Try replacing the use of the deprecated member with the replacement.
-    await into(composant).insertAll(listEntry);
+    await db.batch((b) => b.insertAll(composant, listComposant));
   }
 }

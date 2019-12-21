@@ -11,17 +11,11 @@ class DevisEtatDao extends DatabaseAccessor<MaderaDatabase>
 
   Future insertAll(List<DevisEtatData> listDevisEtat) async {
     await delete(devisEtat).go();
-    //TODO 'insertAll' is deprecated and shouldn't be used. Call batch() on a generated database, then use Batch.insertAll.
-//Try replacing the use of the deprecated member with the replacement.
-    await into(devisEtat).insertAll(listDevisEtat);
+    await db.batch((b) => b.insertAll(devisEtat, listDevisEtat));
   }
 
-  ///
   /// Méthode utilisée pour récupérer les données dans la table devisEtat
-  ///
-  /// @author HELIOT David, CHEVALLIER Romain, LADOUCE Fabien
-  ///
-  /// @version 0.3-PRERELEASE
+  /// Renvoie une [List<[DevisEtatData]>] des états de devis enregistrés dans les référentiels
   Future<List<DevisEtatData>> getDevisEtatData() async {
     return select(devisEtat).get();
   }

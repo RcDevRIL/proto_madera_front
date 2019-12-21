@@ -8,7 +8,7 @@ import 'package:proto_madera_front/theme.dart' as cTheme;
 ///
 /// @author HELIOT David, CHEVALLIER Romain, LADOUCE Fabien
 ///
-/// @version 0.3-PRERELEASE
+/// @version 0.3-RELEASE
 class ExitButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {

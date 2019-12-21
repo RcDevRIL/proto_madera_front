@@ -1,10 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:logger/logger.dart';
-import 'package:provider/provider.dart';
 
 import 'package:proto_madera_front/ui/pages/widgets/custom_widgets.dart';
-import 'package:proto_madera_front/providers/providers.dart' show MaderaNav;
-import 'package:proto_madera_front/ui/pages/pages.dart' show Quote;
 import 'package:proto_madera_front/theme.dart' as cTheme;
 
 ///
@@ -12,7 +9,7 @@ import 'package:proto_madera_front/theme.dart' as cTheme;
 ///
 /// @author HELIOT David, CHEVALLIER Romain, LADOUCE Fabien
 ///
-/// @version 0.3-PRERELEASE
+/// @version 0.3-RELEASE
 class AddModule extends StatefulWidget {
   static const routeName = '/add_module';
 
@@ -107,7 +104,7 @@ class _AddModuleState extends State<AddModule> {
                                       child: TextField(
                                         maxLines: 1,
                                         keyboardType: TextInputType.text,
-                                        enabled: false,
+                                        enabled: true,
                                         decoration: InputDecoration(
                                           hintText: 'Nom du module...',
                                           border: OutlineInputBorder(
@@ -134,7 +131,7 @@ class _AddModuleState extends State<AddModule> {
                                         ),
                                       ),
                                     ),
-                                    MaderaDropDown(
+                                    MaderaRoundedBox(
                                       boxHeight: cTheme.Dimens.boxHeight,
                                       boxWidth: cTheme.Dimens.boxWidth,
                                       child: DropdownButton<String>(

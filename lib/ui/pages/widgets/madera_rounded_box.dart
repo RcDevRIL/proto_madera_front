@@ -3,18 +3,18 @@ import 'package:proto_madera_front/theme.dart' as cTheme;
 
 /// A custom Box for dropdown lists inputs.
 ///
-/// [MaderaDropDown] consists of a [Container] with a custom [background] color,
+/// [MaderaRoundedBox] consists of a [Container] with a custom [background] color,
 /// rounded corners from a [BorderRadius] and a custom [Border].
 ///
 /// @author HELIOT David, CHEVALLIER Romain, LADOUCE Fabien
 ///
-/// @version 0.3-PRERELEASE
-class MaderaDropDown extends StatefulWidget {
+/// @version 0.3-RELEASE
+class MaderaRoundedBox extends StatefulWidget {
   final double boxWidth;
   final double boxHeight;
   final Widget child;
 
-  const MaderaDropDown({
+  const MaderaRoundedBox({
     Key key,
     this.boxWidth,
     this.boxHeight,
@@ -22,10 +22,10 @@ class MaderaDropDown extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  MaderaDropDownState createState() => MaderaDropDownState();
+  MaderaRoundedBoxState createState() => MaderaRoundedBoxState();
 }
 
-class MaderaDropDownState extends State<MaderaDropDown> {
+class MaderaRoundedBoxState extends State<MaderaRoundedBox> {
   @override
   void initState() {
     super.initState();

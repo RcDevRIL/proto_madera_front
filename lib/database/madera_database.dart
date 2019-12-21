@@ -9,7 +9,7 @@ part 'madera_database.g.dart';
 ///
 /// @author HELIOT David, CHEVALLIER Romain, LADOUCE Fabien
 ///
-/// @version 0.3-PRERELEASE
+/// @version 0.3-RELEASE
 @UseMoor(tables: [
   Utilisateur,
   Composant,

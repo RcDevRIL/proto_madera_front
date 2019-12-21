@@ -11,7 +11,7 @@ import 'package:proto_madera_front/ui/pages/pages.dart' show AuthenticationPage;
 ///
 /// @author HELIOT David, CHEVALLIER Romain, LADOUCE Fabien
 ///
-/// @version 0.3-PRERELEASE
+/// @version 0.3-RELEASE
 class MyLinearProgressIndicator extends StatefulWidget {
   final Color backgroundColor;
 
@@ -60,7 +60,6 @@ class _MyLinearProgressIndicatorState extends State<MyLinearProgressIndicator>
     super.didUpdateWidget(oldW);
     /* Utilisation de didUpdateWidget pour faire la synchro au moment du progrès de la barre chargement 
     Si le dernier utilisateur enregistré n'a pas de token, on ne fait pas la synchro et on log une erreur.
-    TODO propager l'info de l'erreur pour quon tente la synchro à un autre moment.
     */
     try {
       Provider.of<ProviderSynchro>(context)
@@ -69,18 +68,14 @@ class _MyLinearProgressIndicatorState extends State<MyLinearProgressIndicator>
           .then((lastUserData) {
         try {
           lastUserData.token != null
-              ? Provider.of<ProviderSynchro>(context).synchroReferentiel().then(
-                  (b) => b
-                      ? Provider.of<ProviderSynchro>(context)
-                          .setRefsLastSyncDate(DateTime.now().toString())
-                      : null)
+              ? Provider.of<ProviderSynchro>(context).synchro()
               : log.e('Aucun token trouvé...');
         } catch (e) {
-          log.e('lastUserData error:\n$e');
+          log.e('lastUserData error (token=null?):\n$e');
         }
       });
     } catch (e) {
-      log.e('getUser error:\n$e');
+      log.e('getUser error (db=null?):\n$e');
     }
   }
 

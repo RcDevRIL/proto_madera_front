@@ -17,7 +17,7 @@ import 'package:proto_madera_front/theme.dart' as cTheme;
 ///
 /// @author HELIOT David, CHEVALLIER Romain, LADOUCE Fabien
 ///
-/// @version 0.3-PRERELEASE
+/// @version 0.3-RELEASE
 class AuthenticationPage extends StatefulWidget {
   static const routeName = '/auth';
   @override
@@ -143,7 +143,7 @@ class _AuthenticationPageState extends State<AuthenticationPage> {
                 onChanged: _loginFormBloc.onEmailChanged,
                 onSubmitted: _emailController.text.isNotEmpty &&
                         _passwordController.text.isNotEmpty
-                    ? (password) async => submit()
+                    ? (login) async => submit()
                     : null,
                 controller: _emailController,
                 keyboardType: TextInputType.emailAddress,
@@ -233,49 +233,55 @@ class _AuthenticationPageState extends State<AuthenticationPage> {
           //on ne synchronise que si la date de dernière synchro est antérieure à la date actuelle
           if (DateTime(
                   DateTime.now().year, DateTime.now().month, DateTime.now().day)
-              .isAfter(DateTime.parse(
-                  Provider.of<ProviderSynchro>(context).refsLastSyncDate))) {
-            //TODO Afficher un message d'erreur si données non récup ?
-            Provider.of<ProviderSynchro>(context).synchroReferentiel();
-          }
+              .isAfter(
+                  Provider.of<ProviderSynchro>(context).refsLastSyncDate)) {
+            Provider.of<ProviderSynchro>(context).synchroReferentiel().then(
+                (b) => b
+                    ? log.i('Synchro des référentiels effectuée')
+                    : _showSynchroErrorPopup(context, 'synchroReferentiel'));
+          } else
+            log.i('Synchronisation des référentiels déjà effectuée!');
           if (DateTime(
                   DateTime.now().year, DateTime.now().month, DateTime.now().day)
-              .isAfter(DateTime.parse(
-                  Provider.of<ProviderSynchro>(context).dataLastSyncDate))) {
-            //TODO Afficher un message d'erreur si données non récup ?
-            Provider.of<ProviderSynchro>(context).synchroData();
-          }
+              .isAfter(
+                  Provider.of<ProviderSynchro>(context).dataLastSyncDate)) {
+            Provider.of<ProviderSynchro>(context).synchroData().then((b) => b
+                ? log.i('Synchro des données utilisateur effectuée')
+                : _showSynchroErrorPopup(context, 'synchroData'));
+          } else
+            log.i('Synchronisation des référentiels déjà effectuée!');
           Provider.of<MaderaNav>(context).redirectToPage(context, HomePage());
           //TODO Ajouter synchroProjet également
         }
         break;
       case HttpStatus.OFFLINE:
         {
-          showPopup(
+          _showPopup(
               context, 'Erreur réseau', 'Le serveur n' ' est pas joignable.');
         }
         break;
       case HttpStatus.ONLINE:
         {
-          showPopup(context, 'Erreur d' 'authentification',
+          _showPopup(context, 'Erreur d' 'authentification',
               'Le login et / ou le mot de passe sont incorrects');
         }
         break;
       case HttpStatus.UNAUTHORIZED:
         {
-          showPopup(context, 'Autorisation requise',
+          _showPopup(context, 'Autorisation requise',
               'Les identifiants sont incorrects');
         }
         break;
       default:
         {
-          showPopup(context, 'Default', 'Oups! Ceci ne devrait pas arriver...');
+          _showPopup(
+              context, 'Default', 'Oups! Ceci ne devrait pas arriver...');
         }
         break;
     }
   }
 
-  void showPopup(BuildContext context, String title, String message) {
+  void _showPopup(BuildContext context, String title, String message) {
     showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -296,5 +302,65 @@ class _AuthenticationPageState extends State<AuthenticationPage> {
         );
       },
     );
+  }
+
+  void _showSynchroErrorPopup(BuildContext context, String synchroTried) {
+    switch (synchroTried) {
+      case 'synchroReferentiel':
+        showDialog(
+          context: context,
+          builder: (c) => AlertDialog(
+            title: Text('Erreur de synchronisation'),
+            content: Text('Erreur lors de l'
+                'appel à la méthode $synchroTried().'),
+            actions: <Widget>[
+              MaderaButton(
+                child: Text('OK'),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+              ),
+            ],
+          ),
+        );
+
+        break;
+      case 'synchroData':
+        showDialog(
+          context: context,
+          builder: (c) => AlertDialog(
+            title: Text('Erreur de synchronisation'),
+            content: Text('Erreur lors de l'
+                'appel à la méthode $synchroTried().'),
+            actions: <Widget>[
+              MaderaButton(
+                child: Text('OK'),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+              ),
+            ],
+          ),
+        );
+
+        break;
+      default:
+        showDialog(
+          context: context,
+          builder: (c) => AlertDialog(
+            title: Text('Erreur de synchronisation'),
+            content: Text('Erreur non référencée.'),
+            actions: <Widget>[
+              MaderaButton(
+                child: Text('OK'),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+              ),
+            ],
+          ),
+        );
+        break;
+    }
   }
 }

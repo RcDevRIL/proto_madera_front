@@ -11,8 +11,6 @@ class ProjetModuleDao extends DatabaseAccessor<MaderaDatabase>
 
   Future insertAll(List<ProjetModuleData> listProjetModule) async {
     await delete(projetModule).go();
-    //TODO 'insertAll' is deprecated and shouldn't be used. Call batch() on a generated database, then use Batch.insertAll.
-//Try replacing the use of the deprecated member with the replacement.
-    await into(projetModule).insertAll(listProjetModule);
+    await db.batch((b) => b.insertAll(projetModule, listProjetModule));
   }
 }

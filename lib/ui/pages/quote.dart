@@ -13,7 +13,7 @@ import 'package:proto_madera_front/theme.dart' as cTheme;
 ///
 /// @author HELIOT David, CHEVALLIER Romain, LADOUCE Fabien
 ///
-/// @version 0.3-PRERELEASE
+/// @version 0.3-RELEASE
 class Quote extends StatefulWidget {
   static const routeName = '/quote';
 
@@ -23,7 +23,8 @@ class Quote extends StatefulWidget {
 
 class _QuoteState extends State<Quote> {
   final log = Logger();
-  String dropdownValue = 'One';
+  String dropdownGammeValue = 'Sélectionnez une gamme...';
+  String dropdownModeleValue = 'Sélectionnez un modèle...';
   bool canValidateForm;
 
   //added to prepare for scaling
@@ -61,12 +62,12 @@ class _QuoteState extends State<Quote> {
                 padding: EdgeInsets.symmetric(vertical: 20.0),
                 shrinkWrap: true,
                 children: <Widget>[
-                  MaderaDropDown(
+                  MaderaRoundedBox(
                     boxHeight: cTheme.Dimens.boxHeight,
                     boxWidth: cTheme.Dimens.boxWidth,
                     child: DropdownButton<String>(
                       isExpanded: true,
-                      value: dropdownValue,
+                      hint: Text('$dropdownGammeValue'),
                       icon: Icon(Icons.arrow_drop_down,
                           color: cTheme.Colors.containerBackgroundLinearStart),
                       iconSize: 20,
@@ -79,11 +80,11 @@ class _QuoteState extends State<Quote> {
                       ),
                       onChanged: (String newValue) {
                         setState(() {
-                          dropdownValue = newValue;
+                          dropdownGammeValue = newValue;
                           canValidateForm = true;
                         });
                       },
-                      items: <String>['One', 'Two', 'Free', 'Four']
+                      items: <String>['Gamme1', 'Gamme2', 'Gamme3', 'Gamme4']
                           .map<DropdownMenuItem<String>>(
                               (String value) => DropdownMenuItem<String>(
                                     value: value,
@@ -93,12 +94,12 @@ class _QuoteState extends State<Quote> {
                     ),
                   ),
                   SizedBox(height: 15.0),
-                  MaderaDropDown(
+                  MaderaRoundedBox(
                     boxWidth: cTheme.Dimens.boxWidth,
                     boxHeight: cTheme.Dimens.boxHeight,
                     child: DropdownButton<String>(
                       isExpanded: true,
-                      value: dropdownValue,
+                      hint: Text('$dropdownModeleValue'),
                       icon: Icon(Icons.arrow_drop_down,
                           color: cTheme.Colors.containerBackgroundLinearStart),
                       iconSize: 20,
@@ -109,11 +110,16 @@ class _QuoteState extends State<Quote> {
                       ),
                       onChanged: (String newValue) {
                         setState(() {
-                          dropdownValue = newValue;
+                          dropdownModeleValue = newValue;
                           canValidateForm = true;
                         });
                       },
-                      items: <String>['One', 'Two', 'Free', 'Four']
+                      items: <String>[
+                        'Modele1',
+                        'Modele2',
+                        'Modele3',
+                        'Modele4'
+                      ]
                           .map<DropdownMenuItem<String>>(
                               (String value) => DropdownMenuItem<String>(
                                     value: value,

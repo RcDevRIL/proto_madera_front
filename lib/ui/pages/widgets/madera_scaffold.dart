@@ -8,7 +8,7 @@ import 'package:proto_madera_front/ui/pages/widgets/custom_widgets.dart';
 ///
 /// @author HELIOT David, CHEVALLIER Romain, LADOUCE Fabien
 ///
-/// @version 0.3-PRERELEASE
+/// @version 0.3-RELEASE
 class MaderaScaffold extends StatefulWidget {
   final Widget child;
   final List<Widget> stackAdditions;
@@ -53,7 +53,8 @@ class _MaderaScaffoldState extends State<MaderaScaffold> {
       onWillPop: _onWillPopScope,
       child: SafeArea(
         child: Scaffold(
-          resizeToAvoidBottomInset: false, // Cette option permet de faire en sorte que les éléments de la page ne soient pas "remontés" si on ouvre le clavier (page auth n'a pas cette option pour le moment)
+          resizeToAvoidBottomInset:
+              false, // Cette option permet de faire en sorte que les éléments de la page ne soient pas "remontés" si on ouvre le clavier (page auth n'a pas cette option pour le moment)
           backgroundColor: Colors.white,
           body: Stack(
             children: _buildStack(widget.passedContext, widget.stackAdditions),

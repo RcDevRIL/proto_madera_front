@@ -10,8 +10,6 @@ class ClientDao extends DatabaseAccessor<MaderaDatabase> with _$ClientDaoMixin {
 
   Future insertAll(List<ClientData> listClient) async {
     await delete(client).go();
-    //TODO 'insertAll' is deprecated and shouldn't be used. Call batch() on a generated database, then use Batch.insertAll.
-//Try replacing the use of the deprecated member with the replacement.
-    await into(client).insertAll(listClient);
+    await db.batch((b) => b.insertAll(client, listClient));
   }
 }

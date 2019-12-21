@@ -15,7 +15,7 @@ import 'package:proto_madera_front/providers/http_status.dart';
 ///
 /// @author HELIOT David, CHEVALLIER Romain, LADOUCE Fabien
 ///
-/// @version 0.3-PRERELEASE
+/// @version 0.3-RELEASE
 class ProviderLogin with ChangeNotifier {
   Client http = new Client();
   final log = Logger();
@@ -48,7 +48,6 @@ class ProviderLogin with ChangeNotifier {
       return false;
     }
     if (response?.statusCode == 200) {
-      this.status = HttpStatus.ONLINE;
       this.status = HttpStatus.AUTHORIZED;
       if (http.runtimeType != MockClient) {
         // provisoire, pour faire passer le test. PLus tard il faudra séparer la logique des appels web de la logique
@@ -57,9 +56,13 @@ class ProviderLogin with ChangeNotifier {
         await utilisateurDao.insertUser(utilisateurData);
       }
       return true;
-    }
-    if (response?.statusCode == 401) {
+    } else if (response?.statusCode == 401) {
       this.status = HttpStatus.UNAUTHORIZED;
+      return false;
+    } else if (response?.statusCode != 401 || response?.statusCode != 200) {
+      // Je suis pas sur mais l'ensemble des cas du else un peu plus bas est plus grand que cette condition non?
+      // et ça permettrait de catch les autres codes de réponses, pour dire ok on est en ligne mais la requête n'a pas abouti
+      this.status = HttpStatus.ONLINE;
       return false;
     } else {
       this.status = HttpStatus.OFFLINE;

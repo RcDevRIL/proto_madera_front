@@ -9,7 +9,7 @@ import 'package:proto_madera_front/database/madera_database.dart';
 ///
 /// @author HELIOT David, CHEVALLIER Romain, LADOUCE Fabien
 ///
-/// @version 0.3-PRERELEASE
+/// @version 0.3-RELEASE
 class ProviderBdd with ChangeNotifier {
   MaderaDatabase db = new MaderaDatabase();
 

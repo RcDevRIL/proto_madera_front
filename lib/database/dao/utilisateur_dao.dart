@@ -12,7 +12,7 @@ class UtilisateurDao extends DatabaseAccessor<MaderaDatabase>
   //Ajoute ou remplace l'utilisateur
   Future insertUser(UtilisateurData entry) async {
     await delete(utilisateur).go();
-    await into(utilisateur).insert(entry);
+    await db.batch((b) => b.insert(utilisateur, entry));
   }
 
   Future<UtilisateurData> getUser() async {

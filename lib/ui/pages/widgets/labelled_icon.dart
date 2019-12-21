@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 ///
 /// @author HELIOT David, CHEVALLIER Romain, LADOUCE Fabien
 ///
-/// @version 0.3-PRERELEASE
+/// @version 0.3-RELEASE
 class LabelledIcon extends StatelessWidget {
   final Icon icon;
   final Text text;
