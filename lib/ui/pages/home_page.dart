@@ -1,19 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:logger/logger.dart';
-import 'package:proto_madera_front/ui/pages/quote_creation.dart';
 import 'package:provider/provider.dart';
 
-import 'package:proto_madera_front/providers/provider-navigation.dart';
+import 'package:proto_madera_front/providers/providers.dart'
+    show MaderaNav, ProviderSynchro;
 import 'package:proto_madera_front/ui/pages/pages.dart';
-import 'package:proto_madera_front/ui/pages/widgets/custom_widgets.dart';
+import 'package:proto_madera_front/ui/pages/widgets/custom_widgets.dart'
+    show AppBarMadera, CustomDrawer;
+import 'package:proto_madera_front/database/madera_database.dart';
 import 'package:proto_madera_front/theme.dart' as cTheme;
 
 ///
 /// Page d'accueil de l'application
 ///
 /// @author HELIOT David, CHEVALLIER Romain, LADOUCE Fabien
-/// @version 0.2-RELEASE
 ///
+/// @version 0.3-RELEASE
 class HomePage extends StatelessWidget {
   static const routeName = '/home';
   final log = Logger();
@@ -150,10 +152,17 @@ class HomePage extends StatelessWidget {
                           height: 150.0,
                           width: 150.0,
                           child: RaisedButton(
-                            onPressed: () {
-                              log.d('COUCOU JE SUIS UN LOG');
+                            onPressed: () async {
+                              List<DevisEtatData> names =
+                                  await Provider.of<ProviderSynchro>(context)
+                                      .devisEtatDao
+                                      .getDevisEtatData();
+                              for (DevisEtatData deD in names) {
+                                log.d(deD.devisEtatLibelle);
+                              }
                             },
-                            child: Text('Log me'),
+                            child:
+                                Text('Log libélllés états possibles des devis'),
                           ),
                         ),
                         Container(

@@ -4,13 +4,12 @@ import 'package:proto_madera_front/ui/pages/widgets/custom_LPI.dart';
 
 ///
 /// Page permettant d'initialiser l'app
-///  - TODO vérifier la synchro
-///  - TODO vérifier la connectivité internet
-///  - TODO faire progresser la barre de chargement en fonction de l'avancée des deux tâches précédentes
+///   Dans 'custom_lpi.dart' nous exécutons la synchronisation (catch erreur si token = null)
+///  - TODO faire progresser la barre de chargement en fonction de l'avancée des tâches d'initialisation
 ///
 /// @author HELIOT David, CHEVALLIER Romain, LADOUCE Fabien
-/// @version 0.2-RELEASE
 ///
+/// @version 0.3-RELEASE
 class InitializationPage extends StatefulWidget {
   static const routeName = '/';
   @override

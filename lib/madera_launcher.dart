@@ -12,26 +12,35 @@ import 'package:proto_madera_front/theme.dart' as cTheme;
 /// - Configuration routing
 ///
 /// @author HELIOT David, CHEVALLIER Romain, LADOUCE Fabien
-/// @version 0.2-RELEASE
 ///
+/// @version 0.3-RELEASE
 class MaderaApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     SystemChrome.setPreferredOrientations(
         [DeviceOrientation.landscapeRight, DeviceOrientation.landscapeLeft]);
-    ProviderLogin providerLogin = ProviderLogin();
-    MaderaNav providerNavigation = MaderaNav();
+    MaderaNav maderaNav = new MaderaNav();
+    ProviderBdd providerBdd = new ProviderBdd();
     return MultiProvider(
         providers: [
-          ChangeNotifierProvider.value(
-            value: providerLogin,
+          ChangeNotifierProvider(
+            create: (c) => maderaNav,
           ),
-          ChangeNotifierProvider.value(
-            value: providerNavigation,
+          ChangeNotifierProvider(
+            create: (c) => providerBdd,
+          ),
+          ChangeNotifierProxyProvider<ProviderBdd, ProviderLogin>(
+            create: (context) => ProviderLogin(db: providerBdd.db),
+            update: (context, bdd, login) => ProviderLogin(db: bdd.db),
+          ),
+          ChangeNotifierProxyProvider<ProviderBdd, ProviderSynchro>(
+            create: (context) => ProviderSynchro(db: providerBdd.db),
+            update: (context, bdd, login) => ProviderSynchro(db: bdd.db),
           ),
         ],
+        //TODO faire la redirection si l'utilisateur est déjà conneté ? Test en envoyant le token ?
         child: MaterialApp(
-          title: providerNavigation.pageTitle,
+          title: maderaNav.pageTitle,
           theme: ThemeData(
             primarySwatch: Colors.green,
             appBarTheme: AppBarTheme(

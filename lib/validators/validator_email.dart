@@ -8,8 +8,8 @@ const String _kRule = r"^[a-z]+$";
 ///  - Propage le paramètre si condition(s) OK
 ///
 /// @author HELIOT David, CHEVALLIER Romain, LADOUCE Fabien
-/// @version 0.2-RELEASE
 ///
+/// @version 0.3-RELEASE
 class EmailValidator {
   final StreamTransformer<String, String> validateEmail =
       StreamTransformer<String, String>.fromHandlers(handleData: (email, sink) {

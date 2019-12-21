@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:logger/logger.dart';
 import 'package:provider/provider.dart';
 
-import 'package:proto_madera_front/providers/providers.dart';
-import 'package:proto_madera_front/ui/pages/widgets/custom_widgets.dart';
+import 'package:proto_madera_front/providers/providers.dart'
+    show MaderaNav, ProviderLogin;
+import 'package:proto_madera_front/ui/pages/widgets/custom_widgets.dart'
+    show CollapsingListTile;
 import 'package:proto_madera_front/ui/pages/pages.dart';
 import 'package:proto_madera_front/providers/models/navigation_model.dart';
 import 'package:proto_madera_front/theme.dart' as cTheme;
@@ -12,8 +14,8 @@ import 'package:proto_madera_front/theme.dart' as cTheme;
 /// Widget personnalisé pour une barre de navigation extensible
 ///
 /// @author HELIOT David, CHEVALLIER Romain, LADOUCE Fabien
-/// @version 0.2-RELEASE
 ///
+/// @version 0.3-RELEASE
 class CustomDrawer extends StatefulWidget {
   @override
   _CustomDrawerState createState() => _CustomDrawerState();
@@ -132,8 +134,7 @@ class _CustomDrawerState extends State<CustomDrawer>
                 CollapsingListTile(
                   onTap: () {
                     if (!isCollapsed) {
-                      Provider.of<ProviderLogin>(context)
-                          .logout("6j18-6j6j-186j");
+                      Provider.of<ProviderLogin>(context).logout();
                       Provider.of<MaderaNav>(context)
                           .redirectToPage(context, AuthenticationPage());
                     }

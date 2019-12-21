@@ -7,8 +7,8 @@ import 'package:proto_madera_front/theme.dart' as cTheme;
 ///     Permet d'afficher le titre de la page auquel l'icône fait référence
 ///
 /// @author HELIOT David, CHEVALLIER Romain, LADOUCE Fabien
-/// @version 0.2-RELEASE
 ///
+/// @version 0.3-RELEASE
 class CollapsingListTile extends StatefulWidget {
   final String title;
   final IconData icon;

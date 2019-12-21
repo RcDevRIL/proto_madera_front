@@ -5,8 +5,8 @@ import 'package:logger/logger.dart';
 /// Widget personnalisé pour un bouton
 ///
 /// @author HELIOT David, CHEVALLIER Romain, LADOUCE Fabien
-/// @version 0.2-RELEASE
 ///
+/// @version 0.3-RELEASE
 class MaderaButton extends StatelessWidget {
   final Function onPressed;
   final Widget child;
