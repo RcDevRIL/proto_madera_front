@@ -12,4 +12,8 @@ class ProjetDao extends DatabaseAccessor<MaderaDatabase> with _$ProjetDaoMixin {
     await delete(projet).go();
     await db.batch((b) => b.insertAll(projet, listProjet));
   }
+
+  Stream<List<ProjetData>> getAll() {
+    return db.select(projet).watch();
+  }
 }

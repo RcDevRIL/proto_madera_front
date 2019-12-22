@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:proto_madera_front/database/dao/database_dao.dart';
+import 'package:proto_madera_front/database/daos.dart';
 import 'package:proto_madera_front/database/madera_database.dart';
 
 ///
@@ -12,6 +13,16 @@ import 'package:proto_madera_front/database/madera_database.dart';
 /// @version 0.3-RELEASE
 class ProviderBdd with ChangeNotifier {
   MaderaDatabase db = new MaderaDatabase();
+  ProjetDao projetDao;
+  Stream<List<ProjetData>> listProjet;
+
+  ///
+  ///Constructeur par défaut de notre classe d'interaction avec la bdd.
+  ///
+  ///Permet d'initialiser nos DAO concernants les référentiels.
+  ProviderBdd() {
+    projetDao = new ProjetDao(this.db);
+  }
 
   void drop() {
     DatabaseDao(db).drop();
@@ -21,4 +32,11 @@ class ProviderBdd with ChangeNotifier {
   void dispose() {
     super.dispose();
   }
+
+  Stream<List<ProjetData>> initProjetData() {
+    this.listProjet = projetDao.getAll();
+    return this.listProjet;
+  }
+
+
 }
