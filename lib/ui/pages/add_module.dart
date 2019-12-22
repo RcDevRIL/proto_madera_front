@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:logger/logger.dart';
+import 'package:provider/provider.dart';
+
 import 'package:proto_madera_front/providers/providers.dart' show MaderaNav;
 import 'package:proto_madera_front/ui/pages/pages.dart' show Quote;
-
 import 'package:proto_madera_front/ui/pages/widgets/custom_widgets.dart';
 import 'package:proto_madera_front/theme.dart' as cTheme;
-import 'package:provider/provider.dart';
 
 ///
 /// Page "Ajout de module"
@@ -23,18 +23,27 @@ class AddModule extends StatefulWidget {
 class _AddModuleState extends State<AddModule> {
   final log = Logger();
   String dropdownValue = 'Sélectionnez une nature de module...';
+  TextEditingController _nameTextController;
+  TextEditingController _sizeTextController;
+  ScrollController _formScrollController;
   bool _canValidateForm;
 
   //added to prepare for scaling
   @override
   void initState() {
     super.initState();
+    _nameTextController = TextEditingController();
+    _sizeTextController = TextEditingController();
+    _formScrollController = ScrollController();
     _canValidateForm = false;
   }
 
   //added to prepare for scaling
   @override
   void dispose() {
+    _nameTextController?.dispose();
+    _sizeTextController?.dispose();
+    _formScrollController?.dispose();
     super.dispose();
   }
 
@@ -54,6 +63,7 @@ class _AddModuleState extends State<AddModule> {
             ),
             GradientFrame(
               child: SingleChildScrollView(
+                controller: _formScrollController,
                 child: Column(
                   children: <Widget>[
                     Row(
@@ -67,6 +77,14 @@ class _AddModuleState extends State<AddModule> {
                               child: TextField(
                                 maxLines: 1,
                                 keyboardType: TextInputType.text,
+                                controller: _nameTextController,
+                                onChanged: (text) {
+                                  setState(() {
+                                    text.isNotEmpty
+                                      ? _canValidateForm = true
+                                      : _canValidateForm = false;
+                                  });
+                                },
                                 enabled: true,
                                 decoration: InputDecoration(
                                   hintText: 'Nom du module...',
@@ -102,7 +120,7 @@ class _AddModuleState extends State<AddModule> {
                                 icon: Icon(Icons.arrow_drop_down,
                                     color: cTheme
                                         .Colors.containerBackgroundLinearStart),
-                                iconSize: 20,
+                                iconSize: 35,
                                 elevation: 16,
                                 style:
                                     TextStyle(color: cTheme.Colors.appBarTitle),
@@ -153,6 +171,8 @@ class _AddModuleState extends State<AddModule> {
                             maxLines: 1,
                             keyboardType: TextInputType.number,
                             enabled: true,
+                            controller: _sizeTextController,
+                            
                             decoration: InputDecoration(
                               hintText: 'Longueur...',
                               border: OutlineInputBorder(
@@ -197,7 +217,58 @@ class _AddModuleState extends State<AddModule> {
                           labelledIcon: LabelledIcon(
                             // TODO: Trouver une meilleure icone, genre règle et équerre
                             icon: Icon(Icons.open_with),
-                            text: Text("Angle entrant (en mètres)"),
+                            text: Text("Angle entrant (en degrés)"),
+                          ),
+                          child: TextField(
+                            onTap: () => _formScrollController.jumpTo(
+                              _formScrollController.position.maxScrollExtent),
+                            maxLines: 1,
+                            keyboardType: TextInputType.number,
+                            enabled: true,
+                            decoration: InputDecoration(
+                              hintText: 'Angle...',
+                              border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.only(
+                                bottomRight: Radius.circular(20.0),
+                                bottomLeft: Radius.circular(20.0),
+                              )),
+                            ),
+                          ),
+                        ),
+                        MaderaCard(
+                          cardHeight: cTheme.Dimens.cardHeight,
+                          cardWidth: 450.0,
+                          labelledIcon: LabelledIcon(
+                            // TODO: Trouver une meilleure icone, genre règle et équerre
+                            icon: Icon(Icons.open_with),
+                            text: Text("Section (en centimètres)"),
+                          ),
+                          child: TextField(
+                            maxLines: 1,
+                            keyboardType: TextInputType.number,
+                            enabled: true,
+                            decoration: InputDecoration(
+                              hintText: 'Section...',
+                              border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.only(
+                                bottomRight: Radius.circular(20.0),
+                                bottomLeft: Radius.circular(20.0),
+                              )),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: <Widget>[
+                        MaderaCard(
+                          cardHeight: cTheme.Dimens.cardHeight,
+                          cardWidth: 450.0,
+                          labelledIcon: LabelledIcon(
+                            // TODO: Trouver une meilleure icone, genre règle et équerre
+                            icon: Icon(Icons.open_with),
+                            text: Text("Longueur (en mètres)"),
                           ),
                           child: TextField(
                             maxLines: 1,
@@ -205,6 +276,55 @@ class _AddModuleState extends State<AddModule> {
                             enabled: true,
                             decoration: InputDecoration(
                               hintText: 'Longueur...',
+                              border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.only(
+                                bottomRight: Radius.circular(20.0),
+                                bottomLeft: Radius.circular(20.0),
+                              )),
+                            ),
+                          ),
+                        ),
+                        MaderaCard(
+                          cardHeight: cTheme.Dimens.cardHeight,
+                          cardWidth: 450.0,
+                          labelledIcon: LabelledIcon(
+                            // TODO: Trouver une meilleure icone, genre règle et équerre
+                            icon: Icon(Icons.open_with),
+                            text: Text("Angle sortant (en degrés)"),
+                          ),
+                          child: TextField(
+                            maxLines: 1,
+                            keyboardType: TextInputType.number,
+                            enabled: true,
+                            decoration: InputDecoration(
+                              hintText: 'Angle...',
+                              border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.only(
+                                bottomRight: Radius.circular(20.0),
+                                bottomLeft: Radius.circular(20.0),
+                              )),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: <Widget>[
+                        MaderaCard(
+                          cardHeight: cTheme.Dimens.cardHeight,
+                          cardWidth: 450.0,
+                          labelledIcon: LabelledIcon(
+                            // TODO: Trouver une meilleure icone, genre règle et équerre
+                            icon: Icon(Icons.open_with),
+                            text: Text("Section (en centimètres)"),
+                          ),
+                          child: TextField(
+                            maxLines: 1,
+                            keyboardType: TextInputType.number,
+                            enabled: true,
+                            decoration: InputDecoration(
+                              hintText: 'Section...',
                               border: OutlineInputBorder(
                                   borderRadius: BorderRadius.only(
                                 bottomRight: Radius.circular(20.0),
@@ -236,9 +356,6 @@ class _AddModuleState extends State<AddModule> {
                           ),
                         ),
                       ],
-                    ),
-                    Row(
-                      children: <Widget>[],
                     ),
                   ],
                 ),
