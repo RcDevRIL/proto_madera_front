@@ -132,13 +132,13 @@ class _CustomDrawerState extends State<CustomDrawer>
                   ),
                 ),
                 CollapsingListTile(
-                  onTap: () {
-                    if (!isCollapsed) {
-                      Provider.of<ProviderLogin>(context).logout();
-                      Provider.of<MaderaNav>(context)
-                          .redirectToPage(context, AuthenticationPage());
-                    }
-                  },
+                  onTap: !isCollapsed
+                      ? () {
+                          Provider.of<ProviderLogin>(context).logout();
+                          Provider.of<MaderaNav>(context)
+                              .redirectToPage(context, AuthenticationPage());
+                        }
+                      : null,
                   animationController: _animationController,
                   isSelected: false,
                   title: 'Déconnexion',

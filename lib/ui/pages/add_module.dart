@@ -23,11 +23,13 @@ class AddModule extends StatefulWidget {
 class _AddModuleState extends State<AddModule> {
   final log = Logger();
   String dropdownValue = 'Sélectionnez une nature de module...';
+  bool _canValidateForm;
 
   //added to prepare for scaling
   @override
   void initState() {
     super.initState();
+    _canValidateForm = false;
   }
 
   //added to prepare for scaling
@@ -55,12 +57,12 @@ class _AddModuleState extends State<AddModule> {
                 child: Column(
                   children: <Widget>[
                     Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      mainAxisAlignment: MainAxisAlignment.center,
                       children: <Widget>[
                         Column(
                           children: <Widget>[
                             MaderaCard(
-                              cardWidth: cTheme.Dimens.boxWidthMedium,
+                              cardWidth: 450.0,
                               cardHeight: cTheme.Dimens.cardHeight,
                               child: TextField(
                                 maxLines: 1,
@@ -93,7 +95,7 @@ class _AddModuleState extends State<AddModule> {
                             SizedBox(height: 10.0),
                             MaderaRoundedBox(
                               boxHeight: cTheme.Dimens.boxHeight,
-                              boxWidth: cTheme.Dimens.boxWidthMedium,
+                              boxWidth: 450.0,
                               child: DropdownButton<String>(
                                 isExpanded: true,
                                 hint: Text('$dropdownValue'),
@@ -131,103 +133,112 @@ class _AddModuleState extends State<AddModule> {
                             ),
                           ],
                         ),
-                        Row(
-                          crossAxisAlignment: CrossAxisAlignment.end,
-                          children: <Widget>[
-                            MaderaCard(
-                              cardHeight: cTheme.Dimens.cardHeight,
-                              cardWidth: cTheme.Dimens.cardSizeSmall,
-                              labelledIcon: LabelledIcon(
-                                // TODO: Trouver une meilleure icone, genre règle et équerre
-                                icon: Icon(Icons.open_with),
-                                text: Text("Longueur (en mètres)"),
-                              ),
-                              child: TextField(
-                                maxLines: 1,
-                                keyboardType: TextInputType.number,
-                                enabled: true,
-                                decoration: InputDecoration(
-                                  hintText: 'Longueur...',
-                                  border: OutlineInputBorder(
-                                      borderRadius: BorderRadius.only(
-                                    bottomRight: Radius.circular(20.0),
-                                    bottomLeft: Radius.circular(20.0),
-                                  )),
-                                ),
-                              ),
-                            ),
-                            MaderaCard(
-                              cardHeight: cTheme.Dimens.cardHeight,
-                              cardWidth: cTheme.Dimens.cardSizeSmall,
-                              labelledIcon: LabelledIcon(
-                                // TODO: Trouver une meilleure icone, genre règle et équerre
-                                icon: Icon(Icons.open_with),
-                                text: Text("Largeur (en mètres)"),
-                              ),
-                              child: TextField(
-                                maxLines: 1,
-                                keyboardType: TextInputType.number,
-                                enabled: true,
-                                decoration: InputDecoration(
-                                  hintText: 'Largeur...',
-                                  border: OutlineInputBorder(
-                                      borderRadius: BorderRadius.only(
-                                    bottomRight: Radius.circular(20.0),
-                                    bottomLeft: Radius.circular(20.0),
-                                  )),
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-
-                        // MaderaCard(
-                        //   cardHeight: cTheme.Dimens.cardHeight,
-                        //   cardWidth: cTheme.Dimens.cardSizeSmall,
-                        //   labelledIcon: LabelledIcon(
-                        //     // TODO: Trouver une meilleure icone, genre règle et équerre
-                        //     icon: Icon(Icons.open_with),
-                        //     text: Text("Angle entrant (en mètres)"),
-                        //   ),
-                        //   child: TextField(
-                        //     maxLines: 1,
-                        //     keyboardType: TextInputType.number,
-                        //     enabled: true,
-                        //     decoration: InputDecoration(
-                        //       hintText: 'Longueur...',
-                        //       border: OutlineInputBorder(
-                        //         borderRadius: BorderRadius.only(
-                        //           bottomRight: Radius.circular(20.0),
-                        //           bottomLeft: Radius.circular(20.0),
-                        //         )
-                        //       ),
-                        //     ),
-                        //   ),
-                        // ),
-                        // MaderaCard(
-                        //   cardHeight: cTheme.Dimens.cardHeight,
-                        //   cardWidth: cTheme.Dimens.cardSizeSmall,
-                        //   labelledIcon: LabelledIcon(
-                        //     // TODO: Trouver une meilleure icone, genre règle et équerre
-                        //     icon: Icon(Icons.open_with),
-                        //     text: Text("Longueur (en mètres)"),
-                        //   ),
-                        //   child: TextField(
-                        //     maxLines: 1,
-                        //     keyboardType: TextInputType.number,
-                        //     enabled: true,
-                        //     decoration: InputDecoration(
-                        //       hintText: 'Longueur...',
-                        //       border: OutlineInputBorder(
-                        //         borderRadius: BorderRadius.only(
-                        //           bottomRight: Radius.circular(20.0),
-                        //           bottomLeft: Radius.circular(20.0),
-                        //         )
-                        //       ),
-                        //     ),
-                        //   ),
-                        // ),
                       ],
+                    ),
+                    SizedBox(
+                      height: 20.0,
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: <Widget>[
+                        MaderaCard(
+                          cardHeight: cTheme.Dimens.cardHeight,
+                          cardWidth: 450.0,
+                          labelledIcon: LabelledIcon(
+                            // TODO: Trouver une meilleure icone, genre règle et équerre
+                            icon: Icon(Icons.open_with),
+                            text: Text("Longueur (en mètres)"),
+                          ),
+                          child: TextField(
+                            maxLines: 1,
+                            keyboardType: TextInputType.number,
+                            enabled: true,
+                            decoration: InputDecoration(
+                              hintText: 'Longueur...',
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.only(
+                                  bottomRight: Radius.circular(20.0),
+                                  bottomLeft: Radius.circular(20.0),
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                        MaderaCard(
+                          cardHeight: cTheme.Dimens.cardHeight,
+                          cardWidth: 450.0,
+                          labelledIcon: LabelledIcon(
+                            // TODO: Trouver une meilleure icone, genre règle et équerre
+                            icon: Icon(Icons.open_with),
+                            text: Text("Largeur (en mètres)"),
+                          ),
+                          child: TextField(
+                            maxLines: 1,
+                            keyboardType: TextInputType.number,
+                            enabled: true,
+                            decoration: InputDecoration(
+                              hintText: 'Largeur...',
+                              border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.only(
+                                bottomRight: Radius.circular(20.0),
+                                bottomLeft: Radius.circular(20.0),
+                              )),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: <Widget>[
+                        MaderaCard(
+                          cardHeight: cTheme.Dimens.cardHeight,
+                          cardWidth: 450.0,
+                          labelledIcon: LabelledIcon(
+                            // TODO: Trouver une meilleure icone, genre règle et équerre
+                            icon: Icon(Icons.open_with),
+                            text: Text("Angle entrant (en mètres)"),
+                          ),
+                          child: TextField(
+                            maxLines: 1,
+                            keyboardType: TextInputType.number,
+                            enabled: true,
+                            decoration: InputDecoration(
+                              hintText: 'Longueur...',
+                              border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.only(
+                                bottomRight: Radius.circular(20.0),
+                                bottomLeft: Radius.circular(20.0),
+                              )),
+                            ),
+                          ),
+                        ),
+                        MaderaCard(
+                          cardHeight: cTheme.Dimens.cardHeight,
+                          cardWidth: 450.0,
+                          labelledIcon: LabelledIcon(
+                            // TODO: Trouver une meilleure icone, genre règle et équerre
+                            icon: Icon(Icons.open_with),
+                            text: Text("Longueur (en mètres)"),
+                          ),
+                          child: TextField(
+                            maxLines: 1,
+                            keyboardType: TextInputType.number,
+                            enabled: true,
+                            decoration: InputDecoration(
+                              hintText: 'Longueur...',
+                              border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.only(
+                                bottomRight: Radius.circular(20.0),
+                                bottomLeft: Radius.circular(20.0),
+                              )),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                    Row(
+                      children: <Widget>[],
                     ),
                   ],
                 ),
@@ -246,16 +257,22 @@ class _AddModuleState extends State<AddModule> {
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
                   border: Border.all(
-                      color: cTheme.Colors.containerBackgroundLinearStart,
+                      color: _canValidateForm
+                          ? cTheme.Colors.containerBackgroundLinearStart
+                          : Colors.grey,
                       width: 2),
-                  color: cTheme.Colors.containerBackgroundLinearEnd,
+                  color: _canValidateForm
+                      ? cTheme.Colors.containerBackgroundLinearEnd
+                      : Colors.grey,
                 ),
                 child: IconButton(
-                  onPressed: () {
-                    log.d("Validating Module...");
-                    Provider.of<MaderaNav>(context)
-                        .redirectToPage(context, Quote());
-                  },
+                  onPressed: _canValidateForm
+                      ? () {
+                          log.d("Validating Module...");
+                          Provider.of<MaderaNav>(context)
+                              .redirectToPage(context, Quote());
+                        }
+                      : null,
                   icon: Icon(
                     Icons.check,
                     color: cTheme.Colors.white,
@@ -265,19 +282,26 @@ class _AddModuleState extends State<AddModule> {
               SizedBox(height: 12),
               Container(
                 decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    border: Border.all(
-                        color: cTheme.Colors.containerBackgroundLinearStart,
-                        width: 2),
-                    color: cTheme.Colors.containerBackgroundLinearEnd),
+                  shape: BoxShape.circle,
+                  border: Border.all(
+                      color: _canValidateForm
+                          ? cTheme.Colors.containerBackgroundLinearStart
+                          : Colors.grey,
+                      width: 2),
+                  color: _canValidateForm
+                      ? cTheme.Colors.containerBackgroundLinearEnd
+                      : Colors.grey,
+                ),
                 child: IconButton(
-                  onPressed: () {
-                    log.d("Canceling Module...");
-                    Provider.of<MaderaNav>(context)
-                        .redirectToPage(context, Quote());
-                  },
+                  onPressed: _canValidateForm
+                      ? () {
+                          log.d("Canceling Module...");
+                          Provider.of<MaderaNav>(context)
+                              .redirectToPage(context, Quote());
+                        }
+                      : null,
                   icon: Icon(
-                    Icons.clear,
+                    Icons.delete,
                     color: cTheme.Colors.white,
                   ),
                 ),
