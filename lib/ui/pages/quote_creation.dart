@@ -116,7 +116,7 @@ class _QuoteCreationState extends State<QuoteCreation> {
                               text: 'ID: 2\tNom: Dupont',
                             ),
                             keyboardType: TextInputType.text,
-                            enabled: false,
+                            enabled: true,
                             decoration: InputDecoration(
                               hintText: '-1',
                               border: OutlineInputBorder(
