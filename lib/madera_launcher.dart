@@ -34,8 +34,14 @@ class MaderaApp extends StatelessWidget {
             update: (context, bdd, login) => ProviderLogin(db: bdd.db),
           ),
           ChangeNotifierProxyProvider<ProviderBdd, ProviderSynchro>(
-            create: (context) => ProviderSynchro(db: providerBdd.db),
-            update: (context, bdd, login) => ProviderSynchro(db: bdd.db),
+            create: (context) => ProviderSynchro(
+              db: providerBdd.db,
+              daosSynchroList: providerBdd.daosSynchroList,
+            ),
+            update: (context, bdd, login) => ProviderSynchro(
+              db: bdd.db,
+              daosSynchroList: providerBdd.daosSynchroList,
+            ),
           ),
         ],
         //TODO faire la redirection si l'utilisateur est déjà conneté ? Test en envoyant le token ?

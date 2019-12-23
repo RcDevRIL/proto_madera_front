@@ -88,7 +88,7 @@ class _MaderaScaffoldState extends State<MaderaScaffold> {
       ),
       CustomDrawer(),
     ];
-    if (stackAdditions != null) stack.insertAll(1, stackAdditions);
+    if (stackAdditions.isNotEmpty) stack.insertAll(1, stackAdditions);
     return stack;
   }
 }
