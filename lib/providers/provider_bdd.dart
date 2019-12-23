@@ -44,19 +44,7 @@ class ProviderBdd with ChangeNotifier {
     adresseDao = new AdresseDao(db);
     projetDao = new ProjetDao(db);
     projetModuleDao = new ProjetModuleDao(db);
-  }
-
-  void drop() {
-    DatabaseDao(db).drop();
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
-  }
-
-  List<DatabaseAccessor<MaderaDatabase>> getDaos() {
-    return <DatabaseAccessor<MaderaDatabase>>[
+    daosSynchroList = <DatabaseAccessor<MaderaDatabase>>[
       this.utilisateurDao,
       this.composantDao,
       this.gammeDao,
@@ -69,6 +57,15 @@ class ProviderBdd with ChangeNotifier {
       this.projetDao,
       this.projetModuleDao,
     ]; // En gros on met dans cette liste que ce que synchro a besoin. Mais c'est bien ce provider qui est censé donner l'accès à la base de données!
+  }
+
+  void drop() {
+    DatabaseDao(db).drop();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
   }
 
   Stream<List<ProjetData>> initProjetData() {

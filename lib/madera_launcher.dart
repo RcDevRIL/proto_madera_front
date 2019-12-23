@@ -36,11 +36,11 @@ class MaderaApp extends StatelessWidget {
           ChangeNotifierProxyProvider<ProviderBdd, ProviderSynchro>(
             create: (context) => ProviderSynchro(
               db: providerBdd.db,
-              daosSynchroList: providerBdd.getDaos(),
+              daosSynchroList: providerBdd.daosSynchroList,
             ),
             update: (context, bdd, login) => ProviderSynchro(
               db: bdd.db,
-              daosSynchroList: providerBdd.getDaos(),
+              daosSynchroList: providerBdd.daosSynchroList,
             ),
           ),
         ],
