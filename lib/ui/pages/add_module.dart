@@ -21,9 +21,11 @@ class AddModule extends StatefulWidget {
 }
 
 class _AddModuleState extends State<AddModule> {
+  final dataKey = GlobalKey();
   final log = Logger();
   String dropdownValue = 'Sélectionnez une nature de module...';
   TextEditingController _nameTextController;
+  TextEditingController _natureModuleTextController;
   TextEditingController _sizeTextController;
   ScrollController _formScrollController;
   bool _canValidateForm;
@@ -33,6 +35,7 @@ class _AddModuleState extends State<AddModule> {
   void initState() {
     super.initState();
     _nameTextController = TextEditingController();
+    _natureModuleTextController = TextEditingController();
     _sizeTextController = TextEditingController();
     _formScrollController = ScrollController();
     _canValidateForm = false;
@@ -42,6 +45,7 @@ class _AddModuleState extends State<AddModule> {
   @override
   void dispose() {
     _nameTextController?.dispose();
+    _natureModuleTextController?.dispose();
     _sizeTextController?.dispose();
     _formScrollController?.dispose();
     super.dispose();
@@ -81,8 +85,8 @@ class _AddModuleState extends State<AddModule> {
                                 onChanged: (text) {
                                   setState(() {
                                     text.isNotEmpty
-                                      ? _canValidateForm = true
-                                      : _canValidateForm = false;
+                                        ? _canValidateForm = true
+                                        : _canValidateForm = false;
                                   });
                                 },
                                 enabled: true,
@@ -172,7 +176,6 @@ class _AddModuleState extends State<AddModule> {
                             keyboardType: TextInputType.number,
                             enabled: true,
                             controller: _sizeTextController,
-                            
                             decoration: InputDecoration(
                               hintText: 'Longueur...',
                               border: OutlineInputBorder(
@@ -221,7 +224,7 @@ class _AddModuleState extends State<AddModule> {
                           ),
                           child: TextField(
                             onTap: () => _formScrollController.jumpTo(
-                              _formScrollController.position.maxScrollExtent),
+                                _formScrollController.position.maxScrollExtent),
                             maxLines: 1,
                             keyboardType: TextInputType.number,
                             enabled: true,
@@ -244,6 +247,8 @@ class _AddModuleState extends State<AddModule> {
                             text: Text("Section (en centimètres)"),
                           ),
                           child: TextField(
+                            onTap: () => _formScrollController.jumpTo(
+                                _formScrollController.position.maxScrollExtent),
                             maxLines: 1,
                             keyboardType: TextInputType.number,
                             enabled: true,
@@ -271,6 +276,8 @@ class _AddModuleState extends State<AddModule> {
                             text: Text("Longueur (en mètres)"),
                           ),
                           child: TextField(
+                            onTap: () => _formScrollController.jumpTo(
+                                _formScrollController.position.maxScrollExtent),
                             maxLines: 1,
                             keyboardType: TextInputType.number,
                             enabled: true,
@@ -293,6 +300,8 @@ class _AddModuleState extends State<AddModule> {
                             text: Text("Angle sortant (en degrés)"),
                           ),
                           child: TextField(
+                            onTap: () => _formScrollController.jumpTo(
+                                _formScrollController.position.maxScrollExtent),
                             maxLines: 1,
                             keyboardType: TextInputType.number,
                             enabled: true,
@@ -320,6 +329,8 @@ class _AddModuleState extends State<AddModule> {
                             text: Text("Section (en centimètres)"),
                           ),
                           child: TextField(
+                            onTap: () => _formScrollController.jumpTo(
+                                _formScrollController.position.maxScrollExtent),
                             maxLines: 1,
                             keyboardType: TextInputType.number,
                             enabled: true,
@@ -342,6 +353,8 @@ class _AddModuleState extends State<AddModule> {
                             text: Text("Longueur (en mètres)"),
                           ),
                           child: TextField(
+                            onTap: () => _formScrollController.jumpTo(
+                                _formScrollController.position.maxScrollExtent),
                             maxLines: 1,
                             keyboardType: TextInputType.number,
                             enabled: true,
@@ -356,6 +369,13 @@ class _AddModuleState extends State<AddModule> {
                           ),
                         ),
                       ],
+                    ),
+                    SizedBox(height: 300),
+                    Container(
+                      child: Column(
+                        children: _buildInputFieldsByModuleNature(
+                            _natureModuleTextController.value.toString()),
+                      ),
                     ),
                   ],
                 ),
@@ -430,3 +450,5 @@ class _AddModuleState extends State<AddModule> {
     );
   }
 }
+
+List<Widget> _buildInputFieldsByModuleNature(String natureModule) {}
