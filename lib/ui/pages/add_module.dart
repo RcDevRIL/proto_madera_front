@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:logger/logger.dart';
 import 'package:provider/provider.dart';
 
-import 'package:proto_madera_front/providers/providers.dart' show MaderaNav;
+import 'package:proto_madera_front/providers/providers.dart'
+    show MaderaNav, ProviderProjet;
 import 'package:proto_madera_front/ui/pages/pages.dart' show Quote;
 import 'package:proto_madera_front/ui/pages/widgets/custom_widgets.dart';
 import 'package:proto_madera_front/theme.dart' as cTheme;
@@ -25,8 +26,8 @@ class _AddModuleState extends State<AddModule> {
   final log = Logger();
   String dropdownValue = 'Sélectionnez une nature de module...';
   TextEditingController _nameTextController;
-  TextEditingController _natureModuleTextController;
   TextEditingController _sizeTextController;
+  TextEditingController _widthTextController;
   ScrollController _formScrollController;
   bool _canValidateForm;
 
@@ -35,8 +36,8 @@ class _AddModuleState extends State<AddModule> {
   void initState() {
     super.initState();
     _nameTextController = TextEditingController();
-    _natureModuleTextController = TextEditingController();
     _sizeTextController = TextEditingController();
+    _widthTextController = TextEditingController();
     _formScrollController = ScrollController();
     _canValidateForm = false;
   }
@@ -45,7 +46,7 @@ class _AddModuleState extends State<AddModule> {
   @override
   void dispose() {
     _nameTextController?.dispose();
-    _natureModuleTextController?.dispose();
+    _widthTextController?.dispose();
     _sizeTextController?.dispose();
     _formScrollController?.dispose();
     super.dispose();
@@ -75,6 +76,45 @@ class _AddModuleState extends State<AddModule> {
                       children: <Widget>[
                         Column(
                           children: <Widget>[
+                            MaderaRoundedBox(
+                              boxHeight: cTheme.Dimens.boxHeight,
+                              boxWidth: 450.0,
+                              child: DropdownButton<String>(
+                                isExpanded: true,
+                                hint: Text('$dropdownValue'),
+                                icon: Icon(Icons.arrow_drop_down,
+                                    color: cTheme
+                                        .Colors.containerBackgroundLinearStart),
+                                iconSize: 35,
+                                elevation: 16,
+                                style:
+                                    TextStyle(color: cTheme.Colors.appBarTitle),
+                                underline: Container(
+                                  height: 2,
+                                  width: 100.0,
+                                  color: Colors.transparent,
+                                ),
+                                onChanged: (String newValue) {
+                                  setState(() {
+                                    dropdownValue = newValue;
+                                    _nameTextController.text = newValue + ' - ';
+                                  });
+                                },
+                                items: <String>[
+                                  'Mur droit',
+                                  'Mur avec angle entrant',
+                                  'Mur avec angle entrant',
+                                ]
+                                    .map<DropdownMenuItem<String>>(
+                                        (String value) =>
+                                            DropdownMenuItem<String>(
+                                              value: value,
+                                              child: Text(value),
+                                            ))
+                                    .toList(),
+                              ),
+                            ),
+                            SizedBox(height: 10.0),
                             MaderaCard(
                               cardWidth: 450.0,
                               cardHeight: cTheme.Dimens.cardHeight,
@@ -112,45 +152,6 @@ class _AddModuleState extends State<AddModule> {
                                     fontWeight: FontWeight.w600,
                                   ),
                                 ),
-                              ),
-                            ),
-                            SizedBox(height: 10.0),
-                            MaderaRoundedBox(
-                              boxHeight: cTheme.Dimens.boxHeight,
-                              boxWidth: 450.0,
-                              child: DropdownButton<String>(
-                                isExpanded: true,
-                                hint: Text('$dropdownValue'),
-                                icon: Icon(Icons.arrow_drop_down,
-                                    color: cTheme
-                                        .Colors.containerBackgroundLinearStart),
-                                iconSize: 35,
-                                elevation: 16,
-                                style:
-                                    TextStyle(color: cTheme.Colors.appBarTitle),
-                                underline: Container(
-                                  height: 2,
-                                  width: 100.0,
-                                  color: Colors.transparent,
-                                ),
-                                onChanged: (String newValue) {
-                                  setState(() {
-                                    dropdownValue = newValue;
-                                  });
-                                },
-                                items: <String>[
-                                  'Nature module 1',
-                                  'Nature module 2',
-                                  'Nature module 3',
-                                  'Nature module 4'
-                                ]
-                                    .map<DropdownMenuItem<String>>(
-                                        (String value) =>
-                                            DropdownMenuItem<String>(
-                                              value: value,
-                                              child: Text(value),
-                                            ))
-                                    .toList(),
                               ),
                             ),
                           ],
@@ -193,14 +194,15 @@ class _AddModuleState extends State<AddModule> {
                           labelledIcon: LabelledIcon(
                             // TODO: Trouver une meilleure icone, genre règle et équerre
                             icon: Icon(Icons.open_with),
-                            text: Text("Largeur (en mètres)"),
+                            text: Text("Section (en centimètres)"),
                           ),
                           child: TextField(
                             maxLines: 1,
                             keyboardType: TextInputType.number,
                             enabled: true,
+                            controller: _widthTextController,
                             decoration: InputDecoration(
-                              hintText: 'Largeur...',
+                              hintText: 'Section...',
                               border: OutlineInputBorder(
                                   borderRadius: BorderRadius.only(
                                 bottomRight: Radius.circular(20.0),
@@ -373,8 +375,8 @@ class _AddModuleState extends State<AddModule> {
                     SizedBox(height: 300),
                     Container(
                       child: Column(
-                        children: _buildInputFieldsByModuleNature(
-                            _natureModuleTextController.value.toString()),
+                        children:
+                            _buildInputFieldsByModuleNature(dropdownValue),
                       ),
                     ),
                   ],
@@ -406,6 +408,13 @@ class _AddModuleState extends State<AddModule> {
                   onPressed: _canValidateForm
                       ? () {
                           log.d("Validating Module...");
+                          Provider.of<ProviderProjet>(context)
+                              .addModuleToProject([
+                            dropdownValue,
+                            _nameTextController.text ??= 'error',
+                            _sizeTextController.text ??= 'errorSize',
+                            _widthTextController.text ??= 'errorWitdh',
+                          ]);
                           Provider.of<MaderaNav>(context)
                               .redirectToPage(context, Quote());
                         }
@@ -451,4 +460,6 @@ class _AddModuleState extends State<AddModule> {
   }
 }
 
-List<Widget> _buildInputFieldsByModuleNature(String natureModule) {}
+List<Widget> _buildInputFieldsByModuleNature(String natureModule) {
+  return <Widget>[];
+}
