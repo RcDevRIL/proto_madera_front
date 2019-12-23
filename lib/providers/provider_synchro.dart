@@ -47,37 +47,37 @@ class ProviderSynchro with ChangeNotifier {
     for (DatabaseAccessor<MaderaDatabase> dao in daosSynchroList) {
       switch (dao.runtimeType) {
         case UtilisateurDao:
-          this.utilisateurDao = dao;
+          utilisateurDao = dao;
           break;
         case ComposantDao:
-          this.composantDao = dao;
+          composantDao = dao;
           break;
         case GammeDao:
-          this.gammeDao = dao;
+          gammeDao = dao;
           break;
         case ModuleDao:
-          this.moduleDao = dao;
+          moduleDao = dao;
           break;
         case ModuleComposantDao:
-          this.moduleComposantDao = dao;
+          moduleComposantDao = dao;
           break;
         case DevisEtatDao:
-          this.devisEtatDao = dao;
+          devisEtatDao = dao;
           break;
         case ClientDao:
-          this.clientDao = dao;
+          clientDao = dao;
           break;
         case ClientAdresseDao:
-          this.clientAdresseDao = dao;
+          clientAdresseDao = dao;
           break;
         case AdresseDao:
-          this.adresseDao = dao;
+          adresseDao = dao;
           break;
         case ProjetDao:
-          this.projetDao = dao;
+          projetDao = dao;
           break;
         case ProjetModuleDao:
-          this.projetModuleDao = dao;
+          projetModuleDao = dao;
           break;
         default:
           log.e("ERROR, NO DAO ASSIGNED TO THIS VALUE: ${dao.runtimeType}");
