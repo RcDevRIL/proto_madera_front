@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:proto_madera_front/database/madera_database.dart';
+import 'package:proto_madera_front/providers/models/projet_with_client.dart';
 import 'package:proto_madera_front/providers/providers.dart'
     show MaderaNav, ProviderBdd;
 import 'package:proto_madera_front/theme.dart' as cTheme;
@@ -50,8 +51,8 @@ class _QuoteOverviewState extends State<QuoteOverview> {
         child: MaderaScaffold.noAdd(
           passedContext: context,
           child: Consumer<MaderaNav>(
-            builder: (_, mN, c) => StreamBuilder(
-              stream: Provider.of<ProviderBdd>(context).initProjetData(),
+            builder: (_, mN, c) => FutureBuilder(
+              future: Provider.of<ProviderBdd>(context).initProjetData(),
               builder: (context, snapshot) {
                 if (!snapshot.hasData || snapshot.hasError) {
                   return Text('Problème lors de la récupération des données');
@@ -60,8 +61,9 @@ class _QuoteOverviewState extends State<QuoteOverview> {
                     scrollDirection: Axis.vertical,
                     child: Container(
                       decoration: BoxDecoration(
-                          border: Border.all(
-                              color: cTheme.Colors.primaryTextColor)),
+                        border:
+                            Border.all(color: cTheme.Colors.primaryTextColor),
+                      ),
                       width: 2500,
                       height: 665,
                       child: DataTable(
@@ -106,7 +108,7 @@ class _QuoteOverviewState extends State<QuoteOverview> {
                             ),
                           ),
                         ],
-                        rows: _createRows(snapshot),
+                        rows: _createRows(context, snapshot),
                       ),
                     ),
                   );
@@ -120,15 +122,20 @@ class _QuoteOverviewState extends State<QuoteOverview> {
   }
 }
 
-List<DataRow> _createRows(AsyncSnapshot snapshot) {
+List<DataRow> _createRows(BuildContext context, AsyncSnapshot snapshot) {
   List<DataRow> listRows = snapshot.data
       .map<DataRow>(
-        (ProjetData projetData) => DataRow(
+        (ProjetWithClient projetWithClient) => DataRow(
+          onSelectChanged: (bool selected) {
+            if (selected) {
+              //Provider.of<MaderaNav>(context).redirectToPage(context, PageDevis(${projetWithClient.projet.projetId));
+            }
+          },
           cells: <DataCell>[
             DataCell(
               MaderaTableCell(
                 textCell:
-                    '${projetData.dateProjet.day}/${projetData.dateProjet.month}/${projetData.dateProjet.year}',
+                    '${projetWithClient.projet.dateProjet.day}/${projetWithClient.projet.dateProjet.month}/${projetWithClient.projet.dateProjet.year}',
                 cellFontSize: 18,
                 height: 100,
                 width: 250,
@@ -136,7 +143,8 @@ List<DataRow> _createRows(AsyncSnapshot snapshot) {
             ),
             DataCell(
               MaderaTableCell(
-                textCell: projetData.clientId.toString(),
+                textCell:
+                    '${projetWithClient.client.nom} ${projetWithClient.client.prenom}',
                 cellFontSize: 18,
                 height: 100,
                 width: 250,
@@ -144,7 +152,7 @@ List<DataRow> _createRows(AsyncSnapshot snapshot) {
             ),
             DataCell(
               MaderaTableCell(
-                textCell: projetData.refProjet,
+                textCell: projetWithClient.projet.refProjet,
                 cellFontSize: 18,
                 height: 100,
                 width: 250,
@@ -152,7 +160,7 @@ List<DataRow> _createRows(AsyncSnapshot snapshot) {
             ),
             DataCell(
               MaderaTableCell(
-                textCell: projetData.nomProjet,
+                textCell: projetWithClient.projet.nomProjet,
                 cellFontSize: 18,
                 height: 100,
                 width: 250,
