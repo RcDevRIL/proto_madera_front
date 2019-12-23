@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart';
 import 'package:http/testing.dart';
 import 'package:logger/logger.dart';
+import 'package:moor_flutter/moor_flutter.dart';
 import 'package:proto_madera_front/constants/url.dart';
 import 'package:proto_madera_front/database/daos.dart';
 import 'package:proto_madera_front/database/madera_database.dart';
@@ -29,6 +30,7 @@ class ProviderSynchro with ChangeNotifier {
   AdresseDao adresseDao;
   ProjetDao projetDao;
   ProjetModuleDao projetModuleDao;
+  List<DatabaseAccessor<MaderaDatabase>> daosSynchroList;
   DateTime _refLastSyncDate;
   bool _refSynced = false;
   DateTime _dataLastSyncDate;
@@ -38,18 +40,49 @@ class ProviderSynchro with ChangeNotifier {
   ///Constructeur par défaut de notre classe de synchronisation.
   ///
   ///Permet d'initialiser nos DAO concernants les référentiels.
-  ProviderSynchro({@required this.db}) {
-    utilisateurDao = new UtilisateurDao(db);
-    composantDao = new ComposantDao(db);
-    gammeDao = new GammeDao(db);
-    moduleDao = new ModuleDao(db);
-    moduleComposantDao = new ModuleComposantDao(db);
-    devisEtatDao = new DevisEtatDao(db);
-    clientDao = new ClientDao(db);
-    clientAdresseDao = new ClientAdresseDao(db);
-    adresseDao = new AdresseDao(db);
-    projetDao = new ProjetDao(db);
-    projetModuleDao = new ProjetModuleDao(db);
+  ProviderSynchro({
+    @required this.db,
+    @required this.daosSynchroList,
+  }) {
+    for (DatabaseAccessor<MaderaDatabase> dao in daosSynchroList) {
+      switch (dao.runtimeType) {
+        case UtilisateurDao:
+          this.utilisateurDao = dao;
+          break;
+        case ComposantDao:
+          this.composantDao = dao;
+          break;
+        case GammeDao:
+          this.gammeDao = dao;
+          break;
+        case ModuleDao:
+          this.moduleDao = dao;
+          break;
+        case ModuleComposantDao:
+          this.moduleComposantDao = dao;
+          break;
+        case DevisEtatDao:
+          this.devisEtatDao = dao;
+          break;
+        case ClientDao:
+          this.clientDao = dao;
+          break;
+        case ClientAdresseDao:
+          this.clientAdresseDao = dao;
+          break;
+        case AdresseDao:
+          this.adresseDao = dao;
+          break;
+        case ProjetDao:
+          this.projetDao = dao;
+          break;
+        case ProjetModuleDao:
+          this.projetModuleDao = dao;
+          break;
+        default:
+          log.e("ERROR, NO DAO ASSIGNED TO THIS VALUE: ${dao.runtimeType}");
+      }
+    }
   }
 
   ///Renvoie la dernière date([DateTime]) de synchronisation des données utilisateur
@@ -72,12 +105,13 @@ class ProviderSynchro with ChangeNotifier {
     if (_refSynced) {
       // 1 1
       if (_dataSynced)
-        log.i('Synchronisations déjà effectuées aujourd' 'hui!');
+        log.i('Synchronisation globale déjà effectuée aujourd' 'hui!');
       // 1 0
       else {
         log.i(
             'Synchronisation des référentiels déjà effectuée le ${refsLastSyncDate.toString().substring(0, 10)}!');
         _dataSynced = await synchroData();
+        log.i('Synchronisation globale effectuée');
       }
     }
     // 0 ?
@@ -87,12 +121,14 @@ class ProviderSynchro with ChangeNotifier {
         log.i(
             'Synchronisation des données déjà effectuée le ${dataLastSyncDate.toString().substring(0, 10)}!');
         _refSynced = await synchroReferentiel();
+        log.i('Synchronisation globale effectuée');
       }
       // 0 0
       else {
         log.i('Synchronisation lancée...');
         _refSynced = await synchroReferentiel();
         _dataSynced = await synchroData();
+        log.i('Synchronisation globale effectuée');
       }
     }
   }
@@ -132,6 +168,7 @@ class ProviderSynchro with ChangeNotifier {
         _dataLastSyncDate = DateTime(
             DateTime.now().year, DateTime.now().month, DateTime.now().day);
         _dataSynced = true;
+        log.i('Done.');
         return true;
       } else {
         log.e("Erreur lors de la synchronisation des données utilisateur");
@@ -211,6 +248,7 @@ class ProviderSynchro with ChangeNotifier {
         _refLastSyncDate = DateTime(
             DateTime.now().year, DateTime.now().month, DateTime.now().day);
         _refSynced = true;
+        log.i('Done.');
         return true;
       } else {
         log.e("Erreur lors de la synchronisation des référentiels");
