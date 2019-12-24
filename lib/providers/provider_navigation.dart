@@ -123,6 +123,16 @@ class MaderaNav with ChangeNotifier {
                   '                    ');
         }
         break;
+      case Finishings:
+        {
+          _pageTitle = "Ajout de finitions";
+          _pageIndex = 1;
+          log.d(
+              'Updating current navigation properties:                        \n' +
+                  this.toString() +
+                  '                    ');
+        }
+        break;
       default:
         {
           log.e("MaderaNav.updateCurrent() ERROR:                        \n\tpage.runtimeType : " +

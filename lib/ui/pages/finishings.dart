@@ -22,12 +22,12 @@ class Finishings extends StatefulWidget {
 
 class _FinishingsState extends State<Finishings> {
   final log = Logger();
-  bool canValidateForm;
+  String choice;
 
   @override
   void initState() {
     super.initState();
-    canValidateForm = false;
+    choice = "Finition 1";
   }
 
   @override
@@ -45,14 +45,45 @@ class _FinishingsState extends State<Finishings> {
           children: <Widget>[
             Align(
               alignment: Alignment.center,
-              child: Text('Finitions',
+              child: Text('Choisir une finition',
                   style: cTheme.TextStyles.appBarTitle.copyWith(
                     fontSize: 32.0,
                   )),
             ),
             GradientFrame(
               child: SingleChildScrollView(
-                child: Column(),
+                child: Column(
+                  children: <Widget>[
+                    // MaderaListTile
+                    MaderaRadioListTile(
+                      margin: EdgeInsets.only(top: 50),
+                      width: 350,
+                      child: <Widget>[
+                        RadioListTile<String>(
+                          title: const Text(
+                              'Finition 1 avec un texte super méga long'),
+                          value: 'Finition 1',
+                          groupValue: choice,
+                          onChanged: (String val) {
+                            setState(() {
+                              choice = val;
+                            });
+                          },
+                        ),
+                        RadioListTile<String>(
+                          title: const Text('Finition 2'),
+                          value: 'Finition 2',
+                          groupValue: choice,
+                          onChanged: (String val) {
+                            setState(() {
+                              choice = val;
+                            });
+                          },
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
               ),
             ),
           ],
@@ -68,22 +99,16 @@ class _FinishingsState extends State<Finishings> {
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
                   border: Border.all(
-                      color: canValidateForm
-                          ? cTheme.Colors.containerBackgroundLinearStart
-                          : Colors.grey,
+                      color: cTheme.Colors.containerBackgroundLinearStart,
                       width: 2),
-                  color: canValidateForm
-                      ? cTheme.Colors.containerBackgroundLinearEnd
-                      : Colors.grey,
+                  color: cTheme.Colors.containerBackgroundLinearEnd,
                 ),
                 child: IconButton(
-                  onPressed: canValidateForm
-                      ? () {
-                          log.d("Adding Finishings...");
-                          Provider.of<MaderaNav>(context)
-                              .redirectToPage(context, Quote());
-                        }
-                      : null,
+                  onPressed: () {
+                    log.d("Adding Finishings...");
+                    Provider.of<MaderaNav>(context)
+                        .redirectToPage(context, Quote());
+                  },
                   icon: Icon(
                     Icons.check,
                     color: cTheme.Colors.white,
