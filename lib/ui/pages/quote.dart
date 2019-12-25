@@ -65,6 +65,11 @@ class _QuoteState extends State<Quote> {
                   MaderaRoundedBox(
                     boxHeight: cTheme.Dimens.boxHeight,
                     boxWidth: cTheme.Dimens.boxWidth,
+                    edgeInsetsPadding: EdgeInsets.symmetric(horizontal: 8.0),
+                    edgeInsetsMargin: EdgeInsets.symmetric(
+                      vertical: 4.0,
+                      horizontal: 4.0,
+                    ),
                     child: DropdownButton<String>(
                       isExpanded: true,
                       hint: Text('$dropdownGammeValue'),
@@ -97,6 +102,7 @@ class _QuoteState extends State<Quote> {
                   MaderaRoundedBox(
                     boxWidth: cTheme.Dimens.boxWidth,
                     boxHeight: cTheme.Dimens.boxHeight,
+                    edgeInsetsPadding: EdgeInsets.symmetric(horizontal: 8.0),
                     child: DropdownButton<String>(
                       isExpanded: true,
                       hint: Text('$dropdownModeleValue'),

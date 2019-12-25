@@ -94,6 +94,8 @@ class _AddModuleState extends State<AddModule> {
                             MaderaRoundedBox(
                               boxWidth: 350.0,
                               boxHeight: 45.0,
+                              edgeInsetsPadding:
+                                  EdgeInsets.symmetric(horizontal: 8.0),
                               child: DropdownButton<String>(
                                 isExpanded: true,
                                 hint: Text('$dropdownValue'),

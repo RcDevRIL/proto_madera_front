@@ -4,7 +4,8 @@ import 'package:provider/provider.dart';
 
 import 'package:proto_madera_front/providers/providers.dart' show MaderaNav;
 import 'package:proto_madera_front/ui/pages/pages.dart' show Quote, AddModule;
-import 'package:proto_madera_front/ui/pages/widgets/custom_widgets.dart';
+import 'package:proto_madera_front/ui/pages/widgets/custom_widgets.dart'
+    show GradientFrame, MaderaRoundedBox, MaderaScaffold;
 import 'package:proto_madera_front/theme.dart' as cTheme;
 
 ///
@@ -52,37 +53,42 @@ class _FinishingsState extends State<Finishings> {
             ),
             GradientFrame(
               child: SingleChildScrollView(
-                child: Column(
-                  children: <Widget>[
-                    // MaderaListTile
-                    MaderaRadioListTile(
-                      margin: EdgeInsets.only(top: 50),
-                      width: 350,
-                      child: <Widget>[
-                        RadioListTile<String>(
-                          title: const Text(
-                              'Finition 1 avec un texte super méga long'),
-                          value: 'Finition 1',
-                          groupValue: choice,
-                          onChanged: (String val) {
-                            setState(() {
-                              choice = val;
-                            });
-                          },
-                        ),
-                        RadioListTile<String>(
-                          title: const Text('Finition 2'),
-                          value: 'Finition 2',
-                          groupValue: choice,
-                          onChanged: (String val) {
-                            setState(() {
-                              choice = val;
-                            });
-                          },
-                        ),
-                      ],
-                    ),
-                  ],
+                child: MaderaRoundedBox(
+                  edgeInsetsPadding: EdgeInsets.symmetric(
+                    horizontal: 4.0,
+                  ),
+                  edgeInsetsMargin: EdgeInsets.symmetric(
+                    horizontal: 250.0,
+                    vertical: 4.0,
+                  ),
+                  boxWidth: 150,
+                  boxHeight: 150,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      RadioListTile<String>(
+                        title: const Text(
+                            'Finition 1 avec un texte super méga long'),
+                        value: 'Finition 1',
+                        groupValue: choice,
+                        onChanged: (String val) {
+                          setState(() {
+                            choice = val;
+                          });
+                        },
+                      ),
+                      RadioListTile<String>(
+                        title: const Text('Finition 2'),
+                        value: 'Finition 2',
+                        groupValue: choice,
+                        onChanged: (String val) {
+                          setState(() {
+                            choice = val;
+                          });
+                        },
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ),
