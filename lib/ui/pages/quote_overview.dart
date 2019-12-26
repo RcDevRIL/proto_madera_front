@@ -1,6 +1,5 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:proto_madera_front/database/madera_database.dart';
 import 'package:proto_madera_front/providers/models/projet_with_client.dart';
 import 'package:proto_madera_front/providers/providers.dart'
     show MaderaNav, ProviderBdd;
@@ -54,9 +53,20 @@ class _QuoteOverviewState extends State<QuoteOverview> {
             builder: (_, mN, c) => FutureBuilder(
               future: Provider.of<ProviderBdd>(context).initProjetData(),
               builder: (context, snapshot) {
-                if (!snapshot.hasData || snapshot.hasError) {
-                  return Text('Problème lors de la récupération des données');
-                } else {
+                if (snapshot.hasError) {
+                  return Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: <Widget>[
+                      Text('Problème lors de la récupération des données'),
+                      Icon(
+                        Icons.error_outline,
+                        color: Colors.red,
+                        size: 60,
+                      ),
+                    ],
+                  );
+                } else if (snapshot.hasData) {
                   return SingleChildScrollView(
                     scrollDirection: Axis.vertical,
                     child: Container(
@@ -112,6 +122,14 @@ class _QuoteOverviewState extends State<QuoteOverview> {
                       ),
                     ),
                   );
+                } else {
+                  return Center(
+                    child: SizedBox(
+                      child: CircularProgressIndicator(),
+                      width: 60,
+                      height: 60,
+                    ),
+                  );
                 }
               },
             ),
@@ -123,7 +141,7 @@ class _QuoteOverviewState extends State<QuoteOverview> {
 }
 
 List<DataRow> _createRows(BuildContext context, AsyncSnapshot snapshot) {
-  List<DataRow> listRows = snapshot.data
+  return snapshot.data
       .map<DataRow>(
         (ProjetWithClient projetWithClient) => DataRow(
           onSelectChanged: (bool selected) {
@@ -170,5 +188,4 @@ List<DataRow> _createRows(BuildContext context, AsyncSnapshot snapshot) {
         ),
       )
       .toList();
-  return listRows;
 }
