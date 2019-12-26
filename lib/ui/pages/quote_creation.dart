@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:logger/logger.dart';
 import 'package:provider/provider.dart';
 
-import 'package:proto_madera_front/providers/providers.dart' show MaderaNav;
+import 'package:proto_madera_front/providers/providers.dart'
+    show MaderaNav, ProviderProjet;
 import 'package:proto_madera_front/ui/pages/pages.dart' show Quote;
 import 'package:proto_madera_front/ui/pages/widgets/custom_widgets.dart';
 import 'package:proto_madera_front/theme.dart' as cTheme;
@@ -47,6 +48,8 @@ class _QuoteCreationState extends State<QuoteCreation> {
 
   @override
   Widget build(BuildContext context) {
+    Provider.of<ProviderProjet>(context)
+        .flush(); // Make sure providerProjet is empty
     return MaderaScaffold(
       passedContext: context,
       child: Center(

@@ -24,19 +24,23 @@ class ProviderProjet with ChangeNotifier {
     addModuleValues = List<String>(4);
   }
 
+  void flush() {
+    init();
+  }
+
   void setGamme(String nomGamme) {
     quoteValues[0] = nomGamme;
   }
 
   String get gamme => quoteValues[0];
 
-  void setModele(String nomModele) {
+  void setModule(String nomModele) {
     quoteValues[1] = nomModele;
   }
 
-  String get modele => quoteValues[1];
+  String get module => quoteValues[1];
 
-  void addModuleToProject(List<String> moduleSpec) {
+  void addComponentToModule(List<String> moduleSpec) {
     List<String> moduleList = quoteValues.elementAt(2);
     quoteValues.removeLast();
     moduleList.add(moduleSpec
@@ -44,19 +48,19 @@ class ProviderProjet with ChangeNotifier {
     quoteValues.add(moduleList);
   }
 
-  List<String> get projectModules => quoteValues.elementAt(2);
+  List<String> get moduleComponents => quoteValues.elementAt(2);
 
-  void getModuleFromModelId(int modelId) {
+  void getComponentFromModuleId(int moduleId) {
     //il faudra faire une requete ici
-    switch (modelId) {
+    switch (moduleId) {
       case 1:
         {
           quoteValues.removeLast();
           quoteValues.add(
             [
-              'Module 1.1',
-              'Module 1.2',
-              'Module 1.3',
+              'Composant 1.1',
+              'Composant 1.2',
+              'Composant 1.3',
             ],
           );
         }
@@ -66,16 +70,16 @@ class ProviderProjet with ChangeNotifier {
           quoteValues.removeLast();
           quoteValues.add(
             [
-              'Module 2.1',
-              'Module 2.2',
-              'Module 2.3',
+              'Composant 2.1',
+              'Composant 2.2',
+              'Composant 2.3',
             ],
           );
         }
         break;
       default:
         {
-          log.e('Wrong modelID: $modelId');
+          log.e('Wrong moduleID: $moduleId');
         }
         break;
     }

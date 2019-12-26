@@ -409,7 +409,7 @@ class _AddModuleState extends State<AddModule> {
                       ? () {
                           log.d("Validating Module...");
                           Provider.of<ProviderProjet>(context)
-                              .addModuleToProject([
+                              .addComponentToModule([
                             dropdownValue,
                             _nameTextController.text ??= 'error',
                             _sizeTextController.text ??= 'errorSize',
