@@ -43,53 +43,124 @@ class _FinishingsState extends State<Finishings> {
       child: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
-            Align(
-              alignment: Alignment.center,
-              child: Text('Choisir une finition',
-                  style: cTheme.TextStyles.appBarTitle.copyWith(
-                    fontSize: 32.0,
-                  )),
+            Text(
+              'Finitions du module',
+              style: cTheme.TextStyles.appBarTitle.copyWith(
+                fontSize: 32.0,
+              ),
             ),
             GradientFrame(
-              child: SingleChildScrollView(
-                child: MaderaRoundedBox(
-                  edgeInsetsPadding: EdgeInsets.symmetric(
-                    horizontal: 4.0,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: <Widget>[
+                  SizedBox(
+                    height: 20.0,
                   ),
-                  edgeInsetsMargin: EdgeInsets.symmetric(
-                    horizontal: 250.0,
-                    vertical: 4.0,
+                  Text(
+                    'Finitions extérieures',
+                    style: cTheme.TextStyles.appBarTitle.copyWith(
+                      fontSize: 20.0,
+                    ),
                   ),
-                  boxWidth: 150,
-                  boxHeight: 150,
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: <Widget>[
-                      RadioListTile<String>(
-                        title: const Text(
-                            'Finition 1 avec un texte super méga long'),
-                        value: 'Finition 1',
-                        groupValue: choice,
-                        onChanged: (String val) {
-                          setState(() {
-                            choice = val;
-                          });
-                        },
-                      ),
-                      RadioListTile<String>(
-                        title: const Text('Finition 2'),
-                        value: 'Finition 2',
-                        groupValue: choice,
-                        onChanged: (String val) {
-                          setState(() {
-                            choice = val;
-                          });
-                        },
-                      ),
-                    ],
+                  Divider(
+                    color: cTheme.Colors.white,
+                    indent: MediaQuery.of(context).size.width / 8,
+                    endIndent: MediaQuery.of(context).size.width / 8,
+                    thickness: 1.0,
                   ),
-                ),
+                  MaderaRoundedBox(
+                    edgeInsetsPadding: EdgeInsets.symmetric(
+                      horizontal: 0.0,
+                    ),
+                    edgeInsetsMargin: EdgeInsets.symmetric(
+                      horizontal: 0.0,
+                      vertical: 10.0,
+                    ),
+                    boxWidth: MediaQuery.of(context).size.height / 1.3,
+                    boxHeight: MediaQuery.of(context).size.height / 4,
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: <Widget>[
+                        RadioListTile<String>(
+                          title: const Text(
+                              'Finition 1 avec un texte super méga long'),
+                          value: 'Finition 1',
+                          groupValue: choice,
+                          onChanged: (String val) {
+                            setState(() {
+                              choice = val;
+                            });
+                          },
+                        ),
+                        RadioListTile<String>(
+                          title: const Text('Finition 2'),
+                          value: 'Finition 2',
+                          groupValue: choice,
+                          onChanged: (String val) {
+                            setState(() {
+                              choice = val;
+                            });
+                          },
+                        ),
+                      ],
+                    ),
+                  ),
+                  SizedBox(
+                    height: 20.0,
+                  ),
+                  Text(
+                    'Finitions intérieures',
+                    style: cTheme.TextStyles.appBarTitle.copyWith(
+                      fontSize: 20.0,
+                    ),
+                  ),
+                  Divider(
+                    color: cTheme.Colors.white70,
+                    indent: MediaQuery.of(context).size.width / 8,
+                    endIndent: MediaQuery.of(context).size.width / 8,
+                    thickness: 1.0,
+                  ),
+                  MaderaRoundedBox(
+                    edgeInsetsPadding: EdgeInsets.symmetric(
+                      horizontal: 0.0,
+                    ),
+                    edgeInsetsMargin: EdgeInsets.symmetric(
+                      horizontal: 0.0,
+                      vertical: 10.0,
+                    ),
+                    boxWidth: MediaQuery.of(context).size.height / 1.3,
+                    boxHeight: MediaQuery.of(context).size.height / 4,
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: <Widget>[
+                        RadioListTile<String>(
+                          title: const Text(
+                              'Finition 1 avec un texte super méga long'),
+                          value: 'Finition 1',
+                          groupValue: choice,
+                          onChanged: (String val) {
+                            setState(() {
+                              choice = val;
+                            });
+                          },
+                        ),
+                        RadioListTile<String>(
+                          title: const Text('Finition 2'),
+                          value: 'Finition 2',
+                          groupValue: choice,
+                          onChanged: (String val) {
+                            setState(() {
+                              choice = val;
+                            });
+                          },
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
               ),
             ),
           ],

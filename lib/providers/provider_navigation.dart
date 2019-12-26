@@ -105,7 +105,7 @@ class MaderaNav with ChangeNotifier {
         break;
       case Quote:
         {
-          _pageTitle = "Edition de devis";
+          _pageTitle = "Outil de création de devis";
           _pageIndex = 1;
           log.d(
               'Updating current navigation properties:                        \n' +
@@ -115,7 +115,7 @@ class MaderaNav with ChangeNotifier {
         break;
       case AddModule:
         {
-          _pageTitle = "Ajout de module";
+          _pageTitle = "Outil de création de devis";
           _pageIndex = 1;
           log.d(
               'Updating current navigation properties:                        \n' +
@@ -125,7 +125,7 @@ class MaderaNav with ChangeNotifier {
         break;
       case Finishings:
         {
-          _pageTitle = "Ajout de finitions";
+          _pageTitle = "Outil de création de devis";
           _pageIndex = 1;
           log.d(
               'Updating current navigation properties:                        \n' +

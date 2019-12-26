@@ -21,8 +21,8 @@ class _GradientFrameState extends State<GradientFrame> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: cTheme.Dimens.containerWidth,
-      height: cTheme.Dimens.containerHeight,
+      width: MediaQuery.of(context).size.width / 1.25,
+      height: MediaQuery.of(context).size.height / 1.3,
       decoration: BoxDecoration(
           boxShadow: [
             BoxShadow(

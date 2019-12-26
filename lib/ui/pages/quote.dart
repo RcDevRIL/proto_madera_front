@@ -53,18 +53,16 @@ class _QuoteState extends State<Quote> {
             Align(
               alignment: Alignment.center,
               child: Text(
-                'Projet',
+                'Produit n°1', //TODO implémenter getProductNumber dans Provider Projet
                 style: cTheme.TextStyles.appBarTitle.copyWith(fontSize: 32.0),
               ),
             ),
             GradientFrame(
-              child: ListView(
-                padding: EdgeInsets.symmetric(vertical: 20.0),
-                shrinkWrap: true,
+              child: Column(
                 children: <Widget>[
                   MaderaRoundedBox(
                     boxHeight: cTheme.Dimens.boxHeight,
-                    boxWidth: cTheme.Dimens.boxWidth,
+                    boxWidth: MediaQuery.of(context).size.width / 2,
                     edgeInsetsPadding: EdgeInsets.symmetric(horizontal: 8.0),
                     edgeInsetsMargin: EdgeInsets.symmetric(
                       vertical: 4.0,
@@ -98,9 +96,9 @@ class _QuoteState extends State<Quote> {
                           .toList(),
                     ),
                   ),
-                  SizedBox(height: 15.0),
+                  SizedBox(height: 20.0),
                   MaderaRoundedBox(
-                    boxWidth: cTheme.Dimens.boxWidth,
+                    boxWidth: MediaQuery.of(context).size.width / 2,
                     boxHeight: cTheme.Dimens.boxHeight,
                     edgeInsetsPadding: EdgeInsets.symmetric(horizontal: 8.0),
                     child: DropdownButton<String>(
@@ -134,12 +132,9 @@ class _QuoteState extends State<Quote> {
                           .toList(),
                     ),
                   ),
-                  SizedBox(
-                    height: 45.0,
-                  ),
+                  SizedBox(height: 20.0),
                   MaderaCard(
-                    cardHeight: cTheme.Dimens.cardHeightLarge,
-                    cardWidth: cTheme.Dimens.cardSizeLarge,
+                    cardHeight: MediaQuery.of(context).size.height / 2.3,
                     child: Stack(
                       children: <Widget>[
                         ListView.separated(
