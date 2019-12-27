@@ -172,15 +172,20 @@ class _QuoteState extends State<Quote> {
                         ListView.separated(
                           shrinkWrap: true,
                           itemCount: 10,
-                          itemBuilder: (c, i) => GestureDetector(
-                            child: ListTile(
-                              title: Text('Item n°$i'),
+                          itemBuilder: (c, i) => Material(
+                            child: InkWell(
+                              highlightColor: Colors.transparent,
+                              splashColor:
+                                  cTheme.Colors.containerBackgroundLinearEnd,
+                              child: ListTile(
+                                title: Text('Item n°$i'),
+                              ),
+                              onTap: () {
+                                log.d("Modifying module...");
+                                Provider.of<MaderaNav>(context)
+                                    .redirectToPage(context, AddModule());
+                              },
                             ),
-                            onTap: () {
-                              log.d("Modifying module...");
-                              Provider.of<MaderaNav>(context)
-                                  .redirectToPage(context, AddModule());
-                            },
                           ),
                           separatorBuilder: (c, i) => Divider(
                             color: Colors.green,
