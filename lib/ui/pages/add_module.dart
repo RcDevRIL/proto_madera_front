@@ -140,7 +140,8 @@ class _AddModuleState extends State<AddModule> {
                               cardHeight: cTheme.Dimens.cardHeight,
                               cardWidth: cTheme.Dimens.cardSizeSmall,
                               labelledIcon: LabelledIcon(
-                                // TODO: Trouver une meilleure icone, genre règle et équerre
+                                // TODO: Trouver une meilleure icone pour représenter une taille.
+                                // category / open_with / change_history
                                 icon: Icon(Icons.open_with),
                                 text: Text("Longueur (en mètres)"),
                               ),
@@ -162,7 +163,6 @@ class _AddModuleState extends State<AddModule> {
                               cardHeight: cTheme.Dimens.cardHeight,
                               cardWidth: cTheme.Dimens.cardSizeSmall,
                               labelledIcon: LabelledIcon(
-                                // TODO: Trouver une meilleure icone, genre règle et équerre
                                 icon: Icon(Icons.open_with),
                                 text: Text("Largeur (en mètres)"),
                               ),

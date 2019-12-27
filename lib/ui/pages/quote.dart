@@ -60,6 +60,38 @@ class _QuoteState extends State<Quote> {
             GradientFrame(
               child: Column(
                 children: <Widget>[
+                  MaderaCard(
+                    cardWidth: MediaQuery.of(context).size.width / 2,
+                    cardHeight: 45.0,
+                    child: TextField(
+                      maxLines: 1,
+                      keyboardType: TextInputType.text,
+                      enabled: true,
+                      decoration: InputDecoration(
+                        hintText: 'Nom du produit...',
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.only(
+                            bottomRight: Radius.circular(20.0),
+                            bottomLeft: Radius.circular(20.0),
+                          ),
+                        ),
+                      ),
+                    ),
+                    labelledIcon: LabelledIcon(
+                      icon: Icon(
+                        Icons.text_fields,
+                        color: cTheme.Colors.appBarTitle,
+                      ),
+                      text: Text(
+                        "Nom du produit",
+                        style: cTheme.TextStyles.appBarTitle.copyWith(
+                          fontSize: 13.0,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                    ),
+                  ),
+                  SizedBox(height: 20.0),
                   MaderaRoundedBox(
                     boxHeight: cTheme.Dimens.boxHeight,
                     boxWidth: MediaQuery.of(context).size.width / 2,
@@ -134,14 +166,21 @@ class _QuoteState extends State<Quote> {
                   ),
                   SizedBox(height: 20.0),
                   MaderaCard(
-                    cardHeight: MediaQuery.of(context).size.height / 2.3,
+                    cardHeight: MediaQuery.of(context).size.height / 3.1,
                     child: Stack(
                       children: <Widget>[
                         ListView.separated(
                           shrinkWrap: true,
                           itemCount: 10,
-                          itemBuilder: (c, i) => ListTile(
-                            title: Text('Item n°$i'),
+                          itemBuilder: (c, i) => GestureDetector(
+                            child: ListTile(
+                              title: Text('Item n°$i'),
+                            ),
+                            onTap: () {
+                              log.d("Modifying module...");
+                              Provider.of<MaderaNav>(context)
+                                  .redirectToPage(context, AddModule());
+                            },
                           ),
                           separatorBuilder: (c, i) => Divider(
                             color: Colors.green,
@@ -196,6 +235,7 @@ class _QuoteState extends State<Quote> {
                       : Colors.grey,
                 ),
                 child: IconButton(
+                  tooltip: "Valider produit",
                   onPressed: canValidateForm
                       ? () {
                           log.d("Quote Overview");
@@ -218,6 +258,7 @@ class _QuoteState extends State<Quote> {
                         width: 2),
                     color: cTheme.Colors.containerBackgroundLinearEnd),
                 child: IconButton(
+                  tooltip: "Supprimer produit",
                   onPressed: () {},
                   icon: Icon(
                     Icons.delete,

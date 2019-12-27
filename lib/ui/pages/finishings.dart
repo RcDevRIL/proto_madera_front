@@ -83,58 +83,7 @@ class _FinishingsState extends State<Finishings> {
                     boxHeight: MediaQuery.of(context).size.height / 4,
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
-                      children: <Widget>[
-                        RadioListTile<String>(
-                          title: const Text(
-                              'Finition 1 avec un texte super méga long'),
-                          value: 'Finition 1',
-                          groupValue: choice,
-                          onChanged: (String val) {
-                            setState(() {
-                              choice = val;
-                            });
-                          },
-                        ),
-                        RadioListTile<String>(
-                          title: const Text('Finition 2'),
-                          value: 'Finition 2',
-                          groupValue: choice,
-                          onChanged: (String val) {
-                            setState(() {
-                              choice = val;
-                            });
-                          },
-                        ),
-                      ],
-                    ),
-                  ),
-                  SizedBox(
-                    height: 20.0,
-                  ),
-                  Text(
-                    'Finitions intérieures',
-                    style: cTheme.TextStyles.appBarTitle.copyWith(
-                      fontSize: 20.0,
-                    ),
-                  ),
-                  Divider(
-                    color: cTheme.Colors.white70,
-                    indent: MediaQuery.of(context).size.width / 8,
-                    endIndent: MediaQuery.of(context).size.width / 8,
-                    thickness: 1.0,
-                  ),
-                  MaderaRoundedBox(
-                    edgeInsetsPadding: EdgeInsets.symmetric(
-                      horizontal: 0.0,
-                    ),
-                    edgeInsetsMargin: EdgeInsets.symmetric(
-                      horizontal: 0.0,
-                      vertical: 10.0,
-                    ),
-                    boxWidth: MediaQuery.of(context).size.height / 1.3,
-                    boxHeight: MediaQuery.of(context).size.height / 4,
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
+                      // Alimentée avec les finitions possibles du Module
                       children: <Widget>[
                         RadioListTile<String>(
                           title: const Text(
@@ -181,6 +130,7 @@ class _FinishingsState extends State<Finishings> {
                   color: cTheme.Colors.containerBackgroundLinearEnd,
                 ),
                 child: IconButton(
+                  tooltip: "Valider finition",
                   onPressed: () {
                     log.d("Adding Finishings...");
                     Provider.of<MaderaNav>(context)
@@ -201,6 +151,7 @@ class _FinishingsState extends State<Finishings> {
                         width: 2),
                     color: cTheme.Colors.containerBackgroundLinearEnd),
                 child: IconButton(
+                  tooltip: "Annuler",
                   onPressed: () {
                     log.d("Canceling finishings, going back...");
                     Provider.of<MaderaNav>(context)
