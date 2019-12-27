@@ -1,10 +1,12 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-
-import 'package:proto_madera_front/providers/providers.dart' show MaderaNav;
-import 'package:proto_madera_front/ui/pages/widgets/custom_widgets.dart'
-    show AppBarMadera, CustomDrawer;
+import 'package:proto_madera_front/providers/models/projet_with_client.dart';
+import 'package:proto_madera_front/providers/providers.dart'
+    show MaderaNav, ProviderBdd;
 import 'package:proto_madera_front/theme.dart' as cTheme;
+import 'package:proto_madera_front/ui/pages/widgets/custom_widgets.dart'
+    show MaderaScaffold, MaderaTableCell;
+import 'package:provider/provider.dart';
 
 ///
 /// Page de "Suivi des devis enregistrés"
@@ -45,27 +47,145 @@ class _QuoteOverviewState extends State<QuoteOverview> {
     return WillPopScope(
       onWillPop: _onWillPopScope,
       child: SafeArea(
-        child: Scaffold(
-          backgroundColor: Colors.blueGrey,
-          body: Stack(
-            children: <Widget>[
-              Center(
-                child: Consumer<MaderaNav>(
-                  builder: (_, mN, c) => Text(
-                    mN.pageTitle,
-                    style: cTheme.TextStyles.appBarTitle,
-                  ),
-                ),
-              ),
-              Padding(
-                padding: EdgeInsets.only(left: cTheme.Dimens.drawerMinWitdh),
-                child: AppBarMadera(),
-              ),
-              CustomDrawer(),
-            ],
+        child: MaderaScaffold.noAdd(
+          passedContext: context,
+          child: Consumer<MaderaNav>(
+            builder: (_, mN, c) => FutureBuilder(
+              future: Provider.of<ProviderBdd>(context).initProjetData(),
+              builder: (context, snapshot) {
+                if (snapshot.hasError) {
+                  return Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: <Widget>[
+                      Text('Problème lors de la récupération des données'),
+                      Icon(
+                        Icons.error_outline,
+                        color: Colors.red,
+                        size: 60,
+                      ),
+                    ],
+                  );
+                } else if (snapshot.hasData) {
+                  return SingleChildScrollView(
+                    scrollDirection: Axis.vertical,
+                    child: Container(
+                      decoration: BoxDecoration(
+                        border:
+                            Border.all(color: cTheme.Colors.primaryTextColor),
+                      ),
+                      width: 2500,
+                      height: 665,
+                      child: DataTable(
+                        columnSpacing: 0,
+                        headingRowHeight: 100,
+                        dataRowHeight: 100,
+                        columns: [
+                          DataColumn(
+                            label: MaderaTableCell(
+                              textCell: 'Date de création',
+                              backgroundColor: cTheme.Colors.appBarMainColor,
+                              cellFontSize: 20,
+                              height: 100,
+                              width: 250,
+                            ),
+                          ),
+                          DataColumn(
+                            label: MaderaTableCell(
+                              textCell: 'Ref.client',
+                              backgroundColor: cTheme.Colors.appBarMainColor,
+                              cellFontSize: 20,
+                              height: 100,
+                              width: 250,
+                            ),
+                          ),
+                          DataColumn(
+                            label: MaderaTableCell(
+                              textCell: 'Ref. projet',
+                              backgroundColor: cTheme.Colors.appBarMainColor,
+                              cellFontSize: 20,
+                              height: 100,
+                              width: 250,
+                            ),
+                          ),
+                          DataColumn(
+                            label: MaderaTableCell(
+                              textCell: 'Nom du projet',
+                              backgroundColor: cTheme.Colors.appBarMainColor,
+                              cellFontSize: 20,
+                              height: 100,
+                              width: 250,
+                            ),
+                          ),
+                        ],
+                        rows: _createRows(context, snapshot),
+                      ),
+                    ),
+                  );
+                } else {
+                  return Center(
+                    child: SizedBox(
+                      child: CircularProgressIndicator(),
+                      width: 60,
+                      height: 60,
+                    ),
+                  );
+                }
+              },
+            ),
           ),
         ),
       ),
     );
   }
+}
+
+List<DataRow> _createRows(BuildContext context, AsyncSnapshot snapshot) {
+  return snapshot.data
+      .map<DataRow>(
+        (ProjetWithClient projetWithClient) => DataRow(
+          onSelectChanged: (bool selected) {
+            if (selected) {
+              //Provider.of<MaderaNav>(context).redirectToPage(context, PageDevis(${projetWithClient.projet.projetId));
+            }
+          },
+          cells: <DataCell>[
+            DataCell(
+              MaderaTableCell(
+                textCell:
+                    '${projetWithClient.projet.dateProjet.day}/${projetWithClient.projet.dateProjet.month}/${projetWithClient.projet.dateProjet.year}',
+                cellFontSize: 18,
+                height: 100,
+                width: 250,
+              ),
+            ),
+            DataCell(
+              MaderaTableCell(
+                textCell:
+                    '${projetWithClient.client.nom} ${projetWithClient.client.prenom}',
+                cellFontSize: 18,
+                height: 100,
+                width: 250,
+              ),
+            ),
+            DataCell(
+              MaderaTableCell(
+                textCell: projetWithClient.projet.refProjet,
+                cellFontSize: 18,
+                height: 100,
+                width: 250,
+              ),
+            ),
+            DataCell(
+              MaderaTableCell(
+                textCell: projetWithClient.projet.nomProjet,
+                cellFontSize: 18,
+                height: 100,
+                width: 250,
+              ),
+            ),
+          ],
+        ),
+      )
+      .toList();
 }

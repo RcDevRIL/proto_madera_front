@@ -8,7 +8,7 @@ import 'package:proto_madera_front/ui/pages/pages.dart' show HomePage;
 import 'package:proto_madera_front/ui/pages/widgets/custom_widgets.dart'
     show AppBarMadera, LabelledIcon, MaderaButton;
 import 'package:proto_madera_front/providers/providers.dart'
-    show MaderaNav, ProviderLogin, ProviderSynchro;
+    show MaderaNav, ProviderBdd, ProviderLogin, ProviderSynchro;
 import 'package:proto_madera_front/providers/http_status.dart';
 import 'package:proto_madera_front/theme.dart' as cTheme;
 
@@ -250,8 +250,9 @@ class _AuthenticationPageState extends State<AuthenticationPage> {
                 : _showSynchroErrorPopup(context, 'synchroData'));
           } else
             log.i('Synchronisation des référentiels déjà effectuée!');
+          Provider.of<ProviderBdd>(context).initProjetData();
           Provider.of<MaderaNav>(context).redirectToPage(context, HomePage());
-          //TODO Ajouter synchroProjet également
+          //TODO Ajouter initData()
         }
         break;
       case HttpStatus.OFFLINE:

@@ -66,8 +66,10 @@ void main() {
       },
     );
     test('last sync date test', () {
-      final ProviderSynchro providerSynchro =
-          ProviderSynchro(db: providerBdd.db);
+      final ProviderSynchro providerSynchro = ProviderSynchro(
+        db: providerBdd.db,
+        daosSynchroList: providerBdd.daosSynchroList,
+      );
       var date = DateTime.now();
 
       expect(date.isAfter(providerSynchro.refsLastSyncDate), true);
@@ -156,12 +158,13 @@ void main() {
     });
     testWidgets('synchro globale test', (tester) async {
       final MaderaNav providerNavigation = MaderaNav();
-      final ProviderSynchro providerSynchro =
-          ProviderSynchro(db: providerBdd.db)
-            ..http = MockClient((request) async {
-              //On set le contenu du body et le statusCode attendu, dans notre cas le token de connection
-              return Response('', 200);
-            });
+      final ProviderSynchro providerSynchro = ProviderSynchro(
+        db: providerBdd.db,
+        daosSynchroList: providerBdd.daosSynchroList,
+      )..http = MockClient((request) async {
+          //On set le contenu du body et le statusCode attendu, dans notre cas le token de connection
+          return Response('', 200);
+        });
 
       Widget testWidget = MediaQuery(
         data: MediaQueryData(),
