@@ -25,7 +25,7 @@ class AppBarMadera extends StatelessWidget {
         builder: (context, mN, child) => AppBar(
           primary: true,
           elevation: cTheme.Dimens.appBarElevation,
-          backgroundColor: cTheme.Colors.appBarMainColor,
+          backgroundColor: cTheme.MaderaColors.appBarMainColor,
           iconTheme: IconThemeData(
             color: Color.fromRGBO(39, 72, 0, 1.0),
           ),

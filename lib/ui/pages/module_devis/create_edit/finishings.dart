@@ -66,7 +66,7 @@ class _FinishingsState extends State<Finishings> {
                     ),
                   ),
                   Divider(
-                    color: cTheme.Colors.white,
+                    color: cTheme.MaderaColors.white,
                     indent: MediaQuery.of(context).size.width / 8,
                     endIndent: MediaQuery.of(context).size.width / 8,
                     thickness: 1.0,
@@ -126,9 +126,9 @@ class _FinishingsState extends State<Finishings> {
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
                   border: Border.all(
-                      color: cTheme.Colors.containerBackgroundLinearStart,
+                      color: cTheme.MaderaColors.containerBackgroundLinearStart,
                       width: 2),
-                  color: cTheme.Colors.containerBackgroundLinearEnd,
+                  color: cTheme.MaderaColors.containerBackgroundLinearEnd,
                 ),
                 child: IconButton(
                   tooltip: "Valider finition",
@@ -139,7 +139,7 @@ class _FinishingsState extends State<Finishings> {
                   },
                   icon: Icon(
                     Icons.check,
-                    color: cTheme.Colors.white,
+                    color: cTheme.MaderaColors.white,
                   ),
                 ),
               ),
@@ -148,9 +148,10 @@ class _FinishingsState extends State<Finishings> {
                 decoration: BoxDecoration(
                     shape: BoxShape.circle,
                     border: Border.all(
-                        color: cTheme.Colors.containerBackgroundLinearStart,
+                        color:
+                            cTheme.MaderaColors.containerBackgroundLinearStart,
                         width: 2),
-                    color: cTheme.Colors.containerBackgroundLinearEnd),
+                    color: cTheme.MaderaColors.containerBackgroundLinearEnd),
                 child: IconButton(
                   tooltip: "Annuler",
                   onPressed: () {
@@ -160,7 +161,7 @@ class _FinishingsState extends State<Finishings> {
                   },
                   icon: Icon(
                     Icons.delete,
-                    color: cTheme.Colors.white,
+                    color: cTheme.MaderaColors.white,
                   ),
                 ),
               )

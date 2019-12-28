@@ -54,15 +54,7 @@ class MaderaApp extends StatelessWidget {
         //TODO faire la redirection si l'utilisateur est déjà conneté ? Test en envoyant le token ?
         child: MaterialApp(
           title: maderaNav.pageTitle,
-          theme: ThemeData(
-            primarySwatch: Colors.green,
-            appBarTheme: AppBarTheme(
-              iconTheme: IconThemeData(
-                color: cTheme.Colors.iconsMainColor,
-              ),
-              color: cTheme.Colors.appBarMainColor,
-            ),
-          ),
+          theme: cTheme.CustomTheme.defaultTheme,
           initialRoute: InitializationPage.routeName,
           routes: {
             InitializationPage.routeName: (context) => InitializationPage(),

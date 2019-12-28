@@ -38,8 +38,8 @@ class _GradientFrameState extends State<GradientFrame> {
           ],
           gradient: LinearGradient(
             colors: [
-              cTheme.Colors.containerBackgroundLinearStart,
-              cTheme.Colors.containerBackgroundLinearEnd
+              cTheme.MaderaColors.containerBackgroundLinearStart,
+              cTheme.MaderaColors.containerBackgroundLinearEnd
             ],
             begin: Alignment(0.0, -1.0),
             end: Alignment(0.0, 0.0),

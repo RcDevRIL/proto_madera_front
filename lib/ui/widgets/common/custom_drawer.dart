@@ -54,7 +54,7 @@ class _CustomDrawerState extends State<CustomDrawer>
           elevation: cTheme.Dimens.appBarElevation,
           child: Container(
             width: widthAnimation.value,
-            color: cTheme.Colors.drawerBackgroundColor,
+            color: cTheme.MaderaColors.drawerBackgroundColor,
             child: Column(
               // crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisAlignment: MainAxisAlignment.center,
@@ -156,7 +156,7 @@ class _CustomDrawerState extends State<CustomDrawer>
                   child: AnimatedIcon(
                     icon: AnimatedIcons.menu_close,
                     progress: _animationController,
-                    color: cTheme.Colors.selectedColor,
+                    color: cTheme.MaderaColors.selectedColor,
                     size: 50.0,
                   ),
                 ),

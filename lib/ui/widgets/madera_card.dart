@@ -43,7 +43,7 @@ class _MaderaCardState extends State<MaderaCard> {
     return Card(
       shape: RoundedRectangleBorder(
         side: BorderSide(
-          color: cTheme.Colors.containerBackgroundLinearStart,
+          color: cTheme.MaderaColors.containerBackgroundLinearStart,
           style: BorderStyle.solid,
           width: 2.0,
         ),
@@ -64,7 +64,7 @@ class _MaderaCardState extends State<MaderaCard> {
             width: widget.cardWidth != null ? widget.cardWidth : null,
             height: widget.cardHeight != null ? widget.cardHeight : null,
             decoration: BoxDecoration(
-              color: cTheme.Colors.white,
+              color: cTheme.MaderaColors.white,
               borderRadius: BorderRadius.only(
                 bottomRight: Radius.circular(20.0),
                 bottomLeft: Radius.circular(20.0),

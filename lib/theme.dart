@@ -6,13 +6,34 @@
 /// @author HELIOT David, CHEVALLIER Romain, LADOUCE Fabien
 ///
 /// @version 0.4-PRE-RELEASE
-import 'package:flutter/material.dart' show Color, FontWeight, TextStyle;
+import 'package:flutter/material.dart';
 
 // Default Font Family
 const String FontNameDefault = 'Poppins';
 
-class Colors {
-  const Colors();
+class CustomTheme {
+  static final ThemeData defaultTheme = _buildLightTheme();
+
+  static ThemeData _buildLightTheme() {
+    final ThemeData base = ThemeData.light();
+
+    return base.copyWith(
+      primaryColor: Colors.green,
+      iconTheme: IconThemeData(
+        color: MaderaColors.iconsMainColor,
+      ),
+      appBarTheme: AppBarTheme(
+        iconTheme: IconThemeData(
+          color: MaderaColors.iconsMainColor,
+        ),
+        color: MaderaColors.appBarMainColor,
+      ),
+    );
+  }
+}
+
+class MaderaColors {
+  const MaderaColors();
 
   static const Color appBarMainColor = Color.fromRGBO(109, 243, 115, 0.45);
   static const Color iconsMainColor = Color.fromRGBO(39, 72, 0, 1.0);
@@ -65,21 +86,21 @@ class TextStyles {
   const TextStyles();
 
   static const TextStyle appBarTitle = const TextStyle(
-    color: Colors.appBarTitle,
+    color: MaderaColors.appBarTitle,
     fontFamily: FontNameDefault,
     fontWeight: FontWeight.w900,
     fontSize: 26.0,
   );
 
   static const TextStyle listTileDefaultTextStyle = TextStyle(
-    color: Colors.white70,
+    color: MaderaColors.white70,
     fontFamily: FontNameDefault,
     fontWeight: FontWeight.w400,
     fontSize: 20.0,
   );
 
   static const TextStyle listTileSelectedTextStyle = TextStyle(
-    color: Colors.white,
+    color: MaderaColors.white,
     fontFamily: FontNameDefault,
     fontWeight: FontWeight.w600,
     fontSize: 20.0,

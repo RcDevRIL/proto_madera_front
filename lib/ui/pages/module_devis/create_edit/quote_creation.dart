@@ -86,7 +86,7 @@ class _QuoteCreationState extends State<QuoteCreation> {
                           labelledIcon: LabelledIcon(
                             icon: Icon(
                               Icons.calendar_today,
-                              color: cTheme.Colors.appBarTitle,
+                              color: cTheme.MaderaColors.appBarTitle,
                             ),
                             text: Text(
                               "Date de création",
@@ -151,7 +151,7 @@ class _QuoteCreationState extends State<QuoteCreation> {
                           labelledIcon: LabelledIcon(
                             icon: Icon(
                               Icons.person,
-                              color: cTheme.Colors.appBarTitle,
+                              color: cTheme.MaderaColors.appBarTitle,
                             ),
                             text: Text(
                               "Références Client",
@@ -189,7 +189,7 @@ class _QuoteCreationState extends State<QuoteCreation> {
                           labelledIcon: LabelledIcon(
                             icon: Icon(
                               Icons.info,
-                              color: cTheme.Colors.appBarTitle,
+                              color: cTheme.MaderaColors.appBarTitle,
                             ),
                             text: Text(
                               "ID. Projet",
@@ -240,7 +240,7 @@ class _QuoteCreationState extends State<QuoteCreation> {
                           labelledIcon: LabelledIcon(
                             icon: Icon(
                               Icons.info,
-                              color: cTheme.Colors.appBarTitle,
+                              color: cTheme.MaderaColors.appBarTitle,
                             ),
                             text: Text(
                               "Description Projet",
@@ -271,11 +271,11 @@ class _QuoteCreationState extends State<QuoteCreation> {
                   shape: BoxShape.circle,
                   border: Border.all(
                       color: canValidateForm
-                          ? cTheme.Colors.containerBackgroundLinearStart
+                          ? cTheme.MaderaColors.containerBackgroundLinearStart
                           : Colors.grey,
                       width: 2),
                   color: canValidateForm
-                      ? cTheme.Colors.containerBackgroundLinearEnd
+                      ? cTheme.MaderaColors.containerBackgroundLinearEnd
                       : Colors.grey,
                 ),
                 child: IconButton(
@@ -295,7 +295,7 @@ class _QuoteCreationState extends State<QuoteCreation> {
                       : null,
                   icon: Icon(
                     Icons.check,
-                    color: cTheme.Colors.white,
+                    color: cTheme.MaderaColors.white,
                   ),
                 ),
               ),
@@ -304,14 +304,15 @@ class _QuoteCreationState extends State<QuoteCreation> {
                 decoration: BoxDecoration(
                     shape: BoxShape.circle,
                     border: Border.all(
-                        color: cTheme.Colors.containerBackgroundLinearStart,
+                        color:
+                            cTheme.MaderaColors.containerBackgroundLinearStart,
                         width: 2),
-                    color: cTheme.Colors.containerBackgroundLinearEnd),
+                    color: cTheme.MaderaColors.containerBackgroundLinearEnd),
                 child: IconButton(
                   onPressed: () {},
                   icon: Icon(
                     Icons.delete,
-                    color: cTheme.Colors.white,
+                    color: cTheme.MaderaColors.white,
                   ),
                 ),
               )

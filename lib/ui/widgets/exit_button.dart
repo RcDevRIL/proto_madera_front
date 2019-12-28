@@ -24,9 +24,9 @@ class ExitButton extends StatelessWidget {
       tooltip: "Fermer l'application",
       icon: ImageIcon(
         AssetImage("assets/img/icons/off.png"),
-        color: cTheme.Colors.appBarTitle,
+        color: cTheme.MaderaColors.appBarTitle,
       ),
-      color: cTheme.Colors.appBarTitle,
+      color: cTheme.MaderaColors.appBarTitle,
       iconSize: 32.0,
     );
     // );

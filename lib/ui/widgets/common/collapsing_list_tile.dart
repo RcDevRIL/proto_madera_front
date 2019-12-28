@@ -64,7 +64,7 @@ class _CollapsingListTileState extends State<CollapsingListTile> {
             Icon(
               widget.icon,
               color: widget.isSelected
-                  ? cTheme.Colors.selectedColor
+                  ? cTheme.MaderaColors.selectedColor
                   : Colors.white30,
               size: cTheme.Dimens.drawerIconSize,
             ),
