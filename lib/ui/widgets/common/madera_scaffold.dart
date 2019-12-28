@@ -15,20 +15,9 @@ class MaderaScaffold extends StatefulWidget {
   final BuildContext passedContext;
 
   ///
-  /// Constructeur par défaut.
-  /// Ajoute des éléments à la stack de base
+  /// Constructeur pour faire notre page par défaut.
   ///
   MaderaScaffold({
-    Key key,
-    @required this.passedContext,
-    @required this.child,
-    @required this.stackAdditions,
-  }) : super(key: key);
-
-  ///
-  /// Constructeur sans additions à la stack
-  ///
-  MaderaScaffold.noAdd({
     Key key,
     @required this.passedContext,
     @required this.child,
