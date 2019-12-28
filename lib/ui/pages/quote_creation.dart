@@ -26,6 +26,8 @@ class _QuoteCreationState extends State<QuoteCreation> {
   final String dateCreationProjet =
       DateTime(_now.year, _now.month, _now.day).toString().substring(0, 10);
   TextEditingController _descriptionTextController;
+  TextEditingController _clientDescriptionTextController;
+  TextEditingController _idProjectTextController;
   ScrollController _formScrollController;
   bool canValidateForm;
 
@@ -35,6 +37,10 @@ class _QuoteCreationState extends State<QuoteCreation> {
   void initState() {
     super.initState();
     _descriptionTextController = TextEditingController();
+    _clientDescriptionTextController = TextEditingController();
+    _clientDescriptionTextController.text = 'ID: 2\tNom: Dupont';
+    _idProjectTextController = TextEditingController();
+    _idProjectTextController.text = '454';
     _formScrollController = ScrollController();
     canValidateForm = false;
   }
@@ -42,6 +48,8 @@ class _QuoteCreationState extends State<QuoteCreation> {
   @override
   void dispose() {
     _descriptionTextController?.dispose();
+    _clientDescriptionTextController?.dispose();
+    _idProjectTextController?.dispose();
     _formScrollController?.dispose();
     super.dispose();
   }
@@ -50,6 +58,9 @@ class _QuoteCreationState extends State<QuoteCreation> {
   Widget build(BuildContext context) {
     Provider.of<ProviderProjet>(context)
         .flush(); // Make sure providerProjet is empty
+    Provider.of<ProviderProjet>(context)
+        .setIdProjet(_idProjectTextController.text);
+    Provider.of<ProviderProjet>(context).setDate(dateCreationProjet);
     return MaderaScaffold(
       passedContext: context,
       child: Center(
@@ -115,9 +126,18 @@ class _QuoteCreationState extends State<QuoteCreation> {
                           cardHeight: cTheme.Dimens.cardHeight,
                           child: TextField(
                             maxLines: 1,
-                            controller: TextEditingController(
-                              text: 'ID: 2\tNom: Dupont',
-                            ),
+                            controller: _clientDescriptionTextController,
+                            onChanged: (text) {
+                              setState(() {
+                                if (text.isNotEmpty) {
+                                  Provider.of<ProviderProjet>(context)
+                                      .setRefClient(text);
+                                  canValidateForm = true;
+                                } else {
+                                  canValidateForm = false;
+                                }
+                              });
+                            },
                             keyboardType: TextInputType.text,
                             enabled: true,
                             decoration: InputDecoration(
@@ -155,9 +175,7 @@ class _QuoteCreationState extends State<QuoteCreation> {
                           cardWidth: cTheme.Dimens.cardSizeLarge,
                           child: TextField(
                             maxLines: 1,
-                            controller: TextEditingController(
-                              text: '1',
-                            ),
+                            controller: _idProjectTextController,
                             keyboardType: TextInputType.text,
                             enabled: false,
                             decoration: InputDecoration(
@@ -200,9 +218,13 @@ class _QuoteCreationState extends State<QuoteCreation> {
                             controller: _descriptionTextController,
                             onChanged: (text) {
                               setState(() {
-                                text.isNotEmpty
-                                    ? canValidateForm = true
-                                    : canValidateForm = false;
+                                if (text.isNotEmpty) {
+                                  Provider.of<ProviderProjet>(context)
+                                      .setDescription(text);
+                                  canValidateForm = true;
+                                } else {
+                                  canValidateForm = false;
+                                }
                               });
                             },
                             keyboardType: TextInputType.multiline,
@@ -261,7 +283,13 @@ class _QuoteCreationState extends State<QuoteCreation> {
                 child: IconButton(
                   onPressed: canValidateForm
                       ? () {
-                          log.d(_descriptionTextController.text);
+                          log.d('Saving form...');
+                          Provider.of<ProviderProjet>(context).saveQC(
+                              dateCreationProjet,
+                              _descriptionTextController.text,
+                              _idProjectTextController.text,
+                              _clientDescriptionTextController.text);
+                          log.d('Done.');
                           log.d("Quote Creation");
                           Provider.of<MaderaNav>(context)
                               .redirectToPage(context, Quote());

@@ -25,7 +25,7 @@ class Quote extends StatefulWidget {
 class _QuoteState extends State<Quote> {
   final log = Logger();
   String dropdownGammeValue = 'Sélectionnez une gamme...';
-  String dropdownModuleValue = 'Sélectionnez un module...';
+  String dropdownModeleValue = 'Sélectionnez un modèle...';
   bool canValidateForm;
 
   //added to prepare for scaling
@@ -44,8 +44,7 @@ class _QuoteState extends State<Quote> {
   @override
   Widget build(BuildContext context) {
     //final args = ModalRoute.of(context).settings.arguments;
-    final componentsList =
-        Provider.of<ProviderProjet>(context).moduleComponents;
+    final moduleList = Provider.of<ProviderProjet>(context).productModules;
     return MaderaScaffold(
       passedContext: context,
       child: Center(
@@ -87,8 +86,23 @@ class _QuoteState extends State<Quote> {
                       onChanged: (String newValue) {
                         setState(() {
                           dropdownGammeValue = newValue;
-                          Provider.of<ProviderProjet>(context)
-                              .setGamme(dropdownGammeValue);
+                          switch (dropdownGammeValue) {
+                            case 'Gamme1':
+                              Provider.of<ProviderProjet>(context)
+                                  .setGamme(dropdownGammeValue);
+                              Provider.of<ProviderProjet>(context)
+                                  .setModeleListFromGammeID(1);
+                              break;
+                            case 'Gamme2':
+                              Provider.of<ProviderProjet>(context)
+                                  .setGamme(dropdownGammeValue);
+                              Provider.of<ProviderProjet>(context)
+                                  .setModeleListFromGammeID(2);
+                              break;
+                            default:
+                              {}
+                              break;
+                          }
                           canValidateForm = true;
                         });
                       },
@@ -106,11 +120,11 @@ class _QuoteState extends State<Quote> {
                     boxWidth: cTheme.Dimens.boxWidth,
                     boxHeight: cTheme.Dimens.boxHeight,
                     child: DropdownButton<String>(
-                      value: Provider.of<ProviderProjet>(context).module.isEmpty
+                      value: Provider.of<ProviderProjet>(context).model.isEmpty
                           ? null
-                          : Provider.of<ProviderProjet>(context).module,
+                          : Provider.of<ProviderProjet>(context).model,
                       isExpanded: true,
-                      hint: Text('$dropdownModuleValue'),
+                      hint: Text('$dropdownModeleValue'),
                       icon: Icon(Icons.arrow_drop_down,
                           color: cTheme.Colors.containerBackgroundLinearStart),
                       iconSize: 20,
@@ -119,35 +133,33 @@ class _QuoteState extends State<Quote> {
                       underline: Container(
                         color: Colors.transparent,
                       ),
-                      onChanged: (String newValue) {
-                        setState(() {
-                          dropdownModuleValue = newValue;
-                          switch (dropdownModuleValue) {
-                            case 'Module1':
-                              Provider.of<ProviderProjet>(context)
-                                  .setModule(dropdownModuleValue);
-                              Provider.of<ProviderProjet>(context)
-                                  .getComponentFromModuleId(1);
-                              break;
-                            case 'Module2':
-                              Provider.of<ProviderProjet>(context)
-                                  .setModule(dropdownModuleValue);
-                              Provider.of<ProviderProjet>(context)
-                                  .getComponentFromModuleId(2);
-                              break;
-                            default:
-                              {}
-                              break;
-                          }
-                          canValidateForm = true;
-                        });
-                      },
-                      items: <String>[
-                        'Module1',
-                        'Module2',
-                        'Module3',
-                        'Module4'
-                      ]
+                      onChanged: dropdownGammeValue.isNotEmpty
+                          ? (String newValue) {
+                              setState(() {
+                                dropdownModeleValue = newValue;
+                                switch (dropdownModeleValue) {
+                                  case 'Modele1':
+                                    Provider.of<ProviderProjet>(context)
+                                        .setModel(dropdownModeleValue);
+                                    Provider.of<ProviderProjet>(context)
+                                        .setModuleListFromModelID(1);
+                                    break;
+                                  case 'Modele2':
+                                    Provider.of<ProviderProjet>(context)
+                                        .setModel(dropdownModeleValue);
+                                    Provider.of<ProviderProjet>(context)
+                                        .setModuleListFromModelID(2);
+                                    break;
+                                  default:
+                                    {}
+                                    break;
+                                }
+                                canValidateForm = true;
+                              });
+                            }
+                          : null,
+                      items: Provider.of<ProviderProjet>(context)
+                          .modeleList
                           .map<DropdownMenuItem<String>>(
                               (String value) => DropdownMenuItem<String>(
                                     value: value,
@@ -166,9 +178,9 @@ class _QuoteState extends State<Quote> {
                       children: <Widget>[
                         ListView.separated(
                           shrinkWrap: true,
-                          itemCount: componentsList.length,
+                          itemCount: moduleList.length,
                           itemBuilder: (c, i) => ListTile(
-                            title: Text(componentsList[i]),
+                            title: Text(moduleList[i]),
                           ),
                           separatorBuilder: (c, i) => Divider(
                             color: Colors.green,
@@ -178,13 +190,13 @@ class _QuoteState extends State<Quote> {
                           alignment: Alignment.bottomRight,
                           child: MaderaButton(
                             onPressed: () {
-                              log.d("Adding Component for this quote");
+                              log.d("Adding Module for this quote");
                               Provider.of<MaderaNav>(context)
                                   .redirectToPage(context, AddModule());
                             },
                             child: LabelledIcon(
                               icon: Icon(Icons.add),
-                              text: Text("Ajouter composant"),
+                              text: Text("Ajouter Module"),
                             ),
                           ),
                         ),
@@ -195,7 +207,7 @@ class _QuoteState extends State<Quote> {
                         Icons.format_list_bulleted,
                         color: cTheme.Colors.appBarTitle,
                       ),
-                      text: Text('Liste des composants'),
+                      text: Text('Liste des Modules'),
                     ),
                   ),
                 ],
@@ -225,7 +237,13 @@ class _QuoteState extends State<Quote> {
                 child: IconButton(
                   onPressed: canValidateForm
                       ? () {
-                          log.d("Quote Overview");
+                          log.d('Saving form...');
+                          Provider.of<ProviderProjet>(context).saveQ(
+                              dropdownGammeValue,
+                              dropdownModeleValue ??= 'NOPE',
+                              moduleList);
+                          log.d('Done.');
+                          log.d('Quote Overview');
                           Provider.of<MaderaNav>(context)
                               .redirectToPage(context, QuoteOverview());
                         }
