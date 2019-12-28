@@ -6,7 +6,7 @@ import 'package:logger/logger.dart';
 ///
 /// @author HELIOT David, CHEVALLIER Romain, LADOUCE Fabien
 ///
-/// @version 0.3-RELEASE
+/// @version 0.4-PRE-RELEASE
 class MaderaButton extends StatelessWidget {
   final Function onPressed;
   final Widget child;

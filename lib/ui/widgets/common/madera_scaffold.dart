@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 
 import 'package:proto_madera_front/theme.dart' as cTheme;
-import 'package:proto_madera_front/ui/pages/widgets/custom_widgets.dart';
+import 'package:proto_madera_front/ui/widgets/custom_widgets.dart';
 
 ///
 /// Custom Scaffold to compose with appbar and drawer
 ///
 /// @author HELIOT David, CHEVALLIER Romain, LADOUCE Fabien
 ///
-/// @version 0.3-RELEASE
+/// @version 0.4-PRE-RELEASE
 class MaderaScaffold extends StatefulWidget {
   final Widget child;
   final List<Widget> stackAdditions;

@@ -4,7 +4,7 @@ import 'package:proto_madera_front/providers/models/projet_with_client.dart';
 import 'package:proto_madera_front/providers/providers.dart'
     show MaderaNav, ProviderBdd;
 import 'package:proto_madera_front/theme.dart' as cTheme;
-import 'package:proto_madera_front/ui/pages/widgets/custom_widgets.dart'
+import 'package:proto_madera_front/ui/widgets/custom_widgets.dart'
     show MaderaScaffold, MaderaTableCell;
 import 'package:provider/provider.dart';
 
@@ -13,7 +13,7 @@ import 'package:provider/provider.dart';
 ///
 /// @author HELIOT David, CHEVALLIER Romain, LADOUCE Fabien
 ///
-/// @version 0.3-RELEASE
+/// @version 0.4-PRE-RELEASE
 class QuoteOverview extends StatefulWidget {
   static const routeName = '/quoteOverview';
 

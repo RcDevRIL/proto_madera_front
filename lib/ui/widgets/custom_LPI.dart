@@ -11,7 +11,7 @@ import 'package:proto_madera_front/ui/pages/pages.dart' show AuthenticationPage;
 ///
 /// @author HELIOT David, CHEVALLIER Romain, LADOUCE Fabien
 ///
-/// @version 0.3-RELEASE
+/// @version 0.4-PRE-RELEASE
 class MyLinearProgressIndicator extends StatefulWidget {
   final Color backgroundColor;
 

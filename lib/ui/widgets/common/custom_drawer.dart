@@ -4,7 +4,7 @@ import 'package:provider/provider.dart';
 
 import 'package:proto_madera_front/providers/providers.dart'
     show MaderaNav, ProviderLogin;
-import 'package:proto_madera_front/ui/pages/widgets/custom_widgets.dart'
+import 'package:proto_madera_front/ui/widgets/custom_widgets.dart'
     show CollapsingListTile;
 import 'package:proto_madera_front/ui/pages/pages.dart';
 import 'package:proto_madera_front/providers/models/navigation_model.dart';
@@ -15,7 +15,7 @@ import 'package:proto_madera_front/theme.dart' as cTheme;
 ///
 /// @author HELIOT David, CHEVALLIER Romain, LADOUCE Fabien
 ///
-/// @version 0.3-RELEASE
+/// @version 0.4-PRE-RELEASE
 class CustomDrawer extends StatefulWidget {
   @override
   _CustomDrawerState createState() => _CustomDrawerState();

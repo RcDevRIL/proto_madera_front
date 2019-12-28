@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:proto_madera_front/ui/pages/widgets/labelled_icon.dart';
+import 'package:proto_madera_front/ui/widgets/labelled_icon.dart';
 import 'package:proto_madera_front/theme.dart' as cTheme;
 
 ///
@@ -7,7 +7,7 @@ import 'package:proto_madera_front/theme.dart' as cTheme;
 ///
 /// @author HELIOT David, CHEVALLIER Romain, LADOUCE Fabien
 ///
-/// @version 0.3-RELEASE
+/// @version 0.4-PRE-RELEASE
 class MaderaCard extends StatefulWidget {
   final LabelledIcon labelledIcon;
   final double cardHeight;

@@ -6,7 +6,7 @@ import 'package:logger/logger.dart';
 ///
 /// @author HELIOT David, CHEVALLIER Romain, LADOUCE Fabien
 ///
-/// @version 0.3-RELEASE
+/// @version 0.4-PRE-RELEASE
 class ProviderProjet with ChangeNotifier {
   List<String> _quoteCreationValues;
   List _quoteValues;
@@ -74,12 +74,14 @@ class ProviderProjet with ChangeNotifier {
 
   void setGamme(String nomGamme) {
     _quoteValues[0] = nomGamme;
+    notifyListeners();
   }
 
   String get gamme => _quoteValues[0];
 
   void setModel(String nomModel) {
     _quoteValues[1] = nomModel;
+    notifyListeners();
   }
 
   String get model => _quoteValues[1] ??= '';
@@ -129,6 +131,7 @@ class ProviderProjet with ChangeNotifier {
         }
         break;
     }
+    notifyListeners();
   }
 
   void setModeleListFromGammeID(int gammeID) {
@@ -137,6 +140,9 @@ class ProviderProjet with ChangeNotifier {
       case 1:
         {
           _modeleList.clear();
+          _quoteValues
+              .removeLast(); //clear de la liste des modules lorsqu'on change de gamme
+          _quoteValues.add(<String>[]);
           _modeleList.addAll(
             [
               'Modele1',
@@ -149,11 +155,14 @@ class ProviderProjet with ChangeNotifier {
       case 2:
         {
           _modeleList.clear();
+          _quoteValues
+              .removeLast(); //clear de la liste des modules lorsqu'on change de gamme
+          _quoteValues.add(<String>[]);
           _modeleList.addAll(
             [
               'Modeleea ze.2',
-              'Modele2.2',
-              'Modele3.2',
+              'Modeleez a2.2',
+              'Modeleezae3.2',
             ],
           );
         }
@@ -164,6 +173,7 @@ class ProviderProjet with ChangeNotifier {
         }
         break;
     }
+    notifyListeners();
   }
 
   void saveQC(String dateCreationProjet, String idProjet, String refClient,

@@ -5,7 +5,7 @@ import 'package:provider/provider.dart';
 
 import 'package:proto_madera_front/services/authentication/login_form_bloc.dart';
 import 'package:proto_madera_front/ui/pages/pages.dart' show HomePage;
-import 'package:proto_madera_front/ui/pages/widgets/custom_widgets.dart'
+import 'package:proto_madera_front/ui/widgets/custom_widgets.dart'
     show AppBarMadera, LabelledIcon, MaderaButton;
 import 'package:proto_madera_front/providers/providers.dart'
     show MaderaNav, ProviderBdd, ProviderLogin, ProviderSynchro;
@@ -17,7 +17,7 @@ import 'package:proto_madera_front/theme.dart' as cTheme;
 ///
 /// @author HELIOT David, CHEVALLIER Romain, LADOUCE Fabien
 ///
-/// @version 0.3-RELEASE
+/// @version 0.4-PRE-RELEASE
 class AuthenticationPage extends StatefulWidget {
   static const routeName = '/auth';
   @override

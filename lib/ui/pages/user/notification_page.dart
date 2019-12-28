@@ -2,24 +2,24 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import 'package:proto_madera_front/providers/providers.dart' show MaderaNav;
-import 'package:proto_madera_front/ui/pages/widgets/custom_widgets.dart'
+import 'package:proto_madera_front/ui/widgets/custom_widgets.dart'
     show AppBarMadera, CustomDrawer;
 import 'package:proto_madera_front/theme.dart' as cTheme;
 
 ///
-/// Page des paramètres de l'application
+/// "Page des notifications"
 ///
 /// @author HELIOT David, CHEVALLIER Romain, LADOUCE Fabien
 ///
-/// @version 0.3-RELEASE
-class SettingsPage extends StatefulWidget {
-  static const routeName = '/settings';
+/// @version 0.4-PRE-RELEASE
+class NotificationPage extends StatefulWidget {
+  static const routeName = '/bell';
 
   @override
-  _SettingsPageState createState() => _SettingsPageState();
+  _NotificationPageState createState() => _NotificationPageState();
 }
 
-class _SettingsPageState extends State<SettingsPage> {
+class _NotificationPageState extends State<NotificationPage> {
   ///
   /// Prevents the use of the "back" button
   ///

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'package:proto_madera_front/ui/pages/widgets/custom_LPI.dart';
+import 'package:proto_madera_front/ui/widgets/custom_LPI.dart';
 
 ///
 /// Page permettant d'initialiser l'app
@@ -9,7 +9,7 @@ import 'package:proto_madera_front/ui/pages/widgets/custom_LPI.dart';
 ///
 /// @author HELIOT David, CHEVALLIER Romain, LADOUCE Fabien
 ///
-/// @version 0.3-RELEASE
+/// @version 0.4-PRE-RELEASE
 class InitializationPage extends StatefulWidget {
   static const routeName = '/';
   @override

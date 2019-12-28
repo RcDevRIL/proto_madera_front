@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:logger/logger.dart';
 import 'package:provider/provider.dart';
 
-import 'package:proto_madera_front/ui/pages/widgets/custom_widgets.dart';
+import 'package:proto_madera_front/ui/widgets/custom_widgets.dart';
 import 'package:proto_madera_front/providers/providers.dart'
     show MaderaNav, ProviderProjet;
 import 'package:proto_madera_front/ui/pages/pages.dart'
@@ -14,7 +14,7 @@ import 'package:proto_madera_front/theme.dart' as cTheme;
 ///
 /// @author HELIOT David, CHEVALLIER Romain, LADOUCE Fabien
 ///
-/// @version 0.3-RELEASE
+/// @version 0.4-PRE-RELEASE
 class Quote extends StatefulWidget {
   static const routeName = '/quote';
 
@@ -24,14 +24,15 @@ class Quote extends StatefulWidget {
 
 class _QuoteState extends State<Quote> {
   final log = Logger();
-  String dropdownGammeValue = 'Sélectionnez une gamme...';
-  String dropdownModeleValue = 'Sélectionnez un modèle...';
+  String dropdownGammeValue;
+  String dropdownModeleValue;
   bool canValidateForm;
 
   //added to prepare for scaling
   @override
   void initState() {
     super.initState();
+    dropdownGammeValue = '';
     canValidateForm = false;
   }
 
@@ -45,6 +46,7 @@ class _QuoteState extends State<Quote> {
   Widget build(BuildContext context) {
     //final args = ModalRoute.of(context).settings.arguments;
     final moduleList = Provider.of<ProviderProjet>(context).productModules;
+    moduleList.isNotEmpty ? canValidateForm = true : canValidateForm = false;
     return MaderaScaffold(
       passedContext: context,
       child: Center(
@@ -102,10 +104,10 @@ class _QuoteState extends State<Quote> {
                     ),
                     child: DropdownButton<String>(
                       isExpanded: true,
-                      value: Provider.of<ProviderProjet>(context).gamme.isEmpty
+                      value: dropdownGammeValue.isEmpty
                           ? null
-                          : Provider.of<ProviderProjet>(context).gamme,
-                      hint: Text('$dropdownGammeValue'),
+                          : dropdownGammeValue,
+                      hint: Text('Sélectionnez une gamme...'),
                       icon: Icon(Icons.arrow_drop_down,
                           color: cTheme.Colors.containerBackgroundLinearStart),
                       iconSize: 20,
@@ -117,27 +119,26 @@ class _QuoteState extends State<Quote> {
                         color: Colors.transparent,
                       ),
                       onChanged: (String newValue) {
-                        setState(() {
-                          dropdownGammeValue = newValue;
-                          switch (dropdownGammeValue) {
-                            case 'Gamme1':
-                              Provider.of<ProviderProjet>(context)
-                                  .setGamme(dropdownGammeValue);
-                              Provider.of<ProviderProjet>(context)
-                                  .setModeleListFromGammeID(1);
-                              break;
-                            case 'Gamme2':
-                              Provider.of<ProviderProjet>(context)
-                                  .setGamme(dropdownGammeValue);
-                              Provider.of<ProviderProjet>(context)
-                                  .setModeleListFromGammeID(2);
-                              break;
-                            default:
-                              {}
-                              break;
-                          }
-                          canValidateForm = true;
-                        });
+                        dropdownGammeValue = newValue;
+                        dropdownModeleValue = null;
+                        switch (dropdownGammeValue) {
+                          case 'Gamme1':
+                            Provider.of<ProviderProjet>(context)
+                                .setGamme(dropdownGammeValue);
+                            Provider.of<ProviderProjet>(context)
+                                .setModeleListFromGammeID(1);
+                            break;
+                          case 'Gamme2':
+                            Provider.of<ProviderProjet>(context)
+                                .setGamme(dropdownGammeValue);
+                            Provider.of<ProviderProjet>(context)
+                                .setModeleListFromGammeID(2);
+                            break;
+                          default:
+                            {}
+                            break;
+                        }
+                        canValidateForm = true;
                       },
                       items: <String>['Gamme1', 'Gamme2', 'Gamme3', 'Gamme4']
                           .map<DropdownMenuItem<String>>(
@@ -154,11 +155,9 @@ class _QuoteState extends State<Quote> {
                     boxHeight: cTheme.Dimens.boxHeight,
                     edgeInsetsPadding: EdgeInsets.symmetric(horizontal: 8.0),
                     child: DropdownButton<String>(
-                      value: Provider.of<ProviderProjet>(context).model.isEmpty
-                          ? null
-                          : Provider.of<ProviderProjet>(context).model,
                       isExpanded: true,
-                      hint: Text('$dropdownModeleValue'),
+                      value: dropdownModeleValue,
+                      hint: Text('Sélectionnez un modèle...'),
                       icon: Icon(Icons.arrow_drop_down,
                           color: cTheme.Colors.containerBackgroundLinearStart),
                       iconSize: 20,
@@ -169,27 +168,25 @@ class _QuoteState extends State<Quote> {
                       ),
                       onChanged: dropdownGammeValue.isNotEmpty
                           ? (String newValue) {
-                              setState(() {
-                                dropdownModeleValue = newValue;
-                                switch (dropdownModeleValue) {
-                                  case 'Modele1':
-                                    Provider.of<ProviderProjet>(context)
-                                        .setModel(dropdownModeleValue);
-                                    Provider.of<ProviderProjet>(context)
-                                        .setModuleListFromModelID(1);
-                                    break;
-                                  case 'Modele2':
-                                    Provider.of<ProviderProjet>(context)
-                                        .setModel(dropdownModeleValue);
-                                    Provider.of<ProviderProjet>(context)
-                                        .setModuleListFromModelID(2);
-                                    break;
-                                  default:
-                                    {}
-                                    break;
-                                }
-                                canValidateForm = true;
-                              });
+                              dropdownModeleValue = newValue;
+                              switch (dropdownModeleValue) {
+                                case 'Modele1':
+                                  Provider.of<ProviderProjet>(context)
+                                      .setModel(dropdownModeleValue);
+                                  Provider.of<ProviderProjet>(context)
+                                      .setModuleListFromModelID(1);
+                                  break;
+                                case 'Modele2':
+                                  Provider.of<ProviderProjet>(context)
+                                      .setModel(dropdownModeleValue);
+                                  Provider.of<ProviderProjet>(context)
+                                      .setModuleListFromModelID(2);
+                                  break;
+                                default:
+                                  {}
+                                  break;
+                              }
+                              canValidateForm = true;
                             }
                           : null,
                       items: Provider.of<ProviderProjet>(context)

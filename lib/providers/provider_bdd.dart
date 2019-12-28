@@ -12,7 +12,7 @@ import 'package:proto_madera_front/providers/models/projet_with_client.dart';
 ///
 /// @author HELIOT David, CHEVALLIER Romain, LADOUCE Fabien
 ///
-/// @version 0.3-RELEASE
+/// @version 0.4-PRE-RELEASE
 class ProviderBdd with ChangeNotifier {
   MaderaDatabase db = new MaderaDatabase();
   UtilisateurDao utilisateurDao;
