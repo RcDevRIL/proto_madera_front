@@ -23,6 +23,11 @@ class _GradientFrameState extends State<GradientFrame> {
     return Container(
       width: MediaQuery.of(context).size.width / 1.25,
       height: MediaQuery.of(context).size.height / 1.3,
+      constraints: BoxConstraints.tightForFinite(
+        // Pas sur que ce soit utile...
+        width: MediaQuery.of(context).size.width / 1.25,
+        height: MediaQuery.of(context).size.height / 1.3,
+      ),
       decoration: BoxDecoration(
           boxShadow: [
             BoxShadow(

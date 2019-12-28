@@ -55,6 +55,7 @@ class Dimens {
   static const cardSizeMedium = 821.0;
   static const cardSizeLarge = 980.0;
   static const cardHeight = 45.0;
+  static const cardHeightMedium = 175.0;
   static const cardHeightLarge = 450.0;
   static const boxWidth = 250.0;
   static const boxWidthMedium = 350.0;
