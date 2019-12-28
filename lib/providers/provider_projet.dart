@@ -11,8 +11,8 @@ class ProviderProjet with ChangeNotifier {
   List<String> _quoteCreationValues;
   List _quoteValues;
   List<String> _modeleList;
-  List<String> _addModuleValues;
-  List<String> _finitionValues;
+  // List<String> _addModuleValues;
+  // List<String> _finitionsValues;
   final Logger log = Logger();
 
   void init() {
