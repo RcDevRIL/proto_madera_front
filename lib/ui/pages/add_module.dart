@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:logger/logger.dart';
+import 'package:proto_madera_front/ui/pages/pages.dart';
 import 'package:provider/provider.dart';
 
 import 'package:proto_madera_front/providers/providers.dart'
     show MaderaNav, ProviderProjet;
 import 'package:proto_madera_front/ui/pages/widgets/custom_widgets.dart';
 import 'package:proto_madera_front/theme.dart' as cTheme;
-import 'package:provider/provider.dart';
 
 ///
 /// Page "Ajout de module"
@@ -73,10 +73,10 @@ class _AddModuleState extends State<AddModule> {
                       children: <Widget>[
                         Column(
                           children: <Widget>[
-                           
                             MaderaRoundedBox(
                               boxHeight: cTheme.Dimens.boxHeight,
                               boxWidth: 450.0,
+                              edgeInsetsPadding: EdgeInsets.all(8.0),
                               child: DropdownButton<String>(
                                 isExpanded: true,
                                 hint: Text('$dropdownValue'),
@@ -110,7 +110,8 @@ class _AddModuleState extends State<AddModule> {
                                               child: Text(value),
                                             ))
                                     .toList(),
-                              child: TextField(
+                              ),
+                              /* child: TextField(
                                 maxLines: 1,
                                 keyboardType: TextInputType.number,
                                 enabled: true,
@@ -122,7 +123,7 @@ class _AddModuleState extends State<AddModule> {
                                     bottomLeft: Radius.circular(20.0),
                                   )),
                                 ),
-                              ),
+                              ), */
                             ),
                             SizedBox(height: 10.0),
                             MaderaCard(
@@ -171,6 +172,7 @@ class _AddModuleState extends State<AddModule> {
                     SizedBox(
                       height: 20.0,
                     ),
+                    /* 
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: <Widget>[
@@ -222,7 +224,8 @@ class _AddModuleState extends State<AddModule> {
                           ),
                         ),
                       ],
-                    ),
+                    ), */
+                    /* 
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: <Widget>[
@@ -275,7 +278,7 @@ class _AddModuleState extends State<AddModule> {
                           ),
                         ),
                       ],
-                    ),
+                    ), */ /* 
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: <Widget>[
@@ -328,8 +331,8 @@ class _AddModuleState extends State<AddModule> {
                           ),
                         ),
                       ],
-                    ),
-                    Row(
+                    ), */
+                    /* Row(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: <Widget>[
                         MaderaCard(
@@ -381,7 +384,7 @@ class _AddModuleState extends State<AddModule> {
                           ),
                         ),
                       ],
-                    ),
+                    ), */
                     SizedBox(height: 300),
                     Container(
                       child: Column(

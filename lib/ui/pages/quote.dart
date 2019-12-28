@@ -216,7 +216,7 @@ class _QuoteState extends State<Quote> {
                               splashColor:
                                   cTheme.Colors.containerBackgroundLinearEnd,
                               child: ListTile(
-                                title: Text(modeleList[i]),
+                                title: Text(moduleList[i]),
                               ),
                               onTap: () {
                                 log.d("Modifying module...");
