@@ -19,7 +19,7 @@ class MaderaRoundedBox extends StatefulWidget {
 
   MaderaRoundedBox({
     Key key,
-    @required this.boxWidth,
+    this.boxWidth,
     @required this.boxHeight,
     @required this.edgeInsetsPadding,
     this.edgeInsetsMargin,
@@ -45,7 +45,7 @@ class MaderaRoundedBoxState extends State<MaderaRoundedBox> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: widget.boxWidth,
+      width: widget.boxWidth != null ? widget.boxWidth : null,
       height: widget.boxHeight,
       padding: widget.edgeInsetsPadding,
       margin: widget.edgeInsetsMargin != null

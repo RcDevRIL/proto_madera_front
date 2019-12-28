@@ -49,13 +49,11 @@ class _QuoteState extends State<Quote> {
         /** Centre de la page */
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
-            Align(
-              alignment: Alignment.center,
-              child: Text(
-                'Produit n°1', //TODO implémenter getProductNumber dans Provider Projet
-                style: cTheme.TextStyles.appBarTitle.copyWith(fontSize: 32.0),
-              ),
+            Text(
+              'Produit n°1', //TODO implémenter getProductNumber dans Provider Projet
+              style: cTheme.TextStyles.appBarTitle.copyWith(fontSize: 32.0),
             ),
             GradientFrame(
               child: Column(
