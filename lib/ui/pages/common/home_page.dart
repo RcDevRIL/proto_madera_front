@@ -52,10 +52,6 @@ class HomePage extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: <Widget>[
-                    Text(
-                      mN.pageTitle,
-                      style: cTheme.TextStyles.appBarTitle,
-                    ),
                     Row(
                       crossAxisAlignment: CrossAxisAlignment.center,
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -203,15 +199,4 @@ class HomePage extends StatelessWidget {
       ),
     );
   }
-
-  // à la base j'essayais de mettre cette méthode dans la class MaderaNav, mais ça faisait des bugs.
-  // void _redirectToPage(BuildContext context, Widget page) {
-  //   WidgetsBinding.instance.addPostFrameCallback((_) {
-  //     MaterialPageRoute newRoute =
-  //         MaterialPageRoute(builder: (BuildContext context) => page);
-  //     Navigator.of(context).pushReplacement(newRoute);
-  //     var maderaNav = Provider.of<MaderaNav>(context);
-  //     maderaNav.updateCurrent(page.runtimeType);
-  //   });
-  // }
 }

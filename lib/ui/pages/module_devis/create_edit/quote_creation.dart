@@ -69,7 +69,7 @@ class _QuoteCreationState extends State<QuoteCreation> {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
             Text('Informations générales',
-                style: cTheme.TextStyles.appBarTitle.copyWith(
+                style: cTheme.MaderaTextStyles.appBarTitle.copyWith(
                   fontSize: 32.0,
                 )),
             GradientFrame(
@@ -86,11 +86,12 @@ class _QuoteCreationState extends State<QuoteCreation> {
                           labelledIcon: LabelledIcon(
                             icon: Icon(
                               Icons.calendar_today,
-                              color: cTheme.MaderaColors.appBarTitle,
+                              color: cTheme.MaderaColors.textHeaderColor,
                             ),
                             text: Text(
                               "Date de création",
-                              style: cTheme.TextStyles.appBarTitle.copyWith(
+                              style:
+                                  cTheme.MaderaTextStyles.appBarTitle.copyWith(
                                 fontSize: 15.0,
                                 fontWeight: FontWeight.w900,
                               ),
@@ -151,11 +152,12 @@ class _QuoteCreationState extends State<QuoteCreation> {
                           labelledIcon: LabelledIcon(
                             icon: Icon(
                               Icons.person,
-                              color: cTheme.MaderaColors.appBarTitle,
+                              color: cTheme.MaderaColors.textHeaderColor,
                             ),
                             text: Text(
                               "Références Client",
-                              style: cTheme.TextStyles.appBarTitle.copyWith(
+                              style:
+                                  cTheme.MaderaTextStyles.appBarTitle.copyWith(
                                 fontSize: 15.0,
                                 fontWeight: FontWeight.w900,
                               ),
@@ -189,11 +191,12 @@ class _QuoteCreationState extends State<QuoteCreation> {
                           labelledIcon: LabelledIcon(
                             icon: Icon(
                               Icons.info,
-                              color: cTheme.MaderaColors.appBarTitle,
+                              color: cTheme.MaderaColors.textHeaderColor,
                             ),
                             text: Text(
                               "ID. Projet",
-                              style: cTheme.TextStyles.appBarTitle.copyWith(
+                              style:
+                                  cTheme.MaderaTextStyles.appBarTitle.copyWith(
                                 fontSize: 15.0,
                                 fontWeight: FontWeight.w900,
                               ),
@@ -240,11 +243,12 @@ class _QuoteCreationState extends State<QuoteCreation> {
                           labelledIcon: LabelledIcon(
                             icon: Icon(
                               Icons.info,
-                              color: cTheme.MaderaColors.appBarTitle,
+                              color: cTheme.MaderaColors.textHeaderColor,
                             ),
                             text: Text(
                               "Description Projet",
-                              style: cTheme.TextStyles.appBarTitle.copyWith(
+                              style:
+                                  cTheme.MaderaTextStyles.appBarTitle.copyWith(
                                 fontSize: 15.0,
                                 fontWeight: FontWeight.w900,
                               ),

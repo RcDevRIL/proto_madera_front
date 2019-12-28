@@ -24,15 +24,9 @@ class AppBarMadera extends StatelessWidget {
       child: Consumer<MaderaNav>(
         builder: (context, mN, child) => AppBar(
           primary: true,
-          elevation: cTheme.Dimens.appBarElevation,
-          backgroundColor: cTheme.MaderaColors.appBarMainColor,
-          iconTheme: IconThemeData(
-            color: Color.fromRGBO(39, 72, 0, 1.0),
-          ),
           leading: mN.pageIndex == -1 ? ExitButton() : null,
           title: Text(
             mN.pageTitle,
-            style: cTheme.TextStyles.appBarTitle,
           ),
           centerTitle: false,
           actions: <Widget>[

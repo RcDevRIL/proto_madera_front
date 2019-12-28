@@ -47,7 +47,7 @@ class _FinishingsState extends State<Finishings> {
           children: <Widget>[
             Text(
               'Finitions du module',
-              style: cTheme.TextStyles.appBarTitle.copyWith(
+              style: cTheme.MaderaTextStyles.appBarTitle.copyWith(
                 fontSize: 32.0,
               ),
             ),
@@ -61,7 +61,7 @@ class _FinishingsState extends State<Finishings> {
                   ),
                   Text(
                     'Finitions extérieures',
-                    style: cTheme.TextStyles.appBarTitle.copyWith(
+                    style: cTheme.MaderaTextStyles.appBarTitle.copyWith(
                       fontSize: 20.0,
                     ),
                   ),

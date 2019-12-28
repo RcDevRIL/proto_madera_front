@@ -12,13 +12,14 @@ import 'package:flutter/material.dart';
 const String FontNameDefault = 'Poppins';
 
 class CustomTheme {
+  static final ThemeData base = ThemeData.light();
   static final ThemeData defaultTheme = _buildLightTheme();
 
-  static ThemeData _buildLightTheme() {
-    final ThemeData base = ThemeData.light();
+  static final TextTheme defaultTextTheme = TextTheme();
 
-    return base.copyWith(
-      primaryColor: Colors.green,
+  static ThemeData _buildLightTheme() {
+    return ThemeData(
+      primarySwatch: Colors.green,
       iconTheme: IconThemeData(
         color: MaderaColors.iconsMainColor,
       ),
@@ -27,6 +28,9 @@ class CustomTheme {
           color: MaderaColors.iconsMainColor,
         ),
         color: MaderaColors.appBarMainColor,
+        elevation: Dimens.appBarElevation,
+        textTheme:
+            defaultTextTheme.copyWith(title: MaderaTextStyles.appBarTitle),
       ),
     );
   }
@@ -36,11 +40,11 @@ class MaderaColors {
   const MaderaColors();
 
   static const Color appBarMainColor = Color.fromRGBO(109, 243, 115, 0.45);
-  static const Color iconsMainColor = Color.fromRGBO(39, 72, 0, 1.0);
+  static const Color iconsMainColor = const Color.fromRGBO(39, 72, 0, 1.0);
   static const Color primaryTextColor = const Color(0xFF000000);
   static const Color secondaryTextColor = const Color(0xFFFFFFFF);
 
-  static const Color appBarTitle = const Color.fromRGBO(39, 72, 0, 1.0);
+  static const Color textHeaderColor = iconsMainColor;
   static const Color appBarIconColor = const Color(0xFFFFFFFF);
 
   static const Color selectedColor = const Color.fromRGBO(109, 243, 115, 1.0);
@@ -82,11 +86,11 @@ class Dimens {
   static const boxHeight = 60.0;
 }
 
-class TextStyles {
-  const TextStyles();
+class MaderaTextStyles {
+  const MaderaTextStyles();
 
   static const TextStyle appBarTitle = const TextStyle(
-    color: MaderaColors.appBarTitle,
+    color: MaderaColors.textHeaderColor,
     fontFamily: FontNameDefault,
     fontWeight: FontWeight.w900,
     fontSize: 26.0,

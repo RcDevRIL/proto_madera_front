@@ -75,8 +75,8 @@ class _CollapsingListTileState extends State<CollapsingListTile> {
                 ? Text(
                     widget.title,
                     style: widget.isSelected
-                        ? cTheme.TextStyles.listTileSelectedTextStyle
-                        : cTheme.TextStyles.listTileDefaultTextStyle,
+                        ? cTheme.MaderaTextStyles.listTileSelectedTextStyle
+                        : cTheme.MaderaTextStyles.listTileDefaultTextStyle,
                   )
                 : Container(),
           ],

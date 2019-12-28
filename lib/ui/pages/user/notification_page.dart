@@ -48,7 +48,7 @@ class _NotificationPageState extends State<NotificationPage> {
         child: Consumer<MaderaNav>(
           builder: (_, mN, c) => Text(
             mN.pageTitle,
-            style: cTheme.TextStyles.appBarTitle,
+            style: cTheme.MaderaTextStyles.appBarTitle,
           ),
         ),
       ),

@@ -62,7 +62,8 @@ class _AddModuleState extends State<AddModule> {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
             Text("Ajouter un module",
-                style: cTheme.TextStyles.appBarTitle.copyWith(fontSize: 32.0)),
+                style: cTheme.MaderaTextStyles.appBarTitle
+                    .copyWith(fontSize: 32.0)),
             GradientFrame(
               child: SingleChildScrollView(
                 controller: _formScrollController,
@@ -85,8 +86,10 @@ class _AddModuleState extends State<AddModule> {
                                         .containerBackgroundLinearStart),
                                 iconSize: 35,
                                 elevation: 16,
-                                style: TextStyle(
-                                    color: cTheme.MaderaColors.appBarTitle),
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .title
+                                    .apply(fontSizeDelta: -4),
                                 underline: Container(
                                   height: 2,
                                   width: 100.0,
@@ -154,11 +157,12 @@ class _AddModuleState extends State<AddModule> {
                               labelledIcon: LabelledIcon(
                                 icon: Icon(
                                   Icons.text_fields,
-                                  color: cTheme.MaderaColors.appBarTitle,
+                                  color: cTheme.MaderaColors.textHeaderColor,
                                 ),
                                 text: Text(
                                   "Nom du module",
-                                  style: cTheme.TextStyles.appBarTitle.copyWith(
+                                  style: cTheme.MaderaTextStyles.appBarTitle
+                                      .copyWith(
                                     fontSize: 13.0,
                                     fontWeight: FontWeight.w600,
                                   ),

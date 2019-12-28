@@ -50,7 +50,8 @@ class _ProductListState extends State<ProductList> {
           children: <Widget>[
             Text(
               'Liste des produits', //TODO implémenter getProductsCount dans Provider Projet
-              style: cTheme.TextStyles.appBarTitle.copyWith(fontSize: 32.0),
+              style:
+                  cTheme.MaderaTextStyles.appBarTitle.copyWith(fontSize: 32.0),
             ),
             GradientFrame(
               child: Column(
