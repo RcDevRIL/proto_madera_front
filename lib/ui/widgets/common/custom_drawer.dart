@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:logger/logger.dart';
+import 'package:proto_madera_front/ui/pages/user/profile_page.dart';
 import 'package:provider/provider.dart';
 
 import 'package:proto_madera_front/providers/providers.dart'
@@ -62,6 +63,9 @@ class _CustomDrawerState extends State<CustomDrawer>
                   height: 8.0,
                 ),
                 CollapsingListTile(
+                  isSelected: Provider.of<MaderaNav>(context).pageIndex == 5,
+                  onTap: () => Provider.of<MaderaNav>(context)
+                      .redirectToPage(context, UserProfilePage()),
                   title: "Test Name",
                   icon: Icons.person,
                   animationController: _animationController,
@@ -80,43 +84,32 @@ class _CustomDrawerState extends State<CustomDrawer>
                       );
                     },
                     itemBuilder: (c, i) {
+                      Widget navigationTarget;
+                      switch (i) {
+                        case 0:
+                          navigationTarget = HomePage();
+                          break;
+                        case 1:
+                          navigationTarget = QuoteCreation();
+                          break;
+                        case 2:
+                          navigationTarget = QuoteOverview();
+                          break;
+                        case 3:
+                          navigationTarget = NotificationPage();
+                          break;
+                        case 4:
+                          navigationTarget = SettingsPage();
+                          break;
+                        default:
+                          navigationTarget = HomePage();
+                          break;
+                      }
                       return Consumer<MaderaNav>(
                         builder: (context, mN, child) => CollapsingListTile(
                           onTap: () {
-                            switch (i) {
-                              case 0:
-                                {
-                                  mN.redirectToPage(context, HomePage());
-                                }
-                                break;
-                              case 1:
-                                {
-                                  mN.redirectToPage(context, QuoteCreation());
-                                }
-                                break;
-                              case 2:
-                                {
-                                  mN.redirectToPage(context, QuoteOverview());
-                                }
-                                break;
-                              case 3:
-                                {
-                                  mN.redirectToPage(
-                                      context, NotificationPage());
-                                }
-                                break;
-                              case 4:
-                                {
-                                  mN.redirectToPage(context, SettingsPage());
-                                }
-                                break;
+                            mN.redirectToPage(context, navigationTarget);
 
-                              default:
-                                {
-                                  mN.redirectToPage(context, HomePage());
-                                }
-                                break;
-                            }
                             setState(() {
                               currentSelectedItem = i;
                             });

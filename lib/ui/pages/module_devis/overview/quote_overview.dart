@@ -47,7 +47,7 @@ class _QuoteOverviewState extends State<QuoteOverview> {
     return WillPopScope(
       onWillPop: _onWillPopScope,
       child: SafeArea(
-        child: MaderaScaffold.noAdd(
+        child: MaderaScaffold(
           passedContext: context,
           child: Consumer<MaderaNav>(
             builder: (_, mN, c) => FutureBuilder(

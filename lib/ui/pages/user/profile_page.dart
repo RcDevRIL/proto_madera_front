@@ -7,23 +7,25 @@ import 'package:proto_madera_front/ui/widgets/custom_widgets.dart'
 import 'package:proto_madera_front/theme.dart' as cTheme;
 
 ///
-/// Page des paramètres de l'application
+/// "Page du profil utilisateur"
 ///
 /// @author HELIOT David, CHEVALLIER Romain, LADOUCE Fabien
 ///
 /// @version 0.4-PRE-RELEASE
-class SettingsPage extends StatefulWidget {
-  static const routeName = '/settings';
+class UserProfilePage extends StatefulWidget {
+  static const routeName = '/bell';
 
   @override
-  _SettingsPageState createState() => _SettingsPageState();
+  _UserProfilePageState createState() => _UserProfilePageState();
 }
 
-class _SettingsPageState extends State<SettingsPage> {
+class _UserProfilePageState extends State<UserProfilePage> {
+  String _userName;
   //added to prepare for scaling
   @override
   void initState() {
     super.initState();
+    _userName = 'TEST NAME';
   }
 
   //added to prepare for scaling
@@ -37,14 +39,7 @@ class _SettingsPageState extends State<SettingsPage> {
     //final args = ModalRoute.of(context).settings.arguments;
     return MaderaScaffold(
       passedContext: context,
-      child: Center(
-        child: Consumer<MaderaNav>(
-          builder: (_, mN, c) => Text(
-            mN.pageTitle,
-            style: cTheme.TextStyles.appBarTitle,
-          ),
-        ),
-      ),
+      child: Text('$_userName'),
     );
   }
 }

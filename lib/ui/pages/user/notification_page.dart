@@ -3,7 +3,7 @@ import 'package:provider/provider.dart';
 
 import 'package:proto_madera_front/providers/providers.dart' show MaderaNav;
 import 'package:proto_madera_front/ui/widgets/custom_widgets.dart'
-    show AppBarMadera, CustomDrawer;
+    show AppBarMadera, CustomDrawer, MaderaScaffold;
 import 'package:proto_madera_front/theme.dart' as cTheme;
 
 ///
@@ -42,41 +42,16 @@ class _NotificationPageState extends State<NotificationPage> {
   @override
   Widget build(BuildContext context) {
     //final args = ModalRoute.of(context).settings.arguments;
-    return WillPopScope(
-      onWillPop: _onWillPopScope,
-      child: SafeArea(
-        child: Scaffold(
-          backgroundColor: Colors.blueGrey,
-          body: Stack(
-            children: <Widget>[
-              Center(
-                child: Consumer<MaderaNav>(
-                  builder: (_, mN, c) => Text(
-                    mN.pageTitle,
-                    style: cTheme.TextStyles.appBarTitle,
-                  ),
-                ),
-              ),
-              Padding(
-                padding: EdgeInsets.only(left: cTheme.Dimens.drawerMinWitdh),
-                child: AppBarMadera(),
-              ),
-              CustomDrawer(),
-            ],
+    return MaderaScaffold(
+      passedContext: context,
+      child: Center(
+        child: Consumer<MaderaNav>(
+          builder: (_, mN, c) => Text(
+            mN.pageTitle,
+            style: cTheme.TextStyles.appBarTitle,
           ),
         ),
       ),
     );
   }
-
-/*   // à la base j'essayais de mettre cette méthode dans la class MaderaNav, mais ça faisait des bugs.
-  void _redirectToPage(BuildContext context, Widget page) {
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      MaterialPageRoute newRoute =
-          MaterialPageRoute(builder: (BuildContext context) => page);
-      Navigator.of(context).pushReplacement(newRoute);
-      var maderaNav = Provider.of<MaderaNav>(context);
-      maderaNav.updateCurrent(page.runtimeType);
-    });
-  } */
 }

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:logger/logger.dart';
 
 import 'package:proto_madera_front/ui/pages/pages.dart';
+import 'package:proto_madera_front/ui/pages/user/profile_page.dart';
 import 'package:provider/provider.dart';
 
 ///
@@ -37,11 +38,12 @@ class MaderaNav with ChangeNotifier {
      * -1 : AuthenticationPage
      * 0 : HomePage
      * 1 : QuoteCreation
+     * 1 : Quote
+     * 1 : AddModule
      * 2 : QuoteOverview
      * 3 : NotificationPage
      * 4 : SettingsPage
-     * 1 : Quote
-     * 1 : AddModule
+     * 5 : UserProfilePage
      */
     switch (page) {
       case AuthenticationPage:
@@ -137,6 +139,16 @@ class MaderaNav with ChangeNotifier {
         {
           _pageTitle = "Outil de création de devis";
           _pageIndex = 1;
+          log.d(
+              'Updating current navigation properties:                        \n' +
+                  this.toString() +
+                  '                    ');
+        }
+        break;
+      case UserProfilePage:
+        {
+          _pageTitle = "Profil";
+          _pageIndex = 5;
           log.d(
               'Updating current navigation properties:                        \n' +
                   this.toString() +
