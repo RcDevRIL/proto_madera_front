@@ -17,8 +17,8 @@ class MaderaCard extends StatefulWidget {
   //DateFormat('yyyy-MM-dd').format(DateTime.now()) // Va être généré automatiquement à l'avenir
   const MaderaCard({
     Key key,
-    @required this.cardHeight,
-    @required this.cardWidth,
+    this.cardHeight,
+    this.cardWidth,
     @required this.labelledIcon,
     @required this.child,
   }) : super(key: key);
@@ -61,8 +61,8 @@ class _MaderaCardState extends State<MaderaCard> {
           ),
           SizedBox(height: 6.0),
           Container(
-            width: widget.cardWidth,
-            height: widget.cardHeight,
+            width: widget.cardWidth != null ? widget.cardWidth : null,
+            height: widget.cardHeight != null ? widget.cardHeight : null,
             decoration: BoxDecoration(
               color: cTheme.Colors.white,
               borderRadius: BorderRadius.only(

@@ -80,7 +80,7 @@ class _QuoteCreationState extends State<QuoteCreation> {
                 child: Column(
                   children: <Widget>[
                     Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.center,
                       children: <Widget>[
                         MaderaCard(
                           cardWidth: cTheme.Dimens.cardSizeXSmall,

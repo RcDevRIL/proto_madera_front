@@ -55,18 +55,53 @@ class _QuoteState extends State<Quote> {
             Align(
               alignment: Alignment.center,
               child: Text(
-                'Projet',
+                'Produit n°1', //TODO implémenter getProductNumber dans Provider Projet
                 style: cTheme.TextStyles.appBarTitle.copyWith(fontSize: 32.0),
               ),
             ),
             GradientFrame(
-              child: ListView(
-                padding: EdgeInsets.symmetric(vertical: 20.0),
-                shrinkWrap: true,
+              child: Column(
                 children: <Widget>[
+                  MaderaCard(
+                    cardWidth: MediaQuery.of(context).size.width / 2,
+                    cardHeight: 45.0,
+                    child: TextField(
+                      maxLines: 1,
+                      keyboardType: TextInputType.text,
+                      enabled: true,
+                      decoration: InputDecoration(
+                        hintText: 'Nom du produit...',
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.only(
+                            bottomRight: Radius.circular(20.0),
+                            bottomLeft: Radius.circular(20.0),
+                          ),
+                        ),
+                      ),
+                    ),
+                    labelledIcon: LabelledIcon(
+                      icon: Icon(
+                        Icons.text_fields,
+                        color: cTheme.Colors.appBarTitle,
+                      ),
+                      text: Text(
+                        "Nom du produit",
+                        style: cTheme.TextStyles.appBarTitle.copyWith(
+                          fontSize: 13.0,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                    ),
+                  ),
+                  SizedBox(height: 20.0),
                   MaderaRoundedBox(
                     boxHeight: cTheme.Dimens.boxHeight,
-                    boxWidth: cTheme.Dimens.boxWidth,
+                    boxWidth: MediaQuery.of(context).size.width / 2,
+                    edgeInsetsPadding: EdgeInsets.symmetric(horizontal: 8.0),
+                    edgeInsetsMargin: EdgeInsets.symmetric(
+                      vertical: 4.0,
+                      horizontal: 4.0,
+                    ),
                     child: DropdownButton<String>(
                       isExpanded: true,
                       value: Provider.of<ProviderProjet>(context).gamme.isEmpty
@@ -115,10 +150,11 @@ class _QuoteState extends State<Quote> {
                           .toList(),
                     ),
                   ),
-                  SizedBox(height: 15.0),
+                  SizedBox(height: 20.0),
                   MaderaRoundedBox(
-                    boxWidth: cTheme.Dimens.boxWidth,
+                    boxWidth: MediaQuery.of(context).size.width / 2,
                     boxHeight: cTheme.Dimens.boxHeight,
+                    edgeInsetsPadding: EdgeInsets.symmetric(horizontal: 8.0),
                     child: DropdownButton<String>(
                       value: Provider.of<ProviderProjet>(context).model.isEmpty
                           ? null
@@ -168,19 +204,28 @@ class _QuoteState extends State<Quote> {
                           .toList(),
                     ),
                   ),
-                  SizedBox(
-                    height: 45.0,
-                  ),
+                  SizedBox(height: 20.0),
                   MaderaCard(
-                    cardHeight: cTheme.Dimens.cardHeightLarge,
-                    cardWidth: cTheme.Dimens.cardSizeLarge,
+                    cardHeight: MediaQuery.of(context).size.height / 3.2,
                     child: Stack(
                       children: <Widget>[
                         ListView.separated(
                           shrinkWrap: true,
                           itemCount: moduleList.length,
-                          itemBuilder: (c, i) => ListTile(
-                            title: Text(moduleList[i]),
+                          itemBuilder: (c, i) => Material(
+                            child: InkWell(
+                              highlightColor: Colors.transparent,
+                              splashColor:
+                                  cTheme.Colors.containerBackgroundLinearEnd,
+                              child: ListTile(
+                                title: Text(modeleList[i]),
+                              ),
+                              onTap: () {
+                                log.d("Modifying module...");
+                                Provider.of<MaderaNav>(context)
+                                    .redirectToPage(context, AddModule());
+                              },
+                            ),
                           ),
                           separatorBuilder: (c, i) => Divider(
                             color: Colors.green,
@@ -235,6 +280,7 @@ class _QuoteState extends State<Quote> {
                       : Colors.grey,
                 ),
                 child: IconButton(
+                  tooltip: "Valider produit",
                   onPressed: canValidateForm
                       ? () {
                           log.d('Saving form...');
@@ -263,6 +309,7 @@ class _QuoteState extends State<Quote> {
                         width: 2),
                     color: cTheme.Colors.containerBackgroundLinearEnd),
                 child: IconButton(
+                  tooltip: "Supprimer produit",
                   onPressed: () {},
                   icon: Icon(
                     Icons.delete,

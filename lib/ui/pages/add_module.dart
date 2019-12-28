@@ -4,9 +4,9 @@ import 'package:provider/provider.dart';
 
 import 'package:proto_madera_front/providers/providers.dart'
     show MaderaNav, ProviderProjet;
-import 'package:proto_madera_front/ui/pages/pages.dart' show Quote;
 import 'package:proto_madera_front/ui/pages/widgets/custom_widgets.dart';
 import 'package:proto_madera_front/theme.dart' as cTheme;
+import 'package:provider/provider.dart';
 
 ///
 /// Page "Ajout de module"
@@ -76,6 +76,7 @@ class _AddModuleState extends State<AddModule> {
                       children: <Widget>[
                         Column(
                           children: <Widget>[
+                           
                             MaderaRoundedBox(
                               boxHeight: cTheme.Dimens.boxHeight,
                               boxWidth: 450.0,
@@ -112,6 +113,18 @@ class _AddModuleState extends State<AddModule> {
                                               child: Text(value),
                                             ))
                                     .toList(),
+                              child: TextField(
+                                maxLines: 1,
+                                keyboardType: TextInputType.number,
+                                enabled: true,
+                                decoration: InputDecoration(
+                                  hintText: 'Longueur...',
+                                  border: OutlineInputBorder(
+                                      borderRadius: BorderRadius.only(
+                                    bottomRight: Radius.circular(20.0),
+                                    bottomLeft: Radius.circular(20.0),
+                                  )),
+                                ),
                               ),
                             ),
                             SizedBox(height: 10.0),
