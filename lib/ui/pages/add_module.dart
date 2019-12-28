@@ -59,13 +59,10 @@ class _AddModuleState extends State<AddModule> {
       child: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
-            Align(
-              alignment: Alignment.center,
-              child: Text("Ajouter un module",
-                  style:
-                      cTheme.TextStyles.appBarTitle.copyWith(fontSize: 32.0)),
-            ),
+            Text("Ajouter un module",
+                style: cTheme.TextStyles.appBarTitle.copyWith(fontSize: 32.0)),
             GradientFrame(
               child: SingleChildScrollView(
                 controller: _formScrollController,

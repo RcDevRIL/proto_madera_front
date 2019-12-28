@@ -6,7 +6,7 @@ import 'package:proto_madera_front/ui/pages/widgets/custom_widgets.dart';
 import 'package:proto_madera_front/providers/providers.dart'
     show MaderaNav, ProviderProjet;
 import 'package:proto_madera_front/ui/pages/pages.dart'
-    show AddModule, QuoteOverview;
+    show AddModule, ProductList;
 import 'package:proto_madera_front/theme.dart' as cTheme;
 
 ///
@@ -51,20 +51,18 @@ class _QuoteState extends State<Quote> {
         /** Centre de la page */
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
-            Align(
-              alignment: Alignment.center,
-              child: Text(
-                'Produit n°1', //TODO implémenter getProductNumber dans Provider Projet
-                style: cTheme.TextStyles.appBarTitle.copyWith(fontSize: 32.0),
-              ),
+            Text(
+              'Produit n°1', //TODO implémenter getProductNumber dans Provider Projet
+              style: cTheme.TextStyles.appBarTitle.copyWith(fontSize: 32.0),
             ),
             GradientFrame(
               child: Column(
                 children: <Widget>[
                   MaderaCard(
                     cardWidth: MediaQuery.of(context).size.width / 2,
-                    cardHeight: 45.0,
+                    cardHeight: 40.0,
                     child: TextField(
                       maxLines: 1,
                       keyboardType: TextInputType.text,
@@ -95,7 +93,7 @@ class _QuoteState extends State<Quote> {
                   ),
                   SizedBox(height: 20.0),
                   MaderaRoundedBox(
-                    boxHeight: cTheme.Dimens.boxHeight,
+                    boxHeight: 55,
                     boxWidth: MediaQuery.of(context).size.width / 2,
                     edgeInsetsPadding: EdgeInsets.symmetric(horizontal: 8.0),
                     edgeInsetsMargin: EdgeInsets.symmetric(
@@ -291,7 +289,7 @@ class _QuoteState extends State<Quote> {
                           log.d('Done.');
                           log.d('Quote Overview');
                           Provider.of<MaderaNav>(context)
-                              .redirectToPage(context, QuoteOverview());
+                              .redirectToPage(context, ProductList());
                         }
                       : null,
                   icon: Icon(

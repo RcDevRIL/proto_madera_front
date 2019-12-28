@@ -66,14 +66,12 @@ class _QuoteCreationState extends State<QuoteCreation> {
       child: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
-            Align(
-              alignment: Alignment.center,
-              child: Text('Informations générales',
-                  style: cTheme.TextStyles.appBarTitle.copyWith(
-                    fontSize: 32.0,
-                  )),
-            ),
+            Text('Informations générales',
+                style: cTheme.TextStyles.appBarTitle.copyWith(
+                  fontSize: 32.0,
+                )),
             GradientFrame(
               child: SingleChildScrollView(
                 controller: _formScrollController,

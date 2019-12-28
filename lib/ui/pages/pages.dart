@@ -8,3 +8,4 @@ export 'notification_page.dart';
 export 'quote_creation.dart';
 export 'add_module.dart';
 export 'finishings.dart';
+export 'product_list.dart';

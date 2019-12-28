@@ -15,13 +15,15 @@ class MaderaRoundedBox extends StatefulWidget {
   final Widget child;
   final EdgeInsetsGeometry edgeInsetsPadding;
   final EdgeInsetsGeometry edgeInsetsMargin;
+  final Color color;
 
   MaderaRoundedBox({
     Key key,
-    @required this.boxWidth,
+    this.boxWidth,
     @required this.boxHeight,
     @required this.edgeInsetsPadding,
     this.edgeInsetsMargin,
+    this.color,
     @required this.child,
   }) : super(key: key);
 
@@ -43,7 +45,7 @@ class MaderaRoundedBoxState extends State<MaderaRoundedBox> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: widget.boxWidth,
+      width: widget.boxWidth != null ? widget.boxWidth : null,
       height: widget.boxHeight,
       padding: widget.edgeInsetsPadding,
       margin: widget.edgeInsetsMargin != null
@@ -52,7 +54,7 @@ class MaderaRoundedBoxState extends State<MaderaRoundedBox> {
       decoration: BoxDecoration(
           border: Border.all(color: cTheme.Colors.boxBorder, width: 2.0),
           borderRadius: BorderRadius.circular(20.0),
-          color: cTheme.Colors.white),
+          color: widget.color != null ? widget.color : cTheme.Colors.white),
       child: widget.child,
     );
   }

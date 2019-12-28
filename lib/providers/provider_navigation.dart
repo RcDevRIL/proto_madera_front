@@ -133,6 +133,16 @@ class MaderaNav with ChangeNotifier {
                   '                    ');
         }
         break;
+      case ProductList:
+        {
+          _pageTitle = "Outil de création de devis";
+          _pageIndex = 1;
+          log.d(
+              'Updating current navigation properties:                        \n' +
+                  this.toString() +
+                  '                    ');
+        }
+        break;
       default:
         {
           log.e("MaderaNav.updateCurrent() ERROR:                        \n\tpage.runtimeType : " +
