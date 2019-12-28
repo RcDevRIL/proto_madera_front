@@ -27,6 +27,13 @@ class MaderaApp extends StatelessWidget {
             create: (c) => maderaNav,
           ),
           ChangeNotifierProvider(
+            create: (c) {
+              ProviderProjet providerProjet = ProviderProjet();
+              providerProjet.init();
+              return providerProjet;
+            },
+          ),
+          ChangeNotifierProvider(
             create: (c) => providerBdd,
           ),
           ChangeNotifierProxyProvider<ProviderBdd, ProviderLogin>(

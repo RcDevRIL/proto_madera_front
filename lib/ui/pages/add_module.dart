@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:logger/logger.dart';
+import 'package:provider/provider.dart';
 
+import 'package:proto_madera_front/providers/providers.dart'
+    show MaderaNav, ProviderProjet;
+import 'package:proto_madera_front/ui/pages/pages.dart' show Quote;
 import 'package:proto_madera_front/ui/pages/widgets/custom_widgets.dart';
 import 'package:proto_madera_front/theme.dart' as cTheme;
 
@@ -18,179 +22,444 @@ class AddModule extends StatefulWidget {
 }
 
 class _AddModuleState extends State<AddModule> {
+  final dataKey = GlobalKey();
   final log = Logger();
-  String dropdownValue = 'One';
-
-  ///
-  /// Prevents the use of the "back" button
-  ///
-  Future<bool> _onWillPopScope() async {
-    return false;
-  }
+  String dropdownValue = 'Sélectionnez une nature de module...';
+  TextEditingController _nameTextController;
+  TextEditingController _sizeTextController;
+  TextEditingController _widthTextController;
+  ScrollController _formScrollController;
+  bool _canValidateForm;
 
   //added to prepare for scaling
   @override
   void initState() {
     super.initState();
+    _nameTextController = TextEditingController();
+    _sizeTextController = TextEditingController();
+    _widthTextController = TextEditingController();
+    _formScrollController = ScrollController();
+    _canValidateForm = false;
   }
 
   //added to prepare for scaling
   @override
   void dispose() {
+    _nameTextController?.dispose();
+    _widthTextController?.dispose();
+    _sizeTextController?.dispose();
+    _formScrollController?.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    return WillPopScope(
-      onWillPop: _onWillPopScope,
-      child: SafeArea(
-        child: Scaffold(
-          backgroundColor: cTheme.Colors.white,
-          body: Stack(
-            children: <Widget>[
-              Padding(
-                padding: EdgeInsets.fromLTRB(cTheme.Dimens.drawerMinWitdh,
-                    MediaQuery.of(context).size.height / 12, 0, 0),
-                child: InkWell(
-                  focusColor: Colors.transparent,
-                  onTap: () => FocusScope.of(context).unfocus(),
-                  child: Center(
-                    /** Centre de la page */
-                    child: Container(
-                      width: cTheme.Dimens.containerWidth,
-                      height: cTheme.Dimens.containerHeight,
-                      decoration: BoxDecoration(
-                          boxShadow: [
-                            BoxShadow(
-                              blurRadius: 5.0,
-                              color: Colors.grey,
-                              offset: Offset(10.0, 10.0),
-                            ),
-                            BoxShadow(
-                              blurRadius: 5.0,
-                              color: Colors.grey,
-                              offset: Offset(0.0, 00.0),
-                            ),
-                          ],
-                          gradient: LinearGradient(
-                            colors: [
-                              cTheme.Colors.containerBackgroundLinearStart,
-                              cTheme.Colors.containerBackgroundLinearEnd
-                            ],
-                            begin: Alignment(0.0, -1.0),
-                            end: Alignment(0.0, 0.0),
-                          )),
-                      padding: EdgeInsets.fromLTRB(4.0, 20.0, 4.0, 0.0),
-                      child: SingleChildScrollView(
-                        child: Column(
+    return MaderaScaffold(
+      passedContext: context,
+      child: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: <Widget>[
+            Align(
+              alignment: Alignment.center,
+              child: Text("Ajouter un module",
+                  style:
+                      cTheme.TextStyles.appBarTitle.copyWith(fontSize: 32.0)),
+            ),
+            GradientFrame(
+              child: SingleChildScrollView(
+                controller: _formScrollController,
+                child: Column(
+                  children: <Widget>[
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: <Widget>[
+                        Column(
                           children: <Widget>[
-                            Align(
-                              alignment: Alignment.center,
-                              child: Text(
-                                'Ajouter module',
-                                style: cTheme.TextStyles.appBarTitle
-                                    .copyWith(fontSize: 32.0),
+                            MaderaRoundedBox(
+                              boxHeight: cTheme.Dimens.boxHeight,
+                              boxWidth: 450.0,
+                              child: DropdownButton<String>(
+                                isExpanded: true,
+                                hint: Text('$dropdownValue'),
+                                icon: Icon(Icons.arrow_drop_down,
+                                    color: cTheme
+                                        .Colors.containerBackgroundLinearStart),
+                                iconSize: 35,
+                                elevation: 16,
+                                style:
+                                    TextStyle(color: cTheme.Colors.appBarTitle),
+                                underline: Container(
+                                  height: 2,
+                                  width: 100.0,
+                                  color: Colors.transparent,
+                                ),
+                                onChanged: (String newValue) {
+                                  setState(() {
+                                    dropdownValue = newValue;
+                                    _nameTextController.text = newValue + ' - ';
+                                  });
+                                },
+                                items: <String>[
+                                  'Mur droit',
+                                  'Mur avec angle entrant',
+                                  'Mur avec angle entrant',
+                                ]
+                                    .map<DropdownMenuItem<String>>(
+                                        (String value) =>
+                                            DropdownMenuItem<String>(
+                                              value: value,
+                                              child: Text(value),
+                                            ))
+                                    .toList(),
                               ),
                             ),
-                            SizedBox(height: 30.0),
-                            Row(
-                              children: <Widget>[
-                                Column(
-                                  children: <Widget>[
-                                    MaderaCard(
-                                      cardWidth: cTheme.Dimens.cardSizeSmall,
-                                      cardHeight: cTheme.Dimens.cardHeight,
-                                      child: TextField(
-                                        maxLines: 1,
-                                        keyboardType: TextInputType.text,
-                                        enabled: true,
-                                        decoration: InputDecoration(
-                                          hintText: 'Nom du module...',
-                                          border: OutlineInputBorder(
-                                            borderRadius: BorderRadius.only(
-                                              bottomRight:
-                                                  Radius.circular(20.0),
-                                              bottomLeft: Radius.circular(20.0),
-                                            ),
-                                          ),
-                                        ),
-                                      ),
-                                      labelledIcon: LabelledIcon(
-                                        icon: Icon(
-                                          Icons.text_fields,
-                                          color: cTheme.Colors.appBarTitle,
-                                        ),
-                                        text: Text(
-                                          "Nom du module",
-                                          style: cTheme.TextStyles.appBarTitle
-                                              .copyWith(
-                                            fontSize: 13.0,
-                                            fontWeight: FontWeight.w600,
-                                          ),
-                                        ),
-                                      ),
+                            SizedBox(height: 10.0),
+                            MaderaCard(
+                              cardWidth: 450.0,
+                              cardHeight: cTheme.Dimens.cardHeight,
+                              child: TextField(
+                                maxLines: 1,
+                                keyboardType: TextInputType.text,
+                                controller: _nameTextController,
+                                onChanged: (text) {
+                                  setState(() {
+                                    text.isNotEmpty
+                                        ? _canValidateForm = true
+                                        : _canValidateForm = false;
+                                  });
+                                },
+                                enabled: true,
+                                decoration: InputDecoration(
+                                  hintText: 'Nom du module...',
+                                  border: OutlineInputBorder(
+                                    borderRadius: BorderRadius.only(
+                                      bottomRight: Radius.circular(20.0),
+                                      bottomLeft: Radius.circular(20.0),
                                     ),
-                                    MaderaRoundedBox(
-                                      boxHeight: cTheme.Dimens.boxHeight,
-                                      boxWidth: cTheme.Dimens.boxWidth,
-                                      child: DropdownButton<String>(
-                                        isExpanded: true,
-                                        value: dropdownValue,
-                                        hint:
-                                            Center(child: Text(dropdownValue)),
-                                        icon: Icon(Icons.arrow_drop_down,
-                                            color: cTheme.Colors
-                                                .containerBackgroundLinearStart),
-                                        iconSize: 20,
-                                        elevation: 16,
-                                        style: TextStyle(
-                                            color: cTheme.Colors.appBarTitle),
-                                        underline: Container(
-                                          height: 2,
-                                          width: 100.0,
-                                          color: Colors.transparent,
-                                        ),
-                                        onChanged: (String newValue) {
-                                          setState(() {
-                                            dropdownValue = newValue;
-                                          });
-                                        },
-                                        items: <String>[
-                                          'One',
-                                          'Two',
-                                          'Free',
-                                          'Four'
-                                        ]
-                                            .map<DropdownMenuItem<String>>(
-                                                (String value) =>
-                                                    DropdownMenuItem<String>(
-                                                      value: value,
-                                                      child: Text(value),
-                                                    ))
-                                            .toList(),
-                                      ),
-                                    ),
-                                  ],
+                                  ),
                                 ),
-                              ],
+                              ),
+                              labelledIcon: LabelledIcon(
+                                icon: Icon(
+                                  Icons.text_fields,
+                                  color: cTheme.Colors.appBarTitle,
+                                ),
+                                text: Text(
+                                  "Nom du module",
+                                  style: cTheme.TextStyles.appBarTitle.copyWith(
+                                    fontSize: 13.0,
+                                    fontWeight: FontWeight.w600,
+                                  ),
+                                ),
+                              ),
                             ),
                           ],
                         ),
+                      ],
+                    ),
+                    SizedBox(
+                      height: 20.0,
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: <Widget>[
+                        MaderaCard(
+                          cardHeight: cTheme.Dimens.cardHeight,
+                          cardWidth: 450.0,
+                          labelledIcon: LabelledIcon(
+                            // TODO: Trouver une meilleure icone, genre règle et équerre
+                            icon: Icon(Icons.open_with),
+                            text: Text("Longueur (en mètres)"),
+                          ),
+                          child: TextField(
+                            maxLines: 1,
+                            keyboardType: TextInputType.number,
+                            enabled: true,
+                            controller: _sizeTextController,
+                            decoration: InputDecoration(
+                              hintText: 'Longueur...',
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.only(
+                                  bottomRight: Radius.circular(20.0),
+                                  bottomLeft: Radius.circular(20.0),
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                        MaderaCard(
+                          cardHeight: cTheme.Dimens.cardHeight,
+                          cardWidth: 450.0,
+                          labelledIcon: LabelledIcon(
+                            // TODO: Trouver une meilleure icone, genre règle et équerre
+                            icon: Icon(Icons.open_with),
+                            text: Text("Section (en centimètres)"),
+                          ),
+                          child: TextField(
+                            maxLines: 1,
+                            keyboardType: TextInputType.number,
+                            enabled: true,
+                            controller: _widthTextController,
+                            decoration: InputDecoration(
+                              hintText: 'Section...',
+                              border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.only(
+                                bottomRight: Radius.circular(20.0),
+                                bottomLeft: Radius.circular(20.0),
+                              )),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: <Widget>[
+                        MaderaCard(
+                          cardHeight: cTheme.Dimens.cardHeight,
+                          cardWidth: 450.0,
+                          labelledIcon: LabelledIcon(
+                            // TODO: Trouver une meilleure icone, genre règle et équerre
+                            icon: Icon(Icons.open_with),
+                            text: Text("Angle entrant (en degrés)"),
+                          ),
+                          child: TextField(
+                            onTap: () => _formScrollController.jumpTo(
+                                _formScrollController.position.maxScrollExtent),
+                            maxLines: 1,
+                            keyboardType: TextInputType.number,
+                            enabled: true,
+                            decoration: InputDecoration(
+                              hintText: 'Angle...',
+                              border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.only(
+                                bottomRight: Radius.circular(20.0),
+                                bottomLeft: Radius.circular(20.0),
+                              )),
+                            ),
+                          ),
+                        ),
+                        MaderaCard(
+                          cardHeight: cTheme.Dimens.cardHeight,
+                          cardWidth: 450.0,
+                          labelledIcon: LabelledIcon(
+                            // TODO: Trouver une meilleure icone, genre règle et équerre
+                            icon: Icon(Icons.open_with),
+                            text: Text("Section (en centimètres)"),
+                          ),
+                          child: TextField(
+                            onTap: () => _formScrollController.jumpTo(
+                                _formScrollController.position.maxScrollExtent),
+                            maxLines: 1,
+                            keyboardType: TextInputType.number,
+                            enabled: true,
+                            decoration: InputDecoration(
+                              hintText: 'Section...',
+                              border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.only(
+                                bottomRight: Radius.circular(20.0),
+                                bottomLeft: Radius.circular(20.0),
+                              )),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: <Widget>[
+                        MaderaCard(
+                          cardHeight: cTheme.Dimens.cardHeight,
+                          cardWidth: 450.0,
+                          labelledIcon: LabelledIcon(
+                            // TODO: Trouver une meilleure icone, genre règle et équerre
+                            icon: Icon(Icons.open_with),
+                            text: Text("Longueur (en mètres)"),
+                          ),
+                          child: TextField(
+                            onTap: () => _formScrollController.jumpTo(
+                                _formScrollController.position.maxScrollExtent),
+                            maxLines: 1,
+                            keyboardType: TextInputType.number,
+                            enabled: true,
+                            decoration: InputDecoration(
+                              hintText: 'Longueur...',
+                              border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.only(
+                                bottomRight: Radius.circular(20.0),
+                                bottomLeft: Radius.circular(20.0),
+                              )),
+                            ),
+                          ),
+                        ),
+                        MaderaCard(
+                          cardHeight: cTheme.Dimens.cardHeight,
+                          cardWidth: 450.0,
+                          labelledIcon: LabelledIcon(
+                            // TODO: Trouver une meilleure icone, genre règle et équerre
+                            icon: Icon(Icons.open_with),
+                            text: Text("Angle sortant (en degrés)"),
+                          ),
+                          child: TextField(
+                            onTap: () => _formScrollController.jumpTo(
+                                _formScrollController.position.maxScrollExtent),
+                            maxLines: 1,
+                            keyboardType: TextInputType.number,
+                            enabled: true,
+                            decoration: InputDecoration(
+                              hintText: 'Angle...',
+                              border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.only(
+                                bottomRight: Radius.circular(20.0),
+                                bottomLeft: Radius.circular(20.0),
+                              )),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: <Widget>[
+                        MaderaCard(
+                          cardHeight: cTheme.Dimens.cardHeight,
+                          cardWidth: 450.0,
+                          labelledIcon: LabelledIcon(
+                            // TODO: Trouver une meilleure icone, genre règle et équerre
+                            icon: Icon(Icons.open_with),
+                            text: Text("Section (en centimètres)"),
+                          ),
+                          child: TextField(
+                            onTap: () => _formScrollController.jumpTo(
+                                _formScrollController.position.maxScrollExtent),
+                            maxLines: 1,
+                            keyboardType: TextInputType.number,
+                            enabled: true,
+                            decoration: InputDecoration(
+                              hintText: 'Section...',
+                              border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.only(
+                                bottomRight: Radius.circular(20.0),
+                                bottomLeft: Radius.circular(20.0),
+                              )),
+                            ),
+                          ),
+                        ),
+                        MaderaCard(
+                          cardHeight: cTheme.Dimens.cardHeight,
+                          cardWidth: 450.0,
+                          labelledIcon: LabelledIcon(
+                            // TODO: Trouver une meilleure icone, genre règle et équerre
+                            icon: Icon(Icons.open_with),
+                            text: Text("Longueur (en mètres)"),
+                          ),
+                          child: TextField(
+                            onTap: () => _formScrollController.jumpTo(
+                                _formScrollController.position.maxScrollExtent),
+                            maxLines: 1,
+                            keyboardType: TextInputType.number,
+                            enabled: true,
+                            decoration: InputDecoration(
+                              hintText: 'Longueur...',
+                              border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.only(
+                                bottomRight: Radius.circular(20.0),
+                                bottomLeft: Radius.circular(20.0),
+                              )),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                    SizedBox(height: 300),
+                    Container(
+                      child: Column(
+                        children:
+                            _buildInputFieldsByModuleNature(dropdownValue),
                       ),
                     ),
+                  ],
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+      stackAdditions: <Widget>[
+        Padding(
+          padding: EdgeInsets.fromLTRB(
+              1200, MediaQuery.of(context).size.height / 6, 0, 0),
+          child: Column(
+            children: <Widget>[
+              Container(
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  border: Border.all(
+                      color: _canValidateForm
+                          ? cTheme.Colors.containerBackgroundLinearStart
+                          : Colors.grey,
+                      width: 2),
+                  color: _canValidateForm
+                      ? cTheme.Colors.containerBackgroundLinearEnd
+                      : Colors.grey,
+                ),
+                child: IconButton(
+                  onPressed: _canValidateForm
+                      ? () {
+                          log.d("Validating Module...");
+                          Provider.of<ProviderProjet>(context)
+                              .addModuleToProduct([
+                            dropdownValue,
+                            _nameTextController.text ??= 'error',
+                            _sizeTextController.text ??= 'errorSize',
+                            _widthTextController.text ??= 'errorWitdh',
+                          ]);
+                          Provider.of<MaderaNav>(context)
+                              .redirectToPage(context, Quote());
+                        }
+                      : null,
+                  icon: Icon(
+                    Icons.check,
+                    color: cTheme.Colors.white,
                   ),
                 ),
               ),
-              Padding(
-                padding: EdgeInsets.only(left: cTheme.Dimens.drawerMinWitdh),
-                child: AppBarMadera(),
-              ),
-              CustomDrawer(),
+              SizedBox(height: 12),
+              Container(
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  border: Border.all(
+                      color: _canValidateForm
+                          ? cTheme.Colors.containerBackgroundLinearStart
+                          : Colors.grey,
+                      width: 2),
+                  color: _canValidateForm
+                      ? cTheme.Colors.containerBackgroundLinearEnd
+                      : Colors.grey,
+                ),
+                child: IconButton(
+                  onPressed: _canValidateForm
+                      ? () {
+                          log.d("Canceling Module...");
+                          Provider.of<MaderaNav>(context)
+                              .redirectToPage(context, Quote());
+                        }
+                      : null,
+                  icon: Icon(
+                    Icons.delete,
+                    color: cTheme.Colors.white,
+                  ),
+                ),
+              )
             ],
           ),
         ),
-      ),
+      ],
     );
   }
+}
+
+List<Widget> _buildInputFieldsByModuleNature(String natureModule) {
+  return <Widget>[];
 }

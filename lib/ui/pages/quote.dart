@@ -3,7 +3,8 @@ import 'package:logger/logger.dart';
 import 'package:provider/provider.dart';
 
 import 'package:proto_madera_front/ui/pages/widgets/custom_widgets.dart';
-import 'package:proto_madera_front/providers/providers.dart' show MaderaNav;
+import 'package:proto_madera_front/providers/providers.dart'
+    show MaderaNav, ProviderProjet;
 import 'package:proto_madera_front/ui/pages/pages.dart'
     show AddModule, QuoteOverview;
 import 'package:proto_madera_front/theme.dart' as cTheme;
@@ -43,6 +44,7 @@ class _QuoteState extends State<Quote> {
   @override
   Widget build(BuildContext context) {
     //final args = ModalRoute.of(context).settings.arguments;
+    final moduleList = Provider.of<ProviderProjet>(context).productModules;
     return MaderaScaffold(
       passedContext: context,
       child: Center(
@@ -67,6 +69,9 @@ class _QuoteState extends State<Quote> {
                     boxWidth: cTheme.Dimens.boxWidth,
                     child: DropdownButton<String>(
                       isExpanded: true,
+                      value: Provider.of<ProviderProjet>(context).gamme.isEmpty
+                          ? null
+                          : Provider.of<ProviderProjet>(context).gamme,
                       hint: Text('$dropdownGammeValue'),
                       icon: Icon(Icons.arrow_drop_down,
                           color: cTheme.Colors.containerBackgroundLinearStart),
@@ -81,6 +86,23 @@ class _QuoteState extends State<Quote> {
                       onChanged: (String newValue) {
                         setState(() {
                           dropdownGammeValue = newValue;
+                          switch (dropdownGammeValue) {
+                            case 'Gamme1':
+                              Provider.of<ProviderProjet>(context)
+                                  .setGamme(dropdownGammeValue);
+                              Provider.of<ProviderProjet>(context)
+                                  .setModeleListFromGammeID(1);
+                              break;
+                            case 'Gamme2':
+                              Provider.of<ProviderProjet>(context)
+                                  .setGamme(dropdownGammeValue);
+                              Provider.of<ProviderProjet>(context)
+                                  .setModeleListFromGammeID(2);
+                              break;
+                            default:
+                              {}
+                              break;
+                          }
                           canValidateForm = true;
                         });
                       },
@@ -98,6 +120,9 @@ class _QuoteState extends State<Quote> {
                     boxWidth: cTheme.Dimens.boxWidth,
                     boxHeight: cTheme.Dimens.boxHeight,
                     child: DropdownButton<String>(
+                      value: Provider.of<ProviderProjet>(context).model.isEmpty
+                          ? null
+                          : Provider.of<ProviderProjet>(context).model,
                       isExpanded: true,
                       hint: Text('$dropdownModeleValue'),
                       icon: Icon(Icons.arrow_drop_down,
@@ -108,18 +133,33 @@ class _QuoteState extends State<Quote> {
                       underline: Container(
                         color: Colors.transparent,
                       ),
-                      onChanged: (String newValue) {
-                        setState(() {
-                          dropdownModeleValue = newValue;
-                          canValidateForm = true;
-                        });
-                      },
-                      items: <String>[
-                        'Modele1',
-                        'Modele2',
-                        'Modele3',
-                        'Modele4'
-                      ]
+                      onChanged: dropdownGammeValue.isNotEmpty
+                          ? (String newValue) {
+                              setState(() {
+                                dropdownModeleValue = newValue;
+                                switch (dropdownModeleValue) {
+                                  case 'Modele1':
+                                    Provider.of<ProviderProjet>(context)
+                                        .setModel(dropdownModeleValue);
+                                    Provider.of<ProviderProjet>(context)
+                                        .setModuleListFromModelID(1);
+                                    break;
+                                  case 'Modele2':
+                                    Provider.of<ProviderProjet>(context)
+                                        .setModel(dropdownModeleValue);
+                                    Provider.of<ProviderProjet>(context)
+                                        .setModuleListFromModelID(2);
+                                    break;
+                                  default:
+                                    {}
+                                    break;
+                                }
+                                canValidateForm = true;
+                              });
+                            }
+                          : null,
+                      items: Provider.of<ProviderProjet>(context)
+                          .modeleList
                           .map<DropdownMenuItem<String>>(
                               (String value) => DropdownMenuItem<String>(
                                     value: value,
@@ -138,9 +178,9 @@ class _QuoteState extends State<Quote> {
                       children: <Widget>[
                         ListView.separated(
                           shrinkWrap: true,
-                          itemCount: 10,
+                          itemCount: moduleList.length,
                           itemBuilder: (c, i) => ListTile(
-                            title: Text('Item n°$i'),
+                            title: Text(moduleList[i]),
                           ),
                           separatorBuilder: (c, i) => Divider(
                             color: Colors.green,
@@ -156,7 +196,7 @@ class _QuoteState extends State<Quote> {
                             },
                             child: LabelledIcon(
                               icon: Icon(Icons.add),
-                              text: Text("Ajouter module"),
+                              text: Text("Ajouter Module"),
                             ),
                           ),
                         ),
@@ -167,7 +207,7 @@ class _QuoteState extends State<Quote> {
                         Icons.format_list_bulleted,
                         color: cTheme.Colors.appBarTitle,
                       ),
-                      text: Text('Liste des modules'),
+                      text: Text('Liste des Modules'),
                     ),
                   ),
                 ],
@@ -197,7 +237,13 @@ class _QuoteState extends State<Quote> {
                 child: IconButton(
                   onPressed: canValidateForm
                       ? () {
-                          log.d("Quote Overview");
+                          log.d('Saving form...');
+                          Provider.of<ProviderProjet>(context).saveQ(
+                              dropdownGammeValue,
+                              dropdownModeleValue ??= 'NOPE',
+                              moduleList);
+                          log.d('Done.');
+                          log.d('Quote Overview');
                           Provider.of<MaderaNav>(context)
                               .redirectToPage(context, QuoteOverview());
                         }
