@@ -120,26 +120,60 @@ class _QuoteCreationState extends State<QuoteCreation> {
                           ),
                         ),
                         MaderaCard(
-                          cardWidth: cTheme.Dimens.cardSizeMedium,
+                          cardWidth: 500,
+                          cardHeight: cTheme.Dimens.cardHeight,
+                          labelledIcon: LabelledIcon(
+                            icon: Icon(
+                              Icons.person,
+                              color: cTheme.Colors.appBarTitle,
+                            ),
+                            text: Text(
+                              "Nom prénom ou Raison Sociale",
+                              style: cTheme.TextStyles.appBarTitle.copyWith(
+                                fontSize: 15.0,
+                                fontWeight: FontWeight.w900,
+                              ),
+                            ),
+                          ),
+                          child: TextField(
+                            enabled: true,
+                            style: TextStyle(
+                              fontWeight: FontWeight.w500,
+                            ),
+                            maxLines: 1,
+                            keyboardType: TextInputType.text,
+                            decoration: InputDecoration(
+                              hintText: 'Ex: DUPONT Nicolas',
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.only(
+                                  bottomRight: Radius.circular(20.0),
+                                  bottomLeft: Radius.circular(20.0),
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+
+                        MaderaCard(
+                          cardWidth: 300,
                           cardHeight: cTheme.Dimens.cardHeight,
                           child: TextField(
                             maxLines: 1,
-                            controller: _clientDescriptionTextController,
-                            onChanged: (text) {
-                              setState(() {
-                                if (text.isNotEmpty) {
-                                  Provider.of<ProviderProjet>(context)
-                                      .setRefClient(text);
-                                  canValidateForm = true;
-                                } else {
-                                  canValidateForm = false;
-                                }
-                              });
-                            },
-                            keyboardType: TextInputType.text,
+                            // onChanged: (text) {
+                            //   setState(() {
+                            //     if (text.isNotEmpty) {
+                            //       Provider.of<ProviderProjet>(context)
+                            //           .setRefClient(text);
+                            //       canValidateForm = true;
+                            //     } else {
+                            //       canValidateForm = false;
+                            //     }
+                            //   });
+                            // },
+                            keyboardType: TextInputType.phone,
                             enabled: true,
                             decoration: InputDecoration(
-                              hintText: '-1',
+                              hintText: 'Téléphone...',
                               border: OutlineInputBorder(
                                 borderRadius: BorderRadius.only(
                                   bottomRight: Radius.circular(20.0),
@@ -150,11 +184,144 @@ class _QuoteCreationState extends State<QuoteCreation> {
                           ),
                           labelledIcon: LabelledIcon(
                             icon: Icon(
-                              Icons.person,
+                              Icons.phone,
                               color: cTheme.Colors.appBarTitle,
                             ),
                             text: Text(
-                              "Références Client",
+                              "Téléphone",
+                              style: cTheme.TextStyles.appBarTitle.copyWith(
+                                fontSize: 15.0,
+                                fontWeight: FontWeight.w900,
+                              ),
+                            ),
+                          ),
+                        ),
+                        // MaderaCard(
+                        //   cardWidth: cTheme.Dimens.cardSizeMedium,
+                        //   cardHeight: cTheme.Dimens.cardHeight,
+                        //   child: TextField(
+                        //     maxLines: 1,
+                        //     controller: _clientDescriptionTextController,
+                        //     onChanged: (text) {
+                        //       setState(() {
+                        //         if (text.isNotEmpty) {
+                        //           Provider.of<ProviderProjet>(context)
+                        //               .setRefClient(text);
+                        //           canValidateForm = true;
+                        //         } else {
+                        //           canValidateForm = false;
+                        //         }
+                        //       });
+                        //     },
+                        //     keyboardType: TextInputType.text,
+                        //     enabled: true,
+                        //     decoration: InputDecoration(
+                        //       hintText: '-1',
+                        //       border: OutlineInputBorder(
+                        //         borderRadius: BorderRadius.only(
+                        //           bottomRight: Radius.circular(20.0),
+                        //           bottomLeft: Radius.circular(20.0),
+                        //         ),
+                        //       ),
+                        //     ),
+                        //   ),
+                        //   labelledIcon: LabelledIcon(
+                        //     icon: Icon(
+                        //       Icons.person,
+                        //       color: cTheme.Colors.appBarTitle,
+                        //     ),
+                        //     text: Text(
+                        //       "Références Client",
+                        //       style: cTheme.TextStyles.appBarTitle.copyWith(
+                        //         fontSize: 15.0,
+                        //         fontWeight: FontWeight.w900,
+                        //       ),
+                        //     ),
+                        //   ),
+                        // ),
+                      ],
+                    ),
+                    SizedBox(height: 20.0),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: <Widget>[
+                        MaderaCard(
+                          cardWidth: 550,
+                          cardHeight: cTheme.Dimens.cardHeight,
+                          child: TextField(
+                            maxLines: 1,
+                            // onChanged: (text) {
+                            //   setState(() {
+                            //     if (text.isNotEmpty) {
+                            //       Provider.of<ProviderProjet>(context)
+                            //           .setRefClient(text);
+                            //       canValidateForm = true;
+                            //     } else {
+                            //       canValidateForm = false;
+                            //     }
+                            //   });
+                            // },
+                            keyboardType: TextInputType.text,
+                            enabled: true,
+                            decoration: InputDecoration(
+                              hintText: 'Rue complète, CP, ville',
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.only(
+                                  bottomRight: Radius.circular(20.0),
+                                  bottomLeft: Radius.circular(20.0),
+                                ),
+                              ),
+                            ),
+                          ),
+                          labelledIcon: LabelledIcon(
+                            icon: Icon(
+                              Icons.home,
+                              color: cTheme.Colors.appBarTitle,
+                            ),
+                            text: Text(
+                              "Adresse client",
+                              style: cTheme.TextStyles.appBarTitle.copyWith(
+                                fontSize: 15.0,
+                                fontWeight: FontWeight.w900,
+                              ),
+                            ),
+                          ),
+                        ),
+                        MaderaCard(
+                          cardWidth: 410,
+                          cardHeight: cTheme.Dimens.cardHeight,
+                          child: TextField(
+                            maxLines: 1,
+                            // onChanged: (text) {
+                            //   setState(() {
+                            //     if (text.isNotEmpty) {
+                            //       Provider.of<ProviderProjet>(context)
+                            //           .setRefClient(text);
+                            //       canValidateForm = true;
+                            //     } else {
+                            //       canValidateForm = false;
+                            //     }
+                            //   });
+                            // },
+                            keyboardType: TextInputType.emailAddress,
+                            enabled: true,
+                            decoration: InputDecoration(
+                              hintText: 'Adresse mail...',
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.only(
+                                  bottomRight: Radius.circular(20.0),
+                                  bottomLeft: Radius.circular(20.0),
+                                ),
+                              ),
+                            ),
+                          ),
+                          labelledIcon: LabelledIcon(
+                            icon: Icon(
+                              Icons.mail,
+                              color: cTheme.Colors.appBarTitle,
+                            ),
+                            text: Text(
+                              "Adresse mail",
                               style: cTheme.TextStyles.appBarTitle.copyWith(
                                 fontSize: 15.0,
                                 fontWeight: FontWeight.w900,
