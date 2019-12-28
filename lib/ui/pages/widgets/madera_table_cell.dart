@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:logger/logger.dart';
 
-import 'package:proto_madera_front/theme.dart' as cTheme;
-
 class MaderaTableCell extends StatefulWidget {
   final String textCell;
   final double height, width, cellFontSize;
