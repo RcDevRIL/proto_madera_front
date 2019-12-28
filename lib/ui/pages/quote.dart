@@ -166,7 +166,7 @@ class _QuoteState extends State<Quote> {
                   ),
                   SizedBox(height: 20.0),
                   MaderaCard(
-                    cardHeight: MediaQuery.of(context).size.height / 3.1,
+                    cardHeight: MediaQuery.of(context).size.height / 3.2,
                     child: Stack(
                       children: <Widget>[
                         ListView.separated(

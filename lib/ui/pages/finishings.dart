@@ -15,7 +15,7 @@ import 'package:proto_madera_front/theme.dart' as cTheme;
 ///
 /// @version 0.3-RELEASE
 class Finishings extends StatefulWidget {
-  static const routeName = '/quote_create';
+  static const routeName = '/finishModule';
 
   @override
   _FinishingsState createState() => _FinishingsState();
@@ -73,7 +73,8 @@ class _FinishingsState extends State<Finishings> {
                   ),
                   MaderaRoundedBox(
                     edgeInsetsPadding: EdgeInsets.symmetric(
-                      horizontal: 0.0,
+                      horizontal: 10.0,
+                      vertical: 0.0,
                     ),
                     edgeInsetsMargin: EdgeInsets.symmetric(
                       horizontal: 0.0,
