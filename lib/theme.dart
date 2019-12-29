@@ -1,7 +1,5 @@
-import 'dart:io';
-
 ///
-/// Ici se trouvent plusieurs classes constituant notre thème
+/// Ici se trouvent plusieurs classes constituant notre thème. Cela nous permettra de proposer un thème dynamique.
 /// Certaines valeurs sont importés de Mockflow afin que l'interface corresponde à la maquette
 /// D'autres valeurs ont été créées lors du développement de ce prototype pour répondre au besoin de consistance d'UI
 ///
@@ -15,7 +13,7 @@ const String FontNameDefault = 'Poppins';
 
 class CustomTheme {
   static final ThemeData base = ThemeData.light();
-  static final ThemeData defaultTheme = _buildLightTheme();
+  static final ThemeData maderaLightTheme = _buildLightTheme();
 
   static ThemeData _buildLightTheme() {
     return ThemeData(

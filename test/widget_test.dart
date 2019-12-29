@@ -41,13 +41,32 @@ void main() {
       },
     );
     test(
+      'init providerProjet test',
+      () {
+        ProviderProjet providerProjet = ProviderProjet();
+        providerProjet.init(); //initialise les variables du provider
+        expect(providerProjet.description.isEmpty,
+            true); //les variables sont vides
+        providerProjet
+            .setDescription('desc'); //ajout d'une description au projet
+        expect(providerProjet.description.isNotEmpty,
+            true); //description n'est plus vide
+        providerProjet.productModules
+            .add('test'); //ajout d'un module dans la liste
+        providerProjet.setModeleListFromGammeID(
+            1); //Changement de la liste des modèles à partir de la gamme
+        expect(providerProjet.productModules.isEmpty,
+            true); // la liste des modules a été vidée
+      },
+    );
+    test(
       'Update route state',
       () async {
         final MaderaNav providerNavigation = MaderaNav();
         int index = providerNavigation.pageIndex;
         String title = providerNavigation.pageTitle;
-        expect(-1, index);
-        expect('default', title);
+        expect(index, -1);
+        expect(title, 'default');
         providerNavigation.updateCurrent(AuthenticationPage);
         index = providerNavigation.pageIndex;
         title = providerNavigation.pageTitle;

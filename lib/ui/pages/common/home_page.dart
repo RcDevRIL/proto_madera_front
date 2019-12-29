@@ -6,9 +6,8 @@ import 'package:proto_madera_front/providers/providers.dart'
     show MaderaNav, ProviderSynchro;
 import 'package:proto_madera_front/ui/pages/pages.dart';
 import 'package:proto_madera_front/ui/widgets/custom_widgets.dart'
-    show AppBarMadera, CustomDrawer, MaderaScaffold;
+    show MaderaScaffold;
 import 'package:proto_madera_front/database/madera_database.dart';
-import 'package:proto_madera_front/theme.dart' as cTheme;
 
 ///
 /// Page d'accueil de l'application

@@ -58,9 +58,9 @@ class _QuoteCreationState extends State<QuoteCreation> {
   Widget build(BuildContext context) {
     Provider.of<ProviderProjet>(context)
         .flush(); // Make sure providerProjet is empty
-    Provider.of<ProviderProjet>(context)
-        .setIdProjet(_idProjectTextController.text);
-    Provider.of<ProviderProjet>(context).setDate(dateCreationProjet);
+    Provider.of<ProviderProjet>(context).idProjet =
+        _idProjectTextController.text;
+    Provider.of<ProviderProjet>(context).dateCreation = dateCreationProjet;
     return MaderaScaffold(
       passedContext: context,
       child: Center(

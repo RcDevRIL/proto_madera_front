@@ -48,15 +48,11 @@ class ProviderProjet with ChangeNotifier {
     init();
   }
 
-  void setDate(String dateCreationProjet) {
-    _quoteCreationValues[0] = dateCreationProjet;
-  }
+  set dateCreation(String newDate) => _quoteCreationValues[0] = newDate;
 
   String get dateCreation => _quoteCreationValues[0];
 
-  void setIdProjet(String idProjet) {
-    _quoteCreationValues[1] = idProjet;
-  }
+  set idProjet(String idProjet) => _quoteCreationValues[1] = idProjet;
 
   String get idProjet => _quoteCreationValues[1];
 
