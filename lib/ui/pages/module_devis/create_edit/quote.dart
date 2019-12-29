@@ -80,7 +80,7 @@ class _QuoteState extends State<Quote> {
                         ),
                       ),
                     ),
-                    labelledIcon: LabelledIcon(
+                    header: LabelledIcon(
                       icon: Icon(
                         Icons.text_fields,
                         color: cTheme.MaderaColors.textHeaderColor,
@@ -242,7 +242,7 @@ class _QuoteState extends State<Quote> {
                         ),
                       ],
                     ),
-                    labelledIcon: LabelledIcon(
+                    header: LabelledIcon(
                       icon: Icon(
                         Icons.format_list_bulleted,
                         color: cTheme.MaderaColors.textHeaderColor,

@@ -9,7 +9,7 @@ import 'package:proto_madera_front/ui/widgets/custom_widgets.dart';
 import 'package:proto_madera_front/theme.dart' as cTheme;
 
 ///
-/// Page "Outil de création de devis"
+/// Page 'Outil de création de devis'
 ///
 /// @author HELIOT David, CHEVALLIER Romain, LADOUCE Fabien
 ///
@@ -73,192 +73,368 @@ class _QuoteCreationState extends State<QuoteCreation> {
                   fontSize: 32.0,
                 )),
             GradientFrame(
-              child: SingleChildScrollView(
+              child: ListView(
                 controller: _formScrollController,
-                child: Column(
-                  children: <Widget>[
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: <Widget>[
-                        MaderaCard(
-                          cardWidth: cTheme.Dimens.cardSizeXSmall,
-                          cardHeight: cTheme.Dimens.cardHeight,
-                          labelledIcon: LabelledIcon(
-                            icon: Icon(
-                              Icons.calendar_today,
-                              color: cTheme.MaderaColors.textHeaderColor,
-                            ),
-                            text: Text(
-                              "Date de création",
-                              style:
-                                  cTheme.MaderaTextStyles.appBarTitle.copyWith(
-                                fontSize: 15.0,
-                                fontWeight: FontWeight.w900,
-                              ),
-                            ),
-                          ),
-                          child: TextField(
-                            textAlign: TextAlign.center,
-                            readOnly: true,
-                            style: TextStyle(
-                              fontWeight: FontWeight.w500,
-                            ),
-                            maxLines: 1,
-                            controller: TextEditingController(
-                              text: dateCreationProjet,
-                            ),
-                            keyboardType: TextInputType.text,
-                            enabled: false,
-                            decoration: InputDecoration(
-                              hintText: '2019-12-14',
-                              border: OutlineInputBorder(
-                                borderRadius: BorderRadius.only(
-                                  bottomRight: Radius.circular(20.0),
-                                  bottomLeft: Radius.circular(20.0),
-                                ),
-                              ),
-                            ),
-                          ),
-                        ),
-                        MaderaCard(
-                          cardWidth: cTheme.Dimens.cardSizeMedium,
-                          cardHeight: cTheme.Dimens.cardHeight,
-                          child: TextField(
-                            maxLines: 1,
-                            controller: _clientDescriptionTextController,
-                            onChanged: (text) {
-                              setState(() {
-                                if (text.isNotEmpty) {
-                                  Provider.of<ProviderProjet>(context)
-                                      .setRefClient(text);
-                                  canValidateForm = true;
-                                } else {
-                                  canValidateForm = false;
-                                }
-                              });
-                            },
-                            keyboardType: TextInputType.text,
-                            enabled: true,
-                            decoration: InputDecoration(
-                              hintText: '-1',
-                              border: OutlineInputBorder(
-                                borderRadius: BorderRadius.only(
-                                  bottomRight: Radius.circular(20.0),
-                                  bottomLeft: Radius.circular(20.0),
-                                ),
-                              ),
-                            ),
-                          ),
-                          labelledIcon: LabelledIcon(
-                            icon: Icon(
-                              Icons.person,
-                              color: cTheme.MaderaColors.textHeaderColor,
-                            ),
-                            text: Text(
-                              "Références Client",
-                              style:
-                                  cTheme.MaderaTextStyles.appBarTitle.copyWith(
-                                fontSize: 15.0,
-                                fontWeight: FontWeight.w900,
-                              ),
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                    SizedBox(height: 20.0),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: <Widget>[
-                        MaderaCard(
-                          cardHeight: cTheme.Dimens.cardHeight,
-                          cardWidth: cTheme.Dimens.cardSizeLarge,
-                          child: TextField(
-                            maxLines: 1,
-                            controller: _idProjectTextController,
-                            keyboardType: TextInputType.text,
-                            enabled: false,
-                            decoration: InputDecoration(
-                              hintText: '100000',
-                              border: OutlineInputBorder(
-                                borderRadius: BorderRadius.only(
-                                  bottomRight: Radius.circular(20.0),
-                                  bottomLeft: Radius.circular(20.0),
-                                ),
-                              ),
-                            ),
-                          ),
-                          labelledIcon: LabelledIcon(
-                            icon: Icon(
-                              Icons.info,
-                              color: cTheme.MaderaColors.textHeaderColor,
-                            ),
-                            text: Text(
-                              "ID. Projet",
-                              style:
-                                  cTheme.MaderaTextStyles.appBarTitle.copyWith(
-                                fontSize: 15.0,
-                                fontWeight: FontWeight.w900,
-                              ),
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                    SizedBox(height: 20.0),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: <Widget>[
-                        MaderaCard(
-                          cardHeight: cTheme.Dimens.cardHeightLarge,
-                          cardWidth: cTheme.Dimens.cardSizeLarge,
-                          child: TextField(
-                            onTap: () => _formScrollController.jumpTo(
-                                _formScrollController.position.maxScrollExtent),
-                            maxLines: 25,
-                            controller: _descriptionTextController,
-                            onChanged: (text) {
-                              setState(() {
-                                if (text.isNotEmpty) {
-                                  Provider.of<ProviderProjet>(context)
-                                      .setDescription(text);
-                                  canValidateForm = true;
-                                } else {
-                                  canValidateForm = false;
-                                }
-                              });
-                            },
-                            keyboardType: TextInputType.multiline,
-                            enabled: true,
-                            decoration: InputDecoration(
-                              hintText: 'Rentrez la description du projet ici',
-                              border: OutlineInputBorder(
-                                borderRadius: BorderRadius.only(
-                                  bottomRight: Radius.circular(20.0),
-                                  bottomLeft: Radius.circular(20.0),
-                                ),
-                              ),
-                            ),
-                          ),
-                          labelledIcon: LabelledIcon(
-                            icon: Icon(
-                              Icons.info,
-                              color: cTheme.MaderaColors.textHeaderColor,
-                            ),
-                            text: Text(
-                              "Description Projet",
-                              style:
-                                  cTheme.MaderaTextStyles.appBarTitle.copyWith(
-                                fontSize: 15.0,
-                                fontWeight: FontWeight.w900,
-                              ),
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ],
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 20.0,
+                  vertical: 8.0,
                 ),
+                shrinkWrap: true,
+                children: <Widget>[
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: <Widget>[
+                      MaderaCard(
+                        cardWidth: cTheme.Dimens.cardSizeXSmall,
+                        cardHeight: cTheme.Dimens.cardHeight,
+                        header: LabelledIcon(
+                          icon: Icon(
+                            Icons.calendar_today,
+                            color: cTheme.Colors.appBarTitle,
+                          ),
+                          text: Text(
+                            'Date de création',
+                            style: cTheme.TextStyles.appBarTitle.copyWith(
+                              fontSize: 15.0,
+                              fontWeight: FontWeight.w900,
+                            ),
+                          ),
+                        ),
+                        child: TextField(
+                          textAlign: TextAlign.center,
+                          readOnly: true,
+                          style: TextStyle(
+                            fontWeight: FontWeight.w500,
+                          ),
+                          maxLines: 1,
+                          controller: TextEditingController(
+                            text: dateCreationProjet,
+                          ),
+                          keyboardType: TextInputType.text,
+                          enabled: false,
+                          decoration: InputDecoration(
+                            hintText: '2019-12-14',
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.only(
+                                bottomRight: Radius.circular(20.0),
+                                bottomLeft: Radius.circular(20.0),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                      MaderaCard(
+                        cardWidth: cTheme.Dimens.cardSizeXSmall,
+                        cardHeight: cTheme.Dimens.cardHeight,
+                        child: TextField(
+                          textAlign: TextAlign.center,
+                          maxLines: 1,
+                          controller: _idProjectTextController,
+                          keyboardType: TextInputType.text,
+                          enabled: false,
+                          decoration: InputDecoration(
+                            hintText: '100000',
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.only(
+                                bottomRight: Radius.circular(20.0),
+                                bottomLeft: Radius.circular(20.0),
+                              ),
+                            ),
+                          ),
+                        ),
+                        header: LabelledIcon(
+                          icon: Icon(
+                            Icons.info,
+                            color: cTheme.Colors.appBarTitle,
+                          ),
+                          text: Text(
+                            'ID. Projet',
+                            style: cTheme.TextStyles.appBarTitle.copyWith(
+                              fontSize: 15.0,
+                              fontWeight: FontWeight.w900,
+                            ),
+                          ),
+                        ),
+                      ),
+                      // MaderaCard(
+                      //   cardWidth: cTheme.Dimens.cardSizeMedium,
+                      //   cardHeight: cTheme.Dimens.cardHeight,
+                      //   child: TextField(
+                      //     maxLines: 1,
+                      //     controller: _clientDescriptionTextController,
+                      //     onChanged: (text) {
+                      //       setState(() {
+                      //         if (text.isNotEmpty) {
+                      //           Provider.of<ProviderProjet>(context)
+                      //               .setRefClient(text);
+                      //           canValidateForm = true;
+                      //         } else {
+                      //           canValidateForm = false;
+                      //         }
+                      //       });
+                      //     },
+                      //     keyboardType: TextInputType.text,
+                      //     enabled: true,
+                      //     decoration: InputDecoration(
+                      //       hintText: '-1',
+                      //       border: OutlineInputBorder(
+                      //         borderRadius: BorderRadius.only(
+                      //           bottomRight: Radius.circular(20.0),
+                      //           bottomLeft: Radius.circular(20.0),
+                      //         ),
+                      //       ),
+                      //     ),
+                      //   ),
+                      //   labelledIcon: LabelledIcon(
+                      //     icon: Icon(
+                      //       Icons.person,
+                      //       color: cTheme.Colors.appBarTitle,
+                      //     ),
+                      //     text: Text(
+                      //       'Références Client',
+                      //       style: cTheme.TextStyles.appBarTitle.copyWith(
+                      //         fontSize: 15.0,
+                      //         fontWeight: FontWeight.w900,
+                      //       ),
+                      //     ),
+                      //   ),
+                      // ),
+                    ],
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: <Widget>[
+                      MaderaCard(
+                        cardWidth: MediaQuery.of(context).size.width / 2.4,
+                        cardHeight: cTheme.Dimens.cardHeightMedium,
+                        header: Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 26.0),
+                          child: Text(
+                            'Identification',
+                            style: cTheme.TextStyles.appBarTitle.copyWith(
+                              fontSize: 24.0,
+                              fontWeight: FontWeight.w900,
+                            ),
+                          ),
+                        ),
+                        child: ListView(
+                          padding: EdgeInsets.symmetric(
+                              horizontal: 4.0, vertical: 4.0),
+                          children: <Widget>[
+                            Align(
+                              alignment: Alignment.centerLeft,
+                              child: LabelledIcon(
+                                icon: Icon(
+                                  Icons.person,
+                                  color: cTheme.Colors.appBarTitle,
+                                ),
+                                text: Text(
+                                  'Nom ou Raison Sociale',
+                                  style: cTheme.TextStyles.appBarTitle.copyWith(
+                                    fontSize: 15.0,
+                                    fontWeight: FontWeight.w900,
+                                  ),
+                                ),
+                              ),
+                            ),
+                            TextField(
+                              enabled: true,
+                              style: TextStyle(
+                                fontWeight: FontWeight.w500,
+                              ),
+                              maxLines: 1,
+                              keyboardType: TextInputType.text,
+                              decoration: InputDecoration(
+                                hintText: 'Ex: DUPONT Nicolas',
+                                border: OutlineInputBorder(
+                                  borderSide: BorderSide.none,
+                                ),
+                              ),
+                            ),
+                            Align(
+                              alignment: Alignment.centerLeft,
+                              child: LabelledIcon(
+                                icon: Icon(
+                                  Icons.home,
+                                  color: cTheme.Colors.appBarTitle,
+                                ),
+                                text: Text(
+                                  'Adresse client',
+                                  style: cTheme.TextStyles.appBarTitle.copyWith(
+                                    fontSize: 15.0,
+                                    fontWeight: FontWeight.w900,
+                                  ),
+                                ),
+                              ),
+                            ),
+                            TextField(
+                              maxLines: 1,
+                              // onChanged: (text) {
+                              //   setState(() {
+                              //     if (text.isNotEmpty) {
+                              //       Provider.of<ProviderProjet>(context)
+                              //           .setRefClient(text);
+                              //       canValidateForm = true;
+                              //     } else {
+                              //       canValidateForm = false;
+                              //     }
+                              //   });
+                              // },
+                              keyboardType: TextInputType.text,
+                              enabled: true,
+                              decoration: InputDecoration(
+                                hintText: 'Rue complète, CP, ville',
+                                border: OutlineInputBorder(
+                                  borderSide: BorderSide.none,
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      MaderaCard(
+                        cardWidth: MediaQuery.of(context).size.width / 3,
+                        cardHeight: cTheme.Dimens.cardHeightMedium,
+                        header: Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 26.0),
+                          child: Text(
+                            'Contacts',
+                            style: cTheme.TextStyles.appBarTitle.copyWith(
+                              fontSize: 24.0,
+                              fontWeight: FontWeight.w900,
+                            ),
+                          ),
+                        ),
+                        child: ListView(
+                          padding: EdgeInsets.symmetric(
+                              horizontal: 4.0, vertical: 4.0),
+                          children: <Widget>[
+                            Align(
+                              alignment: Alignment.centerLeft,
+                              child: LabelledIcon(
+                                icon: Icon(
+                                  Icons.phone,
+                                  color: cTheme.Colors.appBarTitle,
+                                ),
+                                text: Text(
+                                  'Téléphone',
+                                  style: cTheme.TextStyles.appBarTitle.copyWith(
+                                    fontSize: 15.0,
+                                    fontWeight: FontWeight.w900,
+                                  ),
+                                ),
+                              ),
+                            ),
+                            TextField(
+                              maxLines: 1,
+                              // onChanged: (text) {
+                              //   setState(() {
+                              //     if (text.isNotEmpty) {
+                              //       Provider.of<ProviderProjet>(context)
+                              //           .setRefClient(text);
+                              //       canValidateForm = true;
+                              //     } else {
+                              //       canValidateForm = false;
+                              //     }
+                              //   });
+                              // },
+                              keyboardType: TextInputType.phone,
+                              enabled: true,
+                              decoration: InputDecoration(
+                                hintText: 'Téléphone...',
+                                border: OutlineInputBorder(
+                                  borderSide: BorderSide.none,
+                                ),
+                              ),
+                            ),
+                            Align(
+                              alignment: Alignment.centerLeft,
+                              child: LabelledIcon(
+                                icon: Icon(
+                                  Icons.mail,
+                                  color: cTheme.Colors.appBarTitle,
+                                ),
+                                text: Text(
+                                  'Adresse mail',
+                                  style: cTheme.TextStyles.appBarTitle.copyWith(
+                                    fontSize: 15.0,
+                                    fontWeight: FontWeight.w900,
+                                  ),
+                                ),
+                              ),
+                            ),
+                            TextField(
+                              maxLines: 1,
+                              // onChanged: (text) {
+                              //   setState(() {
+                              //     if (text.isNotEmpty) {
+                              //       Provider.of<ProviderProjet>(context)
+                              //           .setRefClient(text);
+                              //       canValidateForm = true;
+                              //     } else {
+                              //       canValidateForm = false;
+                              //     }
+                              //   });
+                              // },
+                              keyboardType: TextInputType.emailAddress,
+                              enabled: true,
+                              decoration: InputDecoration(
+                                hintText: 'Adresse mail...',
+                                border: OutlineInputBorder(
+                                  borderSide: BorderSide.none,
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                  MaderaCard(
+                    cardHeight: cTheme.Dimens.cardHeightLarge,
+                    child: TextField(
+                      onTap: () => _formScrollController.jumpTo(
+                          _formScrollController.position.maxScrollExtent),
+                      maxLines: 25,
+                      controller: _descriptionTextController,
+                      onChanged: (text) {
+                        setState(() {
+                          if (text.isNotEmpty) {
+                            Provider.of<ProviderProjet>(context)
+                                .setDescription(text);
+                            canValidateForm = true;
+                          } else {
+                            canValidateForm = false;
+                          }
+                        });
+                      },
+                      keyboardType: TextInputType.multiline,
+                      enabled: true,
+                      decoration: InputDecoration(
+                        hintText: 'Rentrez la description du projet ici',
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.only(
+                            bottomRight: Radius.circular(20.0),
+                            bottomLeft: Radius.circular(20.0),
+                          ),
+                        ),
+                      ),
+                    ),
+                    header: LabelledIcon(
+                      icon: Icon(
+                        Icons.info,
+                        color: cTheme.Colors.appBarTitle,
+                      ),
+                      text: Text(
+                        'Description Projet',
+                        style: cTheme.TextStyles.appBarTitle.copyWith(
+                          fontSize: 15.0,
+                          fontWeight: FontWeight.w900,
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
               ),
             ),
           ],
@@ -292,7 +468,7 @@ class _QuoteCreationState extends State<QuoteCreation> {
                               _idProjectTextController.text,
                               _clientDescriptionTextController.text);
                           log.d('Done.');
-                          log.d("Quote Creation");
+                          log.d('Quote Creation');
                           Provider.of<MaderaNav>(context)
                               .redirectToPage(context, Quote());
                         }

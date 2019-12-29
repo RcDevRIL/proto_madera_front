@@ -154,7 +154,7 @@ class _AddModuleState extends State<AddModule> {
                                   ),
                                 ),
                               ),
-                              labelledIcon: LabelledIcon(
+                              header: LabelledIcon(
                                 icon: Icon(
                                   Icons.text_fields,
                                   color: cTheme.MaderaColors.textHeaderColor,

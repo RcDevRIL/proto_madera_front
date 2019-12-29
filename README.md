@@ -1,4 +1,4 @@
-# proto_madera_front - README V1.3
+# proto_madera_front - README V1.4
 __Build status by branch__
 * __master :__ [![M_Codemagic build status][]][M_latest_build]
 * __int :__ [![I_Codemagic build status][]][I_latest_build]
@@ -14,20 +14,14 @@ Welcome on our development repository for our graduation project!!
   
 *Distributed by __LesCodeursEnBois__ - CESI RIL B2 - 2018-2020*
 
+## Documentation
+
+To see the documentation of our app, please visit [our app documentation][doc_website].
+
 ## Getting Started
 
 This README will guide you through the setup and deployment of this application on a virtual device (or physical if you have one).
 
-/!\ This README is a work in __progress__ ! /!\
-
-###### Things to add on this README:
-
-* [X] codemagic badges to show build/test status
-* [X] Packages used to run the app
-* [X] How to install/run app on device
-* [X] How to run tests
-* [X] How to generate [moor_flutter] code
-* [ ] How to ...
 
 ##### Prerequisites
 
@@ -38,7 +32,8 @@ What things you need to install and how to install them
 
 * Now you need to have the Flutter SDK to use CLI and run the app on device. Please refer to [Flutter "get started"] guide.
 
-*
+* 
+
 If you went through all the steps on [flutter.dev][Flutter "get started"] you should have your favorite editor with plugins installed to connect to your device easily.
 
 ## Run app on device
@@ -53,7 +48,7 @@ To start build/install, execute this command:
 
 * `flutter run`
 
-This will install app on the connected device and run it. 
+This will install the app on the connected device and run it. 
 
 _If you have a real device, just plug it to the computer using your USB cable. The Flutter plugin should notice the device and will automatically add it on the list._
 
@@ -95,9 +90,6 @@ See also the list of [contributors] who participated in this project.
 
 This project is licensed under the GNU GENERAL PUBLIC LICENSE - see the [LICENSE.md] file for details
 
-## Disclaimer
-
-* As I mentionned before, this is still a work in progress. :upside_down_face:
 
 [M_Codemagic build status]: https://api.codemagic.io/apps/5da43b8a9f20ef13ab7a2017/5da43b8a9f20ef13ab7a2016/status_badge.svg
 [M_latest_build]: https://codemagic.io/apps/5da43b8a9f20ef13ab7a2017/5da43b8a9f20ef13ab7a2016/latest_build
@@ -123,3 +115,4 @@ This project is licensed under the GNU GENERAL PUBLIC LICENSE - see the [LICENSE
 [contributors]: https://github.com/RcDevRIL/proto_madera_front/contributors
 [LICENSE.md]: https://github.com/RcDevRIL/proto_madera_front/blob/master/LICENSE
 [SQLite]: https://www.sqlite.org
+[doc_website]: https://cesi-madera.fr/madera

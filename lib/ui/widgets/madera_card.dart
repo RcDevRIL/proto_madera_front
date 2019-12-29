@@ -9,7 +9,7 @@ import 'package:proto_madera_front/theme.dart' as cTheme;
 ///
 /// @version 0.4-PRE-RELEASE
 class MaderaCard extends StatefulWidget {
-  final LabelledIcon labelledIcon;
+  final Widget header;
   final double cardHeight;
   final double cardWidth;
   final Widget child;
@@ -19,7 +19,7 @@ class MaderaCard extends StatefulWidget {
     Key key,
     this.cardHeight,
     this.cardWidth,
-    @required this.labelledIcon,
+    @required this.header,
     @required this.child,
   }) : super(key: key);
 
@@ -57,7 +57,7 @@ class _MaderaCardState extends State<MaderaCard> {
           SizedBox(height: 6.0),
           Padding(
             padding: const EdgeInsets.only(left: 8.0),
-            child: widget.labelledIcon,
+            child: widget.header,
           ),
           SizedBox(height: 6.0),
           Container(
