@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:logger/logger.dart';
 
-import 'package:proto_madera_front/theme.dart' as cTheme;
-
 ///
 /// Widget personnalisé pour un bouton
 ///
