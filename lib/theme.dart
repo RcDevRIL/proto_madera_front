@@ -1,6 +1,6 @@
 ///
 /// Ici se trouvent plusieurs classes constituant notre thème. Cela nous permettra de proposer un thème dynamique.
-/// Certaines valeurs sont importés de Mockflow afin que l'interface corresponde à la maquette
+/// Certaines valeurs sont importés de [Mockflow](https://mockflow.com/) afin que l'interface corresponde à la maquette
 /// D'autres valeurs ont été créées lors du développement de ce prototype pour répondre au besoin de consistance d'UI
 ///
 /// @author HELIOT David, CHEVALLIER Romain, LADOUCE Fabien
@@ -11,10 +11,19 @@ import 'package:flutter/material.dart';
 // Default Font Family
 const String FontNameDefault = 'Poppins';
 
-class CustomTheme {
+///
+/// Classe représentant notre thème personalisé.
+/// C'est ici que nous construisons le [ThemeData] associé.
+///
+/// A venir: thème Dark
+///
+class MaderaTheme {
   static final ThemeData base = ThemeData.light();
   static final ThemeData maderaLightTheme = _buildLightTheme();
 
+  ///
+  ///Cette méthode construit le [ThemeData] lorsque l'utilisateur n'est pas en mode Dark.
+  /// --> [Brigthness] =  Brigthness.light
   static ThemeData _buildLightTheme() {
     return ThemeData(
       platform: TargetPlatform.android,
@@ -46,13 +55,22 @@ class CustomTheme {
       appBarTheme: defaultAppBarTheme,
       cardTheme: CardTheme(), //TODO
       dialogTheme: DialogTheme(), //TODO
-      buttonTheme: maderaButtonTheme, //TODO
+      buttonTheme: maderaButtonTheme,
       //////////////////////////////////////////
     );
   }
 
+  ///
+  /// Thème par défaut de nos boutons.
+  /// Est appliqué sur tout les éléments [MaterialButton], [RaisedButton], [FlatButton], etc.
   static final ButtonThemeData maderaButtonTheme = ButtonThemeData(
-    textTheme: ButtonTextTheme.primary,
+    // textTheme: ButtonTextTheme.primary,
+    disabledColor:
+        MaderaColors.maderaGrey, //n'a pas d'effet si le textTheme est défini
+    splashColor: MaderaColors.maderaLightGreen,
+    height: 25,
+    minWidth: 50,
+    padding: const EdgeInsets.all(8.0),
     buttonColor: MaderaColors.maderaGreen,
     shape: RoundedRectangleBorder(
       borderRadius: BorderRadius.circular(8.0),
@@ -86,6 +104,11 @@ class CustomTheme {
 
   ///
   /// Thème par défaut des textes
+  /// Il permet de définir des styles pour tous les éléments de l'application.
+  /// Il est également possible des les récupérer et les transformer au runtime avec la commande:
+  /// Theme.of(context).textTheme.[nomDuParamètre].apply()/.copyWith()
+  ///
+  /// TODO Définir des styles pour nos éléments principaux: maderaHeader, appbartitle, titre de formulaire, etc.
   ///
   static final TextTheme defaultTextTheme = TextTheme(
     title: MaderaTextStyles.appBarTitle,
@@ -106,9 +129,13 @@ class CustomTheme {
   );
 }
 
+///
+///Classe permettant de stocker nos couleurs d'application.
+///Il permet aussi de donner des noms plus parlant lorsqu'on veut définir la couleur d'un élément en particulier
 class MaderaColors {
   const MaderaColors();
 
+  ////////////////MOCKFLOW VALUES///////////////
   static const Color maderaAccentGreen =
       const Color.fromRGBO(109, 243, 115, 1.0);
   static const Color maderaLightGreen =
@@ -121,6 +148,7 @@ class MaderaColors {
   static const Color maderaLightGrey = const Color.fromRGBO(224, 224, 224, 1.0);
   static const Color maderaGrey = const Color.fromRGBO(117, 117, 117, 1.0);
   static const Color maderaDarkGrey = const Color.fromRGBO(39, 45, 52, 1.0);
+  //////////////////////////////////////////////
 
   static Color appBarMainColor = selectedColor.withOpacity(0.5);
   static const Color iconsMainColor = maderaDarkGreen;
@@ -133,6 +161,9 @@ class MaderaColors {
   static Color maderaButtonBorder = maderaGrey.withOpacity(0.5);
 }
 
+///
+///Cette classe permet de stocker des dimensions.
+/// TODO SUPPRIMER CETTE CLASSE ET RENDRE L'APPLICATION RESPONSIVE
 class Dimens {
   const Dimens();
   //problème sur certaines valeurs je pense pour le déploiement sur pleins d'écran différent...
@@ -160,6 +191,9 @@ class Dimens {
   static const boxHeight = 60.0;
 }
 
+///
+///Classe pour définir des styles de texte personnalisés
+///
 class MaderaTextStyles {
   const MaderaTextStyles();
 

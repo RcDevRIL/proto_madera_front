@@ -116,8 +116,6 @@ class _QuoteState extends State<Quote> {
                       style:
                           TextStyle(color: cTheme.MaderaColors.textHeaderColor),
                       underline: Container(
-                        height: 2,
-                        width: 100.0,
                         color: Colors.transparent,
                       ),
                       onChanged: (String newValue) {

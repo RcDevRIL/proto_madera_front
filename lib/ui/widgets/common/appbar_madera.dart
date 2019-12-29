@@ -32,6 +32,8 @@ class AppBarMadera extends StatelessWidget {
             mN.pageIndex !=
                     -1 // si page login ou bug, on ne veux pas de bouton qui redirige à l'accueil
                 ? FlatButton(
+                    padding: EdgeInsets.all(0.0), //override theme
+                    shape: Border.all(style: BorderStyle.none), //override theme
                     onPressed: () => mN.redirectToPage(context, HomePage()),
                     child: Image(
                       image: AssetImage("assets/img/logo-madera.png"),

@@ -25,6 +25,7 @@ class MaderaButton extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: RaisedButton(
+        textColor: Colors.white, //override theme
         elevation: 5.0,
         onPressed: this.onPressed,
         child: this.child,

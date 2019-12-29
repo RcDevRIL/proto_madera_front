@@ -144,7 +144,8 @@ class _CustomDrawerState extends State<CustomDrawer>
                   endIndent: 12.0,
                 ),
                 FlatButton(
-                  padding: EdgeInsets.all(0.0),
+                  padding: EdgeInsets.all(0.0), //override theme
+                  shape: Border.all(style: BorderStyle.none), //override theme
                   onPressed: () {
                     setState(() {
                       isCollapsed = !isCollapsed;
