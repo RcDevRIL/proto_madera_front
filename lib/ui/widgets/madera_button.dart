@@ -25,16 +25,7 @@ class MaderaButton extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: RaisedButton(
-        color: cTheme.MaderaColors.maderaGreen,
-        textColor: Colors.white,
         elevation: 5.0,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(8.0),
-          side: BorderSide(
-            color: cTheme.MaderaColors.maderaButtonBorder,
-            width: 2.0,
-          ),
-        ),
         onPressed: this.onPressed,
         child: this.child,
       ),

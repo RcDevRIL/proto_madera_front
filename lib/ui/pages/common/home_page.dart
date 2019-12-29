@@ -29,7 +29,7 @@ class HomePage extends StatelessWidget {
 
   Widget _buildHomePage(BuildContext context) {
     return Container(
-      color: Theme.of(context).primaryColor,
+      color: Theme.of(context).backgroundColor,
       child: Center(
         child: Consumer<MaderaNav>(
           builder: (context, mN, child) => Column(

@@ -20,15 +20,15 @@ class CustomTheme {
       platform: TargetPlatform.android,
       brightness: Brightness.light,
       ////////////////COLORS////////////////////
-      accentColorBrightness: Brightness.light,
       primarySwatch: Colors
-          .blueGrey, //change par exemple la couleur des bordures lors du focus d'un inputtext
-      primaryColorDark: MaderaColors.maderaDarkGreen,
-      primaryColor: MaderaColors.maderaGreen,
+          .blueGrey, //change par exemple le curseur de sélection d'un inputtext
       primaryColorBrightness: Brightness.light,
+      primaryColor: MaderaColors.maderaGreen,
       primaryColorLight: MaderaColors.maderaLightGreen,
+      primaryColorDark: MaderaColors.maderaDarkGreen,
+      accentColorBrightness: Brightness.light,
       accentColor: MaderaColors
-          .maderaGreen, //change par exemple la couleur de la barre de chargement au démarrage de l'application
+          .maderaAccentGreen, //change par exemple la couleur de la barre de chargement au démarrage de l'application
       backgroundColor: Colors.white,
       splashColor: MaderaColors.maderaLightGreen,
       dialogBackgroundColor: Colors.white,
@@ -46,10 +46,22 @@ class CustomTheme {
       appBarTheme: defaultAppBarTheme,
       cardTheme: CardTheme(), //TODO
       dialogTheme: DialogTheme(), //TODO
-      buttonTheme: ButtonThemeData(), //TODO
+      buttonTheme: maderaButtonTheme, //TODO
       //////////////////////////////////////////
     );
   }
+
+  static final ButtonThemeData maderaButtonTheme = ButtonThemeData(
+    textTheme: ButtonTextTheme.primary,
+    buttonColor: MaderaColors.maderaGreen,
+    shape: RoundedRectangleBorder(
+      borderRadius: BorderRadius.circular(8.0),
+      side: BorderSide(
+        color: MaderaColors.maderaButtonBorder,
+        width: 2.0,
+      ),
+    ),
+  );
 
   ///
   /// Thème de notre AppBar
@@ -77,19 +89,20 @@ class CustomTheme {
   ///
   static final TextTheme defaultTextTheme = TextTheme(
     title: MaderaTextStyles.appBarTitle,
-    body1: MaderaTextStyles.listTileDefaultTextStyle,
+    body1: MaderaTextStyles.defaultTextStyle,
     body2: MaderaTextStyles.listTileSelectedTextStyle,
-    button: MaderaTextStyles.listTileDefaultTextStyle,
-    caption: MaderaTextStyles.listTileDefaultTextStyle,
+    button: MaderaTextStyles.defaultTextStyle,
+    caption: MaderaTextStyles.defaultTextStyle,
     display1: MaderaTextStyles.appBarTitle,
     display2: MaderaTextStyles.appBarTitle,
     display3: MaderaTextStyles.appBarTitle,
     display4: MaderaTextStyles.appBarTitle,
     headline: MaderaTextStyles.appBarTitle,
-    overline:
-        MaderaTextStyles.listTileDefaultTextStyle.copyWith(fontSize: 10.0),
-    subhead: MaderaTextStyles.appBarTitle.copyWith(fontSize: 20.0),
-    subtitle: MaderaTextStyles.appBarTitle.copyWith(fontSize: 16.0),
+    overline: MaderaTextStyles.defaultTextStyle.copyWith(
+        fontSize: 14.0), //change le style des valeurs rentrées au clavier
+    subhead: MaderaTextStyles
+        .defaultTextStyle, //change le style de tous les textes d'un d'inputtext
+    subtitle: MaderaTextStyles.appBarTitle.copyWith(fontSize: 42.0),
   );
 }
 
@@ -157,8 +170,8 @@ class MaderaTextStyles {
     fontSize: 26.0,
   );
 
-  static const TextStyle listTileDefaultTextStyle = TextStyle(
-    color: Colors.white70,
+  static const TextStyle defaultTextStyle = TextStyle(
+    color: Colors.black,
     fontFamily: FontNameDefault,
     fontWeight: FontWeight.w400,
     fontSize: 20.0,

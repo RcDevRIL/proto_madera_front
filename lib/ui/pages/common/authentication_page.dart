@@ -83,6 +83,7 @@ class _AuthenticationPageState extends State<AuthenticationPage> {
                     boxHeight: cTheme.Dimens.loginFormHeight,
                     edgeInsetsPadding: EdgeInsets.all(8.0),
                     child: ListView(
+                      shrinkWrap: true,
                       children: _buildForm(context),
                     ),
                   ),
@@ -114,12 +115,6 @@ class _AuthenticationPageState extends State<AuthenticationPage> {
       ),
     ));
 
-    children.add(
-      SizedBox(
-        height: 24.0,
-      ),
-    );
-
     children.add(StreamBuilder<Object>(
         stream: _loginFormBloc.emailValidation,
         builder: (context, snapshot) {
@@ -137,6 +132,10 @@ class _AuthenticationPageState extends State<AuthenticationPage> {
                 controller: _emailController,
                 keyboardType: TextInputType.emailAddress,
                 decoration: InputDecoration(
+                  errorStyle: Theme.of(context).textTheme.body1.apply(
+                        fontSizeDelta: -6.0,
+                        color: Colors.red,
+                      ),
                   border: OutlineInputBorder(),
                   hintText: "Enter login",
                   labelText: "Login",
@@ -146,6 +145,11 @@ class _AuthenticationPageState extends State<AuthenticationPage> {
             ),
           );
         }));
+    children.add(
+      SizedBox(
+        height: 24.0,
+      ),
+    );
     children.add(
       LabelledIcon(
         icon: Icon(
@@ -159,12 +163,6 @@ class _AuthenticationPageState extends State<AuthenticationPage> {
             color: Color.fromRGBO(39, 72, 0, 1.0),
           ),
         ),
-      ),
-    );
-
-    children.add(
-      SizedBox(
-        height: 24.0,
       ),
     );
 
@@ -186,6 +184,10 @@ class _AuthenticationPageState extends State<AuthenticationPage> {
                 keyboardType: TextInputType.text,
                 obscureText: true,
                 decoration: InputDecoration(
+                  errorStyle: Theme.of(context).textTheme.body1.apply(
+                        fontSizeDelta: -6.0,
+                        color: Colors.red,
+                      ),
                   focusColor: Colors.white,
                   border: OutlineInputBorder(),
                   hintText: "Enter password",
