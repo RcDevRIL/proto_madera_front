@@ -82,8 +82,8 @@ class _AddModuleState extends State<AddModule> {
                                 isExpanded: true,
                                 hint: Text('$dropdownValue'),
                                 icon: Icon(Icons.arrow_drop_down,
-                                    color: cTheme.MaderaColors
-                                        .containerBackgroundLinearStart),
+                                    color:
+                                        cTheme.MaderaColors.maderaLightGreen),
                                 iconSize: 35,
                                 elevation: 16,
                                 style: Theme.of(context)
@@ -414,11 +414,11 @@ class _AddModuleState extends State<AddModule> {
                   shape: BoxShape.circle,
                   border: Border.all(
                       color: _canValidateForm
-                          ? cTheme.MaderaColors.containerBackgroundLinearStart
+                          ? cTheme.MaderaColors.maderaLightGreen
                           : Colors.grey,
                       width: 2),
                   color: _canValidateForm
-                      ? cTheme.MaderaColors.containerBackgroundLinearEnd
+                      ? cTheme.MaderaColors.maderaBlueGreen
                       : Colors.grey,
                 ),
                 child: IconButton(
@@ -438,7 +438,7 @@ class _AddModuleState extends State<AddModule> {
                       : null,
                   icon: Icon(
                     Icons.check,
-                    color: cTheme.MaderaColors.white,
+                    color: Colors.white,
                   ),
                 ),
               ),
@@ -448,11 +448,11 @@ class _AddModuleState extends State<AddModule> {
                   shape: BoxShape.circle,
                   border: Border.all(
                       color: _canValidateForm
-                          ? cTheme.MaderaColors.containerBackgroundLinearStart
+                          ? cTheme.MaderaColors.maderaLightGreen
                           : Colors.grey,
                       width: 2),
                   color: _canValidateForm
-                      ? cTheme.MaderaColors.containerBackgroundLinearEnd
+                      ? cTheme.MaderaColors.maderaBlueGreen
                       : Colors.grey,
                 ),
                 child: IconButton(
@@ -465,7 +465,7 @@ class _AddModuleState extends State<AddModule> {
                       : null,
                   icon: Icon(
                     Icons.delete,
-                    color: cTheme.MaderaColors.white,
+                    color: Colors.white,
                   ),
                 ),
               )

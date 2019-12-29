@@ -110,8 +110,7 @@ class _QuoteState extends State<Quote> {
                           : dropdownGammeValue,
                       hint: Text('Sélectionnez une gamme...'),
                       icon: Icon(Icons.arrow_drop_down,
-                          color: cTheme
-                              .MaderaColors.containerBackgroundLinearStart),
+                          color: cTheme.MaderaColors.maderaLightGreen),
                       iconSize: 20,
                       elevation: 16,
                       style:
@@ -162,8 +161,7 @@ class _QuoteState extends State<Quote> {
                       value: dropdownModeleValue,
                       hint: Text('Sélectionnez un modèle...'),
                       icon: Icon(Icons.arrow_drop_down,
-                          color: cTheme
-                              .MaderaColors.containerBackgroundLinearStart),
+                          color: cTheme.MaderaColors.maderaLightGreen),
                       iconSize: 20,
                       elevation: 16,
                       style:
@@ -215,8 +213,7 @@ class _QuoteState extends State<Quote> {
                           itemBuilder: (c, i) => Material(
                             child: InkWell(
                               highlightColor: Colors.transparent,
-                              splashColor: cTheme
-                                  .MaderaColors.containerBackgroundLinearEnd,
+                              splashColor: cTheme.MaderaColors.maderaBlueGreen,
                               child: ListTile(
                                 title: Text(moduleList[i]),
                               ),
@@ -272,11 +269,11 @@ class _QuoteState extends State<Quote> {
                   shape: BoxShape.circle,
                   border: Border.all(
                       color: canValidateForm
-                          ? cTheme.MaderaColors.containerBackgroundLinearStart
+                          ? cTheme.MaderaColors.maderaLightGreen
                           : Colors.grey,
                       width: 2),
                   color: canValidateForm
-                      ? cTheme.MaderaColors.containerBackgroundLinearEnd
+                      ? cTheme.MaderaColors.maderaBlueGreen
                       : Colors.grey,
                 ),
                 child: IconButton(
@@ -296,7 +293,7 @@ class _QuoteState extends State<Quote> {
                       : null,
                   icon: Icon(
                     Icons.check,
-                    color: cTheme.MaderaColors.white,
+                    color: Colors.white,
                   ),
                 ),
               ),
@@ -305,16 +302,14 @@ class _QuoteState extends State<Quote> {
                 decoration: BoxDecoration(
                     shape: BoxShape.circle,
                     border: Border.all(
-                        color:
-                            cTheme.MaderaColors.containerBackgroundLinearStart,
-                        width: 2),
-                    color: cTheme.MaderaColors.containerBackgroundLinearEnd),
+                        color: cTheme.MaderaColors.maderaLightGreen, width: 2),
+                    color: cTheme.MaderaColors.maderaBlueGreen),
                 child: IconButton(
                   tooltip: "Supprimer produit",
                   onPressed: () {},
                   icon: Icon(
                     Icons.delete,
-                    color: cTheme.MaderaColors.white,
+                    color: Colors.white,
                   ),
                 ),
               )

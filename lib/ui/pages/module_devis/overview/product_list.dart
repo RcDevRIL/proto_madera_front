@@ -92,8 +92,7 @@ class _ProductListState extends State<ProductList> {
                             decoration: BoxDecoration(
                                 shape: BoxShape.circle,
                                 border: Border.all(
-                                    color: cTheme.MaderaColors
-                                        .containerBackgroundLinearStart,
+                                    color: cTheme.MaderaColors.maderaLightGreen,
                                     width: 2),
                                 color: Colors.grey),
                             child: IconButton(
@@ -105,8 +104,7 @@ class _ProductListState extends State<ProductList> {
                               },
                               icon: Icon(
                                 Icons.add,
-                                color: cTheme.MaderaColors
-                                    .containerBackgroundLinearStart,
+                                color: cTheme.MaderaColors.maderaLightGreen,
                               ),
                             ),
                           ),
@@ -130,9 +128,8 @@ class _ProductListState extends State<ProductList> {
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
                   border: Border.all(
-                      color: cTheme.MaderaColors.containerBackgroundLinearStart,
-                      width: 2),
-                  color: cTheme.MaderaColors.containerBackgroundLinearEnd,
+                      color: cTheme.MaderaColors.maderaLightGreen, width: 2),
+                  color: cTheme.MaderaColors.maderaBlueGreen,
                 ),
                 child: IconButton(
                   tooltip: "Valider produit",
@@ -143,7 +140,7 @@ class _ProductListState extends State<ProductList> {
                   },
                   icon: Icon(
                     Icons.check,
-                    color: cTheme.MaderaColors.white,
+                    color: Colors.white,
                   ),
                 ),
               ),
@@ -152,16 +149,14 @@ class _ProductListState extends State<ProductList> {
                 decoration: BoxDecoration(
                     shape: BoxShape.circle,
                     border: Border.all(
-                        color:
-                            cTheme.MaderaColors.containerBackgroundLinearStart,
-                        width: 2),
-                    color: cTheme.MaderaColors.containerBackgroundLinearEnd),
+                        color: cTheme.MaderaColors.maderaLightGreen, width: 2),
+                    color: cTheme.MaderaColors.maderaBlueGreen),
                 child: IconButton(
                   tooltip: "Supprimer produit",
                   onPressed: () {},
                   icon: Icon(
                     Icons.delete,
-                    color: cTheme.MaderaColors.white,
+                    color: Colors.white,
                   ),
                 ),
               )
@@ -185,12 +180,12 @@ class _ProductListState extends State<ProductList> {
             IconButton(
               icon: Icon(
                 Icons.mode_edit,
-                color: cTheme.MaderaColors.containerBackgroundLinearEnd,
+                color: cTheme.MaderaColors.maderaBlueGreen,
                 semanticLabel: 'Bouton d' 'édition',
               ),
               alignment: Alignment.center,
               color: Colors.transparent,
-              hoverColor: cTheme.MaderaColors.white70,
+              hoverColor: Colors.white70,
               iconSize: 24.0,
               tooltip: 'Editer produit',
               onPressed: () {
@@ -202,12 +197,12 @@ class _ProductListState extends State<ProductList> {
             IconButton(
               icon: Icon(
                 Icons.delete,
-                color: cTheme.MaderaColors.containerBackgroundLinearEnd,
+                color: cTheme.MaderaColors.maderaBlueGreen,
                 semanticLabel: 'Bouton de supression',
               ),
               alignment: Alignment.center,
               color: Colors.transparent,
-              hoverColor: cTheme.MaderaColors.white70,
+              hoverColor: Colors.white70,
               iconSize: 24.0,
               tooltip: 'Supprimer produit',
               onPressed: () {

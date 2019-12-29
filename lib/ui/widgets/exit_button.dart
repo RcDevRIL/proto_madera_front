@@ -12,23 +12,15 @@ import 'package:proto_madera_front/theme.dart' as cTheme;
 class ExitButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return /* Container(
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(25.0),
-      ),
-      child:  */
-        IconButton(
+    return IconButton(
       onPressed: () => SystemChannels.platform.invokeMethod(
           'SystemNavigator.pop'), //Ajouter un dialog :) Dialog()      showDialog()
       tooltip: "Fermer l'application",
       icon: ImageIcon(
         AssetImage("assets/img/icons/off.png"),
-        color: cTheme.MaderaColors.textHeaderColor,
+        semanticLabel: 'Shut down app',
+        size: 32.0, //bizarrement n'est pas affecté par defaultIconTheme???
       ),
-      color: cTheme.MaderaColors.textHeaderColor,
-      iconSize: 32.0,
     );
-    // );
   }
 }

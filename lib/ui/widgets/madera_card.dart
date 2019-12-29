@@ -43,13 +43,13 @@ class _MaderaCardState extends State<MaderaCard> {
     return Card(
       shape: RoundedRectangleBorder(
         side: BorderSide(
-          color: cTheme.MaderaColors.containerBackgroundLinearStart,
+          color: cTheme.MaderaColors.maderaLightGreen,
           style: BorderStyle.solid,
           width: 2.0,
         ),
         borderRadius: BorderRadius.all(Radius.circular(20.0)),
       ),
-      color: Color.fromRGBO(224, 224, 224, 1.0),
+      color: cTheme.MaderaColors.maderaCardHeader,
       elevation: 8.0,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -64,7 +64,7 @@ class _MaderaCardState extends State<MaderaCard> {
             width: widget.cardWidth != null ? widget.cardWidth : null,
             height: widget.cardHeight != null ? widget.cardHeight : null,
             decoration: BoxDecoration(
-              color: cTheme.MaderaColors.white,
+              color: Theme.of(context).backgroundColor,
               borderRadius: BorderRadius.only(
                 bottomRight: Radius.circular(20.0),
                 bottomLeft: Radius.circular(20.0),

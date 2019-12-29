@@ -71,8 +71,7 @@ class _QuoteOverviewState extends State<QuoteOverview> {
                     scrollDirection: Axis.vertical,
                     child: Container(
                       decoration: BoxDecoration(
-                        border: Border.all(
-                            color: cTheme.MaderaColors.primaryTextColor),
+                        border: Border.all(color: Colors.black),
                       ),
                       width: 2500,
                       height: 665,

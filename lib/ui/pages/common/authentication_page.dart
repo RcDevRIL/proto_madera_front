@@ -6,7 +6,7 @@ import 'package:provider/provider.dart';
 import 'package:proto_madera_front/services/authentication/login_form_bloc.dart';
 import 'package:proto_madera_front/ui/pages/pages.dart' show HomePage;
 import 'package:proto_madera_front/ui/widgets/custom_widgets.dart'
-    show AppBarMadera, LabelledIcon, MaderaButton;
+    show AppBarMadera, LabelledIcon, MaderaButton, MaderaRoundedBox;
 import 'package:proto_madera_front/providers/providers.dart'
     show MaderaNav, ProviderBdd, ProviderLogin, ProviderSynchro;
 import 'package:proto_madera_front/providers/http_status.dart';
@@ -78,23 +78,12 @@ class _AuthenticationPageState extends State<AuthenticationPage> {
                   ),
                 ),
                 Center(
-                  child: Container(
-                    width: cTheme.Dimens.loginFormWidth,
-                    margin: EdgeInsets.all(8.0),
-                    padding: EdgeInsets.all(12.0),
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      border: Border.all(
-                        color: Colors.black,
-                        style: BorderStyle.solid,
-                        width: 2.0,
-                      ),
-                      borderRadius: BorderRadius.circular(10.0),
-                    ),
-                    child: SingleChildScrollView(
-                      child: Column(
-                        children: _buildForm(context),
-                      ),
+                  child: MaderaRoundedBox(
+                    boxWidth: cTheme.Dimens.loginFormWidth,
+                    boxHeight: cTheme.Dimens.loginFormHeight,
+                    edgeInsetsPadding: EdgeInsets.all(8.0),
+                    child: ListView(
+                      children: _buildForm(context),
                     ),
                   ),
                 ),
@@ -211,13 +200,20 @@ class _AuthenticationPageState extends State<AuthenticationPage> {
     children.add(StreamBuilder<bool>(
         stream: _loginFormBloc.login,
         builder: (context, snapshot) {
-          return MaderaButton(
-            onPressed: () async {
-              if ((snapshot.hasData && snapshot.data == true)) {
-                submit();
-              }
-            },
-            child: Text('Connexion'),
+          return Padding(
+            padding: EdgeInsets.symmetric(
+              horizontal: 20.0,
+            ),
+            child: MaderaButton(
+              onPressed: snapshot.hasData && snapshot.data == true
+                  ? () async {
+                      // submit();
+                      Provider.of<MaderaNav>(context)
+                          .redirectToPage(context, HomePage());
+                    }
+                  : null,
+              child: Text('Connexion'),
+            ),
           );
         }));
 

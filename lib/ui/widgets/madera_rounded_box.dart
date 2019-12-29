@@ -54,8 +54,9 @@ class MaderaRoundedBoxState extends State<MaderaRoundedBox> {
       decoration: BoxDecoration(
           border: Border.all(color: cTheme.MaderaColors.boxBorder, width: 2.0),
           borderRadius: BorderRadius.circular(20.0),
-          color:
-              widget.color != null ? widget.color : cTheme.MaderaColors.white),
+          color: widget.color != null
+              ? widget.color
+              : Theme.of(context).backgroundColor),
       child: widget.child,
     );
   }

@@ -3,7 +3,7 @@ import 'package:provider/provider.dart';
 
 import 'package:proto_madera_front/providers/providers.dart' show MaderaNav;
 import 'package:proto_madera_front/ui/widgets/custom_widgets.dart'
-    show AppBarMadera, CustomDrawer, MaderaScaffold;
+    show MaderaScaffold;
 import 'package:proto_madera_front/theme.dart' as cTheme;
 
 ///
@@ -20,13 +20,6 @@ class NotificationPage extends StatefulWidget {
 }
 
 class _NotificationPageState extends State<NotificationPage> {
-  ///
-  /// Prevents the use of the "back" button
-  ///
-  Future<bool> _onWillPopScope() async {
-    return false;
-  }
-
   //added to prepare for scaling
   @override
   void initState() {

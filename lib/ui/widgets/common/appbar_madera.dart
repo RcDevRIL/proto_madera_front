@@ -5,7 +5,6 @@ import 'package:proto_madera_front/providers/providers.dart' show MaderaNav;
 import 'package:proto_madera_front/ui/widgets/custom_widgets.dart'
     show ExitButton;
 import 'package:proto_madera_front/ui/pages/pages.dart' show HomePage;
-import 'package:proto_madera_front/theme.dart' as cTheme;
 
 ///
 /// Widget personnalisé pour une "AppBar" personnalisée
