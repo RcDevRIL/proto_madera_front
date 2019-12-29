@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:proto_madera_front/ui/widgets/labelled_icon.dart';
 import 'package:proto_madera_front/theme.dart' as cTheme;
 
 ///

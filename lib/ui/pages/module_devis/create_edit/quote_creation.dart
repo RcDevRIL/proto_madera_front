@@ -90,11 +90,11 @@ class _QuoteCreationState extends State<QuoteCreation> {
                         header: LabelledIcon(
                           icon: Icon(
                             Icons.calendar_today,
-                            color: cTheme.Colors.appBarTitle,
+                            color: cTheme.MaderaColors.textHeaderColor,
                           ),
                           text: Text(
                             'Date de création',
-                            style: cTheme.TextStyles.appBarTitle.copyWith(
+                            style: cTheme.MaderaTextStyles.appBarTitle.copyWith(
                               fontSize: 15.0,
                               fontWeight: FontWeight.w900,
                             ),
@@ -145,11 +145,11 @@ class _QuoteCreationState extends State<QuoteCreation> {
                         header: LabelledIcon(
                           icon: Icon(
                             Icons.info,
-                            color: cTheme.Colors.appBarTitle,
+                            color: cTheme.MaderaColors.textHeaderColor,
                           ),
                           text: Text(
                             'ID. Projet',
-                            style: cTheme.TextStyles.appBarTitle.copyWith(
+                            style: cTheme.MaderaTextStyles.appBarTitle.copyWith(
                               fontSize: 15.0,
                               fontWeight: FontWeight.w900,
                             ),
@@ -188,11 +188,11 @@ class _QuoteCreationState extends State<QuoteCreation> {
                       //   labelledIcon: LabelledIcon(
                       //     icon: Icon(
                       //       Icons.person,
-                      //       color: cTheme.Colors.appBarTitle,
+                      //       color: cTheme.MaderaColors.textHeaderColor,
                       //     ),
                       //     text: Text(
                       //       'Références Client',
-                      //       style: cTheme.TextStyles.appBarTitle.copyWith(
+                      //       style: cTheme.MaderaTextStyles.appBarTitle.copyWith(
                       //         fontSize: 15.0,
                       //         fontWeight: FontWeight.w900,
                       //       ),
@@ -211,7 +211,7 @@ class _QuoteCreationState extends State<QuoteCreation> {
                           padding: const EdgeInsets.symmetric(horizontal: 26.0),
                           child: Text(
                             'Identification',
-                            style: cTheme.TextStyles.appBarTitle.copyWith(
+                            style: cTheme.MaderaTextStyles.appBarTitle.copyWith(
                               fontSize: 24.0,
                               fontWeight: FontWeight.w900,
                             ),
@@ -226,11 +226,12 @@ class _QuoteCreationState extends State<QuoteCreation> {
                               child: LabelledIcon(
                                 icon: Icon(
                                   Icons.person,
-                                  color: cTheme.Colors.appBarTitle,
+                                  color: cTheme.MaderaColors.textHeaderColor,
                                 ),
                                 text: Text(
                                   'Nom ou Raison Sociale',
-                                  style: cTheme.TextStyles.appBarTitle.copyWith(
+                                  style: cTheme.MaderaTextStyles.appBarTitle
+                                      .copyWith(
                                     fontSize: 15.0,
                                     fontWeight: FontWeight.w900,
                                   ),
@@ -256,11 +257,12 @@ class _QuoteCreationState extends State<QuoteCreation> {
                               child: LabelledIcon(
                                 icon: Icon(
                                   Icons.home,
-                                  color: cTheme.Colors.appBarTitle,
+                                  color: cTheme.MaderaColors.textHeaderColor,
                                 ),
                                 text: Text(
                                   'Adresse client',
-                                  style: cTheme.TextStyles.appBarTitle.copyWith(
+                                  style: cTheme.MaderaTextStyles.appBarTitle
+                                      .copyWith(
                                     fontSize: 15.0,
                                     fontWeight: FontWeight.w900,
                                   ),
@@ -299,7 +301,7 @@ class _QuoteCreationState extends State<QuoteCreation> {
                           padding: const EdgeInsets.symmetric(horizontal: 26.0),
                           child: Text(
                             'Contacts',
-                            style: cTheme.TextStyles.appBarTitle.copyWith(
+                            style: cTheme.MaderaTextStyles.appBarTitle.copyWith(
                               fontSize: 24.0,
                               fontWeight: FontWeight.w900,
                             ),
@@ -314,11 +316,12 @@ class _QuoteCreationState extends State<QuoteCreation> {
                               child: LabelledIcon(
                                 icon: Icon(
                                   Icons.phone,
-                                  color: cTheme.Colors.appBarTitle,
+                                  color: cTheme.MaderaColors.textHeaderColor,
                                 ),
                                 text: Text(
                                   'Téléphone',
-                                  style: cTheme.TextStyles.appBarTitle.copyWith(
+                                  style: cTheme.MaderaTextStyles.appBarTitle
+                                      .copyWith(
                                     fontSize: 15.0,
                                     fontWeight: FontWeight.w900,
                                   ),
@@ -352,11 +355,12 @@ class _QuoteCreationState extends State<QuoteCreation> {
                               child: LabelledIcon(
                                 icon: Icon(
                                   Icons.mail,
-                                  color: cTheme.Colors.appBarTitle,
+                                  color: cTheme.MaderaColors.textHeaderColor,
                                 ),
                                 text: Text(
                                   'Adresse mail',
-                                  style: cTheme.TextStyles.appBarTitle.copyWith(
+                                  style: cTheme.MaderaTextStyles.appBarTitle
+                                      .copyWith(
                                     fontSize: 15.0,
                                     fontWeight: FontWeight.w900,
                                   ),
@@ -423,11 +427,11 @@ class _QuoteCreationState extends State<QuoteCreation> {
                     header: LabelledIcon(
                       icon: Icon(
                         Icons.info,
-                        color: cTheme.Colors.appBarTitle,
+                        color: cTheme.MaderaColors.textHeaderColor,
                       ),
                       text: Text(
                         'Description Projet',
-                        style: cTheme.TextStyles.appBarTitle.copyWith(
+                        style: cTheme.MaderaTextStyles.appBarTitle.copyWith(
                           fontSize: 15.0,
                           fontWeight: FontWeight.w900,
                         ),
