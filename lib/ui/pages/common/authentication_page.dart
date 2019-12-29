@@ -209,9 +209,9 @@ class _AuthenticationPageState extends State<AuthenticationPage> {
             child: MaderaButton(
               onPressed: snapshot.hasData && snapshot.data == true
                   ? () async {
-                      // submit();
-                      Provider.of<MaderaNav>(context)
-                          .redirectToPage(context, HomePage());
+                       submit();
+                     // Provider.of<MaderaNav>(context)
+                    //     .redirectToPage(context, HomePage());
                     }
                   : null,
               child: Text('Connexion'),
