@@ -58,9 +58,9 @@ class _QuoteCreationState extends State<QuoteCreation> {
   Widget build(BuildContext context) {
     Provider.of<ProviderProjet>(context)
         .flush(); // Make sure providerProjet is empty
-    Provider.of<ProviderProjet>(context)
-        .setIdProjet(_idProjectTextController.text);
-    Provider.of<ProviderProjet>(context).setDate(dateCreationProjet);
+    Provider.of<ProviderProjet>(context).idProjet =
+        _idProjectTextController.text;
+    Provider.of<ProviderProjet>(context).dateCreation = dateCreationProjet;
     return MaderaScaffold(
       passedContext: context,
       child: Center(
@@ -69,7 +69,7 @@ class _QuoteCreationState extends State<QuoteCreation> {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
             Text('Informations générales',
-                style: cTheme.TextStyles.appBarTitle.copyWith(
+                style: cTheme.MaderaTextStyles.appBarTitle.copyWith(
                   fontSize: 32.0,
                 )),
             GradientFrame(
@@ -86,11 +86,12 @@ class _QuoteCreationState extends State<QuoteCreation> {
                           labelledIcon: LabelledIcon(
                             icon: Icon(
                               Icons.calendar_today,
-                              color: cTheme.Colors.appBarTitle,
+                              color: cTheme.MaderaColors.textHeaderColor,
                             ),
                             text: Text(
                               "Date de création",
-                              style: cTheme.TextStyles.appBarTitle.copyWith(
+                              style:
+                                  cTheme.MaderaTextStyles.appBarTitle.copyWith(
                                 fontSize: 15.0,
                                 fontWeight: FontWeight.w900,
                               ),
@@ -151,11 +152,12 @@ class _QuoteCreationState extends State<QuoteCreation> {
                           labelledIcon: LabelledIcon(
                             icon: Icon(
                               Icons.person,
-                              color: cTheme.Colors.appBarTitle,
+                              color: cTheme.MaderaColors.textHeaderColor,
                             ),
                             text: Text(
                               "Références Client",
-                              style: cTheme.TextStyles.appBarTitle.copyWith(
+                              style:
+                                  cTheme.MaderaTextStyles.appBarTitle.copyWith(
                                 fontSize: 15.0,
                                 fontWeight: FontWeight.w900,
                               ),
@@ -189,11 +191,12 @@ class _QuoteCreationState extends State<QuoteCreation> {
                           labelledIcon: LabelledIcon(
                             icon: Icon(
                               Icons.info,
-                              color: cTheme.Colors.appBarTitle,
+                              color: cTheme.MaderaColors.textHeaderColor,
                             ),
                             text: Text(
                               "ID. Projet",
-                              style: cTheme.TextStyles.appBarTitle.copyWith(
+                              style:
+                                  cTheme.MaderaTextStyles.appBarTitle.copyWith(
                                 fontSize: 15.0,
                                 fontWeight: FontWeight.w900,
                               ),
@@ -240,11 +243,12 @@ class _QuoteCreationState extends State<QuoteCreation> {
                           labelledIcon: LabelledIcon(
                             icon: Icon(
                               Icons.info,
-                              color: cTheme.Colors.appBarTitle,
+                              color: cTheme.MaderaColors.textHeaderColor,
                             ),
                             text: Text(
                               "Description Projet",
-                              style: cTheme.TextStyles.appBarTitle.copyWith(
+                              style:
+                                  cTheme.MaderaTextStyles.appBarTitle.copyWith(
                                 fontSize: 15.0,
                                 fontWeight: FontWeight.w900,
                               ),
@@ -271,11 +275,11 @@ class _QuoteCreationState extends State<QuoteCreation> {
                   shape: BoxShape.circle,
                   border: Border.all(
                       color: canValidateForm
-                          ? cTheme.Colors.containerBackgroundLinearStart
+                          ? cTheme.MaderaColors.maderaLightGreen
                           : Colors.grey,
                       width: 2),
                   color: canValidateForm
-                      ? cTheme.Colors.containerBackgroundLinearEnd
+                      ? cTheme.MaderaColors.maderaBlueGreen
                       : Colors.grey,
                 ),
                 child: IconButton(
@@ -295,7 +299,7 @@ class _QuoteCreationState extends State<QuoteCreation> {
                       : null,
                   icon: Icon(
                     Icons.check,
-                    color: cTheme.Colors.white,
+                    color: Colors.white,
                   ),
                 ),
               ),
@@ -304,14 +308,13 @@ class _QuoteCreationState extends State<QuoteCreation> {
                 decoration: BoxDecoration(
                     shape: BoxShape.circle,
                     border: Border.all(
-                        color: cTheme.Colors.containerBackgroundLinearStart,
-                        width: 2),
-                    color: cTheme.Colors.containerBackgroundLinearEnd),
+                        color: cTheme.MaderaColors.maderaLightGreen, width: 2),
+                    color: cTheme.MaderaColors.maderaBlueGreen),
                 child: IconButton(
                   onPressed: () {},
                   icon: Icon(
                     Icons.delete,
-                    color: cTheme.Colors.white,
+                    color: Colors.white,
                   ),
                 ),
               )

@@ -62,7 +62,8 @@ class _AddModuleState extends State<AddModule> {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
             Text("Ajouter un module",
-                style: cTheme.TextStyles.appBarTitle.copyWith(fontSize: 32.0)),
+                style: cTheme.MaderaTextStyles.appBarTitle
+                    .copyWith(fontSize: 32.0)),
             GradientFrame(
               child: SingleChildScrollView(
                 controller: _formScrollController,
@@ -81,12 +82,14 @@ class _AddModuleState extends State<AddModule> {
                                 isExpanded: true,
                                 hint: Text('$dropdownValue'),
                                 icon: Icon(Icons.arrow_drop_down,
-                                    color: cTheme
-                                        .Colors.containerBackgroundLinearStart),
+                                    color:
+                                        cTheme.MaderaColors.maderaLightGreen),
                                 iconSize: 35,
                                 elevation: 16,
-                                style:
-                                    TextStyle(color: cTheme.Colors.appBarTitle),
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .title
+                                    .apply(fontSizeDelta: -4),
                                 underline: Container(
                                   height: 2,
                                   width: 100.0,
@@ -154,11 +157,12 @@ class _AddModuleState extends State<AddModule> {
                               labelledIcon: LabelledIcon(
                                 icon: Icon(
                                   Icons.text_fields,
-                                  color: cTheme.Colors.appBarTitle,
+                                  color: cTheme.MaderaColors.textHeaderColor,
                                 ),
                                 text: Text(
                                   "Nom du module",
-                                  style: cTheme.TextStyles.appBarTitle.copyWith(
+                                  style: cTheme.MaderaTextStyles.appBarTitle
+                                      .copyWith(
                                     fontSize: 13.0,
                                     fontWeight: FontWeight.w600,
                                   ),
@@ -410,11 +414,11 @@ class _AddModuleState extends State<AddModule> {
                   shape: BoxShape.circle,
                   border: Border.all(
                       color: _canValidateForm
-                          ? cTheme.Colors.containerBackgroundLinearStart
+                          ? cTheme.MaderaColors.maderaLightGreen
                           : Colors.grey,
                       width: 2),
                   color: _canValidateForm
-                      ? cTheme.Colors.containerBackgroundLinearEnd
+                      ? cTheme.MaderaColors.maderaBlueGreen
                       : Colors.grey,
                 ),
                 child: IconButton(
@@ -434,7 +438,7 @@ class _AddModuleState extends State<AddModule> {
                       : null,
                   icon: Icon(
                     Icons.check,
-                    color: cTheme.Colors.white,
+                    color: Colors.white,
                   ),
                 ),
               ),
@@ -444,11 +448,11 @@ class _AddModuleState extends State<AddModule> {
                   shape: BoxShape.circle,
                   border: Border.all(
                       color: _canValidateForm
-                          ? cTheme.Colors.containerBackgroundLinearStart
+                          ? cTheme.MaderaColors.maderaLightGreen
                           : Colors.grey,
                       width: 2),
                   color: _canValidateForm
-                      ? cTheme.Colors.containerBackgroundLinearEnd
+                      ? cTheme.MaderaColors.maderaBlueGreen
                       : Colors.grey,
                 ),
                 child: IconButton(
@@ -461,7 +465,7 @@ class _AddModuleState extends State<AddModule> {
                       : null,
                   icon: Icon(
                     Icons.delete,
-                    color: cTheme.Colors.white,
+                    color: Colors.white,
                   ),
                 ),
               )

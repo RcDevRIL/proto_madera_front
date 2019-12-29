@@ -11,7 +11,7 @@ class DatabaseDao extends DatabaseAccessor<MaderaDatabase>
   DatabaseDao(MaderaDatabase db) : super(db);
 
   //Méthode suppresion bdd
-  //TODO Pourquoi on ne supprime pas tout? méthode également présente dans ProviderBDD??
+  //TODO Pourquoi on ne supprime pas tout?
   void drop() {
     delete(utilisateur).go();
   }

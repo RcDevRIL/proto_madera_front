@@ -71,8 +71,7 @@ class _QuoteOverviewState extends State<QuoteOverview> {
                     scrollDirection: Axis.vertical,
                     child: Container(
                       decoration: BoxDecoration(
-                        border:
-                            Border.all(color: cTheme.Colors.primaryTextColor),
+                        border: Border.all(color: Colors.black),
                       ),
                       width: 2500,
                       height: 665,
@@ -84,7 +83,8 @@ class _QuoteOverviewState extends State<QuoteOverview> {
                           DataColumn(
                             label: MaderaTableCell(
                               textCell: 'Date de création',
-                              backgroundColor: cTheme.Colors.appBarMainColor,
+                              backgroundColor:
+                                  cTheme.MaderaColors.appBarMainColor,
                               cellFontSize: 20,
                               height: 100,
                               width: 250,
@@ -93,7 +93,8 @@ class _QuoteOverviewState extends State<QuoteOverview> {
                           DataColumn(
                             label: MaderaTableCell(
                               textCell: 'Ref.client',
-                              backgroundColor: cTheme.Colors.appBarMainColor,
+                              backgroundColor:
+                                  cTheme.MaderaColors.appBarMainColor,
                               cellFontSize: 20,
                               height: 100,
                               width: 250,
@@ -102,7 +103,8 @@ class _QuoteOverviewState extends State<QuoteOverview> {
                           DataColumn(
                             label: MaderaTableCell(
                               textCell: 'Ref. projet',
-                              backgroundColor: cTheme.Colors.appBarMainColor,
+                              backgroundColor:
+                                  cTheme.MaderaColors.appBarMainColor,
                               cellFontSize: 20,
                               height: 100,
                               width: 250,
@@ -111,7 +113,8 @@ class _QuoteOverviewState extends State<QuoteOverview> {
                           DataColumn(
                             label: MaderaTableCell(
                               textCell: 'Nom du projet',
-                              backgroundColor: cTheme.Colors.appBarMainColor,
+                              backgroundColor:
+                                  cTheme.MaderaColors.appBarMainColor,
                               cellFontSize: 20,
                               height: 100,
                               width: 250,

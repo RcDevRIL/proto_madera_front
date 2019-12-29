@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:logger/logger.dart';
 
+import 'package:proto_madera_front/theme.dart' as cTheme;
+
 ///
 /// Widget personnalisé pour un bouton
 ///
@@ -23,16 +25,8 @@ class MaderaButton extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: RaisedButton(
-        color: Color.fromRGBO(139, 195, 74, 1.0),
-        textColor: Colors.white,
+        textColor: Colors.white, //override theme
         elevation: 5.0,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(8.0),
-          side: BorderSide(
-            color: Color.fromRGBO(117, 117, 117, 0.5),
-            width: 2.0,
-          ),
-        ),
         onPressed: this.onPressed,
         child: this.child,
       ),

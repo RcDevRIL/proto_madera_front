@@ -1,10 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 
-import 'package:proto_madera_front/providers/providers.dart' show MaderaNav;
 import 'package:proto_madera_front/ui/widgets/custom_widgets.dart'
-    show AppBarMadera, CustomDrawer, MaderaScaffold;
-import 'package:proto_madera_front/theme.dart' as cTheme;
+    show MaderaScaffold;
 
 ///
 /// "Page du profil utilisateur"

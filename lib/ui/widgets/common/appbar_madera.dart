@@ -5,7 +5,6 @@ import 'package:proto_madera_front/providers/providers.dart' show MaderaNav;
 import 'package:proto_madera_front/ui/widgets/custom_widgets.dart'
     show ExitButton;
 import 'package:proto_madera_front/ui/pages/pages.dart' show HomePage;
-import 'package:proto_madera_front/theme.dart' as cTheme;
 
 ///
 /// Widget personnalisé pour une "AppBar" personnalisée
@@ -24,21 +23,17 @@ class AppBarMadera extends StatelessWidget {
       child: Consumer<MaderaNav>(
         builder: (context, mN, child) => AppBar(
           primary: true,
-          elevation: cTheme.Dimens.appBarElevation,
-          backgroundColor: cTheme.Colors.appBarMainColor,
-          iconTheme: IconThemeData(
-            color: Color.fromRGBO(39, 72, 0, 1.0),
-          ),
           leading: mN.pageIndex == -1 ? ExitButton() : null,
           title: Text(
             mN.pageTitle,
-            style: cTheme.TextStyles.appBarTitle,
           ),
           centerTitle: false,
           actions: <Widget>[
             mN.pageIndex !=
                     -1 // si page login ou bug, on ne veux pas de bouton qui redirige à l'accueil
                 ? FlatButton(
+                    padding: EdgeInsets.all(0.0), //override theme
+                    shape: Border.all(style: BorderStyle.none), //override theme
                     onPressed: () => mN.redirectToPage(context, HomePage()),
                     child: Image(
                       image: AssetImage("assets/img/logo-madera.png"),

@@ -5,6 +5,7 @@ import 'package:provider/provider.dart';
 import 'package:proto_madera_front/providers/providers.dart'
     show MaderaNav, ProviderSynchro;
 import 'package:proto_madera_front/ui/pages/pages.dart' show AuthenticationPage;
+import 'package:proto_madera_front/theme.dart' as cTheme;
 
 ///
 /// Widget personnalisé pour une barre de progression linéaire
@@ -90,6 +91,8 @@ class _MyLinearProgressIndicatorState extends State<MyLinearProgressIndicator>
     return Container(
       child: LinearProgressIndicator(
         backgroundColor: backgroundColor,
+        valueColor: AlwaysStoppedAnimation<Color>(cTheme.MaderaColors
+            .maderaGreen), //permet d'override la propriété accentColor utilisée auparavant
         value: progressAnimation.value,
       ),
     );

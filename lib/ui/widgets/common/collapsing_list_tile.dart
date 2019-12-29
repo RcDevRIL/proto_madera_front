@@ -64,7 +64,7 @@ class _CollapsingListTileState extends State<CollapsingListTile> {
             Icon(
               widget.icon,
               color: widget.isSelected
-                  ? cTheme.Colors.selectedColor
+                  ? cTheme.MaderaColors.selectedColor
                   : Colors.white30,
               size: cTheme.Dimens.drawerIconSize,
             ),
@@ -75,8 +75,9 @@ class _CollapsingListTileState extends State<CollapsingListTile> {
                 ? Text(
                     widget.title,
                     style: widget.isSelected
-                        ? cTheme.TextStyles.listTileSelectedTextStyle
-                        : cTheme.TextStyles.listTileDefaultTextStyle,
+                        ? cTheme.MaderaTextStyles.listTileSelectedTextStyle
+                        : cTheme.MaderaTextStyles.defaultTextStyle
+                            .apply(color: Colors.white70),
                   )
                 : Container(),
           ],

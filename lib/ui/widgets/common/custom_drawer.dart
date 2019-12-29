@@ -54,7 +54,7 @@ class _CustomDrawerState extends State<CustomDrawer>
           elevation: cTheme.Dimens.appBarElevation,
           child: Container(
             width: widthAnimation.value,
-            color: cTheme.Colors.drawerBackgroundColor,
+            color: cTheme.MaderaColors.drawerBackgroundColor,
             child: Column(
               // crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisAlignment: MainAxisAlignment.center,
@@ -144,7 +144,8 @@ class _CustomDrawerState extends State<CustomDrawer>
                   endIndent: 12.0,
                 ),
                 FlatButton(
-                  padding: EdgeInsets.all(0.0),
+                  padding: EdgeInsets.all(0.0), //override theme
+                  shape: Border.all(style: BorderStyle.none), //override theme
                   onPressed: () {
                     setState(() {
                       isCollapsed = !isCollapsed;
@@ -156,7 +157,7 @@ class _CustomDrawerState extends State<CustomDrawer>
                   child: AnimatedIcon(
                     icon: AnimatedIcons.menu_close,
                     progress: _animationController,
-                    color: cTheme.Colors.selectedColor,
+                    color: cTheme.MaderaColors.selectedColor,
                     size: 50.0,
                   ),
                 ),

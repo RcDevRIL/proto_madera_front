@@ -62,6 +62,7 @@ class ProviderBdd with ChangeNotifier {
   }
 
   void drop() {
+    //Drop la base de données
     DatabaseDao(db).drop();
   }
 

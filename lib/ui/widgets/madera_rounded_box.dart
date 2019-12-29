@@ -52,9 +52,11 @@ class MaderaRoundedBoxState extends State<MaderaRoundedBox> {
           ? widget.edgeInsetsMargin
           : EdgeInsets.all(4),
       decoration: BoxDecoration(
-          border: Border.all(color: cTheme.Colors.boxBorder, width: 2.0),
+          border: Border.all(color: cTheme.MaderaColors.boxBorder, width: 2.0),
           borderRadius: BorderRadius.circular(20.0),
-          color: widget.color != null ? widget.color : cTheme.Colors.white),
+          color: widget.color != null
+              ? widget.color
+              : Theme.of(context).backgroundColor),
       child: widget.child,
     );
   }

@@ -47,7 +47,7 @@ class _FinishingsState extends State<Finishings> {
           children: <Widget>[
             Text(
               'Finitions du module',
-              style: cTheme.TextStyles.appBarTitle.copyWith(
+              style: cTheme.MaderaTextStyles.appBarTitle.copyWith(
                 fontSize: 32.0,
               ),
             ),
@@ -61,12 +61,12 @@ class _FinishingsState extends State<Finishings> {
                   ),
                   Text(
                     'Finitions extérieures',
-                    style: cTheme.TextStyles.appBarTitle.copyWith(
+                    style: cTheme.MaderaTextStyles.appBarTitle.copyWith(
                       fontSize: 20.0,
                     ),
                   ),
                   Divider(
-                    color: cTheme.Colors.white,
+                    color: Colors.white,
                     indent: MediaQuery.of(context).size.width / 8,
                     endIndent: MediaQuery.of(context).size.width / 8,
                     thickness: 1.0,
@@ -126,9 +126,8 @@ class _FinishingsState extends State<Finishings> {
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
                   border: Border.all(
-                      color: cTheme.Colors.containerBackgroundLinearStart,
-                      width: 2),
-                  color: cTheme.Colors.containerBackgroundLinearEnd,
+                      color: cTheme.MaderaColors.maderaLightGreen, width: 2),
+                  color: cTheme.MaderaColors.maderaBlueGreen,
                 ),
                 child: IconButton(
                   tooltip: "Valider finition",
@@ -139,7 +138,7 @@ class _FinishingsState extends State<Finishings> {
                   },
                   icon: Icon(
                     Icons.check,
-                    color: cTheme.Colors.white,
+                    color: Colors.white,
                   ),
                 ),
               ),
@@ -148,9 +147,8 @@ class _FinishingsState extends State<Finishings> {
                 decoration: BoxDecoration(
                     shape: BoxShape.circle,
                     border: Border.all(
-                        color: cTheme.Colors.containerBackgroundLinearStart,
-                        width: 2),
-                    color: cTheme.Colors.containerBackgroundLinearEnd),
+                        color: cTheme.MaderaColors.maderaLightGreen, width: 2),
+                    color: cTheme.MaderaColors.maderaBlueGreen),
                 child: IconButton(
                   tooltip: "Annuler",
                   onPressed: () {
@@ -160,7 +158,7 @@ class _FinishingsState extends State<Finishings> {
                   },
                   icon: Icon(
                     Icons.delete,
-                    color: cTheme.Colors.white,
+                    color: Colors.white,
                   ),
                 ),
               )
