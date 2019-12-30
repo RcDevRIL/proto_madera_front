@@ -17,10 +17,6 @@ class Module extends Table {
   //Nom du module
   TextColumn get nom => text()();
 
-  TextColumn get angle => text()();
-
   TextColumn get natureModule => text()();
-
-  BoolColumn get modele => boolean()();
 
 }

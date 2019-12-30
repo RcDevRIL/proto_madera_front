@@ -1,4 +1,5 @@
 export 'package:proto_madera_front/database/tables/composant.dart';
+export 'package:proto_madera_front/database/tables/composant_groupe.dart';
 export 'package:proto_madera_front/database/tables/utilisateur.dart';
 export 'package:proto_madera_front/database/tables/gamme.dart';
 export 'package:proto_madera_front/database/tables/module.dart';
@@ -8,4 +9,6 @@ export 'package:proto_madera_front/database/tables/client.dart';
 export 'package:proto_madera_front/database/tables/client_adresse.dart';
 export 'package:proto_madera_front/database/tables/adresse.dart';
 export 'package:proto_madera_front/database/tables/projet.dart';
-export 'package:proto_madera_front/database/tables/projet_module.dart';
+export 'package:proto_madera_front/database/tables/produit_module.dart';
+export 'package:proto_madera_front/database/tables/produit.dart';
+export 'package:proto_madera_front/database/tables/projet_produits.dart';
