@@ -10,6 +10,7 @@ void main() {
     final homePage = find.byType('HomePage');
     final authPage = find.byType('AuthenticationPage');
     final alertDialog = find.byType('AlertDialog');
+    final alertDialogOkButton = find.byValueKey('ok-button');
 
     FlutterDriver driver;
 
@@ -38,6 +39,8 @@ void main() {
 
       await driver.waitFor(alertDialog);
       assert(alertDialog != null);
+
+      await driver.tap(alertDialogOkButton);
 
       await driver.waitUntilNoTransientCallbacks();
 

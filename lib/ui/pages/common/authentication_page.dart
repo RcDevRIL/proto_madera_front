@@ -295,6 +295,7 @@ class _AuthenticationPageState extends State<AuthenticationPage> {
           content: Text('$message'),
           actions: <Widget>[
             MaderaButton(
+              key: Key('ok-button'),
               child: Text('OK'),
               onPressed: () {
                 Navigator.of(context).pop();
