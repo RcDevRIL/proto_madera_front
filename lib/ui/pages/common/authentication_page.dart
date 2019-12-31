@@ -124,6 +124,7 @@ class _AuthenticationPageState extends State<AuthenticationPage> {
               width: /* MediaQuery.of(context).size.width / 2 */ 200.0,
               height: 80.5,
               child: TextField(
+                key: Key('username'),
                 onChanged: _loginFormBloc.onEmailChanged,
                 onSubmitted: _emailController.text.isNotEmpty &&
                         _passwordController.text.isNotEmpty
@@ -175,6 +176,7 @@ class _AuthenticationPageState extends State<AuthenticationPage> {
               width: /* MediaQuery.of(context).size.width / 2 */ 200.0,
               height: 80.5,
               child: TextField(
+                key: Key('password'),
                 onChanged: _loginFormBloc.onPasswordChanged,
                 onSubmitted: _emailController.text.isNotEmpty &&
                         _passwordController.text.isNotEmpty
@@ -207,11 +209,12 @@ class _AuthenticationPageState extends State<AuthenticationPage> {
               horizontal: 20.0,
             ),
             child: MaderaButton(
+              key: Key('connect'),
               onPressed: snapshot.hasData && snapshot.data == true
                   ? () async {
-                       submit();
-                     // Provider.of<MaderaNav>(context)
-                    //     .redirectToPage(context, HomePage());
+                      submit();
+                      // Provider.of<MaderaNav>(context)
+                      //     .redirectToPage(context, HomePage());
                     }
                   : null,
               child: Text('Connexion'),
