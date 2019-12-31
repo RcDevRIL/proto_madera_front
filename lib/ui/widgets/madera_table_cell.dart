@@ -1,7 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:logger/logger.dart';
 
+/// A customizable cell to display content
+///
+/// This widget
+///
+/// @author HELIOT David, CHEVALLIER Romain, LADOUCE Fabien
+///
+/// @version 0.4-PRE-RELEASE
 class MaderaTableCell extends StatefulWidget {
+  /// Creates a widget describing a table cell.
+  ///
+  /// The [cellFontSize], [height], [textCell] and [width] arguments must not be null.
+  /// Additionally, it is possible to define a [backgroundColor].
   final String textCell;
   final double height, width, cellFontSize;
   final Color backgroundColor;

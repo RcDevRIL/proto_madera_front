@@ -1,19 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:proto_madera_front/theme.dart' as cTheme;
 
-///
-/// Custom widget pour une Card
+/// A custom widget consists of a [Card], with rounded corners.
 ///
 /// @author HELIOT David, CHEVALLIER Romain, LADOUCE Fabien
 ///
 /// @version 0.4-PRE-RELEASE
 class MaderaCard extends StatefulWidget {
+  /// Creates a card with rounded corners
+  ///
+  /// The [header] and [child] arguments must not be null.
+  /// Additionally, [cardHeight] and [cardWidth] must have non-negative values.
   final Widget header;
   final double cardHeight;
   final double cardWidth;
   final Widget child;
 
-  //DateFormat('yyyy-MM-dd').format(DateTime.now()) // Va être généré automatiquement à l'avenir
   const MaderaCard({
     Key key,
     this.cardHeight,
