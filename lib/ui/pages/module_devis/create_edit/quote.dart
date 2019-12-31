@@ -192,6 +192,7 @@ class _QuoteState extends State<Quote> {
                           : null,
                       items: Provider.of<ProviderProjet>(context)
                           .modeleList
+                          .keys
                           .map<DropdownMenuItem<String>>(
                               (String value) => DropdownMenuItem<String>(
                                     value: value,
@@ -207,13 +208,13 @@ class _QuoteState extends State<Quote> {
                       children: <Widget>[
                         ListView.separated(
                           shrinkWrap: true,
-                          itemCount: moduleList.length,
+                          itemCount: moduleList.keys.length,
                           itemBuilder: (c, i) => Material(
                             child: InkWell(
                               highlightColor: Colors.transparent,
                               splashColor: cTheme.MaderaColors.maderaBlueGreen,
                               child: ListTile(
-                                title: Text(moduleList[i]),
+                                title: Text(moduleList.keys.elementAt(i)),
                               ),
                               onTap: () {
                                 log.d("Modifying module...");

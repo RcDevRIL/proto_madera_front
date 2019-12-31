@@ -57,10 +57,7 @@ class _QuoteCreationState extends State<QuoteCreation> {
   @override
   Widget build(BuildContext context) {
     Provider.of<ProviderProjet>(context)
-        .flush(); // Make sure providerProjet is empty
-    Provider.of<ProviderProjet>(context).idProjet =
-        _idProjectTextController.text;
-    Provider.of<ProviderProjet>(context).dateCreation = dateCreationProjet;
+        .flush(); // Make sure providerProjet is empty$
     return MaderaScaffold(
       passedContext: context,
       child: Center(
@@ -402,15 +399,13 @@ class _QuoteCreationState extends State<QuoteCreation> {
                       maxLines: 25,
                       controller: _descriptionTextController,
                       onChanged: (text) {
-                        setState(() {
-                          if (text.isNotEmpty) {
-                            Provider.of<ProviderProjet>(context)
-                                .setDescription(text);
-                            canValidateForm = true;
-                          } else {
-                            canValidateForm = false;
-                          }
-                        });
+                        if (text.isNotEmpty) {
+                          Provider.of<ProviderProjet>(context)
+                              .setDescription(text);
+                          canValidateForm = true;
+                        } else {
+                          canValidateForm = false;
+                        }
                       },
                       keyboardType: TextInputType.multiline,
                       enabled: true,

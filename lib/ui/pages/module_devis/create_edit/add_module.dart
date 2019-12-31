@@ -426,12 +426,14 @@ class _AddModuleState extends State<AddModule> {
                       ? () {
                           log.d("Validating Module...");
                           Provider.of<ProviderProjet>(context)
-                              .addModuleToProduct([
-                            dropdownValue,
-                            _nameTextController.text ??= 'error',
-                            _sizeTextController.text ??= 'errorSize',
-                            _widthTextController.text ??= 'errorWitdh',
-                          ]);
+                              .addModuleToProduct({
+                            'nature': dropdownValue,
+                            'name': _nameTextController.text ??= 'error',
+                            'longueur': _sizeTextController.text ??=
+                                'errorSize',
+                            'largeur': _widthTextController.text ??=
+                                'errorWitdh',
+                          });
                           Provider.of<MaderaNav>(context)
                               .redirectToPage(context, Quote());
                         }

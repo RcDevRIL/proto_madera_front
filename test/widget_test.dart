@@ -52,7 +52,7 @@ void main() {
         expect(providerProjet.description.isNotEmpty,
             true); //description n'est plus vide
         providerProjet.productModules
-            .add('test'); //ajout d'un module dans la liste
+            .addAll({'test': 'test'}); //ajout d'un module dans la liste
         providerProjet.setModeleListFromGammeID(
             1); //Changement de la liste des modèles à partir de la gamme
         expect(providerProjet.productModules.isEmpty,
