@@ -11,9 +11,21 @@ class MaderaCard extends StatefulWidget {
   ///
   /// The [header] and [child] arguments must not be null.
   /// Additionally, [cardHeight] and [cardWidth] must have non-negative values.
+
+  /// Represents the header of this card.
+  ///
+  /// Most of the time, it's a [LabelledIcon] widget, but it can be anything else.
   final Widget header;
+
+  /// If non-null, requires this card to have exactly this height.
   final double cardHeight;
+
+  /// If non-null, requires this card to have exactly this width.
   final double cardWidth;
+
+  /// The widget below this widget in the tree.
+  ///
+  /// {@macro flutter.widgets.child}
   final Widget child;
 
   const MaderaCard({

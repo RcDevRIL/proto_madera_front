@@ -12,8 +12,14 @@ class LabelledIcon extends StatelessWidget {
   ///
   /// The [icon] and [text] arguments must not be null.
   /// Additionally, [mASize] must be of type [MainAxisSize].
+
+  /// The icon to be displayed in this labelled icon.
   final Icon icon;
+
+  /// The text to be displayed in this labelled icon.
   final Text text;
+
+  /// The main axis size for this widget.
   final MainAxisSize mASize;
 
   const LabelledIcon(

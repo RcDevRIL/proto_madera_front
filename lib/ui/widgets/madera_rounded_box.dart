@@ -10,11 +10,29 @@ import 'package:proto_madera_front/theme.dart' as cTheme;
 ///
 /// @version 0.4-PRE-RELEASE
 class MaderaRoundedBox extends StatefulWidget {
+  /// Creates a box with rounded corners.
+  ///
+  /// The [boxHeight], [child] and [edeInsetsPadding] arguments must not be null.
+  /// Additionally, the [boxWidth], [edgeInsetsPadding] and [color] can be used to better fit our expectations.
+
+  /// If non-null, requires this rounded box to have exactly this width.
   final double boxWidth;
+
+  /// Requires this rounded box to have exactly this height.
   final double boxHeight;
+
+  /// The widget below this widget in the tree.
+  ///
+  /// {@macro flutter.widgets.child}
   final Widget child;
+
+  /// The [child] is placed inside this padding.
   final EdgeInsetsGeometry edgeInsetsPadding;
+
+  /// Empty space to surround the [child].
   final EdgeInsetsGeometry edgeInsetsMargin;
+
+  /// The primary color to use for this box.
   final Color color;
 
   MaderaRoundedBox({

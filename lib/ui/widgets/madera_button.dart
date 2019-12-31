@@ -14,7 +14,13 @@ class MaderaButton extends StatelessWidget {
   ///
   /// The [child] argument must not be null.
   /// If the [onPressed] callback is null, then the button will be disabled by default.
+
+  /// The callback that is called when the button is long-pressed.
   final Function onPressed;
+
+  /// The button's label.
+  ///
+  /// Often a [Text] widget.
   final Widget child;
   final Logger log = Logger();
 
