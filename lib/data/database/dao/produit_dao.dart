@@ -14,4 +14,22 @@ class ProduitDao extends DatabaseAccessor<MaderaDatabase>
     await delete(produit).go();
     await db.batch((b) => b.insertAll(produit, listProduit));
   }
+
+  ///Insertion des produits client
+  Future insertProduitClient(List<ProduitData> listProduit) async {
+    await (delete(produit)..where((p) => p.modele.equals(false))).go();
+    await db.batch((b) => b.insertAll(produit, listProduit));
+
+  }
+
+  ///Insertion des produits modele
+  Future insertProduitModele(List<ProduitData> listProduit) async {
+    await (delete(produit)..where((p) => p.modele.equals(true))).go();
+    await db.batch((b) => b.insertAll(produit, listProduit));
+  }
+
+  ///Création d'un produit
+  Future createProduit(ProduitData produitData) async {
+    return await into(produit).insert(produitData);
+  }
 }

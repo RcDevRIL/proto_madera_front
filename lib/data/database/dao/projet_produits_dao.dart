@@ -13,4 +13,10 @@ class ProjetProduitsDao extends DatabaseAccessor<MaderaDatabase>
     await delete(projetProduits).go();
     await db.batch((b) => b.insertAll(projetProduits, listProjetPoduit));
   }
+
+  Future createProjetProduit(int projetId, int produitId) async {
+    await into(projetProduits).insert(
+      ProjetProduit(projetId: projetId, produitId: produitId),
+    );
+  }
 }

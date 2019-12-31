@@ -9,8 +9,16 @@ class ProduitModuleDao extends DatabaseAccessor<MaderaDatabase>
     with _$ProduitModuleDaoMixin {
   ProduitModuleDao(MaderaDatabase db) : super(db);
 
+  ///Méthode de synchronisation
   Future insertAll(List<ProduitModuleData> listProduitModule) async {
     await delete(produitModule).go();
     await db.batch((b) => b.insertAll(produitModule, listProduitModule));
+  }
+
+
+  Future createProduitModule(int produitId, ProduitModuleData produitModuleData) async {
+    //TODO il va avoir des problèmes sur le final de la variable ainsi que plein de required dans la construction !
+    //produitModuleData.produitId = produitId;
+    await into(produitModule).insert(produitModuleData);
   }
 }

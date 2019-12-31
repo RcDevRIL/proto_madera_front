@@ -81,6 +81,60 @@ class ProviderBdd with ChangeNotifier {
     super.dispose();
   }
 
+  //TODO a voir mais risque d'avoir un problème sur tous les constructeurs ! peut être créer des models ?
+//TODO ajouter un boolean synchro et l'init a false, il se passe que lorsqu'il est renseigné côté serveur
+  ///Méthode pour créer le projet ainsi que ses produits (infos relatives aux produits, produitModule..)
+  void createAll(ProjetData projetData,
+      List<ProduitWithModule> listProduitWithModule) async {
+    //TODO a tester, ça renvoyer un id genere
+    int projetId = await createProject(projetData);
+    print(projetId);
+    //Si le projet a été créé alors on continue
+    if (projetId != 0) {
+      var produitId;
+      listProduitWithModule.forEach((produitWithModule) async => {
+            //TODO a tester, ça renvoyer un id genere
+            produitId = await createProduit(produitWithModule.produit),
+            //Si la somme de isProduitCreated est égal à la longueur des éléments dans listProduit, alors on continue
+            if (produitId != 0)
+              {
+                createProjetProduit(projetId, produitId),
+                //TODO il va avoir des problèmes sur le final de la variable ainsi que plein de required dans la construction !
+                createProduitModule(
+                    produitId, produitWithModule.listProduitModule),
+              }
+          });
+    }
+  }
+
+  ///Appel du dao pour la création d'un projet
+  Future<int> createProject(ProjetData projetData) async {
+    int isCreated = await projetDao.createProject(projetData);
+    return isCreated;
+  }
+
+  ///Appel du dao pour la création d'un produit
+  Future<int> createProduit(ProduitData produitData) async {
+    int isCreated = await produitDao.createProduit(produitData);
+    return isCreated;
+  }
+
+  Future<int> createProjetProduit(int projetId, int produitId) async {
+    int isCreated =
+        await projetProduitsDao.createProjetProduit(projetId, produitId);
+    return isCreated;
+  }
+
+  void createProduitModule(
+      int produitId, List<ProduitModuleData> listProduitModule) {
+    listProduitModule.forEach((produitModule) => {
+          produitModuleDao.createProduitModule(
+            produitId,
+            produitModule,
+          )
+        });
+  }
+
   Future<List<ProjetWithClient>> initProjetData() {
     this.listProjetWithClient = projetDao.getAll();
     return this.listProjetWithClient;
