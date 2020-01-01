@@ -8,7 +8,7 @@ import 'package:proto_madera_front/ui/widgets/custom_widgets.dart'
 ///
 /// @author HELIOT David, CHEVALLIER Romain, LADOUCE Fabien
 ///
-/// @version 0.4-PRE-RELEASE
+/// @version 0.4-RELEASE
 class UserProfilePage extends StatefulWidget {
   static const routeName = '/bell';
 

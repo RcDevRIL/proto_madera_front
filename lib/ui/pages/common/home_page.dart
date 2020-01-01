@@ -14,7 +14,7 @@ import 'package:proto_madera_front/data/database/madera_database.dart';
 ///
 /// @author HELIOT David, CHEVALLIER Romain, LADOUCE Fabien
 ///
-/// @version 0.4-PRE-RELEASE
+/// @version 0.4-RELEASE
 class HomePage extends StatelessWidget {
   static const routeName = '/home';
   final log = Logger();

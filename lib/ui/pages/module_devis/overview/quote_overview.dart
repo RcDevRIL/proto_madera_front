@@ -13,7 +13,7 @@ import 'package:provider/provider.dart';
 ///
 /// @author HELIOT David, CHEVALLIER Romain, LADOUCE Fabien
 ///
-/// @version 0.4-PRE-RELEASE
+/// @version 0.4-RELEASE
 class QuoteOverview extends StatefulWidget {
   static const routeName = '/quoteOverview';
 

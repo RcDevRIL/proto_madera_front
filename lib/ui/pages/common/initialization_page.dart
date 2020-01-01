@@ -9,7 +9,7 @@ import 'package:proto_madera_front/ui/widgets/custom_LPI.dart';
 ///
 /// @author HELIOT David, CHEVALLIER Romain, LADOUCE Fabien
 ///
-/// @version 0.4-PRE-RELEASE
+/// @version 0.4-RELEASE
 class InitializationPage extends StatefulWidget {
   static const routeName = '/';
   @override

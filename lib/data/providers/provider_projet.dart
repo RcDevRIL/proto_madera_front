@@ -8,7 +8,7 @@ import 'package:proto_madera_front/providers/models/quote_model.dart';
 ///
 /// @author HELIOT David, CHEVALLIER Romain, LADOUCE Fabien
 ///
-/// @version 0.4-PRE-RELEASE
+/// @version 0.4-RELEASE
 class ProviderProjet with ChangeNotifier {
   QuoteCreationModel _quoteCreationValues;
   QuoteModel _quoteValues;
