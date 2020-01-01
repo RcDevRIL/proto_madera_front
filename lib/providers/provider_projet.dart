@@ -12,25 +12,30 @@ import 'package:proto_madera_front/providers/models/quote_model.dart';
 class ProviderProjet with ChangeNotifier {
   QuoteCreationModel _quoteCreationValues;
   QuoteModel _quoteValues;
-  Map<String, dynamic> _modeleList;
   // List<String> _addModuleValues;
   // List<String> _finitionsValues;
   final Logger log = Logger();
 
   void init() {
-    // Initialisation des champs dans le format voulu
+    //TODO Rajouter un paramètre: le clientId, puisqu'a priori si on n'initialise le stockage du formulaire, on sait pour quel client on le fait
+    var clientId = 1;
+    // Initialisation des champs à null en respectant les conditions des constructeurs
     _quoteCreationValues = QuoteCreationModel(
-      client: {'clientId': 123},
+      client: Map<String, dynamic>(),
       dateDeCreation: DateTime.now(),
-      descriptionProjet: 'Initialisation',
-      refProjet: 'REF',
+      descriptionProjet: null,
+      refProjet: DateTime(
+                  DateTime.now().year, DateTime.now().month, DateTime.now().day)
+              .toString()
+              .substring(0, 10) +
+          '_MMP$clientId', //à voir comment on construit nos ref de projet? j'ai mis yyyyMMdd_MMP123, MMP pour 'MaisonModulaireProjet', 123 pour l'ID client
     );
     _quoteValues = QuoteModel(
-        gamme: 'premium', // ben oui de base c premium, raboule les thunes!!
-        nomDeProduit: 'Produit de pigeon bien cher',
-        listeModule: {'Module n°1': 1},
-        modeleChoisi: 'Modèle de maison de pigeon "premium"');
-    _modeleList = _quoteValues.listeModule;
+        gamme: 'Premium',
+        nomDeProduit: null,
+        listeModele: {'Modèle Premium n°1': null, 'Modèle Premium n°2': null},
+        listeModule: Map<String, dynamic>(),
+        modeleChoisi: null);
     /* 
     addModuleValues = [
       '',
@@ -57,12 +62,12 @@ class ProviderProjet with ChangeNotifier {
 
   String get dateCreation => _quoteCreationValues.dateDeCreation.toString();
 
-  set idProjet(String idProjet) {
-    _quoteCreationValues.refProjet = idProjet;
+  set refProjet(String refProjet) {
+    _quoteCreationValues.refProjet = refProjet;
     notifyListeners();
   }
 
-  String get idProjet => _quoteCreationValues.refProjet;
+  String get refProjet => _quoteCreationValues.refProjet;
 
   void setDescription(String desc) {
     _quoteCreationValues.descriptionProjet = desc;
@@ -90,17 +95,19 @@ class ProviderProjet with ChangeNotifier {
     notifyListeners();
   }
 
-  String get model => _quoteValues.modeleChoisi ??= '';
+  String get model => _quoteValues.modeleChoisi ??= 'defaultModele';
 
   void addModuleToProduct(Map<String, dynamic> moduleSpec) {
-    _quoteValues.listeModule.clear();
-    _quoteValues.listeModule.addAll(
-        moduleSpec); // Je pourrais juste mettre le nom du module, mais c'est pour nous rappelé que derriere un nom il ya des informations à stocker!
+    // _quoteValues.listeModule.clear();
+    _quoteValues.listeModule.putIfAbsent(
+        'Modèle Custom (name = ${moduleSpec['name']})',
+        () =>
+            moduleSpec); // Je pourrais juste mettre le nom du module, mais c'est pour nous rappelé que derriere un nom il ya des informations à stocker!
   }
 
   Map<String, dynamic> get productModules => _quoteValues.listeModule;
 
-  Map<String, dynamic> get modeleList => _modeleList;
+  Map<String, dynamic> get modeleList => _quoteValues.listeModele;
 
   void setModuleListFromModelID(int modelID) {
     //il faudra faire une requete ici
@@ -143,28 +150,22 @@ class ProviderProjet with ChangeNotifier {
     switch (gammeID) {
       case 1:
         {
-          _quoteValues.listeModele
-              .clear(); //clear de la liste des modules lorsqu'on change de gamme
-          _quoteValues.listeModele.addAll(
-            [
-              'Modele1',
-              'Modele2',
-              'Modele3',
-            ],
-          );
+          _quoteValues.listeModele = {
+            'Modèle Premium 1': 11,
+            'Modèle Premium 2': 12,
+            'Modèle Premium 3': 13,
+          };
+          _quoteValues.listeModule.clear();
         }
         break;
       case 2:
         {
-          _quoteValues.listeModele
-              .clear(); //clear de la liste des modules lorsqu'on change de gamme
-          _quoteValues.listeModele.addAll(
-            [
-              'Modeleea ze.2',
-              'Modeleez a2.2',
-              'Modeleezae3.2',
-            ],
-          );
+          _quoteValues.listeModele = {
+            'Modèle Standard 2.1': 21,
+            'Modèle Standard 2.2': 22,
+            'Modèle Standard 2.3': 23,
+          };
+          _quoteValues.listeModule.clear();
         }
         break;
       default:
@@ -196,6 +197,7 @@ class ProviderProjet with ChangeNotifier {
       modeleChoisi: dropdownModeleValue,
       nomDeProduit: "Produit n°1 sauvegardé",
       listeModule: componentsList,
+      listeModele: null,
     );
     log.i('Updated QuoteCreation values:\n${_quoteValues.toString()}');
   }

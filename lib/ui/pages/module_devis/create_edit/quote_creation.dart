@@ -57,7 +57,7 @@ class _QuoteCreationState extends State<QuoteCreation> {
   @override
   Widget build(BuildContext context) {
     Provider.of<ProviderProjet>(context)
-        .flush(); // Make sure providerProjet is empty$
+        .init(); // Make sure providerProjet is empty$
     return MaderaScaffold(
       passedContext: context,
       child: Center(

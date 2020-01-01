@@ -3,17 +3,18 @@ import 'package:flutter/material.dart';
 class QuoteModel {
   String nomDeProduit;
   String gamme;
-  List<String> listeModele;
+  Map<String, dynamic> listeModele;
   String modeleChoisi;
   Map<String, dynamic> listeModule;
 
   QuoteModel(
       {@required this.nomDeProduit,
       @required this.gamme,
-      this.listeModele,
+      @required this.listeModele,
       @required this.modeleChoisi,
       @required this.listeModule})
-      : assert(listeModule.length != 0);
+      : assert(
+            gamme.isNotEmpty && listeModele.length != 0 && listeModule != null);
 
   @override
   int get hashCode =>

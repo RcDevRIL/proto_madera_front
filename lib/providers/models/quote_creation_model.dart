@@ -11,7 +11,7 @@ class QuoteCreationModel {
       @required this.refProjet,
       @required this.client,
       @required this.descriptionProjet})
-      : assert(refProjet != null);
+      : assert(refProjet != null && dateDeCreation != null);
 
   @override
   int get hashCode =>
