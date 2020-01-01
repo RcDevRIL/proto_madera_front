@@ -3,12 +3,12 @@ import 'package:logger/logger.dart';
 import 'package:proto_madera_front/ui/pages/user/profile_page.dart';
 import 'package:provider/provider.dart';
 
-import 'package:proto_madera_front/providers/providers.dart'
+import 'package:proto_madera_front/data/providers/providers.dart'
     show MaderaNav, ProviderLogin;
 import 'package:proto_madera_front/ui/widgets/custom_widgets.dart'
     show CollapsingListTile;
 import 'package:proto_madera_front/ui/pages/pages.dart';
-import 'package:proto_madera_front/providers/models/navigation_model.dart';
+import 'package:proto_madera_front/data/models/navigation_model.dart';
 import 'package:proto_madera_front/theme.dart' as cTheme;
 
 ///

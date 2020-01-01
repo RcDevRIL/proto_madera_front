@@ -5,10 +5,10 @@ import 'package:http/http.dart' show Client;
 import 'package:http/testing.dart';
 import 'package:logger/logger.dart';
 
-import 'package:proto_madera_front/constants/url.dart';
-import 'package:proto_madera_front/database/dao/utilisateur_dao.dart';
-import 'package:proto_madera_front/database/madera_database.dart';
-import 'package:proto_madera_front/providers/http_status.dart';
+import 'package:proto_madera_front/data/constants/url.dart';
+import 'package:proto_madera_front/data/database/dao/utilisateur_dao.dart';
+import 'package:proto_madera_front/data/database/madera_database.dart';
+import 'package:proto_madera_front/data/models/http_status.dart';
 
 ///
 /// Provider permettant de gérer la connexion au backend hébergé

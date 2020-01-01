@@ -5,9 +5,9 @@ import 'package:http/http.dart';
 import 'package:http/testing.dart';
 import 'package:logger/logger.dart';
 import 'package:moor_flutter/moor_flutter.dart';
-import 'package:proto_madera_front/constants/url.dart';
-import 'package:proto_madera_front/database/daos.dart';
-import 'package:proto_madera_front/database/madera_database.dart';
+import 'package:proto_madera_front/data/constants/url.dart';
+import 'package:proto_madera_front/data/database/daos.dart';
+import 'package:proto_madera_front/data/database/madera_database.dart';
 
 ///
 /// Provider permettant de gérer l'état de la synchronisation

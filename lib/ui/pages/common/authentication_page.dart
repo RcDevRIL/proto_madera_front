@@ -3,13 +3,13 @@ import 'package:flutter/services.dart';
 import 'package:logger/logger.dart';
 import 'package:provider/provider.dart';
 
-import 'package:proto_madera_front/services/authentication/login_form_bloc.dart';
+import 'package:proto_madera_front/data/blocs/authentication/login_form_bloc.dart';
 import 'package:proto_madera_front/ui/pages/pages.dart' show HomePage;
 import 'package:proto_madera_front/ui/widgets/custom_widgets.dart'
     show AppBarMadera, LabelledIcon, MaderaButton, MaderaRoundedBox;
-import 'package:proto_madera_front/providers/providers.dart'
+import 'package:proto_madera_front/data/providers/providers.dart'
     show MaderaNav, ProviderBdd, ProviderLogin, ProviderSynchro;
-import 'package:proto_madera_front/providers/http_status.dart';
+import 'package:proto_madera_front/data/models/http_status.dart';
 import 'package:proto_madera_front/theme.dart' as cTheme;
 
 ///

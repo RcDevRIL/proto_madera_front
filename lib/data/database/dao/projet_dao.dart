@@ -1,7 +1,7 @@
 import 'package:moor_flutter/moor_flutter.dart';
-import 'package:proto_madera_front/database/madera_database.dart';
-import 'package:proto_madera_front/database/tables.dart';
-import 'package:proto_madera_front/providers/models/projet_with_client.dart';
+import 'package:proto_madera_front/data/database/madera_database.dart';
+import 'package:proto_madera_front/data/database/tables.dart';
+import 'package:proto_madera_front/data/models/projet_with_client.dart';
 
 part 'projet_dao.g.dart';
 

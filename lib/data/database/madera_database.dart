@@ -1,6 +1,6 @@
 import 'package:moor_flutter/moor_flutter.dart';
 
-import 'package:proto_madera_front/database/tables.dart';
+import 'package:proto_madera_front/data/database/tables.dart';
 
 part 'madera_database.g.dart';
 

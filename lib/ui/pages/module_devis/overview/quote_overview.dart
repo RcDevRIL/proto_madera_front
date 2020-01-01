@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:proto_madera_front/providers/models/projet_with_client.dart';
-import 'package:proto_madera_front/providers/providers.dart'
+import 'package:proto_madera_front/data/models/projet_with_client.dart';
+import 'package:proto_madera_front/data/providers/providers.dart'
     show MaderaNav, ProviderBdd;
 import 'package:proto_madera_front/theme.dart' as cTheme;
 import 'package:proto_madera_front/ui/widgets/custom_widgets.dart'

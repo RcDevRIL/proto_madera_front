@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:logger/logger.dart';
 import 'package:provider/provider.dart';
 
-import 'package:proto_madera_front/providers/providers.dart'
+import 'package:proto_madera_front/data/providers/providers.dart'
     show MaderaNav, ProviderSynchro;
 import 'package:proto_madera_front/ui/pages/pages.dart' show AuthenticationPage;
 import 'package:proto_madera_front/theme.dart' as cTheme;

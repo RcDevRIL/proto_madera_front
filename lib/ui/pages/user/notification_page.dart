@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import 'package:proto_madera_front/providers/providers.dart' show MaderaNav;
+import 'package:proto_madera_front/data/providers/providers.dart'
+    show MaderaNav;
 import 'package:proto_madera_front/ui/widgets/custom_widgets.dart'
     show MaderaScaffold;
 import 'package:proto_madera_front/theme.dart' as cTheme;

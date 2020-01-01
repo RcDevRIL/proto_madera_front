@@ -1,7 +1,7 @@
 import 'dart:async';
 import 'package:rxdart/rxdart.dart';
 
-import 'package:proto_madera_front/validators/validators.dart';
+import 'package:proto_madera_front/data/validators/validators.dart';
 
 ///
 /// FORK D'UN PROJET OPEN SOURCE

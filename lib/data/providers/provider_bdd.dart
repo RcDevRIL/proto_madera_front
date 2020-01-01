@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:moor_flutter/moor_flutter.dart';
 
-import 'package:proto_madera_front/database/dao/database_dao.dart';
-import 'package:proto_madera_front/database/daos.dart';
-import 'package:proto_madera_front/database/madera_database.dart';
-import 'package:proto_madera_front/providers/models/projet_with_client.dart';
+import 'package:proto_madera_front/data/database/dao/database_dao.dart';
+import 'package:proto_madera_front/data/database/daos.dart';
+import 'package:proto_madera_front/data/database/madera_database.dart';
+import 'package:proto_madera_front/data/models/projet_with_client.dart';
 
 ///
 /// Provider permettant de gérer l'état de la synchronisation avec la base de donnée distante
