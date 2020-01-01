@@ -1,6 +1,6 @@
 import 'package:moor_flutter/moor_flutter.dart';
-import 'package:proto_madera_front/database/madera_database.dart';
-import 'package:proto_madera_front/database/tables/adresse.dart';
+import 'package:proto_madera_front/data/database/madera_database.dart';
+import 'package:proto_madera_front/data/database/tables/adresse.dart';
 
 part 'adresse_dao.g.dart';
 
