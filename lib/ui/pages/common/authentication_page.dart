@@ -6,12 +6,7 @@ import 'package:provider/provider.dart';
 import 'package:proto_madera_front/services/authentication/login_form_bloc.dart';
 import 'package:proto_madera_front/ui/pages/pages.dart' show HomePage;
 import 'package:proto_madera_front/ui/widgets/custom_widgets.dart'
-    show
-        AppBarMadera,
-        LabelledIcon,
-        MaderaButton,
-        MaderaDialog,
-        MaderaRoundedBox;
+    show AppBarMadera, LabelledIcon, MaderaButton, MaderaRoundedBox;
 import 'package:proto_madera_front/providers/providers.dart'
     show MaderaNav, ProviderBdd, ProviderLogin, ProviderSynchro;
 import 'package:proto_madera_front/providers/http_status.dart';
@@ -260,50 +255,39 @@ class _AuthenticationPageState extends State<AuthenticationPage> {
         break;
       case HttpStatus.OFFLINE:
         {
-          _showPopup(
-              context, 'Erreur réseau', 'Le serveur n' ' est pas joignable.');
+          // _showPopup(
+          //     context, 'Erreur réseau', 'Le serveur n' ' est pas joignable.');
+          Provider.of<MaderaNav>(context).showPopup(
+              context, 'Erreur réseau', "Le serveur n'est pas joignable.");
         }
         break;
       case HttpStatus.ONLINE:
         {
-          _showPopup(context, 'Erreur d' 'authentification',
+          // _showPopup(context, 'Erreur d' 'authentification',
+          //     'Le login et / ou le mot de passe sont incorrects');
+          Provider.of<MaderaNav>(context).showPopup(
+              context,
+              "Erreur d'authentification",
               'Le login et / ou le mot de passe sont incorrects');
         }
         break;
       case HttpStatus.UNAUTHORIZED:
         {
-          _showPopup(context, 'Autorisation requise',
-              'Les identifiants sont incorrects');
+          Provider.of<MaderaNav>(context).showPopup(context,
+              'Autorisation requise', 'Les identifiants sont incorrects');
+          // _showPopup(context, 'Autorisation requise',
+          //     'Les identifiants sont incorrects');
         }
         break;
       default:
         {
-          _showPopup(
+          // _showPopup(
+          //     context, 'Default', 'Oups! Ceci ne devrait pas arriver...');
+          Provider.of<MaderaNav>(context).showPopup(
               context, 'Default', 'Oups! Ceci ne devrait pas arriver...');
         }
         break;
     }
-  }
-
-  void _showPopup(BuildContext context, String title, String message) {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return MaderaDialog(
-          title: title,
-          icon: Icons.warning,
-          body: Text('$message'),
-          actions: [
-            MaderaButton(
-              child: Text('Ok'),
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-            ),
-          ],
-        );
-      },
-    );
   }
 
   void _showSynchroErrorPopup(BuildContext context, String synchroTried) {

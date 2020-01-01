@@ -3,6 +3,8 @@ import 'package:logger/logger.dart';
 
 import 'package:proto_madera_front/ui/pages/pages.dart';
 import 'package:proto_madera_front/ui/pages/user/profile_page.dart';
+import 'package:proto_madera_front/ui/widgets/custom_widgets.dart'
+    show MaderaDialog, MaderaButton;
 import 'package:provider/provider.dart';
 
 ///
@@ -176,5 +178,26 @@ class MaderaNav with ChangeNotifier {
       var maderaNav = Provider.of<MaderaNav>(context);
       maderaNav.updateCurrent(page.runtimeType);
     });
+  }
+
+  void showPopup(BuildContext context, String title, String message) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return MaderaDialog(
+          title: title,
+          icon: Icons.warning,
+          body: Text('$message'),
+          actions: [
+            MaderaButton(
+              child: Text('Ok'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
   }
 }
