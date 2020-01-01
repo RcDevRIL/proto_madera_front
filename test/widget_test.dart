@@ -6,7 +6,7 @@ import 'package:http/http.dart';
 import 'package:http/testing.dart';
 import 'package:provider/provider.dart';
 
-import 'package:proto_madera_front/providers/providers.dart';
+import 'package:proto_madera_front/data/providers/providers.dart';
 import 'package:proto_madera_front/ui/pages/pages.dart';
 
 ///
@@ -14,11 +14,11 @@ import 'package:proto_madera_front/ui/pages/pages.dart';
 ///
 /// @author HELIOT David, CHEVALLIER Romain, LADOUCE Fabien
 ///
-/// @version 0.3-RELEASE
+/// @version 0.4-PRE-RELEASE
 void main() {
   final ProviderBdd providerBdd = ProviderBdd();
 
-  group('Tests', () {
+  group('General Unit Tests', () {
     testWidgets(
       'first test',
       (WidgetTester tester) async {
@@ -41,13 +41,33 @@ void main() {
       },
     );
     test(
+      'init providerProjet test',
+      () {
+        ProviderProjet providerProjet = ProviderProjet();
+        var clientId = 1;
+        providerProjet.init(); //initialise les variables du provider
+        expect(providerProjet.refProjet.endsWith('_MMP$clientId'),
+            true); //valeur temporaire d'initialisation
+        providerProjet
+            .setDescription('desc'); //ajout d'une description au projet
+        expect(providerProjet.description.isNotEmpty,
+            true); //description n'est plus vide
+        providerProjet.productModules
+            .addAll({'test': 'test'}); //ajout d'un module dans la liste
+        providerProjet.setModeleListFromGammeID(
+            1); //Changement de la liste des modèles à partir de la gamme
+        expect(providerProjet.productModules.isEmpty,
+            true); // la liste des modules a été vidée
+      },
+    );
+    test(
       'Update route state',
       () async {
         final MaderaNav providerNavigation = MaderaNav();
         int index = providerNavigation.pageIndex;
         String title = providerNavigation.pageTitle;
-        expect(-1, index);
-        expect('default', title);
+        expect(index, -1);
+        expect(title, 'default');
         providerNavigation.updateCurrent(AuthenticationPage);
         index = providerNavigation.pageIndex;
         title = providerNavigation.pageTitle;
@@ -66,8 +86,10 @@ void main() {
       },
     );
     test('last sync date test', () {
-      final ProviderSynchro providerSynchro =
-          ProviderSynchro(db: providerBdd.db);
+      final ProviderSynchro providerSynchro = ProviderSynchro(
+        db: providerBdd.db,
+        daosSynchroList: providerBdd.daosSynchroList,
+      );
       var date = DateTime.now();
 
       expect(date.isAfter(providerSynchro.refsLastSyncDate), true);
@@ -156,12 +178,13 @@ void main() {
     });
     testWidgets('synchro globale test', (tester) async {
       final MaderaNav providerNavigation = MaderaNav();
-      final ProviderSynchro providerSynchro =
-          ProviderSynchro(db: providerBdd.db)
-            ..http = MockClient((request) async {
-              //On set le contenu du body et le statusCode attendu, dans notre cas le token de connection
-              return Response('', 200);
-            });
+      final ProviderSynchro providerSynchro = ProviderSynchro(
+        db: providerBdd.db,
+        daosSynchroList: providerBdd.daosSynchroList,
+      )..http = MockClient((request) async {
+          //On set le contenu du body et le statusCode attendu, dans notre cas le token de connection
+          return Response('', 200);
+        });
 
       Widget testWidget = MediaQuery(
         data: MediaQueryData(),

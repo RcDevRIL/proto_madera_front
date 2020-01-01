@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 
-import 'package:proto_madera_front/providers/providers.dart';
+import 'package:proto_madera_front/data/providers/providers.dart';
 import 'package:proto_madera_front/ui/pages/pages.dart';
 import 'package:proto_madera_front/theme.dart' as cTheme;
 
@@ -13,7 +13,7 @@ import 'package:proto_madera_front/theme.dart' as cTheme;
 ///
 /// @author HELIOT David, CHEVALLIER Romain, LADOUCE Fabien
 ///
-/// @version 0.3-RELEASE
+/// @version 0.4-PRE-RELEASE
 class MaderaApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -27,6 +27,9 @@ class MaderaApp extends StatelessWidget {
             create: (c) => maderaNav,
           ),
           ChangeNotifierProvider(
+            create: (c) => ProviderProjet(),
+          ),
+          ChangeNotifierProvider(
             create: (c) => providerBdd,
           ),
           ChangeNotifierProxyProvider<ProviderBdd, ProviderLogin>(
@@ -34,22 +37,20 @@ class MaderaApp extends StatelessWidget {
             update: (context, bdd, login) => ProviderLogin(db: bdd.db),
           ),
           ChangeNotifierProxyProvider<ProviderBdd, ProviderSynchro>(
-            create: (context) => ProviderSynchro(db: providerBdd.db),
-            update: (context, bdd, login) => ProviderSynchro(db: bdd.db),
+            create: (context) => ProviderSynchro(
+              db: providerBdd.db,
+              daosSynchroList: providerBdd.daosSynchroList,
+            ),
+            update: (context, bdd, login) => ProviderSynchro(
+              db: bdd.db,
+              daosSynchroList: providerBdd.daosSynchroList,
+            ),
           ),
         ],
         //TODO faire la redirection si l'utilisateur est déjà conneté ? Test en envoyant le token ?
         child: MaterialApp(
           title: maderaNav.pageTitle,
-          theme: ThemeData(
-            primarySwatch: Colors.green,
-            appBarTheme: AppBarTheme(
-              iconTheme: IconThemeData(
-                color: cTheme.Colors.iconsMainColor,
-              ),
-              color: cTheme.Colors.appBarMainColor,
-            ),
-          ),
+          theme: cTheme.MaderaTheme.maderaLightTheme,
           initialRoute: InitializationPage.routeName,
           routes: {
             InitializationPage.routeName: (context) => InitializationPage(),
