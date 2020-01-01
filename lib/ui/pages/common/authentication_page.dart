@@ -272,21 +272,8 @@ class _AuthenticationPageState extends State<AuthenticationPage> {
         break;
       case HttpStatus.UNAUTHORIZED:
         {
-          // _showPopup(context, 'Autorisation requise',
-          //     'Les identifiants sont incorrects');
-          MaderaDialog(
-            title: 'Autorisation requise',
-            icon: Icons.warning,
-            message: "Les identifiant sont incorrects",
-            actions: [
-              MaderaButton(
-                child: Text('Ok'),
-                onPressed: () {
-                  Navigator.of(context).pop();
-                },
-              )
-            ],
-          );
+          _showPopup(context, 'Autorisation requise',
+              'Les identifiants sont incorrects');
         }
         break;
       default:
@@ -302,19 +289,17 @@ class _AuthenticationPageState extends State<AuthenticationPage> {
     showDialog(
       context: context,
       builder: (BuildContext context) {
-        return AlertDialog(
-          title: Text(
-            '$title',
-            style: TextStyle(color: Colors.red),
-          ),
-          content: Text('$message'),
-          actions: <Widget>[
+        return MaderaDialog(
+          title: title,
+          icon: Icons.warning,
+          message: message,
+          actions: [
             MaderaButton(
-              child: Text('OK'),
+              child: Text('Ok'),
               onPressed: () {
                 Navigator.of(context).pop();
               },
-            ),
+            )
           ],
         );
       },
