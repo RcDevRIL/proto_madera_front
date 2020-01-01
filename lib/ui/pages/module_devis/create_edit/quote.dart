@@ -45,8 +45,6 @@ class _QuoteState extends State<Quote> {
   @override
   Widget build(BuildContext context) {
     //final args = ModalRoute.of(context).settings.arguments;
-    final moduleList = Provider.of<ProviderProjet>(context).productModules;
-    moduleList.isNotEmpty ? canValidateForm = true : canValidateForm = false;
     return MaderaScaffold(
       passedContext: context,
       child: Center(
@@ -122,13 +120,13 @@ class _QuoteState extends State<Quote> {
                         dropdownGammeValue = newValue;
                         dropdownModeleValue = null;
                         switch (dropdownGammeValue) {
-                          case 'Gamme1':
+                          case 'Premium':
                             Provider.of<ProviderProjet>(context)
                                 .setGamme(dropdownGammeValue);
                             Provider.of<ProviderProjet>(context)
                                 .setModeleListFromGammeID(1);
                             break;
-                          case 'Gamme2':
+                          case 'Standard':
                             Provider.of<ProviderProjet>(context)
                                 .setGamme(dropdownGammeValue);
                             Provider.of<ProviderProjet>(context)
@@ -140,7 +138,12 @@ class _QuoteState extends State<Quote> {
                         }
                         canValidateForm = true;
                       },
-                      items: <String>['Gamme1', 'Gamme2', 'Gamme3', 'Gamme4']
+                      items: <String>[
+                        Provider.of<ProviderProjet>(context).gamme,
+                        'Standard',
+                        'Gamme3',
+                        'Gamme4'
+                      ]
                           .map<DropdownMenuItem<String>>(
                               (String value) => DropdownMenuItem<String>(
                                     value: value,
@@ -171,13 +174,13 @@ class _QuoteState extends State<Quote> {
                           ? (String newValue) {
                               dropdownModeleValue = newValue;
                               switch (dropdownModeleValue) {
-                                case 'Modele1':
+                                case 'Modèle Premium 1':
                                   Provider.of<ProviderProjet>(context)
                                       .setModel(dropdownModeleValue);
                                   Provider.of<ProviderProjet>(context)
                                       .setModuleListFromModelID(1);
                                   break;
-                                case 'Modele2':
+                                case 'Modèle Premium 2':
                                   Provider.of<ProviderProjet>(context)
                                       .setModel(dropdownModeleValue);
                                   Provider.of<ProviderProjet>(context)
@@ -191,13 +194,19 @@ class _QuoteState extends State<Quote> {
                             }
                           : null,
                       items: Provider.of<ProviderProjet>(context)
-                          .modeleList
-                          .map<DropdownMenuItem<String>>(
-                              (String value) => DropdownMenuItem<String>(
-                                    value: value,
-                                    child: Text(value),
-                                  ))
-                          .toList(),
+                                  .modeleList
+                                  .length !=
+                              0
+                          ? Provider.of<ProviderProjet>(context)
+                              .modeleList
+                              .keys
+                              .map<DropdownMenuItem<String>>(
+                                  (String value) => DropdownMenuItem<String>(
+                                        value: value,
+                                        child: Text(value),
+                                      ))
+                              .toList()
+                          : null,
                     ),
                   ),
                   SizedBox(height: 20.0),
@@ -205,27 +214,40 @@ class _QuoteState extends State<Quote> {
                     cardHeight: MediaQuery.of(context).size.height / 3.2,
                     child: Stack(
                       children: <Widget>[
-                        ListView.separated(
-                          shrinkWrap: true,
-                          itemCount: moduleList.length,
-                          itemBuilder: (c, i) => Material(
-                            child: InkWell(
-                              highlightColor: Colors.transparent,
-                              splashColor: cTheme.MaderaColors.maderaBlueGreen,
-                              child: ListTile(
-                                title: Text(moduleList[i]),
-                              ),
-                              onTap: () {
-                                log.d("Modifying module...");
-                                Provider.of<MaderaNav>(context)
-                                    .redirectToPage(context, AddModule());
-                              },
-                            ),
-                          ),
-                          separatorBuilder: (c, i) => Divider(
-                            color: Colors.green,
-                          ),
-                        ),
+                        Provider.of<ProviderProjet>(context)
+                                    .productModules
+                                    .length !=
+                                0
+                            ? ListView.separated(
+                                shrinkWrap: true,
+                                itemCount: Provider.of<ProviderProjet>(context)
+                                    .productModules
+                                    .keys
+                                    .length,
+                                itemBuilder: (c, i) => Material(
+                                  child: InkWell(
+                                    highlightColor: Colors.transparent,
+                                    splashColor:
+                                        cTheme.MaderaColors.maderaBlueGreen,
+                                    child: ListTile(
+                                      title: Text(
+                                          Provider.of<ProviderProjet>(context)
+                                              .productModules
+                                              .keys
+                                              .elementAt(i)),
+                                    ),
+                                    onTap: () {
+                                      log.d("Modifying module...");
+                                      Provider.of<MaderaNav>(context)
+                                          .redirectToPage(context, AddModule());
+                                    },
+                                  ),
+                                ),
+                                separatorBuilder: (c, i) => Divider(
+                                  color: Colors.green,
+                                ),
+                              )
+                            : Container(),
                         Align(
                           alignment: Alignment.bottomRight,
                           child: MaderaButton(
@@ -282,7 +304,8 @@ class _QuoteState extends State<Quote> {
                           Provider.of<ProviderProjet>(context).saveQ(
                               dropdownGammeValue,
                               dropdownModeleValue ??= 'NOPE',
-                              moduleList);
+                              Provider.of<ProviderProjet>(context)
+                                  .productModules);
                           log.d('Done.');
                           log.d('Quote Overview');
                           Provider.of<MaderaNav>(context)
