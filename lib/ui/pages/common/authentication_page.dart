@@ -292,14 +292,14 @@ class _AuthenticationPageState extends State<AuthenticationPage> {
         return MaderaDialog(
           title: title,
           icon: Icons.warning,
-          message: message,
+          body: Text('$message'),
           actions: [
             MaderaButton(
               child: Text('Ok'),
               onPressed: () {
                 Navigator.of(context).pop();
               },
-            )
+            ),
           ],
         );
       },
