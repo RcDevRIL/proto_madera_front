@@ -10,3 +10,4 @@ export 'madera_card.dart';
 export 'madera_button.dart';
 export 'madera_rounded_box.dart';
 export 'madera_table_cell.dart';
+export 'common/madera_dialog.dart';

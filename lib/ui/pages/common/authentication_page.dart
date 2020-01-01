@@ -6,7 +6,12 @@ import 'package:provider/provider.dart';
 import 'package:proto_madera_front/services/authentication/login_form_bloc.dart';
 import 'package:proto_madera_front/ui/pages/pages.dart' show HomePage;
 import 'package:proto_madera_front/ui/widgets/custom_widgets.dart'
-    show AppBarMadera, LabelledIcon, MaderaButton, MaderaRoundedBox;
+    show
+        AppBarMadera,
+        LabelledIcon,
+        MaderaButton,
+        MaderaDialog,
+        MaderaRoundedBox;
 import 'package:proto_madera_front/providers/providers.dart'
     show MaderaNav, ProviderBdd, ProviderLogin, ProviderSynchro;
 import 'package:proto_madera_front/providers/http_status.dart';
@@ -209,9 +214,9 @@ class _AuthenticationPageState extends State<AuthenticationPage> {
             child: MaderaButton(
               onPressed: snapshot.hasData && snapshot.data == true
                   ? () async {
-                       submit();
-                     // Provider.of<MaderaNav>(context)
-                    //     .redirectToPage(context, HomePage());
+                      submit();
+                      // Provider.of<MaderaNav>(context)
+                      //     .redirectToPage(context, HomePage());
                     }
                   : null,
               child: Text('Connexion'),
@@ -267,8 +272,21 @@ class _AuthenticationPageState extends State<AuthenticationPage> {
         break;
       case HttpStatus.UNAUTHORIZED:
         {
-          _showPopup(context, 'Autorisation requise',
-              'Les identifiants sont incorrects');
+          // _showPopup(context, 'Autorisation requise',
+          //     'Les identifiants sont incorrects');
+          MaderaDialog(
+            title: 'Autorisation requise',
+            icon: Icons.warning,
+            message: "Les identifiant sont incorrects",
+            actions: [
+              MaderaButton(
+                child: Text('Ok'),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+              )
+            ],
+          );
         }
         break;
       default:
