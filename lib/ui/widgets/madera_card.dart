@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:proto_madera_front/theme.dart' as cTheme;
 
-/// A custom widget consists of a [Card], with rounded corners.
+/// A custom widget consisting of a [Card], with rounded corners.
 ///
 /// @author HELIOT David, CHEVALLIER Romain, LADOUCE Fabien
 ///

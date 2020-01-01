@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-/// A customized Widget for an icon next to a text.
+/// A customized Widget representing an icon next to a text.
 ///
 /// A [LabelledIcon] holds an [Icon], and a [Text] next to it.
 ///

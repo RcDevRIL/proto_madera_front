@@ -14,10 +14,10 @@ class MaderaTableCell extends StatefulWidget {
   /// The [cellFontSize], [height], [textCell] and [width] arguments must not be null.
   /// Additionally, it is possible to define a [backgroundColor].
 
-  /// The text to display in this cell
+  /// The text to display in this cell.
   final String textCell;
 
-  /// The height, width of the cell. And the font size of a cell
+  /// The height, width of the cell. And the font size of a cell.
   final double height, width, cellFontSize;
 
   /// The background color used for this cell.

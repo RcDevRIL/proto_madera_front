@@ -6,8 +6,7 @@ import 'package:proto_madera_front/ui/widgets/custom_widgets.dart'
     show ExitButton;
 import 'package:proto_madera_front/ui/pages/pages.dart' show HomePage;
 
-///
-/// Widget personnalisé pour une "AppBar" personnalisée
+/// Custom widget representing a customized [AppBar]
 ///
 /// @author HELIOT David, CHEVALLIER Romain, LADOUCE Fabien
 ///

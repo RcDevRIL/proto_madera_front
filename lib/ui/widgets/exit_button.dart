@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-///
-/// Widget personnalisé pour un bouton qui ferme l'application
+/// Custom widget representing a button that closes the application
 ///
 /// @author HELIOT David, CHEVALLIER Romain, LADOUCE Fabien
 ///
