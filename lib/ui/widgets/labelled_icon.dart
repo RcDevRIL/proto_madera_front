@@ -11,16 +11,19 @@ class LabelledIcon extends StatelessWidget {
   final Text text;
   final MainAxisSize mASize;
 
-  const LabelledIcon(
-      {Key key, this.mASize, @required this.icon, @required this.text})
-      : super(key: key);
+  const LabelledIcon({
+    Key key,
+    this.mASize = MainAxisSize.min,
+    @required this.icon,
+    @required this.text,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Row(
       crossAxisAlignment: CrossAxisAlignment.center,
       mainAxisAlignment: MainAxisAlignment.center,
-      mainAxisSize: mASize != null ? mASize : MainAxisSize.min,
+      mainAxisSize: mASize,
       children: <Widget>[
         icon,
         SizedBox(

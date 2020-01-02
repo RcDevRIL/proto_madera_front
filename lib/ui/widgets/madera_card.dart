@@ -60,8 +60,8 @@ class _MaderaCardState extends State<MaderaCard> {
           ),
           SizedBox(height: 6.0),
           Container(
-            width: widget.cardWidth != null ? widget.cardWidth : null,
-            height: widget.cardHeight != null ? widget.cardHeight : null,
+            width: widget.cardWidth,
+            height: widget.cardHeight,
             decoration: BoxDecoration(
               color: Theme.of(context).backgroundColor,
               borderRadius: BorderRadius.only(
