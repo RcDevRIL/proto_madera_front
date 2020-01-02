@@ -2,11 +2,27 @@ import 'package:flutter/material.dart';
 import 'package:proto_madera_front/ui/widgets/custom_widgets.dart';
 import 'package:proto_madera_front/theme.dart' as cTheme;
 
+/// Custom widget representing an [AlertDialog].
 class MaderaDialog extends StatelessWidget {
+  /// Creates a custom alert dialog.
+  ///
+  /// The [title], [body] and [actions] arguments must not be null.
+  /// Additionally, the [icon] and [titleAndIconColor] arguments can be instanciated
+  /// to better fit our expectations.
+
+  /// The title to be displayed on the header.
   final String title;
+
+  /// The color to be used on the [title] and its [icon].
   final Color titleAndIconColor;
+
+  /// The icon to use on the header.
   final IconData icon;
+
+  /// The actions to perform when calling this custom widget.
   final List<Widget> actions;
+
+  /// The body of this widget.
   final Widget body;
 
   MaderaDialog(
