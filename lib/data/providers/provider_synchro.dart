@@ -29,7 +29,10 @@ class ProviderSynchro with ChangeNotifier {
   ClientAdresseDao clientAdresseDao;
   AdresseDao adresseDao;
   ProjetDao projetDao;
-  ProjetModuleDao projetModuleDao;
+  ProduitModuleDao produitModuleDao;
+  ProduitDao produitDao;
+  ComposantGroupeDao composantGroupeDao;
+  ProjetProduitsDao projetProduitsDao;
   List<DatabaseAccessor<MaderaDatabase>> daosSynchroList;
   DateTime _refLastSyncDate;
   bool _refSynced = false;
@@ -76,8 +79,17 @@ class ProviderSynchro with ChangeNotifier {
         case ProjetDao:
           projetDao = dao;
           break;
-        case ProjetModuleDao:
-          projetModuleDao = dao;
+        case ProduitModuleDao:
+          produitModuleDao = dao;
+          break;
+        case ComposantGroupeDao:
+          composantGroupeDao = dao;
+          break;
+        case ProduitDao:
+          produitDao = dao;
+          break;
+        case ProjetProduitsDao:
+          projetProduitsDao = dao;
           break;
         default:
           log.e("ERROR, NO DAO ASSIGNED TO THIS VALUE: ${dao.runtimeType}");
@@ -193,7 +205,17 @@ class ProviderSynchro with ChangeNotifier {
 
     List<AdresseData> listAdresse =
         (data['adresse'] as List).map((h) => AdresseData.fromJson(h)).toList();
+    //Ba celui là il a pas data à la fin, c'est bizarre mais bon
+    List<ProjetProduit> listProjetProduit = (data['projetProduits'] as List)
+        .map((y) => ProjetProduit.fromJson(y))
+        .toList();
 
+    List<ProduitModuleData> listProduitModule = (data['produitModule'] as List)
+        .map((z) => ProduitModuleData.fromJson(z))
+        .toList();
+
+    List<ProduitData> listProduit =
+        (data['produit'] as List).map((o) => ProduitData.fromJson(o)).toList();
     List<ProjetData> listProjet = (data['projet'] as List)
         .map(
           (i) => i
@@ -205,15 +227,18 @@ class ProviderSynchro with ChangeNotifier {
         .map((i) => ProjetData.fromJson(i))
         .toList();
 
-    List<ProjetModuleData> listProjetModule = (data['projetModule'] as List)
-        .map((j) => ProjetModuleData.fromJson(j))
+    List<ProduitModuleData> listProjetModule = (data['produitModule'] as List)
+        .map((j) => ProduitModuleData.fromJson(j))
         .toList();
 
     await clientDao.insertAll(listClient);
     await clientAdresseDao.insertAll(listClientAdresse);
     await adresseDao.insertAll(listAdresse);
     await projetDao.insertAll(listProjet);
-    await projetModuleDao.insertAll(listProjetModule);
+    await produitModuleDao.insertAll(listProjetModule);
+    await produitDao.insertAll(listProduit);
+    await produitModuleDao.insertAll(listProduitModule);
+    await projetProduitsDao.insertAll(listProjetProduit);
   }
 
   /// Synchronisation des référentiels
@@ -268,6 +293,10 @@ class ProviderSynchro with ChangeNotifier {
         .map((a) => ComposantData.fromJson(a))
         .toList();
 
+    List<ComposantGroupeData> listComposantGroupe =
+        (data['composantGroupe'] as List)
+            .map((m) => ComposantGroupeData.fromJson(m))
+            .toList();
     List<GammeData> listGamme =
         (data['gammes'] as List).map((b) => GammeData.fromJson(b)).toList();
 
@@ -283,6 +312,15 @@ class ProviderSynchro with ChangeNotifier {
         .map((e) => DevisEtatData.fromJson(e))
         .toList();
 
+    List<ProduitData> listProduitModele = (data['produitModele'] as List)
+        .map((u) => ProduitData.fromJson(u))
+        .toList();
+
+    List<ProduitModuleData> listProduitModuleModele =
+        (data['produitModuleModele'] as List)
+            .map((p) => ProduitModuleData.fromJson(p))
+            .toList();
+
     //TODO Optimisation: faire un comparatif des données et update seulement le nécessaire
     //Insertion des données en base
     await composantDao.insertAll(listComposant);
@@ -290,5 +328,8 @@ class ProviderSynchro with ChangeNotifier {
     await moduleDao.insertAll(listModule);
     await moduleComposantDao.insertAll(listModuleComposant);
     await devisEtatDao.insertAll(listDevisEtat);
+    await composantGroupeDao.insertAll(listComposantGroupe);
+    await produitModuleDao.insertAll(listProduitModuleModele);
+    await produitDao.insertAll(listProduitModele);
   }
 }
