@@ -18,10 +18,10 @@ class ProviderProjet with ChangeNotifier {
 
   void init() {
     //TODO Rajouter un paramètre: le clientId, puisqu'a priori si on n'initialise le stockage du formulaire, on sait pour quel client on le fait
-    var clientId = 1;
+    var clientId = 123;
     // Initialisation des champs à null en respectant les conditions des constructeurs
     _quoteCreationValues = QuoteCreationModel(
-      client: Map<String, dynamic>(),
+      client: Map<String, String>(),
       dateDeCreation: DateTime.now(),
       descriptionProjet: null,
       refProjet: DateTime(
@@ -177,13 +177,13 @@ class ProviderProjet with ChangeNotifier {
     notifyListeners();
   }
 
-  void saveQC(String dateCreationProjet, String idProjet, String refClient,
-      String descriptionProjet) {
+  void saveQC(String dateCreationProjet, String idProjet,
+      Map<String, String> refClient, String descriptionProjet) {
     log.i('QuoteCreation values:\n${_quoteCreationValues.toString()}');
     _quoteCreationValues = QuoteCreationModel(
       dateDeCreation: DateTime.parse(dateCreationProjet),
       refProjet: idProjet,
-      client: {"refClient": refClient},
+      client: refClient,
       descriptionProjet: descriptionProjet,
     );
     log.i('Updated QuoteCreation values:\n${_quoteCreationValues.toString()}');
