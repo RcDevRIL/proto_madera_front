@@ -11,7 +11,10 @@ import 'package:proto_madera_front/theme.dart' as cTheme;
 class GradientFrame extends StatefulWidget {
   final Widget child;
 
-  GradientFrame({Key key, @required this.child}) : super(key: key);
+  GradientFrame({
+    Key key,
+    @required this.child,
+  }) : super(key: key);
 
   @override
   _GradientFrameState createState() => _GradientFrameState();

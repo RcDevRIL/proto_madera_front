@@ -16,7 +16,10 @@ import 'package:proto_madera_front/theme.dart' as cTheme;
 class MyLinearProgressIndicator extends StatefulWidget {
   final Color backgroundColor;
 
-  MyLinearProgressIndicator({this.backgroundColor, Key key}) : super(key: key);
+  MyLinearProgressIndicator({
+    this.backgroundColor = Colors.white,
+    Key key,
+  }) : super(key: key);
 
   @override
   _MyLinearProgressIndicatorState createState() =>
