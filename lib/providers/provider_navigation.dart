@@ -180,22 +180,33 @@ class MaderaNav with ChangeNotifier {
     });
   }
 
-  void showPopup(BuildContext context, String title, String message) {
+  //Je rajoute cette méthode qui permet de gagner du temps si on veut juste un bouton OK nav.pop()
+  void showNothingYouCanDoPopup(
+          BuildContext context, IconData icon, String title, String message) =>
+      showPopup(
+        context,
+        icon,
+        title,
+        message,
+        [
+          MaderaButton(
+            child: Text('Ok'),
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+          ),
+        ],
+      );
+  void showPopup(BuildContext context, IconData icon, String title,
+      String message, List<Widget> actions) {
     showDialog(
       context: context,
       builder: (BuildContext context) {
         return MaderaDialog(
           title: title,
-          icon: Icons.warning,
+          icon: icon,
           body: Text('$message'),
-          actions: [
-            MaderaButton(
-              child: Text('Ok'),
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-            ),
-          ],
+          actions: actions,
         );
       },
     );
