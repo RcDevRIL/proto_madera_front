@@ -19,7 +19,7 @@ class MaderaDialog extends StatelessWidget {
   /// The icon to use on the header.
   final IconData icon;
 
-  /// The actions to perform when calling this custom widget.
+  /// The list of Widget displayed on the footer, usually a list of [MaderaButton] that perform some actions
   final List<Widget> actions;
 
   /// The body of this widget.
