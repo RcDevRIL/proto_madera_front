@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:logger/logger.dart';
 import 'package:provider/provider.dart';
 
-import 'package:proto_madera_front/providers/providers.dart' show MaderaNav;
+import 'package:proto_madera_front/data/providers/providers.dart'
+    show MaderaNav;
 import 'package:proto_madera_front/ui/pages/pages.dart'
     show ProductCreation, AddModule;
 import 'package:proto_madera_front/ui/widgets/custom_widgets.dart'
