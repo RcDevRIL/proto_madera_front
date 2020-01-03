@@ -22,52 +22,29 @@ class QuoteCreation extends StatefulWidget {
 }
 
 class _QuoteCreationState extends State<QuoteCreation> {
-  static final _now = DateTime.now();
   String dateCreationProjet;
   String refProjet;
-  TextEditingController _descriptionTextController;
-  TextEditingController _clientNameTextController;
-  TextEditingController _clientAdresseTextController;
-  TextEditingController _clientTelTextController;
-  TextEditingController _clientMailTextController;
-  TextEditingController _idProjectTextController;
   ScrollController _formScrollController;
-  bool canValidateForm;
 
   final log = Logger();
 
   @override
   void initState() {
     super.initState();
-    dateCreationProjet =
-        DateTime(_now.year, _now.month, _now.day).toString().substring(0, 10);
-    refProjet = dateCreationProjet + '_MMP123';
-    _descriptionTextController = TextEditingController();
-    _clientNameTextController = TextEditingController();
-    _clientAdresseTextController = TextEditingController();
-    _clientTelTextController = TextEditingController();
-    _clientMailTextController = TextEditingController();
-    _idProjectTextController = TextEditingController();
     _formScrollController = ScrollController();
-    canValidateForm = false;
   }
 
   @override
   void dispose() {
-    _descriptionTextController?.dispose();
-    _clientNameTextController?.dispose();
-    _clientAdresseTextController?.dispose();
-    _clientTelTextController?.dispose();
-    _clientMailTextController?.dispose();
-    _idProjectTextController?.dispose();
     _formScrollController?.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    Provider.of<ProviderProjet>(context)
-        .init(); // Make sure providerProjet is empty$
+    Provider.of<ProviderProjet>(context).initAndHold();
+    dateCreationProjet = Provider.of<ProviderProjet>(context).dateCreation;
+    refProjet = Provider.of<ProviderProjet>(context).refProjet;
     return MaderaScaffold(
       passedContext: context,
       child: Center(
@@ -171,12 +148,14 @@ class _QuoteCreationState extends State<QuoteCreation> {
                               ),
                             ),
                             TextField(
-                              enabled: true,
-                              style: TextStyle(
-                                fontWeight: FontWeight.w500,
-                              ),
                               maxLines: 1,
-                              controller: _clientNameTextController,
+                              onTap: () =>
+                                  _formScrollController.position.moveTo(110.0),
+                              onChanged: (text) {
+                                Provider.of<ProviderProjet>(context)
+                                    .clientName = text;
+                              },
+                              enabled: true,
                               keyboardType: TextInputType.text,
                               decoration: InputDecoration(
                                 hintText: 'Ex: DUPONT Nicolas',
@@ -204,18 +183,12 @@ class _QuoteCreationState extends State<QuoteCreation> {
                             ),
                             TextField(
                               maxLines: 1,
-                              // onChanged: (text) {
-                              //   setState(() {
-                              //     if (text.isNotEmpty) {
-                              //       Provider.of<ProviderProjet>(context)
-                              //           .setRefClient(text);
-                              //       canValidateForm = true;
-                              //     } else {
-                              //       canValidateForm = false;
-                              //     }
-                              //   });
-                              // },
-                              controller: _clientAdresseTextController,
+                              onTap: () =>
+                                  _formScrollController.position.moveTo(110.0),
+                              onChanged: (text) {
+                                Provider.of<ProviderProjet>(context)
+                                    .clientAdress = text;
+                              },
                               keyboardType: TextInputType.text,
                               enabled: true,
                               decoration: InputDecoration(
@@ -264,18 +237,12 @@ class _QuoteCreationState extends State<QuoteCreation> {
                             ),
                             TextField(
                               maxLines: 1,
-                              // onChanged: (text) {
-                              //   setState(() {
-                              //     if (text.isNotEmpty) {
-                              //       Provider.of<ProviderProjet>(context)
-                              //           .setRefClient(text);
-                              //       canValidateForm = true;
-                              //     } else {
-                              //       canValidateForm = false;
-                              //     }
-                              //   });
-                              // },
-                              controller: _clientTelTextController,
+                              onTap: () =>
+                                  _formScrollController.position.moveTo(110.0),
+                              onChanged: (text) {
+                                Provider.of<ProviderProjet>(context).clientTel =
+                                    text;
+                              },
                               keyboardType: TextInputType.phone,
                               enabled: true,
                               decoration: InputDecoration(
@@ -304,18 +271,12 @@ class _QuoteCreationState extends State<QuoteCreation> {
                             ),
                             TextField(
                               maxLines: 1,
-                              // onChanged: (text) {
-                              //   setState(() {
-                              //     if (text.isNotEmpty) {
-                              //       Provider.of<ProviderProjet>(context)
-                              //           .setRefClient(text);
-                              //       canValidateForm = true;
-                              //     } else {
-                              //       canValidateForm = false;
-                              //     }
-                              //   });
-                              // },
-                              controller: _clientAdresseTextController,
+                              onTap: () =>
+                                  _formScrollController.position.moveTo(110.0),
+                              onChanged: (text) {
+                                Provider.of<ProviderProjet>(context)
+                                    .clientMail = text;
+                              },
                               keyboardType: TextInputType.emailAddress,
                               enabled: true,
                               decoration: InputDecoration(
@@ -336,15 +297,9 @@ class _QuoteCreationState extends State<QuoteCreation> {
                       onTap: () => _formScrollController.jumpTo(
                           _formScrollController.position.maxScrollExtent),
                       maxLines: 25,
-                      controller: _descriptionTextController,
                       onChanged: (text) {
-                        if (text.isNotEmpty) {
-                          Provider.of<ProviderProjet>(context)
-                              .setDescription(text);
-                          canValidateForm = true;
-                        } else {
-                          canValidateForm = false;
-                        }
+                        Provider.of<ProviderProjet>(context)
+                            .setDescription(text);
                       },
                       keyboardType: TextInputType.multiline,
                       enabled: true,
@@ -388,29 +343,22 @@ class _QuoteCreationState extends State<QuoteCreation> {
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
                   border: Border.all(
-                      color: canValidateForm
+                      color: Provider.of<ProviderProjet>(context)
+                              .isFilled('QuoteCreation')
                           ? cTheme.MaderaColors.maderaLightGreen
                           : Colors.grey,
                       width: 2),
-                  color: canValidateForm
+                  color: Provider.of<ProviderProjet>(context)
+                          .isFilled('QuoteCreation')
                       ? cTheme.MaderaColors.maderaBlueGreen
                       : Colors.grey,
                 ),
                 child: IconButton(
-                  onPressed: canValidateForm
+                  onPressed: Provider.of<ProviderProjet>(context)
+                          .isFilled('QuoteCreation')
                       ? () {
                           log.d('Saving form...');
-                          Provider.of<ProviderProjet>(context).saveQC(
-                            dateCreationProjet,
-                            _idProjectTextController.text,
-                            {
-                              'name': _clientNameTextController.text,
-                              'adresse': _clientAdresseTextController.text,
-                              'tel': _clientTelTextController.text,
-                              'mail': _clientMailTextController.text,
-                            },
-                            _descriptionTextController.text,
-                          );
+                          Provider.of<ProviderProjet>(context).logQC();
                           log.d('Done.');
                           log.d('Quote Creation');
                           Provider.of<MaderaNav>(context)

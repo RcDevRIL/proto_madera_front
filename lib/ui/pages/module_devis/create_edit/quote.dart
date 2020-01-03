@@ -32,8 +32,6 @@ class _QuoteState extends State<Quote> {
   @override
   void initState() {
     super.initState();
-    dropdownGammeValue = '';
-    canValidateForm = false;
   }
 
   //added to prepare for scaling
@@ -68,6 +66,10 @@ class _QuoteState extends State<Quote> {
                       maxLines: 1,
                       keyboardType: TextInputType.text,
                       enabled: true,
+                      onChanged: (text) {
+                        Provider.of<ProviderProjet>(context)
+                            .setNomDeProduit(text);
+                      },
                       decoration: InputDecoration(
                         hintText: 'Nom du produit...',
                         border: OutlineInputBorder(
@@ -103,9 +105,9 @@ class _QuoteState extends State<Quote> {
                     ),
                     child: DropdownButton<String>(
                       isExpanded: true,
-                      value: dropdownGammeValue.isEmpty
-                          ? null
-                          : dropdownGammeValue,
+                      value: dropdownGammeValue != null
+                          ? dropdownGammeValue
+                          : null,
                       hint: Text('Sélectionnez une gamme...'),
                       icon: Icon(Icons.arrow_drop_down,
                           color: cTheme.MaderaColors.maderaLightGreen),
@@ -122,13 +124,13 @@ class _QuoteState extends State<Quote> {
                         switch (dropdownGammeValue) {
                           case 'Premium':
                             Provider.of<ProviderProjet>(context)
-                                .setGamme(dropdownGammeValue);
+                                .setGamme(newValue);
                             Provider.of<ProviderProjet>(context)
                                 .setModeleListFromGammeID(1);
                             break;
                           case 'Standard':
                             Provider.of<ProviderProjet>(context)
-                                .setGamme(dropdownGammeValue);
+                                .setGamme(newValue);
                             Provider.of<ProviderProjet>(context)
                                 .setModeleListFromGammeID(2);
                             break;
@@ -136,13 +138,12 @@ class _QuoteState extends State<Quote> {
                             {}
                             break;
                         }
-                        canValidateForm = true;
                       },
                       items: <String>[
-                        Provider.of<ProviderProjet>(context).gamme,
+                        'Premium',
                         'Standard',
                         'Gamme3',
-                        'Gamme4'
+                        'Gamme4',
                       ]
                           .map<DropdownMenuItem<String>>(
                               (String value) => DropdownMenuItem<String>(
@@ -170,7 +171,7 @@ class _QuoteState extends State<Quote> {
                       underline: Container(
                         color: Colors.transparent,
                       ),
-                      onChanged: dropdownGammeValue.isNotEmpty
+                      onChanged: dropdownGammeValue != null
                           ? (String newValue) {
                               dropdownModeleValue = newValue;
                               switch (dropdownModeleValue) {
@@ -190,7 +191,6 @@ class _QuoteState extends State<Quote> {
                                   {}
                                   break;
                               }
-                              canValidateForm = true;
                             }
                           : null,
                       items: Provider.of<ProviderProjet>(context)
@@ -214,10 +214,8 @@ class _QuoteState extends State<Quote> {
                     cardHeight: MediaQuery.of(context).size.height / 3.2,
                     child: Stack(
                       children: <Widget>[
-                        Provider.of<ProviderProjet>(context)
-                                    .productModules
-                                    .length !=
-                                0
+                        Provider.of<ProviderProjet>(context).productModules !=
+                                null
                             ? ListView.separated(
                                 shrinkWrap: true,
                                 itemCount: Provider.of<ProviderProjet>(context)
@@ -288,30 +286,29 @@ class _QuoteState extends State<Quote> {
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
                   border: Border.all(
-                      color: canValidateForm
-                          ? cTheme.MaderaColors.maderaLightGreen
-                          : Colors.grey,
+                      color:
+                          Provider.of<ProviderProjet>(context).productModules !=
+                                  null
+                              ? cTheme.MaderaColors.maderaLightGreen
+                              : Colors.grey,
                       width: 2),
-                  color: canValidateForm
+                  color: Provider.of<ProviderProjet>(context).isFilled('Quote')
                       ? cTheme.MaderaColors.maderaBlueGreen
                       : Colors.grey,
                 ),
                 child: IconButton(
                   tooltip: "Valider produit",
-                  onPressed: canValidateForm
-                      ? () {
-                          log.d('Saving form...');
-                          Provider.of<ProviderProjet>(context).saveQ(
-                              dropdownGammeValue,
-                              dropdownModeleValue ??= 'NOPE',
-                              Provider.of<ProviderProjet>(context)
-                                  .productModules);
-                          log.d('Done.');
-                          log.d('Quote Overview');
-                          Provider.of<MaderaNav>(context)
-                              .redirectToPage(context, ProductList());
-                        }
-                      : null,
+                  onPressed:
+                      Provider.of<ProviderProjet>(context).isFilled('Quote')
+                          ? () {
+                              log.d('Saving form...');
+                              Provider.of<ProviderProjet>(context).logQ();
+                              log.d('Done.');
+                              log.d('Quote Overview');
+                              Provider.of<MaderaNav>(context)
+                                  .redirectToPage(context, ProductList());
+                            }
+                          : null,
                   icon: Icon(
                     Icons.check,
                     color: Colors.white,

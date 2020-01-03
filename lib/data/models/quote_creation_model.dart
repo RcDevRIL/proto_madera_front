@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class QuoteCreationModel {
-  DateTime dateDeCreation;
+  String dateDeCreation;
   String refProjet;
   Map<String, String> client;
   String descriptionProjet;
@@ -36,7 +36,7 @@ class QuoteCreationModel {
     sbuf.write(dateDeCreation);
     sbuf.write(',\n' 'refProjet' ': $refProjet,\n');
     sbuf.write('' 'client' ': {');
-    client.forEach((key, value) => sbuf.write('$key : $value'));
+    client.forEach((key, value) => sbuf.write('$key : $value, '));
     sbuf.write('}\n');
     sbuf.write('' 'descriptionProjet' ': $descriptionProjet');
     return sbuf.toString();

@@ -13,8 +13,7 @@ class QuoteModel {
       @required this.listeModele,
       @required this.modeleChoisi,
       @required this.listeModule})
-      : assert(
-            gamme.isNotEmpty && listeModele.length != 0 && listeModule != null);
+      : assert(gamme.isNotEmpty && listeModele.length != 0);
 
   @override
   int get hashCode =>
@@ -33,4 +32,18 @@ class QuoteModel {
           modeleChoisi == other.modeleChoisi &&
           listeModule == other.listeModule &&
           listeModele == other.listeModele;
+  @override
+  String toString() {
+    StringBuffer sbuf = StringBuffer();
+    sbuf.write('' 'nomDeProduit' ': $nomDeProduit,\n');
+    sbuf.write('' 'gamme' ': $gamme,\n');
+    sbuf.write('' 'listeModele' ': {');
+    listeModele.forEach((key, value) => sbuf.write('$key : $value, '));
+    sbuf.write('}\n');
+    sbuf.write('' 'modeleChoisi' ': $modeleChoisi,\n');
+    sbuf.write('' 'listeModule' ': {');
+    listeModule.forEach((key, value) => sbuf.write('$key : $value, '));
+    sbuf.write('}\n');
+    return sbuf.toString();
+  }
 }
