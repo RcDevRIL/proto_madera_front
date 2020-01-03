@@ -258,112 +258,54 @@ class _AuthenticationPageState extends State<AuthenticationPage> {
         break;
       case HttpStatus.OFFLINE:
         {
-          _showPopup(
-              context, 'Erreur réseau', 'Le serveur n' ' est pas joignable.');
+          Provider.of<MaderaNav>(context).showNothingYouCanDoPopup(
+            context,
+            Icons.warning,
+            'Erreur réseau',
+            "Le serveur n'est pas joignable.",
+          );
         }
         break;
       case HttpStatus.ONLINE:
         {
-          _showPopup(context, 'Erreur d' 'authentification',
-              'Le login et / ou le mot de passe sont incorrects');
+          Provider.of<MaderaNav>(context).showNothingYouCanDoPopup(
+            context,
+            Icons.warning,
+            "Erreur d'authentification",
+            'Le login et / ou le mot de passe sont incorrects',
+          );
         }
         break;
       case HttpStatus.UNAUTHORIZED:
         {
-          _showPopup(context, 'Autorisation requise',
-              'Les identifiants sont incorrects');
+          Provider.of<MaderaNav>(context).showNothingYouCanDoPopup(
+            context,
+            Icons.warning,
+            'Autorisation requise',
+            'Les identifiants sont incorrects',
+          );
         }
         break;
       default:
         {
-          _showPopup(
-              context, 'Default', 'Oups! Ceci ne devrait pas arriver...');
+          Provider.of<MaderaNav>(context).showNothingYouCanDoPopup(
+            context,
+            Icons.warning,
+            'Default',
+            'Oups! Ceci ne devrait pas arriver...',
+          );
         }
         break;
     }
   }
 
-  void _showPopup(BuildContext context, String title, String message) {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: Text(
-            '$title',
-            style: TextStyle(color: Colors.red),
-          ),
-          content: Text('$message'),
-          actions: <Widget>[
-            MaderaButton(
-              key: Key('ok-button'),
-              child: Text('OK'),
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-            ),
-          ],
-        );
-      },
-    );
-  }
-
   void _showSynchroErrorPopup(BuildContext context, String synchroTried) {
-    switch (synchroTried) {
-      case 'synchroReferentiel':
-        showDialog(
-          context: context,
-          builder: (c) => AlertDialog(
-            title: Text('Erreur de synchronisation'),
-            content: Text('Erreur lors de l'
-                'appel à la méthode $synchroTried().'),
-            actions: <Widget>[
-              MaderaButton(
-                child: Text('OK'),
-                onPressed: () {
-                  Navigator.of(context).pop();
-                },
-              ),
-            ],
-          ),
-        );
-
-        break;
-      case 'synchroData':
-        showDialog(
-          context: context,
-          builder: (c) => AlertDialog(
-            title: Text('Erreur de synchronisation'),
-            content: Text('Erreur lors de l'
-                'appel à la méthode $synchroTried().'),
-            actions: <Widget>[
-              MaderaButton(
-                child: Text('OK'),
-                onPressed: () {
-                  Navigator.of(context).pop();
-                },
-              ),
-            ],
-          ),
-        );
-
-        break;
-      default:
-        showDialog(
-          context: context,
-          builder: (c) => AlertDialog(
-            title: Text('Erreur de synchronisation'),
-            content: Text('Erreur non référencée.'),
-            actions: <Widget>[
-              MaderaButton(
-                child: Text('OK'),
-                onPressed: () {
-                  Navigator.of(context).pop();
-                },
-              ),
-            ],
-          ),
-        );
-        break;
-    }
+    Provider.of<MaderaNav>(context).showNothingYouCanDoPopup(
+      context,
+      Icons.warning,
+      'Erreur de synchronisation',
+      'Erreur lors de l'
+          'appel à la méthode $synchroTried().',
+    );
   }
 }

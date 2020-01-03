@@ -3,6 +3,8 @@ import 'package:logger/logger.dart';
 
 import 'package:proto_madera_front/ui/pages/pages.dart';
 import 'package:proto_madera_front/ui/pages/user/profile_page.dart';
+import 'package:proto_madera_front/ui/widgets/custom_widgets.dart'
+    show MaderaDialog, MaderaButton;
 import 'package:provider/provider.dart';
 
 ///
@@ -176,5 +178,37 @@ class MaderaNav with ChangeNotifier {
       var maderaNav = Provider.of<MaderaNav>(context);
       maderaNav.updateCurrent(page.runtimeType);
     });
+  }
+
+  //Je rajoute cette méthode qui permet de gagner du temps si on veut juste un bouton OK nav.pop()
+  void showNothingYouCanDoPopup(
+          BuildContext context, IconData icon, String title, String message) =>
+      showPopup(
+        context,
+        icon,
+        title,
+        message,
+        [
+          MaderaButton(
+            child: Text('Ok'),
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+          ),
+        ],
+      );
+  void showPopup(BuildContext context, IconData icon, String title,
+      String message, List<Widget> actions) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return MaderaDialog(
+          title: title,
+          icon: icon,
+          body: Text('$message'),
+          actions: actions,
+        );
+      },
+    );
   }
 }
