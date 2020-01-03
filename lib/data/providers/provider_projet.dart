@@ -159,11 +159,9 @@ class ProviderProjet with ChangeNotifier {
   String get model => _quoteValues.modeleChoisi;
 
   void updateModuleInfos(Map<String, dynamic> moduleSpec) {
-    // _quoteValues.listeModule.clear();
-    _quoteValues.listeModule.update(
-        '${moduleSpec['name']}', (old) => moduleSpec,
-        ifAbsent: () =>
-            moduleSpec); // Je pourrais juste mettre le nom du module, mais c'est pour nous rappelé que derriere un nom il ya des informations à stocker!
+    _quoteValues.listeModule.remove(
+        _quoteValues.listeModule.entries.elementAt(editModuleIndex).key);
+    _quoteValues.listeModule.addAll({'${moduleSpec['name']}': moduleSpec});
   }
 
   Map<String, dynamic> get productModules => _quoteValues.listeModule;
@@ -179,9 +177,9 @@ class ProviderProjet with ChangeNotifier {
           _quoteValues.listeModule.clear();
           _quoteValues.listeModule.addAll(
             {
-              'Module 1.1': {'name': 'Module 1.1', 'nature': 'Mur Droit'},
-              'Module 1.2': {'name': 'Module 1.2', 'nature': 'Mur Droit'},
-              'Module 1.3': {'name': 'Module 1.3', 'nature': 'Mur Droit'},
+              'Module 1.1': {'name': 'Module 1.1', 'nature': 'Mur droit'},
+              'Module 1.2': {'name': 'Module 1.2', 'nature': 'Mur droit'},
+              'Module 1.3': {'name': 'Module 1.3', 'nature': 'Mur droit'},
             },
           );
         }
@@ -191,9 +189,9 @@ class ProviderProjet with ChangeNotifier {
           _quoteValues.listeModule.clear();
           _quoteValues.listeModule.addAll(
             {
-              'Module 2.1': {'name': 'Module 2.1', 'nature': 'Mur Droit'},
-              'Module 2.2': {'name': 'Module 2.2', 'nature': 'Mur Droit'},
-              'Module 2.3': {'name': 'Module 2.3', 'nature': 'Mur Droit'},
+              'Module 2.1': {'name': 'Module 2.1', 'nature': 'Mur droit'},
+              'Module 2.2': {'name': 'Module 2.2', 'nature': 'Mur droit'},
+              'Module 2.3': {'name': 'Module 2.3', 'nature': 'Mur droit'},
             },
           );
         }
@@ -270,5 +268,10 @@ class ProviderProjet with ChangeNotifier {
         return false;
         break;
     }
+  }
+
+  void updateModuleNature(String newValue) {
+    productModules.values.elementAt(editModuleIndex)['nature'] = newValue;
+    notifyListeners();
   }
 }

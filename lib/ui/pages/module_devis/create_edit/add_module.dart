@@ -53,12 +53,17 @@ class _AddModuleState extends State<AddModule> {
 
   @override
   Widget build(BuildContext context) {
-    Map<String, dynamic> moduleInfos;
     var providerProjet = Provider.of<ProviderProjet>(context);
     if (providerProjet.editModuleIndex !=
-        providerProjet.productModules.length - 1)
+        providerProjet.productModules.length - 1) {
       useCase = 'Modifier';
-    else
+      _nameTextController.text = providerProjet.productModules.entries
+          .elementAt(providerProjet.editModuleIndex)
+          .value['name'];
+      dropdownValue = providerProjet.productModules.entries
+          .elementAt(providerProjet.editModuleIndex)
+          .value['nature'];
+    } else
       useCase = 'Ajouter';
 
     return MaderaScaffold(
@@ -107,10 +112,7 @@ class _AddModuleState extends State<AddModule> {
                                       providerProjet.productModules.values
                                           .elementAt(providerProjet
                                               .editModuleIndex)['nature']);
-                                  providerProjet.productModules.values
-                                          .elementAt(providerProjet
-                                              .editModuleIndex)['nature'] =
-                                      newValue;
+                                  providerProjet.updateModuleNature(newValue);
                                   log.i('NEW: ' +
                                       providerProjet.productModules.values
                                           .elementAt(providerProjet
@@ -186,7 +188,7 @@ class _AddModuleState extends State<AddModule> {
                     ),
                     providerProjet.productModules.values.elementAt(
                                 providerProjet.editModuleIndex)['nature'] ==
-                            'Mur Droit'
+                            'Mur droit'
                         ? Row(
                             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                             children: <Widget>[
