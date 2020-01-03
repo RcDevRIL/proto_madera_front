@@ -12,29 +12,44 @@ import 'package:proto_madera_front/data/models/quote_model.dart';
 class ProviderProjet with ChangeNotifier {
   QuoteCreationModel _quoteCreationValues;
   QuoteModel _quoteValues;
+  bool saved = true;
   // List<String> _addModuleValues;
   // List<String> _finitionsValues;
   final Logger log = Logger();
+  final String _now =
+      DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day)
+          .toString()
+          .substring(0, 10);
+  void initAndHold() {
+    if (saved)
+      init();
+    else
+      log.e('Can' 't init a new project, save first');
+  }
+
+  void validate() {
+    //TODO save en bdd?, a faire coté ui je pense pour pouvoir utiliser provider.of(context)
+    saved = true;
+  }
 
   void init() {
     //TODO Rajouter un paramètre: le clientId, puisqu'a priori si on n'initialise le stockage du formulaire, on sait pour quel client on le fait
-    var clientId = 1;
+    var clientId = 123;
+    log.i('init called');
+    saved = false;
     // Initialisation des champs à null en respectant les conditions des constructeurs
     _quoteCreationValues = QuoteCreationModel(
-      client: Map<String, dynamic>(),
-      dateDeCreation: DateTime.now(),
-      descriptionProjet: null,
-      refProjet: DateTime(
-                  DateTime.now().year, DateTime.now().month, DateTime.now().day)
-              .toString()
-              .substring(0, 10) +
+      client: {'name': '', 'adresse': '', 'tel': '', 'mail': ''},
+      dateDeCreation: _now,
+      descriptionProjet: '',
+      refProjet: _now +
           '_MMP$clientId', //à voir comment on construit nos ref de projet? j'ai mis yyyyMMdd_MMP123, MMP pour 'MaisonModulaireProjet', 123 pour l'ID client
     );
     _quoteValues = QuoteModel(
         gamme: 'Premium',
         nomDeProduit: null,
         listeModele: {'Modèle Premium n°1': null, 'Modèle Premium n°2': null},
-        listeModule: Map<String, dynamic>(),
+        listeModule: null,
         modeleChoisi: null);
     /* 
     addModuleValues = [
@@ -56,7 +71,7 @@ class ProviderProjet with ChangeNotifier {
   }
 
   set dateCreation(String newDate) {
-    _quoteCreationValues.dateDeCreation = DateTime.parse(newDate);
+    _quoteCreationValues.dateDeCreation = newDate;
     notifyListeners();
   }
 
@@ -76,12 +91,46 @@ class ProviderProjet with ChangeNotifier {
 
   String get description => _quoteCreationValues.descriptionProjet;
 
-  void setRefClient(String refClient) {
-    _quoteCreationValues.client = {"refClient:": refClient};
+  set clientName(String clientName) {
+    _quoteCreationValues.client
+        .update('name', (old) => clientName, ifAbsent: () => clientName);
     notifyListeners();
   }
 
+  String get clientName => _quoteCreationValues.client['name'];
+
+  set clientAdress(String clientAdress) {
+    _quoteCreationValues.client
+        .update('adresse', (old) => clientAdress, ifAbsent: () => clientAdress);
+    notifyListeners();
+  }
+
+  String get clientAdress => _quoteCreationValues.client['adresse'];
+
+  set clientTel(String clientTel) {
+    _quoteCreationValues.client
+        .update('tel', (old) => clientTel, ifAbsent: () => clientTel);
+    notifyListeners();
+  }
+
+  String get clientTel => _quoteCreationValues.client['tel'];
+
+  set clientMail(String clientMail) {
+    _quoteCreationValues.client
+        .update('mail', (old) => clientMail, ifAbsent: () => clientMail);
+    notifyListeners();
+  }
+
+  String get clientMail => _quoteCreationValues.client['mail'];
+
   String get refClient => _quoteCreationValues.client.toString();
+
+  void setNomDeProduit(String nomDeProduit) {
+    _quoteValues.nomDeProduit = nomDeProduit;
+    notifyListeners();
+  }
+
+  String get nomDeProduit => _quoteValues.nomDeProduit;
 
   void setGamme(String nomGamme) {
     _quoteValues.gamme = nomGamme;
@@ -111,6 +160,7 @@ class ProviderProjet with ChangeNotifier {
 
   void setModuleListFromModelID(int modelID) {
     //il faudra faire une requete ici
+    _quoteValues.listeModule = Map<String, dynamic>();
     switch (modelID) {
       case 1:
         {
@@ -155,7 +205,8 @@ class ProviderProjet with ChangeNotifier {
             'Modèle Premium 2': 12,
             'Modèle Premium 3': 13,
           };
-          _quoteValues.listeModule.clear();
+          _quoteValues.listeModule = null;
+          _quoteValues.modeleChoisi = null;
         }
         break;
       case 2:
@@ -165,7 +216,8 @@ class ProviderProjet with ChangeNotifier {
             'Modèle Standard 2.2': 22,
             'Modèle Standard 2.3': 23,
           };
-          _quoteValues.listeModule.clear();
+          _quoteValues.listeModule = null;
+          _quoteValues.modeleChoisi = null;
         }
         break;
       default:
@@ -177,28 +229,29 @@ class ProviderProjet with ChangeNotifier {
     notifyListeners();
   }
 
-  void saveQC(String dateCreationProjet, String idProjet, String refClient,
-      String descriptionProjet) {
-    log.i('QuoteCreation values:\n${_quoteCreationValues.toString()}');
-    _quoteCreationValues = QuoteCreationModel(
-      dateDeCreation: DateTime.parse(dateCreationProjet),
-      refProjet: idProjet,
-      client: {"refClient": refClient},
-      descriptionProjet: descriptionProjet,
-    );
-    log.i('Updated QuoteCreation values:\n${_quoteCreationValues.toString()}');
+  void logQC() {
+    log.i('QuoteCreation values:\n$_quoteCreationValues');
   }
 
-  void saveQ(String dropdownGammeValue, String dropdownModeleValue,
-      Map<String, dynamic> componentsList) {
-    log.i('QuoteCreation values:\n${_quoteValues.toString()}');
-    _quoteValues = QuoteModel(
-      gamme: dropdownGammeValue,
-      modeleChoisi: dropdownModeleValue,
-      nomDeProduit: "Produit n°1 sauvegardé",
-      listeModule: componentsList,
-      listeModele: null,
-    );
-    log.i('Updated QuoteCreation values:\n${_quoteValues.toString()}');
+  void logQ() {
+    log.i('Quote values:\n${_quoteValues.toString()}');
+  }
+
+  bool isFilled(String pageName) {
+    switch (pageName) {
+      case 'QuoteCreation':
+        return (clientAdress.isNotEmpty &&
+            clientName.isNotEmpty &&
+            clientTel.isNotEmpty &&
+            clientMail.isNotEmpty &&
+            description.isNotEmpty);
+        break;
+      case 'Quote':
+        return (productModules != null);
+        break;
+      default:
+        return false;
+        break;
+    }
   }
 }

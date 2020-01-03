@@ -22,42 +22,29 @@ class QuoteCreation extends StatefulWidget {
 }
 
 class _QuoteCreationState extends State<QuoteCreation> {
-  static final _now = DateTime.now();
-  final String dateCreationProjet =
-      DateTime(_now.year, _now.month, _now.day).toString().substring(0, 10);
-  TextEditingController _descriptionTextController;
-  TextEditingController _clientDescriptionTextController;
-  TextEditingController _idProjectTextController;
+  String dateCreationProjet;
+  String refProjet;
   ScrollController _formScrollController;
-  bool canValidateForm;
 
   final log = Logger();
 
   @override
   void initState() {
     super.initState();
-    _descriptionTextController = TextEditingController();
-    _clientDescriptionTextController = TextEditingController();
-    _clientDescriptionTextController.text = 'ID: 2\tNom: Dupont';
-    _idProjectTextController = TextEditingController();
-    _idProjectTextController.text = '454';
     _formScrollController = ScrollController();
-    canValidateForm = false;
   }
 
   @override
   void dispose() {
-    _descriptionTextController?.dispose();
-    _clientDescriptionTextController?.dispose();
-    _idProjectTextController?.dispose();
     _formScrollController?.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    Provider.of<ProviderProjet>(context)
-        .init(); // Make sure providerProjet is empty$
+    Provider.of<ProviderProjet>(context).initAndHold();
+    dateCreationProjet = Provider.of<ProviderProjet>(context).dateCreation;
+    refProjet = Provider.of<ProviderProjet>(context).refProjet;
     return MaderaScaffold(
       passedContext: context,
       child: Center(
@@ -97,47 +84,15 @@ class _QuoteCreationState extends State<QuoteCreation> {
                             ),
                           ),
                         ),
-                        child: TextField(
-                          textAlign: TextAlign.center,
-                          readOnly: true,
-                          style: TextStyle(
-                            fontWeight: FontWeight.w500,
-                          ),
-                          maxLines: 1,
-                          controller: TextEditingController(
-                            text: dateCreationProjet,
-                          ),
-                          keyboardType: TextInputType.text,
-                          enabled: false,
-                          decoration: InputDecoration(
-                            hintText: '2019-12-14',
-                            border: OutlineInputBorder(
-                              borderRadius: BorderRadius.only(
-                                bottomRight: Radius.circular(20.0),
-                                bottomLeft: Radius.circular(20.0),
-                              ),
-                            ),
-                          ),
+                        child: Center(
+                          child: Text(dateCreationProjet),
                         ),
                       ),
                       MaderaCard(
-                        cardWidth: cTheme.Dimens.cardSizeXSmall,
+                        cardWidth: 250.0,
                         cardHeight: cTheme.Dimens.cardHeight,
-                        child: TextField(
-                          textAlign: TextAlign.center,
-                          maxLines: 1,
-                          controller: _idProjectTextController,
-                          keyboardType: TextInputType.text,
-                          enabled: false,
-                          decoration: InputDecoration(
-                            hintText: '100000',
-                            border: OutlineInputBorder(
-                              borderRadius: BorderRadius.only(
-                                bottomRight: Radius.circular(20.0),
-                                bottomLeft: Radius.circular(20.0),
-                              ),
-                            ),
-                          ),
+                        child: Center(
+                          child: Text(dateCreationProjet + '_MMP123'),
                         ),
                         header: LabelledIcon(
                           icon: Icon(
@@ -153,49 +108,6 @@ class _QuoteCreationState extends State<QuoteCreation> {
                           ),
                         ),
                       ),
-                      // MaderaCard(
-                      //   cardWidth: cTheme.Dimens.cardSizeMedium,
-                      //   cardHeight: cTheme.Dimens.cardHeight,
-                      //   child: TextField(
-                      //     maxLines: 1,
-                      //     controller: _clientDescriptionTextController,
-                      //     onChanged: (text) {
-                      //       setState(() {
-                      //         if (text.isNotEmpty) {
-                      //           Provider.of<ProviderProjet>(context)
-                      //               .setRefClient(text);
-                      //           canValidateForm = true;
-                      //         } else {
-                      //           canValidateForm = false;
-                      //         }
-                      //       });
-                      //     },
-                      //     keyboardType: TextInputType.text,
-                      //     enabled: true,
-                      //     decoration: InputDecoration(
-                      //       hintText: '-1',
-                      //       border: OutlineInputBorder(
-                      //         borderRadius: BorderRadius.only(
-                      //           bottomRight: Radius.circular(20.0),
-                      //           bottomLeft: Radius.circular(20.0),
-                      //         ),
-                      //       ),
-                      //     ),
-                      //   ),
-                      //   labelledIcon: LabelledIcon(
-                      //     icon: Icon(
-                      //       Icons.person,
-                      //       color: cTheme.MaderaColors.textHeaderColor,
-                      //     ),
-                      //     text: Text(
-                      //       'Références Client',
-                      //       style: cTheme.MaderaTextStyles.appBarTitle.copyWith(
-                      //         fontSize: 15.0,
-                      //         fontWeight: FontWeight.w900,
-                      //       ),
-                      //     ),
-                      //   ),
-                      // ),
                     ],
                   ),
                   Row(
@@ -236,11 +148,14 @@ class _QuoteCreationState extends State<QuoteCreation> {
                               ),
                             ),
                             TextField(
-                              enabled: true,
-                              style: TextStyle(
-                                fontWeight: FontWeight.w500,
-                              ),
                               maxLines: 1,
+                              onTap: () =>
+                                  _formScrollController.position.moveTo(110.0),
+                              onChanged: (text) {
+                                Provider.of<ProviderProjet>(context)
+                                    .clientName = text;
+                              },
+                              enabled: true,
                               keyboardType: TextInputType.text,
                               decoration: InputDecoration(
                                 hintText: 'Ex: DUPONT Nicolas',
@@ -268,17 +183,12 @@ class _QuoteCreationState extends State<QuoteCreation> {
                             ),
                             TextField(
                               maxLines: 1,
-                              // onChanged: (text) {
-                              //   setState(() {
-                              //     if (text.isNotEmpty) {
-                              //       Provider.of<ProviderProjet>(context)
-                              //           .setRefClient(text);
-                              //       canValidateForm = true;
-                              //     } else {
-                              //       canValidateForm = false;
-                              //     }
-                              //   });
-                              // },
+                              onTap: () =>
+                                  _formScrollController.position.moveTo(110.0),
+                              onChanged: (text) {
+                                Provider.of<ProviderProjet>(context)
+                                    .clientAdress = text;
+                              },
                               keyboardType: TextInputType.text,
                               enabled: true,
                               decoration: InputDecoration(
@@ -327,17 +237,12 @@ class _QuoteCreationState extends State<QuoteCreation> {
                             ),
                             TextField(
                               maxLines: 1,
-                              // onChanged: (text) {
-                              //   setState(() {
-                              //     if (text.isNotEmpty) {
-                              //       Provider.of<ProviderProjet>(context)
-                              //           .setRefClient(text);
-                              //       canValidateForm = true;
-                              //     } else {
-                              //       canValidateForm = false;
-                              //     }
-                              //   });
-                              // },
+                              onTap: () =>
+                                  _formScrollController.position.moveTo(110.0),
+                              onChanged: (text) {
+                                Provider.of<ProviderProjet>(context).clientTel =
+                                    text;
+                              },
                               keyboardType: TextInputType.phone,
                               enabled: true,
                               decoration: InputDecoration(
@@ -366,17 +271,12 @@ class _QuoteCreationState extends State<QuoteCreation> {
                             ),
                             TextField(
                               maxLines: 1,
-                              // onChanged: (text) {
-                              //   setState(() {
-                              //     if (text.isNotEmpty) {
-                              //       Provider.of<ProviderProjet>(context)
-                              //           .setRefClient(text);
-                              //       canValidateForm = true;
-                              //     } else {
-                              //       canValidateForm = false;
-                              //     }
-                              //   });
-                              // },
+                              onTap: () =>
+                                  _formScrollController.position.moveTo(110.0),
+                              onChanged: (text) {
+                                Provider.of<ProviderProjet>(context)
+                                    .clientMail = text;
+                              },
                               keyboardType: TextInputType.emailAddress,
                               enabled: true,
                               decoration: InputDecoration(
@@ -397,15 +297,9 @@ class _QuoteCreationState extends State<QuoteCreation> {
                       onTap: () => _formScrollController.jumpTo(
                           _formScrollController.position.maxScrollExtent),
                       maxLines: 25,
-                      controller: _descriptionTextController,
                       onChanged: (text) {
-                        if (text.isNotEmpty) {
-                          Provider.of<ProviderProjet>(context)
-                              .setDescription(text);
-                          canValidateForm = true;
-                        } else {
-                          canValidateForm = false;
-                        }
+                        Provider.of<ProviderProjet>(context)
+                            .setDescription(text);
                       },
                       keyboardType: TextInputType.multiline,
                       enabled: true,
@@ -449,23 +343,22 @@ class _QuoteCreationState extends State<QuoteCreation> {
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
                   border: Border.all(
-                      color: canValidateForm
+                      color: Provider.of<ProviderProjet>(context)
+                              .isFilled('QuoteCreation')
                           ? cTheme.MaderaColors.maderaLightGreen
                           : Colors.grey,
                       width: 2),
-                  color: canValidateForm
+                  color: Provider.of<ProviderProjet>(context)
+                          .isFilled('QuoteCreation')
                       ? cTheme.MaderaColors.maderaBlueGreen
                       : Colors.grey,
                 ),
                 child: IconButton(
-                  onPressed: canValidateForm
+                  onPressed: Provider.of<ProviderProjet>(context)
+                          .isFilled('QuoteCreation')
                       ? () {
                           log.d('Saving form...');
-                          Provider.of<ProviderProjet>(context).saveQC(
-                              dateCreationProjet,
-                              _descriptionTextController.text,
-                              _idProjectTextController.text,
-                              _clientDescriptionTextController.text);
+                          Provider.of<ProviderProjet>(context).logQC();
                           log.d('Done.');
                           log.d('Quote Creation');
                           Provider.of<MaderaNav>(context)

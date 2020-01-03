@@ -45,19 +45,17 @@ void main() {
       'init providerProjet test',
       () {
         ProviderProjet providerProjet = ProviderProjet();
-        var clientId = 1;
+        var clientId = 123;
         providerProjet.init(); //initialise les variables du provider
         expect(providerProjet.refProjet.endsWith('_MMP$clientId'),
             true); //valeur temporaire d'initialisation
         providerProjet
             .setDescription('desc'); //ajout d'une description au projet
         expect(providerProjet.description.isNotEmpty,
-            true); //description n'est plus vide
-        providerProjet.productModules
-            .addAll({'test': 'test'}); //ajout d'un module dans la liste
+            true); //description n'est plus vide//ajout d'un module dans la liste
         providerProjet.setModeleListFromGammeID(
             1); //Changement de la liste des modèles à partir de la gamme
-        expect(providerProjet.productModules.isEmpty,
+        expect(providerProjet.productModules == null,
             true); // la liste des modules a été vidée
       },
     );
