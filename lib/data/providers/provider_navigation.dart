@@ -190,6 +190,7 @@ class MaderaNav with ChangeNotifier {
         message,
         [
           MaderaButton(
+            key: Key('ok-button'),
             child: Text('Ok'),
             onPressed: () {
               Navigator.of(context).pop();
