@@ -108,9 +108,7 @@ class _QuoteState extends State<Quote> {
                     ),
                     child: DropdownButton<String>(
                       isExpanded: true,
-                      value: dropdownGammeValue != null
-                          ? providerProjet.gamme
-                          : dropdownGammeValue,
+                      value: providerProjet.gamme,
                       hint: Text('Sélectionnez une gamme...'),
                       icon: Icon(Icons.arrow_drop_down,
                           color: cTheme.MaderaColors.maderaLightGreen),

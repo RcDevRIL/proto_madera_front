@@ -53,7 +53,7 @@ class ProviderProjet with ChangeNotifier {
         gamme: 'Premium',
         nomDeProduit: null,
         listeModele: {'Modèle Premium n°1': null, 'Modèle Premium n°2': null},
-        listeModule: null,
+        listeModule: Map<String, dynamic>(),
         modeleChoisi: null);
     /* 
     addModuleValues = [
@@ -257,7 +257,7 @@ class ProviderProjet with ChangeNotifier {
             description.isNotEmpty);
         break;
       case 'Quote':
-        return (productModules != null);
+        return (productModules.length != 0);
         break;
       case 'AddModule':
         return (productModules.values
