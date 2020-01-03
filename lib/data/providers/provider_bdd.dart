@@ -25,7 +25,6 @@ class ProviderBdd with ChangeNotifier {
   ClientAdresseDao clientAdresseDao;
   AdresseDao adresseDao;
   ProjetDao projetDao;
-  ProjetModuleDao projetModuleDao;
   List<DatabaseAccessor<MaderaDatabase>> daosSynchroList;
 
   Future<List<ProjetWithClient>> listProjetWithClient;
@@ -45,7 +44,6 @@ class ProviderBdd with ChangeNotifier {
     clientAdresseDao = new ClientAdresseDao(db);
     adresseDao = new AdresseDao(db);
     projetDao = new ProjetDao(db);
-    projetModuleDao = new ProjetModuleDao(db);
     daosSynchroList = <DatabaseAccessor<MaderaDatabase>>[
       utilisateurDao,
       composantDao,
@@ -57,7 +55,6 @@ class ProviderBdd with ChangeNotifier {
       clientAdresseDao,
       adresseDao,
       projetDao,
-      projetModuleDao,
     ]; // En gros on met dans cette liste que ce que synchro a besoin. Mais c'est bien ce provider qui est censé donner l'accès à la base de données!
   }
 

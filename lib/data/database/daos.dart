@@ -8,4 +8,7 @@ export 'package:proto_madera_front/data/database/dao/client_dao.dart';
 export 'package:proto_madera_front/data/database/dao/adresse_dao.dart';
 export 'package:proto_madera_front/data/database/dao/client_adresse_dao.dart';
 export 'package:proto_madera_front/data/database/dao/projet_dao.dart';
-export 'package:proto_madera_front/data/database/dao/projet_module_dao.dart';
+export 'package:proto_madera_front/data/database/dao/produit_module_dao.dart';
+export 'package:proto_madera_front/data/database/dao/composant_groupe_dao.dart';
+export 'package:proto_madera_front/data/database/dao/produit_dao.dart';
+export 'package:proto_madera_front/data/database/dao/projet_produits_dao.dart';
