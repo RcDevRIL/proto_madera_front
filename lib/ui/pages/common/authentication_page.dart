@@ -13,7 +13,7 @@ import 'package:proto_madera_front/providers/http_status.dart';
 import 'package:proto_madera_front/theme.dart' as cTheme;
 
 ///
-/// Page d'authentification
+/// Login page of our application
 ///
 /// @author HELIOT David, CHEVALLIER Romain, LADOUCE Fabien
 ///
@@ -209,9 +209,9 @@ class _AuthenticationPageState extends State<AuthenticationPage> {
             child: MaderaButton(
               onPressed: snapshot.hasData && snapshot.data == true
                   ? () async {
-                       submit();
-                     // Provider.of<MaderaNav>(context)
-                    //     .redirectToPage(context, HomePage());
+                      submit();
+                      // Provider.of<MaderaNav>(context)
+                      //     .redirectToPage(context, HomePage());
                     }
                   : null,
               child: Text('Connexion'),

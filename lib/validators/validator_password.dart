@@ -1,9 +1,9 @@
 import 'dart:async';
 
 ///
-/// Classe permettant de gérer la validation d'un champ.
-///  - Configure le message d'erreur à afficher sous le champ texte
-///  - Propage le paramètre si condition(s) OK
+/// Class to handle validation of a text input
+///  - Configure error message
+///  - Propagate input if condition(s) OK
 ///
 /// @author HELIOT David, CHEVALLIER Romain, LADOUCE Fabien
 ///

@@ -3,8 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:proto_madera_front/ui/widgets/custom_LPI.dart';
 
 ///
-/// Page permettant d'initialiser l'app
-///   Dans 'custom_lpi.dart' nous exécutons la synchronisation (catch erreur si token = null)
+/// Page to initialize application and welcome user
+///   Data synchronization is executed directly in 'custom_lpi.dart' (error catch if token = null)
+///
 ///  - TODO faire progresser la barre de chargement en fonction de l'avancée des tâches d'initialisation
 ///
 /// @author HELIOT David, CHEVALLIER Romain, LADOUCE Fabien

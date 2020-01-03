@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 ///
-/// Modèle permettant de lier une page à un icône
+/// Model that enables to bind a page title to an icon (used for our drawer)
 ///
 /// @author HELIOT David, CHEVALLIER Romain, LADOUCE Fabien
 ///

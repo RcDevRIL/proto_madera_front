@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:logger/logger.dart';
 
 ///
-/// Provider permettant de gérer l'état du formulaire de création de devis
+/// Provider to handle user input inside quote creation module
 ///
 /// @author HELIOT David, CHEVALLIER Romain, LADOUCE Fabien
 ///

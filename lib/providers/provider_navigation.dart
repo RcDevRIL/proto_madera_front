@@ -6,7 +6,7 @@ import 'package:proto_madera_front/ui/pages/user/profile_page.dart';
 import 'package:provider/provider.dart';
 
 ///
-/// Provider permettant de gérer l'état de la navigation
+/// Provider to handle the navigation state of application
 ///
 /// @author HELIOT David, CHEVALLIER Romain, LADOUCE Fabien
 ///
@@ -105,7 +105,7 @@ class MaderaNav with ChangeNotifier {
                   '                    ');
         }
         break;
-      case Quote:
+      case ProductCreation:
         {
           _pageTitle = "Outil de création de devis";
           _pageIndex = 1;

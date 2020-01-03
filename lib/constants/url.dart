@@ -1,5 +1,5 @@
 ///
-/// Class permettant de stocker nos URLS
+/// Class to store api urls
 ///
 /// @authors HELIOT David, CHEVALLIER Romain, LADOUCE Fabien
 ///

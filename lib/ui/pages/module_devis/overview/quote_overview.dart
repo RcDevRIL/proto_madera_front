@@ -9,7 +9,7 @@ import 'package:proto_madera_front/ui/widgets/custom_widgets.dart'
 import 'package:provider/provider.dart';
 
 ///
-/// Page de "Suivi des devis enregistrés"
+/// Overview list of saved projects for current user
 ///
 /// @author HELIOT David, CHEVALLIER Romain, LADOUCE Fabien
 ///

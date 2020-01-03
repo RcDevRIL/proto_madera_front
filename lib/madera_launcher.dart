@@ -7,9 +7,9 @@ import 'package:proto_madera_front/ui/pages/pages.dart';
 import 'package:proto_madera_front/theme.dart' as cTheme;
 
 ///
-/// Premier Widget de l'application.
-/// - Configuration Providers
-/// - Configuration routing
+/// Root of the application.
+/// - Providers Configuration
+/// - Routing Configuration
 ///
 /// @author HELIOT David, CHEVALLIER Romain, LADOUCE Fabien
 ///
@@ -60,7 +60,7 @@ class MaderaApp extends StatelessWidget {
             InitializationPage.routeName: (context) => InitializationPage(),
             SettingsPage.routeName: (context) => SettingsPage(),
             HomePage.routeName: (context) => HomePage(),
-            Quote.routeName: (context) => Quote(),
+            ProductCreation.routeName: (context) => ProductCreation(),
             QuoteOverview.routeName: (context) => QuoteOverview(),
             NotificationPage.routeName: (context) => NotificationPage()
           },

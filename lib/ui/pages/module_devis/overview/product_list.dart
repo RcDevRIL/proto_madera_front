@@ -5,11 +5,11 @@ import 'package:provider/provider.dart';
 import 'package:proto_madera_front/ui/widgets/custom_widgets.dart';
 import 'package:proto_madera_front/providers/providers.dart' show MaderaNav;
 import 'package:proto_madera_front/ui/pages/pages.dart'
-    show QuoteOverview, Quote;
+    show QuoteOverview, ProductCreation;
 import 'package:proto_madera_front/theme.dart' as cTheme;
 
 ///
-/// Page de "Edition de devis"
+/// List of products saved for current project
 ///
 /// @author HELIOT David, CHEVALLIER Romain, LADOUCE Fabien
 ///
@@ -84,7 +84,7 @@ class _ProductListState extends State<ProductList> {
                         onTap: () {
                           log.d("Adding a new product");
                           Provider.of<MaderaNav>(context)
-                              .redirectToPage(context, Quote());
+                              .redirectToPage(context, ProductCreation());
                         },
                         child: Align(
                           alignment: Alignment.centerRight,
@@ -100,7 +100,7 @@ class _ProductListState extends State<ProductList> {
                               onPressed: () {
                                 log.d("Adding a new product");
                                 Provider.of<MaderaNav>(context)
-                                    .redirectToPage(context, Quote());
+                                    .redirectToPage(context, ProductCreation());
                               },
                               icon: Icon(
                                 Icons.add,
@@ -191,7 +191,7 @@ class _ProductListState extends State<ProductList> {
               onPressed: () {
                 log.d("Modifying product...");
                 Provider.of<MaderaNav>(context)
-                    .redirectToPage(context, Quote());
+                    .redirectToPage(context, ProductCreation());
               },
             ),
             IconButton(
