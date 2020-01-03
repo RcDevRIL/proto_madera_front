@@ -12,31 +12,35 @@ import 'package:proto_madera_front/data/models/quote_model.dart';
 class ProviderProjet with ChangeNotifier {
   QuoteCreationModel _quoteCreationValues;
   QuoteModel _quoteValues;
-  bool saved = true;
-  // List<String> _addModuleValues;
-  // List<String> _finitionsValues;
+  int _editModuleIndex;
+  bool canInit = true;
+
   final Logger log = Logger();
   final String _now =
       DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day)
           .toString()
           .substring(0, 10);
   void initAndHold() {
-    if (saved)
+    //TODO Appeler cette méthode à chaque fois qu'on fait une redirection vers QuoteCreation
+    if (canInit)
       init();
     else
       log.e('Can' 't init a new project, save first');
   }
 
-  void validate() {
-    //TODO save en bdd?, a faire coté ui je pense pour pouvoir utiliser provider.of(context)
-    saved = true;
+  void validate(bool saveIt) {
+    saveIt
+        ?
+        //TODO save en bdd?, a faire coté ui je pense pour pouvoir utiliser provider.of(context)
+        canInit = true
+        : canInit = true;
   }
 
   void init() {
     //TODO Rajouter un paramètre: le clientId, puisqu'a priori si on n'initialise le stockage du formulaire, on sait pour quel client on le fait
     var clientId = 123;
     log.i('init called');
-    saved = false;
+    canInit = false;
     // Initialisation des champs à null en respectant les conditions des constructeurs
     _quoteCreationValues = QuoteCreationModel(
       client: {'name': '', 'adresse': '', 'tel': '', 'mail': ''},
@@ -67,8 +71,16 @@ class ProviderProjet with ChangeNotifier {
 
   void flush() {
     //TODO Enregistrer la configuration actuelle du devis en BDD
-    init();
+    canInit = true;
+    initAndHold();
   }
+
+  set editModuleIndex(int index) {
+    _editModuleIndex = index;
+    notifyListeners();
+  }
+
+  int get editModuleIndex => _editModuleIndex;
 
   set dateCreation(String newDate) {
     _quoteCreationValues.dateDeCreation = newDate;
@@ -144,13 +156,13 @@ class ProviderProjet with ChangeNotifier {
     notifyListeners();
   }
 
-  String get model => _quoteValues.modeleChoisi ??= 'defaultModele';
+  String get model => _quoteValues.modeleChoisi;
 
-  void addModuleToProduct(Map<String, dynamic> moduleSpec) {
+  void updateModuleInfos(Map<String, dynamic> moduleSpec) {
     // _quoteValues.listeModule.clear();
-    _quoteValues.listeModule.putIfAbsent(
-        'Modèle Custom (name = ${moduleSpec['name']})',
-        () =>
+    _quoteValues.listeModule.update(
+        '${moduleSpec['name']}', (old) => moduleSpec,
+        ifAbsent: () =>
             moduleSpec); // Je pourrais juste mettre le nom du module, mais c'est pour nous rappelé que derriere un nom il ya des informations à stocker!
   }
 
@@ -167,9 +179,9 @@ class ProviderProjet with ChangeNotifier {
           _quoteValues.listeModule.clear();
           _quoteValues.listeModule.addAll(
             {
-              'Module 1.1': 1.1,
-              'Module 1.2': 1.2,
-              'Module 1.3': 1.3,
+              'Module 1.1': {'name': 'Module 1.1', 'nature': 'Mur Droit'},
+              'Module 1.2': {'name': 'Module 1.2', 'nature': 'Mur Droit'},
+              'Module 1.3': {'name': 'Module 1.3', 'nature': 'Mur Droit'},
             },
           );
         }
@@ -179,9 +191,9 @@ class ProviderProjet with ChangeNotifier {
           _quoteValues.listeModule.clear();
           _quoteValues.listeModule.addAll(
             {
-              'Module 2.1': 2.1,
-              'Module 2.2': 2.2,
-              'Module 2.3': 2.3,
+              'Module 2.1': {'name': 'Module 2.1', 'nature': 'Mur Droit'},
+              'Module 2.2': {'name': 'Module 2.2', 'nature': 'Mur Droit'},
+              'Module 2.3': {'name': 'Module 2.3', 'nature': 'Mur Droit'},
             },
           );
         }
@@ -205,7 +217,7 @@ class ProviderProjet with ChangeNotifier {
             'Modèle Premium 2': 12,
             'Modèle Premium 3': 13,
           };
-          _quoteValues.listeModule = null;
+          _quoteValues.listeModule = Map<String, dynamic>();
           _quoteValues.modeleChoisi = null;
         }
         break;
@@ -216,7 +228,7 @@ class ProviderProjet with ChangeNotifier {
             'Modèle Standard 2.2': 22,
             'Modèle Standard 2.3': 23,
           };
-          _quoteValues.listeModule = null;
+          _quoteValues.listeModule = Map<String, dynamic>();
           _quoteValues.modeleChoisi = null;
         }
         break;
@@ -248,6 +260,11 @@ class ProviderProjet with ChangeNotifier {
         break;
       case 'Quote':
         return (productModules != null);
+        break;
+      case 'AddModule':
+        return (productModules.values
+            .elementAt(editModuleIndex)['nature']
+            .isNotEmpty);
         break;
       default:
         return false;

@@ -42,7 +42,6 @@ class _QuoteCreationState extends State<QuoteCreation> {
 
   @override
   Widget build(BuildContext context) {
-    Provider.of<ProviderProjet>(context).initAndHold();
     dateCreationProjet = Provider.of<ProviderProjet>(context).dateCreation;
     refProjet = Provider.of<ProviderProjet>(context).refProjet;
     return MaderaScaffold(

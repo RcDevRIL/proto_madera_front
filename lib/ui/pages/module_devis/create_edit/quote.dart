@@ -43,6 +43,7 @@ class _QuoteState extends State<Quote> {
   @override
   Widget build(BuildContext context) {
     //final args = ModalRoute.of(context).settings.arguments;
+    var providerProjet = Provider.of<ProviderProjet>(context);
     return MaderaScaffold(
       passedContext: context,
       child: Center(
@@ -66,9 +67,11 @@ class _QuoteState extends State<Quote> {
                       maxLines: 1,
                       keyboardType: TextInputType.text,
                       enabled: true,
+                      controller: TextEditingController(
+                        text: providerProjet.nomDeProduit,
+                      ),
                       onChanged: (text) {
-                        Provider.of<ProviderProjet>(context)
-                            .setNomDeProduit(text);
+                        providerProjet.setNomDeProduit(text);
                       },
                       decoration: InputDecoration(
                         hintText: 'Nom du produit...',
@@ -106,8 +109,8 @@ class _QuoteState extends State<Quote> {
                     child: DropdownButton<String>(
                       isExpanded: true,
                       value: dropdownGammeValue != null
-                          ? dropdownGammeValue
-                          : null,
+                          ? providerProjet.gamme
+                          : dropdownGammeValue,
                       hint: Text('Sélectionnez une gamme...'),
                       icon: Icon(Icons.arrow_drop_down,
                           color: cTheme.MaderaColors.maderaLightGreen),
@@ -121,18 +124,14 @@ class _QuoteState extends State<Quote> {
                       onChanged: (String newValue) {
                         dropdownGammeValue = newValue;
                         dropdownModeleValue = null;
-                        switch (dropdownGammeValue) {
+                        switch (newValue) {
                           case 'Premium':
-                            Provider.of<ProviderProjet>(context)
-                                .setGamme(newValue);
-                            Provider.of<ProviderProjet>(context)
-                                .setModeleListFromGammeID(1);
+                            providerProjet.setGamme(newValue);
+                            providerProjet.setModeleListFromGammeID(1);
                             break;
                           case 'Standard':
-                            Provider.of<ProviderProjet>(context)
-                                .setGamme(newValue);
-                            Provider.of<ProviderProjet>(context)
-                                .setModeleListFromGammeID(2);
+                            providerProjet.setGamme(newValue);
+                            providerProjet.setModeleListFromGammeID(2);
                             break;
                           default:
                             {}
@@ -160,7 +159,7 @@ class _QuoteState extends State<Quote> {
                     edgeInsetsPadding: EdgeInsets.symmetric(horizontal: 8.0),
                     child: DropdownButton<String>(
                       isExpanded: true,
-                      value: dropdownModeleValue,
+                      value: providerProjet.model,
                       hint: Text('Sélectionnez un modèle...'),
                       icon: Icon(Icons.arrow_drop_down,
                           color: cTheme.MaderaColors.maderaLightGreen),
@@ -176,16 +175,12 @@ class _QuoteState extends State<Quote> {
                               dropdownModeleValue = newValue;
                               switch (dropdownModeleValue) {
                                 case 'Modèle Premium 1':
-                                  Provider.of<ProviderProjet>(context)
-                                      .setModel(dropdownModeleValue);
-                                  Provider.of<ProviderProjet>(context)
-                                      .setModuleListFromModelID(1);
+                                  providerProjet.setModel(dropdownModeleValue);
+                                  providerProjet.setModuleListFromModelID(1);
                                   break;
                                 case 'Modèle Premium 2':
-                                  Provider.of<ProviderProjet>(context)
-                                      .setModel(dropdownModeleValue);
-                                  Provider.of<ProviderProjet>(context)
-                                      .setModuleListFromModelID(2);
+                                  providerProjet.setModel(dropdownModeleValue);
+                                  providerProjet.setModuleListFromModelID(2);
                                   break;
                                 default:
                                   {}
@@ -193,13 +188,8 @@ class _QuoteState extends State<Quote> {
                               }
                             }
                           : null,
-                      items: Provider.of<ProviderProjet>(context)
-                                  .modeleList
-                                  .length !=
-                              0
-                          ? Provider.of<ProviderProjet>(context)
-                              .modeleList
-                              .keys
+                      items: providerProjet.modeleList.length != 0
+                          ? providerProjet.modeleList.keys
                               .map<DropdownMenuItem<String>>(
                                   (String value) => DropdownMenuItem<String>(
                                         value: value,
@@ -214,28 +204,24 @@ class _QuoteState extends State<Quote> {
                     cardHeight: MediaQuery.of(context).size.height / 3.2,
                     child: Stack(
                       children: <Widget>[
-                        Provider.of<ProviderProjet>(context).productModules !=
-                                null
+                        providerProjet.productModules != null
                             ? ListView.separated(
                                 shrinkWrap: true,
-                                itemCount: Provider.of<ProviderProjet>(context)
-                                    .productModules
-                                    .keys
-                                    .length,
+                                itemCount:
+                                    providerProjet.productModules.keys.length,
                                 itemBuilder: (c, i) => Material(
                                   child: InkWell(
                                     highlightColor: Colors.transparent,
                                     splashColor:
                                         cTheme.MaderaColors.maderaBlueGreen,
                                     child: ListTile(
-                                      title: Text(
-                                          Provider.of<ProviderProjet>(context)
-                                              .productModules
-                                              .keys
-                                              .elementAt(i)),
+                                      title: Text(providerProjet
+                                          .productModules.values
+                                          .elementAt(i)['name']),
                                     ),
                                     onTap: () {
                                       log.d("Modifying module...");
+                                      providerProjet.editModuleIndex = i;
                                       Provider.of<MaderaNav>(context)
                                           .redirectToPage(context, AddModule());
                                     },
@@ -249,11 +235,22 @@ class _QuoteState extends State<Quote> {
                         Align(
                           alignment: Alignment.bottomRight,
                           child: MaderaButton(
-                            onPressed: () {
-                              log.d("Adding Module for this quote");
-                              Provider.of<MaderaNav>(context)
-                                  .redirectToPage(context, AddModule());
-                            },
+                            onPressed: providerProjet.productModules != null
+                                ? () {
+                                    log.d("Adding Module for this quote");
+                                    providerProjet.editModuleIndex =
+                                        providerProjet.productModules.length;
+                                    providerProjet.productModules.putIfAbsent(
+                                      'untitled module',
+                                      () => {
+                                        'name': 'untitled module',
+                                        'nature': '',
+                                      },
+                                    );
+                                    Provider.of<MaderaNav>(context)
+                                        .redirectToPage(context, AddModule());
+                                  }
+                                : null,
                             child: LabelledIcon(
                               icon: Icon(Icons.add),
                               text: Text("Ajouter Module"),
@@ -286,29 +283,26 @@ class _QuoteState extends State<Quote> {
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
                   border: Border.all(
-                      color:
-                          Provider.of<ProviderProjet>(context).productModules !=
-                                  null
-                              ? cTheme.MaderaColors.maderaLightGreen
-                              : Colors.grey,
+                      color: providerProjet.productModules != null
+                          ? cTheme.MaderaColors.maderaLightGreen
+                          : Colors.grey,
                       width: 2),
-                  color: Provider.of<ProviderProjet>(context).isFilled('Quote')
+                  color: providerProjet.isFilled('Quote')
                       ? cTheme.MaderaColors.maderaBlueGreen
                       : Colors.grey,
                 ),
                 child: IconButton(
                   tooltip: "Valider produit",
-                  onPressed:
-                      Provider.of<ProviderProjet>(context).isFilled('Quote')
-                          ? () {
-                              log.d('Saving form...');
-                              Provider.of<ProviderProjet>(context).logQ();
-                              log.d('Done.');
-                              log.d('Quote Overview');
-                              Provider.of<MaderaNav>(context)
-                                  .redirectToPage(context, ProductList());
-                            }
-                          : null,
+                  onPressed: providerProjet.isFilled('Quote')
+                      ? () {
+                          log.d('Saving form...');
+                          providerProjet.logQ();
+                          log.d('Done.');
+                          log.d('Quote Overview');
+                          Provider.of<MaderaNav>(context)
+                              .redirectToPage(context, ProductList());
+                        }
+                      : null,
                   icon: Icon(
                     Icons.check,
                     color: Colors.white,
