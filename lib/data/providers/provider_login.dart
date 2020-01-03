@@ -11,7 +11,7 @@ import 'package:proto_madera_front/data/database/madera_database.dart';
 import 'package:proto_madera_front/data/models/http_status.dart';
 
 ///
-/// Provider permettant de gérer la connexion au backend hébergé
+/// Provider to handle backend connection
 ///
 /// @author HELIOT David, CHEVALLIER Romain, LADOUCE Fabien
 ///

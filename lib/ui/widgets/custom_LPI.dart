@@ -7,8 +7,7 @@ import 'package:proto_madera_front/data/providers/providers.dart'
 import 'package:proto_madera_front/ui/pages/pages.dart' show AuthenticationPage;
 import 'package:proto_madera_front/theme.dart' as cTheme;
 
-///
-/// Widget personnalisé pour une barre de progression linéaire
+/// Custom widget representing a linear progressbar incidator
 ///
 /// @author HELIOT David, CHEVALLIER Romain, LADOUCE Fabien
 ///

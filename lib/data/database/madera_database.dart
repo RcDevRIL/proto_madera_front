@@ -5,7 +5,7 @@ import 'package:proto_madera_front/data/database/tables.dart';
 part 'madera_database.g.dart';
 
 ///
-/// Class représentant notre base de donnée.
+/// Class representing our database.
 ///
 /// @author HELIOT David, CHEVALLIER Romain, LADOUCE Fabien
 ///

@@ -9,7 +9,7 @@ import 'package:proto_madera_front/ui/widgets/custom_widgets.dart';
 import 'package:proto_madera_front/theme.dart' as cTheme;
 
 ///
-/// Page "Ajout de module"
+/// Page to create/edit a module of current product
 ///
 /// @author HELIOT David, CHEVALLIER Romain, LADOUCE Fabien
 ///
@@ -435,7 +435,7 @@ class _AddModuleState extends State<AddModule> {
                                 'errorWitdh',
                           });
                           Provider.of<MaderaNav>(context)
-                              .redirectToPage(context, Quote());
+                              .redirectToPage(context, ProductCreation());
                         }
                       : null,
                   icon: Icon(
@@ -462,7 +462,7 @@ class _AddModuleState extends State<AddModule> {
                       ? () {
                           log.d("Canceling Module...");
                           Provider.of<MaderaNav>(context)
-                              .redirectToPage(context, Quote());
+                              .redirectToPage(context, ProductCreation());
                         }
                       : null,
                   icon: Icon(

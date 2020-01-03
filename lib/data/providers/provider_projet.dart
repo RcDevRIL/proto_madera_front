@@ -4,7 +4,7 @@ import 'package:proto_madera_front/data/models/quote_creation_model.dart';
 import 'package:proto_madera_front/data/models/quote_model.dart';
 
 ///
-/// Provider permettant de gérer l'état du formulaire de création de devis
+/// Provider to handle user input inside quote creation module
 ///
 /// @author HELIOT David, CHEVALLIER Romain, LADOUCE Fabien
 ///

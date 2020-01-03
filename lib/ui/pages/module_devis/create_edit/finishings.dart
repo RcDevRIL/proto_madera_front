@@ -2,15 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:logger/logger.dart';
 import 'package:provider/provider.dart';
 
-import 'package:proto_madera_front/data/providers/providers.dart'
-    show MaderaNav;
-import 'package:proto_madera_front/ui/pages/pages.dart' show Quote, AddModule;
+import 'package:proto_madera_front/providers/providers.dart' show MaderaNav;
+import 'package:proto_madera_front/ui/pages/pages.dart'
+    show ProductCreation, AddModule;
 import 'package:proto_madera_front/ui/widgets/custom_widgets.dart'
     show GradientFrame, MaderaRoundedBox, MaderaScaffold;
 import 'package:proto_madera_front/theme.dart' as cTheme;
 
 ///
-/// Page "Finitions"
+/// Page to provide user some option on the module finitions
 ///
 /// @author HELIOT David, CHEVALLIER Romain, LADOUCE Fabien
 ///
@@ -135,7 +135,7 @@ class _FinishingsState extends State<Finishings> {
                   onPressed: () {
                     log.d("Adding Finishings...");
                     Provider.of<MaderaNav>(context)
-                        .redirectToPage(context, Quote());
+                        .redirectToPage(context, ProductCreation());
                   },
                   icon: Icon(
                     Icons.check,

@@ -4,12 +4,12 @@ import 'package:provider/provider.dart';
 
 import 'package:proto_madera_front/data/providers/providers.dart'
     show MaderaNav, ProviderProjet;
-import 'package:proto_madera_front/ui/pages/pages.dart' show Quote;
+import 'package:proto_madera_front/ui/pages/pages.dart' show ProductCreation;
 import 'package:proto_madera_front/ui/widgets/custom_widgets.dart';
 import 'package:proto_madera_front/theme.dart' as cTheme;
 
 ///
-/// Page 'Outil de création de devis'
+/// Entry point for the quote creation module of our prototype
 ///
 /// @author HELIOT David, CHEVALLIER Romain, LADOUCE Fabien
 ///
@@ -469,7 +469,7 @@ class _QuoteCreationState extends State<QuoteCreation> {
                           log.d('Done.');
                           log.d('Quote Creation');
                           Provider.of<MaderaNav>(context)
-                              .redirectToPage(context, Quote());
+                              .redirectToPage(context, ProductCreation());
                         }
                       : null,
                   icon: Icon(

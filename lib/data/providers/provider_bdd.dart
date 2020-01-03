@@ -7,8 +7,9 @@ import 'package:proto_madera_front/data/database/madera_database.dart';
 import 'package:proto_madera_front/data/models/projet_with_client.dart';
 
 ///
-/// Provider permettant de gérer l'état de la synchronisation avec la base de donnée distante
-/// Permet également de gérer la sauvegarde locale
+/// Provider to handle database interactions
+///
+///   Expose DAOs
 ///
 /// @author HELIOT David, CHEVALLIER Romain, LADOUCE Fabien
 ///

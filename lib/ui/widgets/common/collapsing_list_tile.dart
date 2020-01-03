@@ -2,18 +2,33 @@ import 'package:flutter/material.dart';
 
 import 'package:proto_madera_front/theme.dart' as cTheme;
 
+/// Custom widget representing the icons of our custom drawer.
 ///
-/// Widget personnalisé pour les icônes de la barre de navigation personnalisée
-///     Permet d'afficher le titre de la page auquel l'icône fait référence
+/// It allows us to display the icons of our custom drawer,
+/// as well as the title for each corresponding icon.
 ///
 /// @author HELIOT David, CHEVALLIER Romain, LADOUCE Fabien
 ///
 /// @version 0.4-RELEASE
 class CollapsingListTile extends StatefulWidget {
+  /// Creates a collapsible list of tiles.
+  ///
+  /// The [title], [icon], and [animationController] arguments must not be null.
+  /// Additionally, if the [onTap] callback is null, then the list of tile will be unclickable by default.
+
+  /// The title to be displayed.
   final String title;
+
+  /// The icon linked to the [title].
   final IconData icon;
+
+  /// The animation used to display the title of the icon.
   final AnimationController animationController;
+
+  /// When true, the icon is set to active, and changes color.
   final bool isSelected;
+
+  /// The callback function that is called when the [InkWell] is tapped.
   final Function onTap;
 
   CollapsingListTile(

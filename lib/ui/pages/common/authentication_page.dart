@@ -13,7 +13,7 @@ import 'package:proto_madera_front/data/models/http_status.dart';
 import 'package:proto_madera_front/theme.dart' as cTheme;
 
 ///
-/// Page d'authentification
+/// Login page of our application
 ///
 /// @author HELIOT David, CHEVALLIER Romain, LADOUCE Fabien
 ///

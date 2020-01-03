@@ -11,8 +11,7 @@ import 'package:proto_madera_front/ui/pages/pages.dart';
 import 'package:proto_madera_front/data/models/navigation_model.dart';
 import 'package:proto_madera_front/theme.dart' as cTheme;
 
-///
-/// Widget personnalisé pour une barre de navigation extensible
+/// Custom widget representing an extensible navigation bar
 ///
 /// @author HELIOT David, CHEVALLIER Romain, LADOUCE Fabien
 ///

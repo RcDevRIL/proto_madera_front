@@ -61,7 +61,8 @@ class MaderaTheme {
   }
 
   ///
-  /// Thème par défaut de nos boutons.
+  /// [ButtonThemeData] par défaut de notre application
+  ///
   /// Est appliqué sur tout les éléments [MaterialButton], [RaisedButton], [FlatButton], etc.
   static final ButtonThemeData maderaButtonTheme = ButtonThemeData(
     // textTheme: ButtonTextTheme.primary,
@@ -82,7 +83,7 @@ class MaderaTheme {
   );
 
   ///
-  /// Thème de notre AppBar
+  /// [AppBarTheme] par défaut de notre application
   ///
   static final AppBarTheme defaultAppBarTheme = AppBarTheme(
     brightness: Brightness.light,
@@ -94,7 +95,7 @@ class MaderaTheme {
   );
 
   ///
-  /// Thème par défaut des icones
+  /// [IconThemeData] par défaut de notre application
   ///
   static final IconThemeData defaultIconThemeData = IconThemeData(
     color: MaderaColors.iconsMainColor,
@@ -103,7 +104,7 @@ class MaderaTheme {
   );
 
   ///
-  /// Thème par défaut des textes
+  /// [TextTheme] par défaut de notre application
   /// Il permet de définir des styles pour tous les éléments de l'application.
   /// Il est également possible des les récupérer et les transformer au runtime avec la commande:
   /// Theme.of(context).textTheme.[nomDuParamètre].apply()/.copyWith()

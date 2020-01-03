@@ -10,19 +10,19 @@ import 'package:proto_madera_front/ui/pages/pages.dart'
 import 'package:proto_madera_front/theme.dart' as cTheme;
 
 ///
-/// Page de "Edition de devis"
+/// Product creation page
 ///
 /// @author HELIOT David, CHEVALLIER Romain, LADOUCE Fabien
 ///
-/// @version 0.4-RELEASE
-class Quote extends StatefulWidget {
+/// @version 0.4-PRE-RELEASE
+class ProductCreation extends StatefulWidget {
   static const routeName = '/quote';
 
   @override
-  _QuoteState createState() => _QuoteState();
+  _ProductCreationState createState() => _ProductCreationState();
 }
 
-class _QuoteState extends State<Quote> {
+class _ProductCreationState extends State<ProductCreation> {
   final log = Logger();
   String dropdownGammeValue;
   String dropdownModeleValue;

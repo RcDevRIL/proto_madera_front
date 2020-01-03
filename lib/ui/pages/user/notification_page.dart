@@ -8,7 +8,7 @@ import 'package:proto_madera_front/ui/widgets/custom_widgets.dart'
 import 'package:proto_madera_front/theme.dart' as cTheme;
 
 ///
-/// "Page des notifications"
+/// User Notification page
 ///
 /// @author HELIOT David, CHEVALLIER Romain, LADOUCE Fabien
 ///

@@ -20,7 +20,7 @@ void main() {
 
   group('General Unit Tests', () {
     testWidgets(
-      'first test',
+      'init ProviderNavigation on HomePage test',
       (WidgetTester tester) async {
         final MaderaNav providerNavigation = MaderaNav();
         Widget testWidget = MediaQuery(
@@ -36,8 +36,9 @@ void main() {
         );
         // Build our app and trigger a frame.
         await tester.pumpWidget(testWidget);
-        // Simplest test, useless for now, just to make build pass on codemagic.
-        expect(find.text("default"), findsWidgets);
+        expect(find.text("default"),
+            findsWidgets); // Comme on a directement lancé la page d'accueil,
+        // pas d'appel à redirectToPage -> pas d'appel à l'update des properties de navigation -> valeurs à default
       },
     );
     test(
@@ -63,22 +64,26 @@ void main() {
     test(
       'Update route state',
       () async {
-        final MaderaNav providerNavigation = MaderaNav();
+        final MaderaNav providerNavigation =
+            MaderaNav(); // initialisation du provider
         int index = providerNavigation.pageIndex;
         String title = providerNavigation.pageTitle;
-        expect(index, -1);
-        expect(title, 'default');
-        providerNavigation.updateCurrent(AuthenticationPage);
+        expect(index, -1); // variable si null renvoie -1
+        expect(title, 'default'); // variable si null renvoie 'default'
+        providerNavigation.updateCurrent(
+            AuthenticationPage); // change les propriétés de navigation
         index = providerNavigation.pageIndex;
         title = providerNavigation.pageTitle;
         expect(-1, index);
         expect("Bienvenue sur l'application métier MADERA !", title);
-        providerNavigation.updateCurrent(HomePage);
+        providerNavigation
+            .updateCurrent(HomePage); // test d'une autre page existante
         index = providerNavigation.pageIndex;
         title = providerNavigation.pageTitle;
         expect(0, index);
         expect("Page d'accueil", title);
-        providerNavigation.updateCurrent(ChangeNotifier);
+        providerNavigation.updateCurrent(
+            ChangeNotifier); // test avec un mauvais type d'argument -> error et set les propriétés aux valeurs par défaut
         index = providerNavigation.pageIndex;
         title = providerNavigation.pageTitle;
         expect(-1, index);
@@ -92,7 +97,8 @@ void main() {
       );
       var date = DateTime.now();
 
-      expect(date.isAfter(providerSynchro.refsLastSyncDate), true);
+      expect(date.isAfter(providerSynchro.refsLastSyncDate),
+          true); // la synchronisation n'a pas eu lieue
     });
     testWidgets(
       'ping test',

@@ -10,7 +10,7 @@ import 'package:proto_madera_front/data/database/daos.dart';
 import 'package:proto_madera_front/data/database/madera_database.dart';
 
 ///
-/// Provider permettant de gérer l'état de la synchronisation
+/// Provider to handle backend synchronization state
 ///
 /// @author HELIOT David, CHEVALLIER Romain, LADOUCE Fabien
 ///

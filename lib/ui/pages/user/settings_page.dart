@@ -8,7 +8,7 @@ import 'package:proto_madera_front/ui/widgets/custom_widgets.dart'
 import 'package:proto_madera_front/theme.dart' as cTheme;
 
 ///
-/// Page des paramètres de l'application
+/// Page to provide some parameters for user
 ///
 /// @author HELIOT David, CHEVALLIER Romain, LADOUCE Fabien
 ///

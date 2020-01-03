@@ -10,7 +10,7 @@ import 'package:proto_madera_front/ui/widgets/custom_widgets.dart'
 import 'package:proto_madera_front/data/database/madera_database.dart';
 
 ///
-/// Page d'accueil de l'application
+/// Home page of our application
 ///
 /// @author HELIOT David, CHEVALLIER Romain, LADOUCE Fabien
 ///

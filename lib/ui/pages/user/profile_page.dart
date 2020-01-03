@@ -4,7 +4,7 @@ import 'package:proto_madera_front/ui/widgets/custom_widgets.dart'
     show MaderaScaffold;
 
 ///
-/// "Page du profil utilisateur"
+/// Profile user page
 ///
 /// @author HELIOT David, CHEVALLIER Romain, LADOUCE Fabien
 ///
