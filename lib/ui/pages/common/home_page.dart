@@ -45,7 +45,7 @@ class HomePage extends StatelessWidget {
                     width: 150.0,
                     child: RaisedButton(
                       onPressed: () {
-                        mN.redirectToPage(context, QuoteOverview());
+                        mN.redirectToPage(context, QuoteOverview(), null);
                       },
                       child: Text('Suivi de devis'),
                     ),
@@ -56,7 +56,7 @@ class HomePage extends StatelessWidget {
                     child: RaisedButton(
                       onPressed: () {
                         Provider.of<ProviderProjet>(context).initAndHold();
-                        mN.redirectToPage(context, QuoteCreation());
+                        mN.redirectToPage(context, QuoteCreation(), null);
                       },
                       child: Text('Création de devis'),
                     ),
@@ -66,7 +66,7 @@ class HomePage extends StatelessWidget {
                     width: 150.0,
                     child: RaisedButton(
                       onPressed: () {
-                        mN.redirectToPage(context, SettingsPage());
+                        mN.redirectToPage(context, SettingsPage(), null);
                       },
                       child: Text('Paramètres'),
                     ),
@@ -108,7 +108,7 @@ class HomePage extends StatelessWidget {
                     width: 150.0,
                     child: RaisedButton(
                       onPressed: () {
-                        mN.redirectToPage(context, NotificationPage());
+                        mN.redirectToPage(context, NotificationPage(), null);
                       },
                       child: Text('Lien vers Notifications'),
                     ),

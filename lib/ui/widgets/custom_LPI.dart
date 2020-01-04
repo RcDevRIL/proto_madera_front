@@ -44,7 +44,7 @@ class _MyLinearProgressIndicatorState extends State<MyLinearProgressIndicator>
         log.d('$status');
         if (status == AnimationStatus.completed) {
           Provider.of<MaderaNav>(context)
-              .redirectToPage(context, AuthenticationPage());
+              .redirectToPage(context, AuthenticationPage(), null);
         }
         if (status == AnimationStatus.dismissed) {
           progressController.forward();

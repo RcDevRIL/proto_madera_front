@@ -42,7 +42,7 @@ class _ProductCreationState extends State<ProductCreation> {
 
   @override
   Widget build(BuildContext context) {
-    //final args = ModalRoute.of(context).settings.arguments;
+    List<String> args = ModalRoute.of(context).settings.arguments;
     var providerProjet = Provider.of<ProviderProjet>(context);
     return MaderaScaffold(
       passedContext: context,
@@ -67,9 +67,6 @@ class _ProductCreationState extends State<ProductCreation> {
                       maxLines: 1,
                       keyboardType: TextInputType.text,
                       enabled: true,
-                      controller: TextEditingController(
-                        text: providerProjet.nomDeProduit,
-                      ),
                       onChanged: (text) {
                         providerProjet.setNomDeProduit(text);
                       },
@@ -221,7 +218,8 @@ class _ProductCreationState extends State<ProductCreation> {
                                       log.d("Modifying module...");
                                       providerProjet.editModuleIndex = i;
                                       Provider.of<MaderaNav>(context)
-                                          .redirectToPage(context, AddModule());
+                                          .redirectToPage(
+                                              context, AddModule(), null);
                                     },
                                   ),
                                 ),
@@ -246,7 +244,8 @@ class _ProductCreationState extends State<ProductCreation> {
                                       },
                                     );
                                     Provider.of<MaderaNav>(context)
-                                        .redirectToPage(context, AddModule());
+                                        .redirectToPage(
+                                            context, AddModule(), null);
                                   }
                                 : null,
                             child: LabelledIcon(
@@ -298,7 +297,7 @@ class _ProductCreationState extends State<ProductCreation> {
                           log.d('Done.');
                           log.d('Quote Overview');
                           Provider.of<MaderaNav>(context)
-                              .redirectToPage(context, ProductList());
+                              .redirectToPage(context, ProductList(), null);
                         }
                       : null,
                   icon: Icon(

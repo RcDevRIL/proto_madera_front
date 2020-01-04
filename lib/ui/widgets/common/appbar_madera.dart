@@ -34,7 +34,8 @@ class AppBarMadera extends StatelessWidget {
                 ? FlatButton(
                     padding: EdgeInsets.all(0.0), //override theme
                     shape: Border.all(style: BorderStyle.none), //override theme
-                    onPressed: () => mN.redirectToPage(context, HomePage()),
+                    onPressed: () =>
+                        mN.redirectToPage(context, HomePage(), null),
                     child: Image(
                       image: AssetImage("assets/img/logo-madera.png"),
                     ),

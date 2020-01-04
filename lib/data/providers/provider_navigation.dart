@@ -171,14 +171,25 @@ class MaderaNav with ChangeNotifier {
     notifyListeners();
   }
 
-  void redirectToPage(BuildContext context, Widget page) {
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      MaterialPageRoute newRoute =
-          MaterialPageRoute(builder: (BuildContext context) => page);
-      Navigator.of(context).pushReplacement(newRoute);
-      var maderaNav = Provider.of<MaderaNav>(context);
-      maderaNav.updateCurrent(page.runtimeType);
-    });
+  void redirectToPage(BuildContext context, Widget page, List<String> args) {
+    if (args != null)
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        MaterialPageRoute newRoute = MaterialPageRoute(
+            builder: (BuildContext context) => page,
+            settings: RouteSettings(arguments: args));
+        Navigator.of(context).pushReplacement(newRoute);
+        var maderaNav = Provider.of<MaderaNav>(context);
+        maderaNav.updateCurrent(page.runtimeType);
+      });
+    else
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        MaterialPageRoute newRoute = MaterialPageRoute(
+          builder: (BuildContext context) => page,
+        );
+        Navigator.of(context).pushReplacement(newRoute);
+        var maderaNav = Provider.of<MaderaNav>(context);
+        maderaNav.updateCurrent(page.runtimeType);
+      });
   }
 
   //Je rajoute cette méthode qui permet de gagner du temps si on veut juste un bouton OK nav.pop()

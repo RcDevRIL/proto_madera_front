@@ -287,4 +287,10 @@ class ProviderProjet with ChangeNotifier {
     productModules.values.elementAt(editModuleIndex)['nature'] = newValue;
     notifyListeners();
   }
+
+  void setFinitions(String choice) {
+    productModules.values
+        .elementAt(editModuleIndex)
+        .addAll({'finitions': choice});
+  }
 }

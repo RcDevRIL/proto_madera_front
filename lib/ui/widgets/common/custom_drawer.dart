@@ -64,7 +64,7 @@ class _CustomDrawerState extends State<CustomDrawer>
                 CollapsingListTile(
                   isSelected: Provider.of<MaderaNav>(context).pageIndex == 5,
                   onTap: () => Provider.of<MaderaNav>(context)
-                      .redirectToPage(context, UserProfilePage()),
+                      .redirectToPage(context, UserProfilePage(), null),
                   title: "Test Name",
                   icon: Icons.person,
                   animationController: _animationController,
@@ -110,7 +110,7 @@ class _CustomDrawerState extends State<CustomDrawer>
                             if (navigationTarget.runtimeType == QuoteCreation)
                               Provider.of<ProviderProjet>(context)
                                   .initAndHold();
-                            mN.redirectToPage(context, navigationTarget);
+                            mN.redirectToPage(context, navigationTarget, null);
 
                             setState(() {
                               currentSelectedItem = i;
@@ -130,8 +130,8 @@ class _CustomDrawerState extends State<CustomDrawer>
                   onTap: !isCollapsed
                       ? () {
                           Provider.of<ProviderLogin>(context).logout();
-                          Provider.of<MaderaNav>(context)
-                              .redirectToPage(context, AuthenticationPage());
+                          Provider.of<MaderaNav>(context).redirectToPage(
+                              context, AuthenticationPage(), null);
                         }
                       : null,
                   animationController: _animationController,
