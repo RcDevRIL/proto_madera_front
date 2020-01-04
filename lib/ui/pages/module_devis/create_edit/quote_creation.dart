@@ -382,9 +382,8 @@ class _QuoteCreationState extends State<QuoteCreation> {
                           log.d('Saving form...');
                           providerProjet.logQC();
                           log.d('Done.');
-                          log.d('Quote Creation');
-                          Provider.of<MaderaNav>(context).redirectToPage(
-                              context, ProductCreation(), ['Produit n°1']);
+                          Provider.of<MaderaNav>(context)
+                              .redirectToPage(context, ProductCreation(), null);
                         }
                       : null,
                   icon: Icon(
