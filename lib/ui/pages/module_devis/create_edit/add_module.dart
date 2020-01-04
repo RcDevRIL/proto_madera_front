@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:logger/logger.dart';
 import 'package:proto_madera_front/data/database/madera_database.dart';
+import 'package:proto_madera_front/data/providers/provider_bdd.dart';
 import 'package:proto_madera_front/ui/pages/pages.dart';
 import 'package:provider/provider.dart';
 
@@ -58,6 +59,8 @@ class _AddModuleState extends State<AddModule> {
   @override
   Widget build(BuildContext context) {
     var providerProjet = Provider.of<ProviderProjet>(context);
+    var providerBdd = Provider.of<ProviderBdd>(context);
+    //TODO apporter modification ici
     if (providerProjet.editModuleIndex !=
         providerProjet.productModules.length - 1) {
       useCase = 'Modifier';
@@ -118,8 +121,10 @@ class _AddModuleState extends State<AddModule> {
                                     _nameTextController.text = newValue + ' - ';
                                   });
                                 },
-                                items: providerProjet.listModule != null
-                                    ? providerProjet.listModule
+                                //Charge les modules enregistrés en bdd
+                                //TODO passer natureModule en param
+                                items: providerBdd.listModule != null
+                                    ? providerBdd.listModule
                                         .map<DropdownMenuItem<String>>(
                                             (ModuleData module) =>
                                                 DropdownMenuItem<String>(

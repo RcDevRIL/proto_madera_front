@@ -227,16 +227,11 @@ class ProviderSynchro with ChangeNotifier {
         .map((i) => ProjetData.fromJson(i))
         .toList();
 
-    List<ProduitModuleData> listProjetModule = (data['produitModule'] as List)
-        .map((j) => ProduitModuleData.fromJson(j))
-        .toList();
-
     await clientDao.insertAll(listClient);
     await clientAdresseDao.insertAll(listClientAdresse);
     await adresseDao.insertAll(listAdresse);
     await projetDao.insertAll(listProjet);
-    await produitModuleDao.insertAll(listProjetModule);
-    await produitDao.insertAll(listProduit);
+    await produitDao.insertProduitClient(listProduit);
     await produitModuleDao.insertAll(listProduitModule);
     await projetProduitsDao.insertAll(listProjetProduit);
   }
@@ -330,6 +325,6 @@ class ProviderSynchro with ChangeNotifier {
     await devisEtatDao.insertAll(listDevisEtat);
     await composantGroupeDao.insertAll(listComposantGroupe);
     await produitModuleDao.insertAll(listProduitModuleModele);
-    await produitDao.insertAll(listProduitModele);
+    await produitDao.insertProduitModele(listProduitModele);
   }
 }

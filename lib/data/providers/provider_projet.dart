@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:logger/logger.dart';
-import 'package:moor_flutter/moor_flutter.dart';
-import 'package:proto_madera_front/data/database/daos.dart';
 import 'package:proto_madera_front/data/database/madera_database.dart';
 import 'package:proto_madera_front/data/models/quote_creation_model.dart';
 import 'package:proto_madera_front/data/models/quote_model.dart';
@@ -20,45 +18,13 @@ class ProviderProjet with ChangeNotifier {
   List<QuoteModel> productList;
   bool canInit = true;
 
-  MaderaDatabase db;
-  GammeDao gammeDao;
-  ProduitDao produitDao;
-  ProduitModuleDao produitModuleDao;
-  ModuleDao moduleDao;
-  List<DatabaseAccessor<MaderaDatabase>> daosSynchroList;
-
-  //Données ref
-  List<GammeData> listGammes;
-  List<ProduitData> listProduitModele;
-  List<ProduitModuleData> listProduitModule;
-  List<ModuleData> listModule;
+  List<ProduitModuleData> listProduitModuleProjet;
 
   final Logger log = Logger();
   final String _now =
       DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day)
           .toString()
           .substring(0, 10);
-
-  ProviderProjet({@required this.db, @required this.daosSynchroList}) {
-    for (DatabaseAccessor<MaderaDatabase> dao in daosSynchroList) {
-      switch (dao.runtimeType) {
-        case GammeDao:
-          gammeDao = dao;
-          break;
-        case ModuleDao:
-          moduleDao = dao;
-          break;
-        case ProduitModuleDao:
-          produitModuleDao = dao;
-          break;
-        case ProduitDao:
-          produitDao = dao;
-          break;
-        default:
-          log.e("ERROR, NO DAO ASSIGNED TO THIS VALUE: ${dao.runtimeType}");
-      }
-    }
-  }
 
   void initAndHold() {
     //TODO Appeler cette méthode à chaque fois qu'on fait une redirection vers QuoteCreation
@@ -80,10 +46,10 @@ class ProviderProjet with ChangeNotifier {
   }
 
   void init() {
+    //TODO Rajouter un paramètre: le clientId, puisqu'a priori si on n'initialise le stockage du formulaire, on sait pour quel client on le fait
+    listProduitModuleProjet = new List();
     var clientId = 123;
     log.i('init called');
-    //Initialisation des données
-    initData();
     canInit = false;
     // Initialisation des champs à null en respectant les conditions des constructeurs
     _quoteCreationValues = QuoteCreationModel(
@@ -116,32 +82,15 @@ class ProviderProjet with ChangeNotifier {
 
   void initProductCreationModel() {
     _quoteValues = QuoteModel(
-        gamme: 'Premium',
+        gamme: null,
         nomDeProduit: null,
-        listeModele: {
-          'Modèle Premium 1': 11,
-          'Modèle Premium 2': 12,
-          'Modèle Premium 3': 13,
-        },
+        //TODO listeModele a suppr
+        listeModele: {'Modèle Premium n°1': null, 'Modèle Premium n°2': null},
         listeModule: Map<String, dynamic>(),
         modeleChoisi: null);
     productList.add(_quoteValues);
     _editProductIndex = productList.indexOf(_quoteValues);
     notifyListeners();
-  }
-
-  void initData() async {
-    await initGammes();
-    await initModules();
-    notifyListeners();
-  }
-
-  void initGammes() async {
-    listGammes = await gammeDao.getAllGammes();
-  }
-
-  void initModules() async {
-    listModule = await moduleDao.getAllModules();
   }
 
   @override
@@ -256,17 +205,6 @@ class ProviderProjet with ChangeNotifier {
 
   Map<String, dynamic> get modeleList => _quoteValues.listeModele;
 
-  void initListProduitModule(int produitModeleId) async {
-    listProduitModule =
-        await produitModuleDao.getProduitModuleByProduitId(produitModeleId);
-    notifyListeners();
-  }
-
-  void initListProduitModele(int gammeID) async {
-    listProduitModele = await produitDao.getProduitModeleByGammeId(gammeID);
-    notifyListeners();
-  }
-
   void logQC() {
     log.i('QuoteCreation values:\n$_quoteCreationValues');
   }
@@ -301,6 +239,23 @@ class ProviderProjet with ChangeNotifier {
   void updateModuleNature(String newValue) {
     productModules.values.elementAt(editModuleIndex)['nature'] = newValue;
     notifyListeners();
+  }
+
+  ///Ajoute les produitsModules chargés a la liste des produitsModules du projet
+  void initListProduitModuleProjet(List<ProduitModuleData> listProduitModule) {
+    if (listProduitModule != null) {
+      listProduitModule.forEach(
+        (produitModule) => {listProduitModuleProjet.add(produitModule)},
+      );
+      notifyListeners();
+    }
+  }
+
+  void resetListProduitModuleProjet(List<ProduitModuleData> listProduitModule) {
+    if (listProduitModule != null && listProduitModuleProjet != null) {
+      listProduitModule.forEach(
+          (produitModule) => listProduitModuleProjet.remove(produitModule));
+    }
   }
 
   void setFinitions(String choice) {

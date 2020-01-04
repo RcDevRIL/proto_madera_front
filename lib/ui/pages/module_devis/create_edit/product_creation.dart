@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:logger/logger.dart';
 import 'package:proto_madera_front/data/database/madera_database.dart';
-import 'package:provider/provider.dart';
-
-import 'package:proto_madera_front/ui/widgets/custom_widgets.dart';
+import 'package:proto_madera_front/data/providers/provider_bdd.dart';
 import 'package:proto_madera_front/data/providers/providers.dart'
     show MaderaNav, ProviderProjet;
+import 'package:proto_madera_front/theme.dart' as cTheme;
 import 'package:proto_madera_front/ui/pages/pages.dart'
     show AddModule, ProductList;
-import 'package:proto_madera_front/theme.dart' as cTheme;
+import 'package:proto_madera_front/ui/widgets/custom_widgets.dart';
+import 'package:provider/provider.dart';
 
 ///
 /// Product creation page
@@ -45,6 +45,7 @@ class _ProductCreationState extends State<ProductCreation> {
   Widget build(BuildContext context) {
     //final args = ModalRoute.of(context).settings.arguments;
     var providerProjet = Provider.of<ProviderProjet>(context);
+    var providerBdd = Provider.of<ProviderBdd>(context);
     return MaderaScaffold(
       passedContext: context,
       child: Center(
@@ -120,7 +121,7 @@ class _ProductCreationState extends State<ProductCreation> {
                       underline: Container(
                         color: Colors.transparent,
                       ),
-                      items: providerProjet.listGammes
+                      items: providerBdd.listGammes
                           .map<DropdownMenuItem<String>>(
                               (GammeData gamme) => DropdownMenuItem<String>(
                                     value: gamme.libelleGammes,
@@ -130,12 +131,15 @@ class _ProductCreationState extends State<ProductCreation> {
                       onChanged: (String newValue) {
                         dropdownGammeValue = newValue;
                         dropdownModeleValue = null;
-                        providerProjet.listGammes.forEach(
-                          (gamme) => {
+                        providerBdd.listGammes.forEach(
+                          (gamme) async => {
                             if (gamme.libelleGammes == newValue)
                               {
+                                providerProjet.setModel(null),
+                                //Enregistre la nouvelle gamme
                                 providerProjet.setGamme(newValue),
-                                providerProjet
+                                //Initialise la liste des modeles avec la gamme
+                                await providerBdd
                                     .initListProduitModele(gamme.gammeId),
                               }
                           },
@@ -161,8 +165,8 @@ class _ProductCreationState extends State<ProductCreation> {
                       underline: Container(
                         color: Colors.transparent,
                       ),
-                      items: providerProjet.listProduitModele != null
-                          ? providerProjet.listProduitModele
+                      items: providerBdd.listProduitModele != null
+                          ? providerBdd.listProduitModele
                               .map<DropdownMenuItem<String>>(
                                 (ProduitData produit) =>
                                     DropdownMenuItem<String>(
@@ -175,18 +179,22 @@ class _ProductCreationState extends State<ProductCreation> {
                       onChanged: dropdownGammeValue != null
                           ? (String newValue) {
                               dropdownModeleValue = newValue;
-                              providerProjet.listProduitModele
-                                  .forEach((produit) => {
-                                        if (produit.produitNom == newValue)
-                                          {
-                                            //TODO initModule
-                                            providerProjet
-                                                .setModel(dropdownModeleValue),
-                                            providerProjet
-                                                .initListProduitModule(
-                                                    produit.produitId),
-                                          }
-                                      });
+                              providerBdd.listProduitModele.forEach(
+                                (produit) async => {
+                                  if (produit.produitNom == newValue)
+                                    {
+                                      providerProjet
+                                          .setModel(dropdownModeleValue),
+                                      providerProjet.resetListProduitModuleProjet(providerBdd.listProduitModule),
+                                      //Charge les produitModules
+                                      await providerBdd.initListProduitModule(
+                                        produit.produitId,
+                                      ),
+                                      providerProjet.initListProduitModuleProjet(
+                                          providerBdd.listProduitModule)
+                                    }
+                                },
+                              );
                             }
                           : null,
                     ),
@@ -200,10 +208,12 @@ class _ProductCreationState extends State<ProductCreation> {
                         providerProjet.productModules != null
                             ? ListView.separated(
                                 shrinkWrap: true,
-                                itemCount: providerProjet.listProduitModule !=
-                                        null
-                                    ? providerProjet.listProduitModule.length
-                                    : 0,
+                                itemCount:
+                                    providerProjet.listProduitModuleProjet !=
+                                            null
+                                        ? providerProjet
+                                            .listProduitModuleProjet.length
+                                        : 0,
                                 itemBuilder: (c, i) => Material(
                                   child: InkWell(
                                     highlightColor: Colors.transparent,
@@ -211,7 +221,7 @@ class _ProductCreationState extends State<ProductCreation> {
                                         cTheme.MaderaColors.maderaBlueGreen,
                                     child: ListTile(
                                       title: Text(
-                                        providerProjet.listProduitModule
+                                        providerProjet.listProduitModuleProjet
                                             .elementAt(i)
                                             .produitModuleNom,
                                       ),

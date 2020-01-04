@@ -9,22 +9,23 @@ class ProduitDao extends DatabaseAccessor<MaderaDatabase>
     with _$ProduitDaoMixin {
   ProduitDao(MaderaDatabase db) : super(db);
 
+  String get deleteProduitModele => "DELETE * FROM produit where produit.modele == false";
+
   Future insertAll(List<ProduitData> listProduit) async {
-    //TODO revoir le delete (ca va tout casser)
     await delete(produit).go();
     await db.batch((b) => b.insertAll(produit, listProduit));
   }
 
   ///Insertion des produits client
   Future insertProduitClient(List<ProduitData> listProduit) async {
-    await (delete(produit)..where((p) => p.modele.equals(false))).go();
+    var test = await (delete(produit)..where((p) => p.modele.equals(false))).go();
     await db.batch((b) => b.insertAll(produit, listProduit));
 
   }
 
   ///Insertion des produits modele
   Future insertProduitModele(List<ProduitData> listProduit) async {
-    await (delete(produit)..where((p) => p.modele.equals(true))).go();
+    var test = await (delete(produit)..where((p) => p.modele.equals(true))).go();
     await db.batch((b) => b.insertAll(produit, listProduit));
   }
 

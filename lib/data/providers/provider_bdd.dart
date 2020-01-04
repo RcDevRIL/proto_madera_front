@@ -3,7 +3,6 @@ import 'package:moor_flutter/moor_flutter.dart';
 import 'package:proto_madera_front/data/database/dao/database_dao.dart';
 import 'package:proto_madera_front/data/database/daos.dart';
 import 'package:proto_madera_front/data/database/madera_database.dart';
-import 'package:proto_madera_front/data/models/produit_with_module.dart';
 import 'package:proto_madera_front/data/models/projet_with_client.dart';
 import 'package:proto_madera_front/data/models/quote_creation_model.dart';
 import 'package:proto_madera_front/data/models/quote_model.dart';
@@ -36,6 +35,12 @@ class ProviderBdd with ChangeNotifier {
   List<DatabaseAccessor<MaderaDatabase>> daosProjetList;
 
   Future<List<ProjetWithClient>> listProjetWithClient;
+
+  //Données ref / locale
+  List<GammeData> listGammes;
+  List<ProduitData> listProduitModele;
+  List<ProduitModuleData> listProduitModule;
+  List<ModuleData> listModule;
 
   ///
   ///Constructeur par défaut de notre classe d'interaction avec la bdd.
@@ -182,5 +187,29 @@ class ProviderBdd with ChangeNotifier {
   Future<List<ProjetWithClient>> initProjetData() {
     this.listProjetWithClient = projetDao.getAll();
     return this.listProjetWithClient;
+  }
+
+  void initData() async {
+    await initGammes();
+    await initModules();
+    notifyListeners();
+  }
+
+  Future initGammes() async {
+    listGammes = await gammeDao.getAllGammes();
+  }
+
+  Future initModules() async {
+    listModule = await moduleDao.getAllModules();
+  }
+
+  Future initListProduitModule(int produitModeleId) async {
+    listProduitModule = await produitModuleDao.getProduitModuleByProduitId(produitModeleId);
+    notifyListeners();
+  }
+
+  Future initListProduitModele(int gammeID) async {
+    listProduitModele = await produitDao.getProduitModeleByGammeId(gammeID);
+    notifyListeners();
   }
 }
