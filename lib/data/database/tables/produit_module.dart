@@ -6,7 +6,7 @@ class ProduitModule extends Table {
   @override
   Set<Column> get primaryKey => {projetModuleId};
 
-  IntColumn get produitId => integer()();
+  IntColumn get produitId => integer().nullable()();
 
   IntColumn get moduleId => integer()();
 

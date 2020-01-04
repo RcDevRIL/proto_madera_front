@@ -12,4 +12,8 @@ class ModuleDao extends DatabaseAccessor<MaderaDatabase> with _$ModuleDaoMixin {
     await delete(module).go();
     await db.batch((b) => b.insertAll(module, listModule));
   }
+
+  Future<List<ModuleData>> getAllModules() async {
+    return await select(module).get();
+  }
 }

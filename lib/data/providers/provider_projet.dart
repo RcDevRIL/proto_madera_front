@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:logger/logger.dart';
+import 'package:moor_flutter/moor_flutter.dart';
+import 'package:proto_madera_front/data/database/daos.dart';
+import 'package:proto_madera_front/data/database/madera_database.dart';
 import 'package:proto_madera_front/data/models/quote_creation_model.dart';
 import 'package:proto_madera_front/data/models/quote_model.dart';
 
@@ -15,11 +18,46 @@ class ProviderProjet with ChangeNotifier {
   int _editModuleIndex;
   bool canInit = true;
 
+  MaderaDatabase db;
+  GammeDao gammeDao;
+  ProduitDao produitDao;
+  ProduitModuleDao produitModuleDao;
+  ModuleDao moduleDao;
+  List<DatabaseAccessor<MaderaDatabase>> daosSynchroList;
+
+  //Données ref
+  List<GammeData> listGammes;
+  List<ProduitData> listProduitModele;
+  List<ProduitModuleData> listProduitModule;
+  List<ModuleData> listModule;
+
   final Logger log = Logger();
   final String _now =
       DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day)
           .toString()
           .substring(0, 10);
+
+  ProviderProjet({
+    @required this.db,
+    @required this.daosSynchroList,
+  }) {
+    for (DatabaseAccessor<MaderaDatabase> dao in daosSynchroList) {
+      switch (dao.runtimeType) {
+        case GammeDao:
+          gammeDao = dao;
+          break;
+        case ProduitDao:
+          produitDao = dao;
+          break;
+        case ProduitModuleDao:
+          produitModuleDao = dao;
+          break;
+        case ModuleDao:
+          moduleDao = dao;
+      }
+    }
+  }
+
   void initAndHold() {
     //TODO Appeler cette méthode à chaque fois qu'on fait une redirection vers QuoteCreation
     if (canInit)
@@ -39,6 +77,8 @@ class ProviderProjet with ChangeNotifier {
   void init() {
     var clientId = 123;
     log.i('init called');
+    //Initialisation des données
+    initData();
     canInit = false;
     // Initialisation des champs à null en respectant les conditions des constructeurs
     _quoteCreationValues = QuoteCreationModel(
@@ -72,6 +112,20 @@ class ProviderProjet with ChangeNotifier {
       '',
     ]; */
   }
+
+  void initData() async {
+    await initGammes();
+    await initModules();
+    notifyListeners();
+  }
+
+  void initGammes() async {
+    listGammes = await gammeDao.getAllGammes();
+  }
+
+  void initModules() async {
+    listModule = await moduleDao.getAllModules();
+}
 
   @override
   void dispose() {
@@ -181,74 +235,13 @@ class ProviderProjet with ChangeNotifier {
 
   Map<String, dynamic> get modeleList => _quoteValues.listeModele;
 
-  void setModuleListFromModelID(int modelID) {
-    //il faudra faire une requete ici
-    _quoteValues.listeModule = Map<String, dynamic>();
-    switch (modelID) {
-      case 1:
-        {
-          _quoteValues.listeModule.clear();
-          _quoteValues.listeModule.addAll(
-            {
-              'Module 1.1': {'name': 'Module 1.1', 'nature': 'Mur droit'},
-              'Module 1.2': {'name': 'Module 1.2', 'nature': 'Mur droit'},
-              'Module 1.3': {'name': 'Module 1.3', 'nature': 'Mur droit'},
-            },
-          );
-        }
-        break;
-      case 2:
-        {
-          _quoteValues.listeModule.clear();
-          _quoteValues.listeModule.addAll(
-            {
-              'Module 2.1': {'name': 'Module 2.1', 'nature': 'Mur droit'},
-              'Module 2.2': {'name': 'Module 2.2', 'nature': 'Mur droit'},
-              'Module 2.3': {'name': 'Module 2.3', 'nature': 'Mur droit'},
-            },
-          );
-        }
-        break;
-      default:
-        {
-          log.e('Wrong modelID: $modelID');
-        }
-        break;
-    }
+  void initListProduitModule(int produitModeleId) async {
+    listProduitModule = await produitModuleDao.getProduitModuleByProduitId(produitModeleId);
     notifyListeners();
   }
 
-  void setModeleListFromGammeID(int gammeID) {
-    //il faudra faire une requete ici
-    switch (gammeID) {
-      case 1:
-        {
-          _quoteValues.listeModele = {
-            'Modèle Premium 1': 11,
-            'Modèle Premium 2': 12,
-            'Modèle Premium 3': 13,
-          };
-          _quoteValues.listeModule = Map<String, dynamic>();
-          _quoteValues.modeleChoisi = null;
-        }
-        break;
-      case 2:
-        {
-          _quoteValues.listeModele = {
-            'Modèle Standard 2.1': 21,
-            'Modèle Standard 2.2': 22,
-            'Modèle Standard 2.3': 23,
-          };
-          _quoteValues.listeModule = Map<String, dynamic>();
-          _quoteValues.modeleChoisi = null;
-        }
-        break;
-      default:
-        {
-          log.e('Wrong gammeID: $gammeID');
-        }
-        break;
-    }
+  void initListProduitModele(int gammeID) async {
+    listProduitModele = await produitDao.getProduitModeleByGammeId(gammeID);
     notifyListeners();
   }
 
