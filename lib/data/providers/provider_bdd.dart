@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:moor_flutter/moor_flutter.dart';
-
 import 'package:proto_madera_front/data/database/dao/database_dao.dart';
 import 'package:proto_madera_front/data/database/daos.dart';
 import 'package:proto_madera_front/data/database/madera_database.dart';
+import 'package:proto_madera_front/data/models/produit_with_module.dart';
 import 'package:proto_madera_front/data/models/projet_with_client.dart';
+import 'package:proto_madera_front/data/models/quote_creation_model.dart';
+import 'package:proto_madera_front/data/models/quote_model.dart';
 
 ///
 /// Provider to handle database interactions
@@ -84,10 +86,46 @@ class ProviderBdd with ChangeNotifier {
   //TODO a voir mais risque d'avoir un problème sur tous les constructeurs ! peut être créer des models ?
 //TODO ajouter un boolean synchro et l'init a false, il se passe que lorsqu'il est renseigné côté serveur
   ///Méthode pour créer le projet ainsi que ses produits (infos relatives aux produits, produitModule..)
-  void createAll(ProjetData projetData,
-      List<ProduitWithModule> listProduitWithModule) async {
+  void createAll(
+      QuoteCreationModel quoteCreationModel, QuoteModel quoteModel) async {
     //TODO a tester, ça renvoyer un id genere
-    int projetId = await createProject(projetData);
+    //TODO refProjet = nomProjet ?
+    //TODO refProjet est générer nan ?
+
+    //Mapping
+    ProjetCompanion projetCompanion = new ProjetCompanion(
+      nomProjet: Value('Test'),
+      refProjet: Value(quoteCreationModel.refProjet),
+      clientId: Value(
+        int.parse(quoteCreationModel.client['clientId']),
+      ),
+      //TODO formatter la date peut-être ?
+      dateProjet: Value(DateTime.parse(quoteCreationModel.dateDeCreation)),
+    );
+
+    ProduitCompanion produitCompanion = new ProduitCompanion(
+      produitNom: Value(quoteModel.nomDeProduit),
+      gammesId: Value(
+        int.parse(quoteModel.gamme),
+      ),
+    );
+
+    List<ProduitModuleCompanion> listProduitModule = new List();
+    //TODO check les noms des infos
+    quoteModel.listeModule.forEach((key, value) => {
+          listProduitModule.add(
+            new ProduitModuleCompanion(
+              produitModuleNom: Value(value['name']),
+              moduleId: Value(value['moduleId']),
+              produitModuleAngle: Value(value['angle']),
+              produitModuleSectionLongueur: Value(value['section']),
+            ),
+          ),
+        });
+
+    //List<ProduitWithModule> listProduitWithModule = new List();
+    /*ProduitWithModule produitWithModule = new ProduitWithModule(produitCompanion, listProduitModule);
+    int projetId = await createProject(projetCompanion);
     print(projetId);
     //Si le projet a été créé alors on continue
     if (projetId != 0) {
@@ -99,17 +137,16 @@ class ProviderBdd with ChangeNotifier {
             if (produitId != 0)
               {
                 createProjetProduit(projetId, produitId),
-                //TODO il va avoir des problèmes sur le final de la variable ainsi que plein de required dans la construction !
                 createProduitModule(
                     produitId, produitWithModule.listProduitModule),
               }
           });
-    }
+    }*/
   }
 
   ///Appel du dao pour la création d'un projet
-  Future<int> createProject(ProjetData projetData) async {
-    int isCreated = await projetDao.createProject(projetData);
+  Future<int> createProject(ProjetCompanion projetCompanion) async {
+    int isCreated = await projetDao.createProject(projetCompanion);
     return isCreated;
   }
 

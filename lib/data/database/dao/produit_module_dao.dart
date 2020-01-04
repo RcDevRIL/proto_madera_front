@@ -8,7 +8,6 @@ part 'produit_module_dao.g.dart';
 class ProduitModuleDao extends DatabaseAccessor<MaderaDatabase>
     with _$ProduitModuleDaoMixin {
   ProduitModuleDao(MaderaDatabase db) : super(db);
-
   ///Méthode de synchronisation
   Future insertAll(List<ProduitModuleData> listProduitModule) async {
     await delete(produitModule).go();
@@ -20,5 +19,9 @@ class ProduitModuleDao extends DatabaseAccessor<MaderaDatabase>
     //TODO il va avoir des problèmes sur le final de la variable ainsi que plein de required dans la construction !
     //produitModuleData.produitId = produitId;
     await into(produitModule).insert(produitModuleData);
+  }
+
+  Future<List<ProduitModuleData>> getProduitModuleByProduitId(int produitId) async {
+    return await (select(produitModule)..where((pm) => pm.produitId.equals(produitId))).get();
   }
 }

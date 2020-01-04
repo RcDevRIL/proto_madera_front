@@ -34,7 +34,7 @@ class ProjetDao extends DatabaseAccessor<MaderaDatabase> with _$ProjetDaoMixin {
   }
 
   ///Méthode de création d'un projet
-  Future<int> createProject(ProjetData projetData) async {
-    return await into(projet).insert(projetData);
+  Future<int> createProject(ProjetCompanion projetCompanion) async {
+    return await into(projet).insert(projetCompanion);
   }
 }

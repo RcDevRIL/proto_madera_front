@@ -32,4 +32,10 @@ class ProduitDao extends DatabaseAccessor<MaderaDatabase>
   Future createProduit(ProduitData produitData) async {
     return await into(produit).insert(produitData);
   }
+
+  Future<List<ProduitData>> getProduitModeleByGammeId(int gammeId) async {
+    return await (select(produit)..where((pd) {
+      return pd.gammesId.equals(gammeId) & pd.modele.equals(true);
+    })).get();
+  }
 }

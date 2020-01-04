@@ -8,6 +8,10 @@ part 'gamme_dao.g.dart';
 class GammeDao extends DatabaseAccessor<MaderaDatabase> with _$GammeDaoMixin {
   GammeDao(MaderaDatabase db) : super(db);
 
+  Future<List<GammeData>> getAllGammes() async {
+    return await select(gamme).get();
+  }
+
   Future insertAll(List<GammeData> listGamme) async {
     await delete(gamme).go();
     await db.batch((b) => b.insertAll(gamme, listGamme));
