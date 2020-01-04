@@ -42,8 +42,9 @@ class _QuoteCreationState extends State<QuoteCreation> {
 
   @override
   Widget build(BuildContext context) {
-    dateCreationProjet = Provider.of<ProviderProjet>(context).dateCreation;
-    refProjet = Provider.of<ProviderProjet>(context).refProjet;
+    var providerProjet = Provider.of<ProviderProjet>(context);
+    dateCreationProjet = providerProjet.dateCreation;
+    refProjet = providerProjet.refProjet;
     return MaderaScaffold(
       passedContext: context,
       child: Center(
@@ -151,9 +152,10 @@ class _QuoteCreationState extends State<QuoteCreation> {
                               onTap: () =>
                                   _formScrollController.position.moveTo(110.0),
                               onChanged: (text) {
-                                Provider.of<ProviderProjet>(context)
-                                    .clientName = text;
+                                providerProjet.clientName = text;
                               },
+                              controller: TextEditingController(
+                                  text: providerProjet.clientName),
                               enabled: true,
                               keyboardType: TextInputType.text,
                               decoration: InputDecoration(
@@ -185,9 +187,10 @@ class _QuoteCreationState extends State<QuoteCreation> {
                               onTap: () =>
                                   _formScrollController.position.moveTo(110.0),
                               onChanged: (text) {
-                                Provider.of<ProviderProjet>(context)
-                                    .clientAdress = text;
+                                providerProjet.clientAdress = text;
                               },
+                              controller: TextEditingController(
+                                  text: providerProjet.clientAdress),
                               keyboardType: TextInputType.text,
                               enabled: true,
                               decoration: InputDecoration(
@@ -239,9 +242,10 @@ class _QuoteCreationState extends State<QuoteCreation> {
                               onTap: () =>
                                   _formScrollController.position.moveTo(110.0),
                               onChanged: (text) {
-                                Provider.of<ProviderProjet>(context).clientTel =
-                                    text;
+                                providerProjet.clientTel = text;
                               },
+                              controller: TextEditingController(
+                                  text: providerProjet.clientTel),
                               keyboardType: TextInputType.phone,
                               enabled: true,
                               decoration: InputDecoration(
@@ -273,9 +277,10 @@ class _QuoteCreationState extends State<QuoteCreation> {
                               onTap: () =>
                                   _formScrollController.position.moveTo(110.0),
                               onChanged: (text) {
-                                Provider.of<ProviderProjet>(context)
-                                    .clientMail = text;
+                                providerProjet.clientMail = text;
                               },
+                              controller: TextEditingController(
+                                  text: providerProjet.clientMail),
                               keyboardType: TextInputType.emailAddress,
                               enabled: true,
                               decoration: InputDecoration(
@@ -297,8 +302,7 @@ class _QuoteCreationState extends State<QuoteCreation> {
                           _formScrollController.position.maxScrollExtent),
                       maxLines: 25,
                       onChanged: (text) {
-                        Provider.of<ProviderProjet>(context)
-                            .setDescription(text);
+                        providerProjet.setDescription(text);
                       },
                       keyboardType: TextInputType.multiline,
                       enabled: true,
@@ -342,22 +346,19 @@ class _QuoteCreationState extends State<QuoteCreation> {
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
                   border: Border.all(
-                      color: Provider.of<ProviderProjet>(context)
-                              .isFilled('QuoteCreation')
+                      color: providerProjet.isFilled('QuoteCreation')
                           ? cTheme.MaderaColors.maderaLightGreen
                           : Colors.grey,
                       width: 2),
-                  color: Provider.of<ProviderProjet>(context)
-                          .isFilled('QuoteCreation')
+                  color: providerProjet.isFilled('QuoteCreation')
                       ? cTheme.MaderaColors.maderaBlueGreen
                       : Colors.grey,
                 ),
                 child: IconButton(
-                  onPressed: Provider.of<ProviderProjet>(context)
-                          .isFilled('QuoteCreation')
+                  onPressed: providerProjet.isFilled('QuoteCreation')
                       ? () {
                           log.d('Saving form...');
-                          Provider.of<ProviderProjet>(context).logQC();
+                          providerProjet.logQC();
                           log.d('Done.');
                           log.d('Quote Creation');
                           Provider.of<MaderaNav>(context)
@@ -384,7 +385,24 @@ class _QuoteCreationState extends State<QuoteCreation> {
                     color: Colors.white,
                   ),
                 ),
-              )
+              ),
+              SizedBox(height: 12),
+              Container(
+                decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    border: Border.all(
+                        color: cTheme.MaderaColors.maderaLightGreen, width: 2),
+                    color: cTheme.MaderaColors.maderaBlueGreen),
+                child: IconButton(
+                  onPressed: () {
+                    //TODO formulaire popup pour choisir le client
+                  },
+                  icon: Icon(
+                    Icons.person_add,
+                    color: Colors.white,
+                  ),
+                ),
+              ),
             ],
           ),
         ),
