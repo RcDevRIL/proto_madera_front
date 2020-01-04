@@ -3,7 +3,7 @@ import 'package:logger/logger.dart';
 import 'package:provider/provider.dart';
 
 import 'package:proto_madera_front/data/providers/providers.dart'
-    show MaderaNav;
+    show MaderaNav, ProviderProjet;
 import 'package:proto_madera_front/ui/pages/pages.dart'
     show ProductCreation, AddModule;
 import 'package:proto_madera_front/ui/widgets/custom_widgets.dart'
@@ -135,8 +135,9 @@ class _FinishingsState extends State<Finishings> {
                   tooltip: "Valider finition",
                   onPressed: () {
                     log.d("Adding Finishings...");
+                    Provider.of<ProviderProjet>(context).setFinitions(choice);
                     Provider.of<MaderaNav>(context)
-                        .redirectToPage(context, ProductCreation());
+                        .redirectToPage(context, ProductCreation(), null);
                   },
                   icon: Icon(
                     Icons.check,
@@ -156,7 +157,7 @@ class _FinishingsState extends State<Finishings> {
                   onPressed: () {
                     log.d("Canceling finishings, going back...");
                     Provider.of<MaderaNav>(context)
-                        .redirectToPage(context, AddModule());
+                        .redirectToPage(context, AddModule(), null);
                   },
                   icon: Icon(
                     Icons.delete,

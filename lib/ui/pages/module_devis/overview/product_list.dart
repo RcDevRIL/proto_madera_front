@@ -85,7 +85,7 @@ class _ProductListState extends State<ProductList> {
                         onTap: () {
                           log.d("Adding a new product");
                           Provider.of<MaderaNav>(context)
-                              .redirectToPage(context, ProductCreation());
+                              .redirectToPage(context, ProductCreation(), null);
                         },
                         child: Align(
                           alignment: Alignment.centerRight,
@@ -100,8 +100,8 @@ class _ProductListState extends State<ProductList> {
                               tooltip: "Supprimer produit",
                               onPressed: () {
                                 log.d("Adding a new product");
-                                Provider.of<MaderaNav>(context)
-                                    .redirectToPage(context, ProductCreation());
+                                Provider.of<MaderaNav>(context).redirectToPage(
+                                    context, ProductCreation(), null);
                               },
                               icon: Icon(
                                 Icons.add,
@@ -140,7 +140,7 @@ class _ProductListState extends State<ProductList> {
                     log.d("Quote Overview");
                     Provider.of<ProviderProjet>(context).validate(true);
                     Provider.of<MaderaNav>(context)
-                        .redirectToPage(context, QuoteOverview());
+                        .redirectToPage(context, QuoteOverview(), null);
                   },
                   icon: Icon(
                     Icons.check,
@@ -198,7 +198,7 @@ class _ProductListState extends State<ProductList> {
               onPressed: () {
                 log.d("Modifying product...");
                 Provider.of<MaderaNav>(context)
-                    .redirectToPage(context, ProductCreation());
+                    .redirectToPage(context, ProductCreation(), null);
               },
             ),
             IconButton(

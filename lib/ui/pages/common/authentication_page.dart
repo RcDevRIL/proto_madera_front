@@ -252,7 +252,8 @@ class _AuthenticationPageState extends State<AuthenticationPage> {
           } else
             log.i('Synchronisation des référentiels déjà effectuée!');
           Provider.of<ProviderBdd>(context).initProjetData();
-          Provider.of<MaderaNav>(context).redirectToPage(context, HomePage());
+          Provider.of<MaderaNav>(context)
+              .redirectToPage(context, HomePage(), null);
           //TODO Ajouter initData()
         }
         break;
