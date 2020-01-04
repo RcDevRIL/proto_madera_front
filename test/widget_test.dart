@@ -55,7 +55,7 @@ void main() {
             true); //description n'est plus vide//ajout d'un module dans la liste
         providerProjet.setModeleListFromGammeID(
             1); //Changement de la liste des modèles à partir de la gamme
-        expect(providerProjet.productModules == null,
+        expect(providerProjet.productModules.length == 0,
             true); // la liste des modules a été vidée
       },
     );
