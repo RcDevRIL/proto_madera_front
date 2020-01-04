@@ -53,7 +53,7 @@ class _ProductCreationState extends State<ProductCreation> {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
             Text(
-              'Produit n°1', //TODO implémenter getProductNumber dans Provider Projet
+              'Produit n°${Provider.of<ProviderProjet>(context).editProductIndex}', //TODO implémenter getProductNumber dans Provider Projet
               style:
                   cTheme.MaderaTextStyles.appBarTitle.copyWith(fontSize: 32.0),
             ),
@@ -294,6 +294,8 @@ class _ProductCreationState extends State<ProductCreation> {
                       ? () {
                           log.d('Saving form...');
                           providerProjet.logQ();
+                          providerProjet.productList[providerProjet
+                              .editProductIndex] = providerProjet.quoteValues;
                           log.d('Done.');
                           log.d('Quote Overview');
                           Provider.of<MaderaNav>(context)

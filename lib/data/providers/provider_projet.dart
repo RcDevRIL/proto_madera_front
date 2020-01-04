@@ -13,6 +13,8 @@ class ProviderProjet with ChangeNotifier {
   QuoteCreationModel _quoteCreationValues;
   QuoteModel _quoteValues;
   int _editModuleIndex;
+  int _editProductIndex;
+  List<QuoteModel> productList;
   bool canInit = true;
 
   final Logger log = Logger();
@@ -20,6 +22,7 @@ class ProviderProjet with ChangeNotifier {
       DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day)
           .toString()
           .substring(0, 10);
+
   void initAndHold() {
     //TODO Appeler cette méthode à chaque fois qu'on fait une redirection vers QuoteCreation
     if (canInit)
@@ -29,11 +32,14 @@ class ProviderProjet with ChangeNotifier {
   }
 
   void validate(bool saveIt) {
-    saveIt
-        ?
-        //TODO save en bdd?, a faire coté ui je pense pour pouvoir utiliser provider.of(context)
-        canInit = true
-        : canInit = true;
+    if (saveIt) {
+      log.i('Saving project with following values...');
+      log.i(_quoteCreationValues);
+      productList.forEach((quoteModel) => log.i(quoteModel));
+      //TODO save en bdd?, a faire coté ui je pense pour pouvoir utiliser provider.of(context)
+      canInit = true;
+    } else
+      canInit = true;
   }
 
   void init() {
@@ -54,6 +60,21 @@ class ProviderProjet with ChangeNotifier {
       refProjet: _now +
           '_MMP$clientId', //à voir comment on construit nos ref de projet? j'ai mis yyyyMMdd_MMP123, MMP pour 'MaisonModulaireProjet', 123 pour l'ID client
     );
+    productList = [];
+    initProductCreationModel();
+  }
+
+  void deleteProductCreationModel(int productID) {
+    productList.removeAt(productID);
+    notifyListeners();
+  }
+
+  void loadProductCreationModel(int index) {
+    _quoteValues = productList[index];
+    _editProductIndex = index;
+  }
+
+  void initProductCreationModel() {
     _quoteValues = QuoteModel(
         gamme: 'Premium',
         nomDeProduit: null,
@@ -64,13 +85,8 @@ class ProviderProjet with ChangeNotifier {
         },
         listeModule: Map<String, dynamic>(),
         modeleChoisi: null);
-    /* 
-    addModuleValues = [
-      '',
-      '',
-      '',
-      '',
-    ]; */
+    productList.add(_quoteValues);
+    _editProductIndex = productList.indexOf(_quoteValues);
   }
 
   @override
@@ -84,12 +100,16 @@ class ProviderProjet with ChangeNotifier {
     initAndHold();
   }
 
+  QuoteModel get quoteValues => _quoteValues;
+
   set editModuleIndex(int index) {
     _editModuleIndex = index;
     notifyListeners();
   }
 
   int get editModuleIndex => _editModuleIndex;
+
+  int get editProductIndex => _editProductIndex;
 
   set dateCreation(String newDate) {
     _quoteCreationValues.dateDeCreation = newDate;

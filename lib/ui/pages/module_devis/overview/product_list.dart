@@ -38,9 +38,7 @@ class _ProductListState extends State<ProductList> {
 
   @override
   Widget build(BuildContext context) {
-    // Décommente la ligne en dessous
-    // final productList = Provider.of<ProviderProjet>(context).productList;
-    final productList = ['Produit n°1', 'Produit n°2'];
+    final productList = Provider.of<ProviderProjet>(context).productList;
     return MaderaScaffold(
       passedContext: context,
       child: Center(
@@ -50,7 +48,7 @@ class _ProductListState extends State<ProductList> {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
             Text(
-              'Liste des produits', //TODO implémenter getProductsCount dans Provider Projet
+              'Liste des produits',
               style:
                   cTheme.MaderaTextStyles.appBarTitle.copyWith(fontSize: 32.0),
             ),
@@ -65,7 +63,7 @@ class _ProductListState extends State<ProductList> {
                     ),
                     itemCount: productList.length,
                     itemBuilder: (c, i) =>
-                        _createProductTile(i, productList[i]),
+                        _createProductTile(i, productList[i].nomDeProduit),
                     separatorBuilder: (c, i) => SizedBox(
                       height: 10.0,
                     ),
@@ -84,6 +82,8 @@ class _ProductListState extends State<ProductList> {
                       child: InkWell(
                         onTap: () {
                           log.d("Adding a new product");
+                          Provider.of<ProviderProjet>(context)
+                              .initProductCreationModel();
                           Provider.of<MaderaNav>(context)
                               .redirectToPage(context, ProductCreation(), null);
                         },
@@ -197,6 +197,8 @@ class _ProductListState extends State<ProductList> {
               tooltip: 'Editer produit',
               onPressed: () {
                 log.d("Modifying product...");
+                Provider.of<ProviderProjet>(context)
+                    .loadProductCreationModel(productID);
                 Provider.of<MaderaNav>(context)
                     .redirectToPage(context, ProductCreation(), null);
               },
@@ -214,7 +216,8 @@ class _ProductListState extends State<ProductList> {
               tooltip: 'Supprimer produit',
               onPressed: () {
                 log.d("Deleting product...");
-                //TODO Provider.of<ProviderProjet>(context).deleteProduct(productID);
+                Provider.of<ProviderProjet>(context)
+                    .deleteProductCreationModel(productID);
               },
             ),
           ],
