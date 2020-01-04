@@ -25,6 +25,10 @@ class _QuoteCreationState extends State<QuoteCreation> {
   String dateCreationProjet;
   String refProjet;
   ScrollController _formScrollController;
+  TextEditingController _clientMailTextEditingController;
+  TextEditingController _clientTelTextEditingController;
+  TextEditingController _clientAdressTextEditingController;
+  TextEditingController _clientNameTextEditingController;
 
   final log = Logger();
 
@@ -32,12 +36,36 @@ class _QuoteCreationState extends State<QuoteCreation> {
   void initState() {
     super.initState();
     _formScrollController = ScrollController();
+    _clientMailTextEditingController = TextEditingController();
+    _clientTelTextEditingController = TextEditingController();
+    _clientAdressTextEditingController = TextEditingController();
+    _clientNameTextEditingController = TextEditingController();
   }
 
   @override
   void dispose() {
     _formScrollController?.dispose();
+    _clientMailTextEditingController?.dispose();
+    _clientTelTextEditingController?.dispose();
+    _clientAdressTextEditingController?.dispose();
+    _clientNameTextEditingController?.dispose();
     super.dispose();
+  }
+
+  @override
+  void didChangeDependencies() {
+    /* J'ai du rendre inéditables les fields pour le client car comportement bizarre remplissage que par le dialogue
+    */
+    _clientNameTextEditingController.text =
+        Provider.of<ProviderProjet>(context).clientName;
+    _clientAdressTextEditingController.text =
+        Provider.of<ProviderProjet>(context).clientAdress;
+    _clientTelTextEditingController.text =
+        Provider.of<ProviderProjet>(context).clientTel;
+    _clientMailTextEditingController.text =
+        Provider.of<ProviderProjet>(context).clientMail;
+
+    super.didChangeDependencies();
   }
 
   @override
@@ -127,8 +155,7 @@ class _QuoteCreationState extends State<QuoteCreation> {
                           ),
                         ),
                         child: ListView(
-                          padding: EdgeInsets.symmetric(
-                              horizontal: 4.0, vertical: 4.0),
+                          padding: EdgeInsets.fromLTRB(4.0, 4.0, 4.0, 0.0),
                           children: <Widget>[
                             Align(
                               alignment: Alignment.centerLeft,
@@ -152,14 +179,13 @@ class _QuoteCreationState extends State<QuoteCreation> {
                               onTap: () =>
                                   _formScrollController.position.moveTo(110.0),
                               onChanged: (text) {
-                                providerProjet.clientName = text;
+                                providerProjet.clientName =
+                                    _clientNameTextEditingController.text;
                               },
-                              controller: TextEditingController(
-                                  text: providerProjet.clientName),
-                              enabled: true,
+                              controller: _clientNameTextEditingController,
+                              enabled: false,
                               keyboardType: TextInputType.text,
                               decoration: InputDecoration(
-                                hintText: 'Ex: DUPONT Nicolas',
                                 border: OutlineInputBorder(
                                   borderSide: BorderSide.none,
                                 ),
@@ -187,14 +213,13 @@ class _QuoteCreationState extends State<QuoteCreation> {
                               onTap: () =>
                                   _formScrollController.position.moveTo(110.0),
                               onChanged: (text) {
-                                providerProjet.clientAdress = text;
+                                providerProjet.clientAdress =
+                                    _clientAdressTextEditingController.text;
                               },
-                              controller: TextEditingController(
-                                  text: providerProjet.clientAdress),
+                              controller: _clientAdressTextEditingController,
                               keyboardType: TextInputType.text,
-                              enabled: true,
+                              enabled: false,
                               decoration: InputDecoration(
-                                hintText: 'Rue complète, CP, ville',
                                 border: OutlineInputBorder(
                                   borderSide: BorderSide.none,
                                 ),
@@ -217,8 +242,7 @@ class _QuoteCreationState extends State<QuoteCreation> {
                           ),
                         ),
                         child: ListView(
-                          padding: EdgeInsets.symmetric(
-                              horizontal: 4.0, vertical: 4.0),
+                          padding: EdgeInsets.fromLTRB(4.0, 4.0, 4.0, 0.0),
                           children: <Widget>[
                             Align(
                               alignment: Alignment.centerLeft,
@@ -242,14 +266,13 @@ class _QuoteCreationState extends State<QuoteCreation> {
                               onTap: () =>
                                   _formScrollController.position.moveTo(110.0),
                               onChanged: (text) {
-                                providerProjet.clientTel = text;
+                                providerProjet.clientTel =
+                                    _clientTelTextEditingController.text;
                               },
-                              controller: TextEditingController(
-                                  text: providerProjet.clientTel),
+                              controller: _clientTelTextEditingController,
                               keyboardType: TextInputType.phone,
-                              enabled: true,
+                              enabled: false,
                               decoration: InputDecoration(
-                                hintText: 'Téléphone...',
                                 border: OutlineInputBorder(
                                   borderSide: BorderSide.none,
                                 ),
@@ -277,14 +300,13 @@ class _QuoteCreationState extends State<QuoteCreation> {
                               onTap: () =>
                                   _formScrollController.position.moveTo(110.0),
                               onChanged: (text) {
-                                providerProjet.clientMail = text;
+                                providerProjet.clientMail =
+                                    _clientMailTextEditingController.text;
                               },
-                              controller: TextEditingController(
-                                  text: providerProjet.clientMail),
+                              controller: _clientMailTextEditingController,
                               keyboardType: TextInputType.emailAddress,
-                              enabled: true,
+                              enabled: false,
                               decoration: InputDecoration(
-                                hintText: 'Adresse mail...',
                                 border: OutlineInputBorder(
                                   borderSide: BorderSide.none,
                                 ),
@@ -395,7 +417,134 @@ class _QuoteCreationState extends State<QuoteCreation> {
                     color: cTheme.MaderaColors.maderaBlueGreen),
                 child: IconButton(
                   onPressed: () {
-                    //TODO formulaire popup pour choisir le client
+                    Provider.of<MaderaNav>(context).showPopup(
+                      context,
+                      Icons.person_add,
+                      'Sélection d\'un client',
+                      Padding(
+                        padding: const EdgeInsets.fromLTRB(
+                          10.0,
+                          0.0,
+                          10.0,
+                          0.0,
+                        ),
+                        child: SingleChildScrollView(
+                          child: Column(
+                            children: <Widget>[
+                              DropdownButton<String>(
+                                isExpanded: true,
+                                hint: (providerProjet.clientName != null &&
+                                        providerProjet.clientName.isNotEmpty)
+                                    ? Text(providerProjet.clientName)
+                                    : Text('Sélectionnez un client...'),
+                                icon: Icon(Icons.arrow_drop_down,
+                                    color:
+                                        cTheme.MaderaColors.maderaLightGreen),
+                                iconSize: 35,
+                                elevation: 16,
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .title
+                                    .apply(fontSizeDelta: -4),
+                                underline: Container(
+                                  height: 2,
+                                  width: 100.0,
+                                  color: Colors.transparent,
+                                ),
+                                onChanged: (String newValue) {
+                                  providerProjet.clientName = newValue;
+                                  Navigator.of(context).pop();
+                                },
+                                items: <String>[
+                                  'Client 1',
+                                  'Client 2',
+                                  'Client 3',
+                                ]
+                                    .map<DropdownMenuItem<String>>(
+                                        (String value) =>
+                                            DropdownMenuItem<String>(
+                                              value: value,
+                                              child: Text(value),
+                                            ))
+                                    .toList(),
+                              ),
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: <Widget>[
+                                  Column(
+                                    children: <Widget>[
+                                      Container(
+                                        width: 100,
+                                        child: TextField(
+                                          onChanged: (value) =>
+                                              providerProjet.clientName = value,
+                                          controller: TextEditingController(
+                                              text: providerProjet.clientName),
+                                          decoration: InputDecoration(
+                                            hintText: 'Ex: DUPONT Nicolas',
+                                          ),
+                                        ),
+                                      ),
+                                      Container(
+                                        width: 100,
+                                        child: TextField(
+                                          onChanged: (value) => providerProjet
+                                              .clientAdress = value,
+                                          controller: TextEditingController(
+                                              text:
+                                                  providerProjet.clientAdress),
+                                          decoration: InputDecoration(
+                                            hintText: 'Rue complète, CP, ville',
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  Column(
+                                    children: <Widget>[
+                                      Container(
+                                        width: 100,
+                                        child: TextField(
+                                          onChanged: (value) =>
+                                              providerProjet.clientTel = value,
+                                          controller: TextEditingController(
+                                              text: providerProjet.clientTel),
+                                          decoration: InputDecoration(
+                                            hintText: 'Téléphone...',
+                                          ),
+                                        ),
+                                      ),
+                                      Container(
+                                        width: 100,
+                                        child: TextField(
+                                          onChanged: (value) =>
+                                              providerProjet.clientMail = value,
+                                          controller: TextEditingController(
+                                              text: providerProjet.clientMail),
+                                          decoration: InputDecoration(
+                                            hintText: 'Adresse mail...',
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                      [
+                        MaderaButton(
+                          key: Key('ok-button'),
+                          child: Text('Ok'),
+                          onPressed: () {
+                            Navigator.of(context).pop();
+                          },
+                        ),
+                      ],
+                    );
                   },
                   icon: Icon(
                     Icons.person_add,

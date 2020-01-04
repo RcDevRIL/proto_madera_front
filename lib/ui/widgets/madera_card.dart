@@ -90,13 +90,3 @@ class _MaderaCardState extends State<MaderaCard> {
     );
   }
 }
-/**
- * Ici() j'aurais pensé ecrire le nom du client 
- * e.g.: DUPONT
- * Une liste de tous les clients qui ont un nom contenant "DUPONT" apparaitrait
- * Et au clic sur une des proposition, l'ID du client s'insère dans cet input
- * 
- * Comme cela quand on accéderait aux devis d'un client spécifique, on renseignerait
- * 
- */
-//TODO Voir pour guider encore plus le commercial grâce aux données BDD

@@ -168,7 +168,7 @@ class _ProductCreationState extends State<ProductCreation> {
                       underline: Container(
                         color: Colors.transparent,
                       ),
-                      onChanged: dropdownGammeValue != null
+                      onChanged: providerProjet.gamme != null
                           ? (String newValue) {
                               dropdownModeleValue = newValue;
                               switch (dropdownModeleValue) {

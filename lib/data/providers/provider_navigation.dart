@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:logger/logger.dart';
+import 'package:provider/provider.dart';
 
 import 'package:proto_madera_front/ui/pages/pages.dart';
 import 'package:proto_madera_front/ui/pages/user/profile_page.dart';
 import 'package:proto_madera_front/ui/widgets/custom_widgets.dart'
     show MaderaDialog, MaderaButton;
-import 'package:provider/provider.dart';
+import 'package:proto_madera_front/theme.dart' as cTheme;
 
 ///
 /// Provider to handle the navigation state of application
@@ -187,7 +188,7 @@ class MaderaNav with ChangeNotifier {
         context,
         icon,
         title,
-        message,
+        Text(message),
         [
           MaderaButton(
             key: Key('ok-button'),
@@ -198,15 +199,21 @@ class MaderaNav with ChangeNotifier {
           ),
         ],
       );
-  void showPopup(BuildContext context, IconData icon, String title,
-      String message, List<Widget> actions) {
+  void showPopup(BuildContext context, IconData icon, String title, Widget body,
+      List<Widget> actions) {
+    Color titleAndIconColor;
+    if (icon == Icons.warning)
+      titleAndIconColor = Colors.red;
+    else
+      titleAndIconColor = cTheme.MaderaColors.textHeaderColor;
     showDialog(
       context: context,
       builder: (BuildContext context) {
         return MaderaDialog(
+          titleAndIconColor: titleAndIconColor,
           title: title,
           icon: icon,
-          body: Text('$message'),
+          body: body,
           actions: actions,
         );
       },

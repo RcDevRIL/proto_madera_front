@@ -52,8 +52,17 @@ class MaderaDialog extends StatelessWidget {
           color: titleAndIconColor,
         ),
       ),
-      content: body,
+      content: body.runtimeType == Text
+          ? Container(
+              height: 50.0,
+              child: body,
+            )
+          : Container(
+              height: 150.0,
+              child: body,
+            ),
       actions: actions,
+      semanticLabel: title,
     );
   }
 }
