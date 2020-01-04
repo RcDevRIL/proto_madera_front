@@ -29,7 +29,7 @@ class MaderaApp extends StatelessWidget {
           ChangeNotifierProvider(
             create: (c) => ProviderProjet(
               db: providerBdd.db,
-              daosSynchroList: providerBdd.daosSynchroList,
+              daosSynchroList: providerBdd.daosProjetList,
             ),
           ),
           ChangeNotifierProvider(

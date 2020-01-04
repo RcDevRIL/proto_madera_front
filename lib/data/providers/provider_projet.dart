@@ -39,6 +39,27 @@ class ProviderProjet with ChangeNotifier {
           .toString()
           .substring(0, 10);
 
+  ProviderProjet({@required this.db, @required this.daosSynchroList}) {
+    for (DatabaseAccessor<MaderaDatabase> dao in daosSynchroList) {
+      switch (dao.runtimeType) {
+        case GammeDao:
+          gammeDao = dao;
+          break;
+        case ModuleDao:
+          moduleDao = dao;
+          break;
+        case ProduitModuleDao:
+          produitModuleDao = dao;
+          break;
+        case ProduitDao:
+          produitDao = dao;
+          break;
+        default:
+          log.e("ERROR, NO DAO ASSIGNED TO THIS VALUE: ${dao.runtimeType}");
+      }
+    }
+  }
+
   void initAndHold() {
     //TODO Appeler cette méthode à chaque fois qu'on fait une redirection vers QuoteCreation
     if (canInit)
@@ -90,6 +111,7 @@ class ProviderProjet with ChangeNotifier {
   void loadProductCreationModel(int index) {
     _quoteValues = productList[index];
     _editProductIndex = index;
+    notifyListeners();
   }
 
   void initProductCreationModel() {
@@ -105,6 +127,7 @@ class ProviderProjet with ChangeNotifier {
         modeleChoisi: null);
     productList.add(_quoteValues);
     _editProductIndex = productList.indexOf(_quoteValues);
+    notifyListeners();
   }
 
   void initData() async {
@@ -119,7 +142,7 @@ class ProviderProjet with ChangeNotifier {
 
   void initModules() async {
     listModule = await moduleDao.getAllModules();
-}
+  }
 
   @override
   void dispose() {
@@ -234,7 +257,8 @@ class ProviderProjet with ChangeNotifier {
   Map<String, dynamic> get modeleList => _quoteValues.listeModele;
 
   void initListProduitModule(int produitModeleId) async {
-    listProduitModule = await produitModuleDao.getProduitModuleByProduitId(produitModeleId);
+    listProduitModule =
+        await produitModuleDao.getProduitModuleByProduitId(produitModeleId);
     notifyListeners();
   }
 
@@ -260,8 +284,8 @@ class ProviderProjet with ChangeNotifier {
             clientMail.isNotEmpty &&
             description.isNotEmpty);
         break;
-      case 'Quote':
-        return (productModules.length != 0);
+      case 'ProductCreation':
+        return (nomDeProduit != null);
         break;
       case 'AddModule':
         return (productModules.values

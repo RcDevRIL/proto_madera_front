@@ -33,6 +33,7 @@ class ProviderBdd with ChangeNotifier {
   ComposantGroupeDao composantGroupeDao;
   ProjetProduitsDao projetProduitsDao;
   List<DatabaseAccessor<MaderaDatabase>> daosSynchroList;
+  List<DatabaseAccessor<MaderaDatabase>> daosProjetList;
 
   Future<List<ProjetWithClient>> listProjetWithClient;
 
@@ -70,7 +71,13 @@ class ProviderBdd with ChangeNotifier {
       produitModuleDao,
       composantGroupeDao,
       projetProduitsDao
-    ]; // En gros on met dans cette liste que ce que synchro a besoin. Mais c'est bien ce provider qui est censé donner l'accès à la base de données!
+    ];
+    daosProjetList = <DatabaseAccessor<MaderaDatabase>>[
+      gammeDao,
+      moduleDao,
+      produitModuleDao,
+      produitDao
+    ];
   }
 
   void drop() {

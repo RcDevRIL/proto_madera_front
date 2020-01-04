@@ -287,13 +287,13 @@ class _ProductCreationState extends State<ProductCreation> {
                           ? cTheme.MaderaColors.maderaLightGreen
                           : Colors.grey,
                       width: 2),
-                  color: providerProjet.isFilled('Quote')
+                  color: providerProjet.isFilled('ProductCreation')
                       ? cTheme.MaderaColors.maderaBlueGreen
                       : Colors.grey,
                 ),
                 child: IconButton(
                   tooltip: "Valider produit",
-                  onPressed: providerProjet.isFilled('Quote')
+                  onPressed: providerProjet.isFilled('ProductCreation')
                       ? () {
                           log.d('Saving form...');
                           providerProjet.logQ();
