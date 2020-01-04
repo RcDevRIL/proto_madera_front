@@ -129,14 +129,16 @@ class _ProductListState extends State<ProductList> {
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
                   border: Border.all(
-                      color: cTheme.MaderaColors.maderaLightGreen, width: 2),
+                    color: cTheme.MaderaColors.maderaLightGreen,
+                    width: 2,
+                  ),
                   color: cTheme.MaderaColors.maderaBlueGreen,
                 ),
                 child: IconButton(
                   tooltip: "Valider Projet",
                   onPressed: () {
                     log.d("Quote Overview");
-                    Provider.of<ProviderProjet>(context).validate();
+                    Provider.of<ProviderProjet>(context).validate(true);
                     Provider.of<MaderaNav>(context)
                         .redirectToPage(context, QuoteOverview());
                   },
@@ -149,10 +151,13 @@ class _ProductListState extends State<ProductList> {
               SizedBox(height: 12),
               Container(
                 decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    border: Border.all(
-                        color: cTheme.MaderaColors.maderaLightGreen, width: 2),
-                    color: cTheme.MaderaColors.maderaBlueGreen),
+                  shape: BoxShape.circle,
+                  border: Border.all(
+                    color: cTheme.MaderaColors.maderaLightGreen,
+                    width: 2,
+                  ),
+                  color: cTheme.MaderaColors.maderaBlueGreen,
+                ),
                 child: IconButton(
                   tooltip: "Supprimer produit",
                   onPressed: () {},

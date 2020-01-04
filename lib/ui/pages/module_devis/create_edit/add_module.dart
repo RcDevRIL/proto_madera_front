@@ -29,7 +29,7 @@ class _AddModuleState extends State<AddModule> {
   TextEditingController _sizeTextController;
   TextEditingController _widthTextController;
   ScrollController _formScrollController;
-  bool _canValidateForm;
+  String useCase;
 
   //added to prepare for scaling
   @override
@@ -39,7 +39,6 @@ class _AddModuleState extends State<AddModule> {
     _sizeTextController = TextEditingController();
     _widthTextController = TextEditingController();
     _formScrollController = ScrollController();
-    _canValidateForm = false;
   }
 
   //added to prepare for scaling
@@ -54,6 +53,19 @@ class _AddModuleState extends State<AddModule> {
 
   @override
   Widget build(BuildContext context) {
+    var providerProjet = Provider.of<ProviderProjet>(context);
+    if (providerProjet.editModuleIndex !=
+        providerProjet.productModules.length - 1) {
+      useCase = 'Modifier';
+      _nameTextController.text = providerProjet.productModules.entries
+          .elementAt(providerProjet.editModuleIndex)
+          .value['name'];
+      dropdownValue = providerProjet.productModules.entries
+          .elementAt(providerProjet.editModuleIndex)
+          .value['nature'];
+    } else
+      useCase = 'Ajouter';
+
     return MaderaScaffold(
       passedContext: context,
       child: Center(
@@ -61,7 +73,7 @@ class _AddModuleState extends State<AddModule> {
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
-            Text("Ajouter un module",
+            Text('$useCase un module',
                 style: cTheme.MaderaTextStyles.appBarTitle
                     .copyWith(fontSize: 32.0)),
             GradientFrame(
@@ -96,6 +108,15 @@ class _AddModuleState extends State<AddModule> {
                                   color: Colors.transparent,
                                 ),
                                 onChanged: (String newValue) {
+                                  log.i('OLD: ' +
+                                      providerProjet.productModules.values
+                                          .elementAt(providerProjet
+                                              .editModuleIndex)['nature']);
+                                  providerProjet.updateModuleNature(newValue);
+                                  log.i('NEW: ' +
+                                      providerProjet.productModules.values
+                                          .elementAt(providerProjet
+                                              .editModuleIndex)['nature']);
                                   setState(() {
                                     dropdownValue = newValue;
                                     _nameTextController.text = newValue + ' - ';
@@ -114,19 +135,6 @@ class _AddModuleState extends State<AddModule> {
                                             ))
                                     .toList(),
                               ),
-                              /* child: TextField(
-                                maxLines: 1,
-                                keyboardType: TextInputType.number,
-                                enabled: true,
-                                decoration: InputDecoration(
-                                  hintText: 'Longueur...',
-                                  border: OutlineInputBorder(
-                                      borderRadius: BorderRadius.only(
-                                    bottomRight: Radius.circular(20.0),
-                                    bottomLeft: Radius.circular(20.0),
-                                  )),
-                                ),
-                              ), */
                             ),
                             SizedBox(height: 10.0),
                             MaderaCard(
@@ -137,11 +145,13 @@ class _AddModuleState extends State<AddModule> {
                                 keyboardType: TextInputType.text,
                                 controller: _nameTextController,
                                 onChanged: (text) {
-                                  setState(() {
-                                    text.isNotEmpty
-                                        ? _canValidateForm = true
-                                        : _canValidateForm = false;
-                                  });
+                                  providerProjet.productModules.values
+                                      .elementAt(providerProjet.editModuleIndex)
+                                      .update(
+                                        'name',
+                                        (old) => text,
+                                        () => text,
+                                      );
                                 },
                                 enabled: true,
                                 decoration: InputDecoration(
@@ -176,59 +186,38 @@ class _AddModuleState extends State<AddModule> {
                     SizedBox(
                       height: 20.0,
                     ),
-                    /* 
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: <Widget>[
-                        MaderaCard(
-                          cardHeight: cTheme.Dimens.cardHeight,
-                          cardWidth: 450.0,
-                          labelledIcon: LabelledIcon(
-                            // TODO: Trouver une meilleure icone, genre règle et équerre
-                            icon: Icon(Icons.open_with),
-                            text: Text("Longueur (en mètres)"),
-                          ),
-                          child: TextField(
-                            maxLines: 1,
-                            keyboardType: TextInputType.number,
-                            enabled: true,
-                            controller: _sizeTextController,
-                            decoration: InputDecoration(
-                              hintText: 'Longueur...',
-                              border: OutlineInputBorder(
-                                borderRadius: BorderRadius.only(
-                                  bottomRight: Radius.circular(20.0),
-                                  bottomLeft: Radius.circular(20.0),
+                    providerProjet.productModules.values.elementAt(
+                                providerProjet.editModuleIndex)['nature'] ==
+                            'Mur droit'
+                        ? Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: <Widget>[
+                              MaderaCard(
+                                cardHeight: cTheme.Dimens.cardHeight,
+                                cardWidth: 450.0,
+                                header: LabelledIcon(
+                                  // TODO: Trouver une meilleure icone, genre règle et équerre
+                                  icon: Icon(Icons.open_with),
+                                  text: Text("Section (en centimètres)"),
+                                ),
+                                child: TextField(
+                                  maxLines: 1,
+                                  keyboardType: TextInputType.number,
+                                  enabled: true,
+                                  controller: _widthTextController,
+                                  decoration: InputDecoration(
+                                    hintText: 'Section...',
+                                    border: OutlineInputBorder(
+                                        borderRadius: BorderRadius.only(
+                                      bottomRight: Radius.circular(20.0),
+                                      bottomLeft: Radius.circular(20.0),
+                                    )),
+                                  ),
                                 ),
                               ),
-                            ),
-                          ),
-                        ),
-                        MaderaCard(
-                          cardHeight: cTheme.Dimens.cardHeight,
-                          cardWidth: 450.0,
-                          labelledIcon: LabelledIcon(
-                            // TODO: Trouver une meilleure icone, genre règle et équerre
-                            icon: Icon(Icons.open_with),
-                            text: Text("Section (en centimètres)"),
-                          ),
-                          child: TextField(
-                            maxLines: 1,
-                            keyboardType: TextInputType.number,
-                            enabled: true,
-                            controller: _widthTextController,
-                            decoration: InputDecoration(
-                              hintText: 'Section...',
-                              border: OutlineInputBorder(
-                                  borderRadius: BorderRadius.only(
-                                bottomRight: Radius.circular(20.0),
-                                bottomLeft: Radius.circular(20.0),
-                              )),
-                            ),
-                          ),
-                        ),
-                      ],
-                    ), */
+                            ],
+                          )
+                        : Container(),
                     /* 
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -413,29 +402,25 @@ class _AddModuleState extends State<AddModule> {
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
                   border: Border.all(
-                      color: _canValidateForm
+                      color: providerProjet.isFilled('AddModule')
                           ? cTheme.MaderaColors.maderaLightGreen
                           : Colors.grey,
                       width: 2),
-                  color: _canValidateForm
+                  color: providerProjet.isFilled('AddModule')
                       ? cTheme.MaderaColors.maderaBlueGreen
                       : Colors.grey,
                 ),
                 child: IconButton(
-                  onPressed: _canValidateForm
+                  onPressed: providerProjet.isFilled('AddModule')
                       ? () {
                           log.d("Validating Module...");
-                          Provider.of<ProviderProjet>(context)
-                              .addModuleToProduct({
+                          providerProjet.updateModuleInfos({
+                            'name': _nameTextController.text,
                             'nature': dropdownValue,
-                            'name': _nameTextController.text ??= 'error',
-                            'longueur': _sizeTextController.text ??=
-                                'errorSize',
-                            'largeur': _widthTextController.text ??=
-                                'errorWitdh',
+                            'section': _sizeTextController.text,
                           });
                           Provider.of<MaderaNav>(context)
-                              .redirectToPage(context, ProductCreation());
+                              .redirectToPage(context, Finishings());
                         }
                       : null,
                   icon: Icon(
@@ -449,18 +434,21 @@ class _AddModuleState extends State<AddModule> {
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
                   border: Border.all(
-                      color: _canValidateForm
+                      color: providerProjet.isFilled('AddModule')
                           ? cTheme.MaderaColors.maderaLightGreen
                           : Colors.grey,
                       width: 2),
-                  color: _canValidateForm
+                  color: providerProjet.isFilled('AddModule')
                       ? cTheme.MaderaColors.maderaBlueGreen
                       : Colors.grey,
                 ),
                 child: IconButton(
-                  onPressed: _canValidateForm
+                  onPressed: providerProjet.isFilled('AddModule')
                       ? () {
                           log.d("Canceling Module...");
+                          providerProjet.productModules.remove(providerProjet
+                              .productModules.keys
+                              .elementAt(providerProjet.editModuleIndex));
                           Provider.of<MaderaNav>(context)
                               .redirectToPage(context, ProductCreation());
                         }

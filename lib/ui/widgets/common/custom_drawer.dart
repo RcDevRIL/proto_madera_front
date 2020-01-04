@@ -4,7 +4,7 @@ import 'package:proto_madera_front/ui/pages/user/profile_page.dart';
 import 'package:provider/provider.dart';
 
 import 'package:proto_madera_front/data/providers/providers.dart'
-    show MaderaNav, ProviderLogin;
+    show MaderaNav, ProviderLogin, ProviderProjet;
 import 'package:proto_madera_front/ui/widgets/custom_widgets.dart'
     show CollapsingListTile;
 import 'package:proto_madera_front/ui/pages/pages.dart';
@@ -107,6 +107,9 @@ class _CustomDrawerState extends State<CustomDrawer>
                       return Consumer<MaderaNav>(
                         builder: (context, mN, child) => CollapsingListTile(
                           onTap: () {
+                            if (navigationTarget.runtimeType == QuoteCreation)
+                              Provider.of<ProviderProjet>(context)
+                                  .initAndHold();
                             mN.redirectToPage(context, navigationTarget);
 
                             setState(() {
