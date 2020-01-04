@@ -37,13 +37,18 @@ class ProviderProjet with ChangeNotifier {
   }
 
   void init() {
-    //TODO Rajouter un paramètre: le clientId, puisqu'a priori si on n'initialise le stockage du formulaire, on sait pour quel client on le fait
     var clientId = 123;
     log.i('init called');
     canInit = false;
     // Initialisation des champs à null en respectant les conditions des constructeurs
     _quoteCreationValues = QuoteCreationModel(
-      client: {'name': '', 'adresse': '', 'tel': '', 'mail': ''},
+      client: {
+        'clientId': '$clientId',
+        'name': '',
+        'adresse': '',
+        'tel': '',
+        'mail': ''
+      },
       dateDeCreation: _now,
       descriptionProjet: '',
       refProjet: _now +
@@ -52,7 +57,11 @@ class ProviderProjet with ChangeNotifier {
     _quoteValues = QuoteModel(
         gamme: 'Premium',
         nomDeProduit: null,
-        listeModele: {'Modèle Premium n°1': null, 'Modèle Premium n°2': null},
+        listeModele: {
+          'Modèle Premium 1': 11,
+          'Modèle Premium 2': 12,
+          'Modèle Premium 3': 13,
+        },
         listeModule: Map<String, dynamic>(),
         modeleChoisi: null);
     /* 
@@ -103,6 +112,12 @@ class ProviderProjet with ChangeNotifier {
 
   String get description => _quoteCreationValues.descriptionProjet;
 
+  set client(Map<String, String> newClient) {
+    _quoteCreationValues.client = newClient;
+  }
+
+  Map<String, String> get client => _quoteCreationValues.client;
+
   set clientName(String clientName) {
     _quoteCreationValues.client
         .update('name', (old) => clientName, ifAbsent: () => clientName);
@@ -134,8 +149,6 @@ class ProviderProjet with ChangeNotifier {
   }
 
   String get clientMail => _quoteCreationValues.client['mail'];
-
-  String get refClient => _quoteCreationValues.client.toString();
 
   void setNomDeProduit(String nomDeProduit) {
     _quoteValues.nomDeProduit = nomDeProduit;
