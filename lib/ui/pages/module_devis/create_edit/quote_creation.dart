@@ -452,6 +452,31 @@ class _QuoteCreationState extends State<QuoteCreation> {
                                   color: Colors.transparent,
                                 ),
                                 onChanged: (String newValue) {
+                                  switch (newValue) {
+                                    case 'Client 1':
+                                      //TODO récupérer les infos clients en bdd
+                                      providerProjet.client = {
+                                        'id': '1',
+                                        'name': newValue,
+                                        'adresse': 'Dijon',
+                                        'mail': 'test@test.com',
+                                        'tel': '111111',
+                                      };
+                                      break;
+                                    case 'Client 2':
+                                      //TODO récupérer les infos clients en bdd
+                                      providerProjet.client = {
+                                        'id': '2',
+                                        'name': newValue,
+                                        'adresse': 'Quetigny',
+                                        'mail': 'testnumero2@test.com',
+                                        'tel': '222222',
+                                      };
+                                      break;
+                                    default:
+                                      {}
+                                      break;
+                                  }
                                   providerProjet.clientName = newValue;
                                   Navigator.of(context).pop();
                                 },
