@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:logger/logger.dart';
+import 'package:proto_madera_front/data/database/madera_database.dart';
 import 'package:provider/provider.dart';
 
 import 'package:proto_madera_front/ui/widgets/custom_widgets.dart';
@@ -42,7 +43,7 @@ class _ProductCreationState extends State<ProductCreation> {
 
   @override
   Widget build(BuildContext context) {
-    List<String> args = ModalRoute.of(context).settings.arguments;
+    //final args = ModalRoute.of(context).settings.arguments;
     var providerProjet = Provider.of<ProviderProjet>(context);
     return MaderaScaffold(
       passedContext: context,
@@ -67,6 +68,9 @@ class _ProductCreationState extends State<ProductCreation> {
                       maxLines: 1,
                       keyboardType: TextInputType.text,
                       enabled: true,
+                      controller: TextEditingController(
+                        text: providerProjet.nomDeProduit,
+                      ),
                       onChanged: (text) {
                         providerProjet.setNomDeProduit(text);
                       },
@@ -116,35 +120,27 @@ class _ProductCreationState extends State<ProductCreation> {
                       underline: Container(
                         color: Colors.transparent,
                       ),
+                      items: providerProjet.listGammes
+                          .map<DropdownMenuItem<String>>(
+                              (GammeData gamme) => DropdownMenuItem<String>(
+                                    value: gamme.libelleGammes,
+                                    child: Text(gamme.libelleGammes),
+                                  ))
+                          .toList(),
                       onChanged: (String newValue) {
                         dropdownGammeValue = newValue;
                         dropdownModeleValue = null;
-                        switch (newValue) {
-                          case 'Premium':
-                            providerProjet.setGamme(newValue);
-                            providerProjet.setModeleListFromGammeID(1);
-                            break;
-                          case 'Standard':
-                            providerProjet.setGamme(newValue);
-                            providerProjet.setModeleListFromGammeID(2);
-                            break;
-                          default:
-                            {}
-                            break;
-                        }
+                        providerProjet.listGammes.forEach(
+                          (gamme) => {
+                            if (gamme.libelleGammes == newValue)
+                              {
+                                providerProjet.setGamme(newValue),
+                                providerProjet
+                                    .initListProduitModele(gamme.gammeId),
+                              }
+                          },
+                        );
                       },
-                      items: <String>[
-                        'Premium',
-                        'Standard',
-                        'Gamme3',
-                        'Gamme4',
-                      ]
-                          .map<DropdownMenuItem<String>>(
-                              (String value) => DropdownMenuItem<String>(
-                                    value: value,
-                                    child: Text(value),
-                                  ))
-                          .toList(),
                     ),
                   ),
                   SizedBox(height: 20.0),
@@ -165,35 +161,37 @@ class _ProductCreationState extends State<ProductCreation> {
                       underline: Container(
                         color: Colors.transparent,
                       ),
-                      onChanged: providerProjet.gamme != null
+                      items: providerProjet.listProduitModele != null
+                          ? providerProjet.listProduitModele
+                              .map<DropdownMenuItem<String>>(
+                                (ProduitData produit) =>
+                                    DropdownMenuItem<String>(
+                                  value: produit.produitNom,
+                                  child: Text(produit.produitNom),
+                                ),
+                              )
+                              .toList()
+                          : null,
+                      onChanged: dropdownGammeValue != null
                           ? (String newValue) {
                               dropdownModeleValue = newValue;
-                              switch (dropdownModeleValue) {
-                                case 'Modèle Premium 1':
-                                  providerProjet.setModel(dropdownModeleValue);
-                                  providerProjet.setModuleListFromModelID(1);
-                                  break;
-                                case 'Modèle Premium 2':
-                                  providerProjet.setModel(dropdownModeleValue);
-                                  providerProjet.setModuleListFromModelID(2);
-                                  break;
-                                default:
-                                  {}
-                                  break;
-                              }
+                              providerProjet.listProduitModele
+                                  .forEach((produit) => {
+                                        if (produit.produitNom == newValue)
+                                          {
+                                            //TODO initModule
+                                            providerProjet
+                                                .setModel(dropdownModeleValue),
+                                            providerProjet
+                                                .initListProduitModule(
+                                                    produit.produitId),
+                                          }
+                                      });
                             }
-                          : null,
-                      items: providerProjet.modeleList.length != 0
-                          ? providerProjet.modeleList.keys
-                              .map<DropdownMenuItem<String>>(
-                                  (String value) => DropdownMenuItem<String>(
-                                        value: value,
-                                        child: Text(value),
-                                      ))
-                              .toList()
                           : null,
                     ),
                   ),
+                  //TODO ya une erreur, quelque part..
                   SizedBox(height: 20.0),
                   MaderaCard(
                     cardHeight: MediaQuery.of(context).size.height / 3.2,
@@ -202,17 +200,21 @@ class _ProductCreationState extends State<ProductCreation> {
                         providerProjet.productModules != null
                             ? ListView.separated(
                                 shrinkWrap: true,
-                                itemCount:
-                                    providerProjet.productModules.keys.length,
+                                itemCount: providerProjet.listProduitModule !=
+                                        null
+                                    ? providerProjet.listProduitModule.length
+                                    : 0,
                                 itemBuilder: (c, i) => Material(
                                   child: InkWell(
                                     highlightColor: Colors.transparent,
                                     splashColor:
                                         cTheme.MaderaColors.maderaBlueGreen,
                                     child: ListTile(
-                                      title: Text(providerProjet
-                                          .productModules.values
-                                          .elementAt(i)['name']),
+                                      title: Text(
+                                        providerProjet.listProduitModule
+                                            .elementAt(i)
+                                            .produitModuleNom,
+                                      ),
                                     ),
                                     onTap: () {
                                       log.d("Modifying module...");
@@ -243,6 +245,7 @@ class _ProductCreationState extends State<ProductCreation> {
                                         'nature': '',
                                       },
                                     );
+                                    //TODO passer le providerProjet en param
                                     Provider.of<MaderaNav>(context)
                                         .redirectToPage(
                                             context, AddModule(), null);
