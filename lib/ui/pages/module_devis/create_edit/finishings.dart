@@ -40,8 +40,10 @@ class _FinishingsState extends State<Finishings> {
 
   @override
   Widget build(BuildContext context) {
+    var providerProjet = Provider.of<ProviderProjet>(context);
     return MaderaScaffold(
       passedContext: context,
+      //TODO alimenter les listes de finitions !
       child: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -54,63 +56,126 @@ class _FinishingsState extends State<Finishings> {
               ),
             ),
             GradientFrame(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                mainAxisAlignment: MainAxisAlignment.start,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
-                  SizedBox(
-                    height: 20.0,
-                  ),
-                  Text(
-                    'Finitions extérieures',
-                    style: cTheme.MaderaTextStyles.appBarTitle.copyWith(
-                      fontSize: 20.0,
-                    ),
-                  ),
-                  Divider(
-                    color: Colors.white,
-                    indent: MediaQuery.of(context).size.width / 8,
-                    endIndent: MediaQuery.of(context).size.width / 8,
-                    thickness: 1.0,
-                  ),
-                  MaderaRoundedBox(
-                    edgeInsetsPadding: EdgeInsets.symmetric(
-                      horizontal: 10.0,
-                      vertical: 0.0,
-                    ),
-                    edgeInsetsMargin: EdgeInsets.symmetric(
-                      horizontal: 0.0,
-                      vertical: 10.0,
-                    ),
-                    boxWidth: MediaQuery.of(context).size.height / 1.3,
-                    boxHeight: MediaQuery.of(context).size.height / 4,
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      // Alimentée avec les finitions possibles du Module
-                      children: <Widget>[
-                        RadioListTile<String>(
-                          title: const Text(
-                              'Finition 1 avec un texte super méga long'),
-                          value: 'Finition 1',
-                          groupValue: choice,
-                          onChanged: (String val) {
-                            setState(() {
-                              choice = val;
-                            });
-                          },
+                  Column(
+                    children: <Widget>[
+                      SizedBox(
+                        height: 20.0,
+                      ),
+                      Text(
+                        'Finitions intérieures',
+                        style: cTheme.MaderaTextStyles.appBarTitle.copyWith(
+                          fontSize: 20.0,
                         ),
-                        RadioListTile<String>(
-                          title: const Text('Finition 2'),
-                          value: 'Finition 2',
-                          groupValue: choice,
-                          onChanged: (String val) {
-                            setState(() {
-                              choice = val;
-                            });
-                          },
+                      ),
+                      Divider(
+                        color: Colors.white,
+                        indent: MediaQuery.of(context).size.width / 8,
+                        endIndent: MediaQuery.of(context).size.width / 8,
+                        thickness: 1.0,
+                      ),
+                      MaderaRoundedBox(
+                        edgeInsetsPadding: EdgeInsets.symmetric(
+                          horizontal: 10.0,
+                          vertical: 0.0,
                         ),
-                      ],
-                    ),
+                        edgeInsetsMargin: EdgeInsets.symmetric(
+                          horizontal: 0.0,
+                          vertical: 10.0,
+                        ),
+                        boxWidth: MediaQuery.of(context).size.width / 2.7,
+                        boxHeight: MediaQuery.of(context).size.height / 4,
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          // Alimentée avec les finitions possibles du Module
+                          children: <Widget>[
+                            RadioListTile<String>(
+                              //TODO rajouter ligne finition actuelle
+                              title: const Text(
+                                  'Finition 1 avec un texte super méga long'),
+                              value: 'Finition 1',
+                              groupValue: choice,
+                              onChanged: (String val) {
+                                setState(() {
+                                  choice = val;
+                                });
+                              },
+                            ),
+                            RadioListTile<String>(
+                              title: const Text('Finition 2'),
+                              value: 'Finition 2',
+                              groupValue: choice,
+                              onChanged: (String val) {
+                                setState(() {
+                                  choice = val;
+                                });
+                              },
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                  Column(
+                    children: <Widget>[
+                      SizedBox(
+                        height: 20.0,
+                      ),
+                      Text(
+                        'Finitions extérieures',
+                        style: cTheme.MaderaTextStyles.appBarTitle.copyWith(
+                          fontSize: 20.0,
+                        ),
+                      ),
+                      Divider(
+                        color: Colors.white,
+                        indent: MediaQuery.of(context).size.width / 8,
+                        endIndent: MediaQuery.of(context).size.width / 8,
+                        thickness: 1.0,
+                      ),
+                      MaderaRoundedBox(
+                        edgeInsetsPadding: EdgeInsets.symmetric(
+                          horizontal: 10.0,
+                          vertical: 0.0,
+                        ),
+                        edgeInsetsMargin: EdgeInsets.symmetric(
+                          horizontal: 0.0,
+                          vertical: 10.0,
+                        ),
+                        boxWidth: MediaQuery.of(context).size.width / 2.7,
+                        boxHeight: MediaQuery.of(context).size.height / 4,
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          // Alimentée avec les finitions possibles du Module
+                          children: <Widget>[
+                            RadioListTile<String>(
+                              //TODO rajouter ligne finition actuelle
+                              title: const Text(
+                                  'Finition 1 avec un texte super méga long'),
+                              value: 'Finition 1',
+                              groupValue: choice,
+                              onChanged: (String val) {
+                                setState(() {
+                                  choice = val;
+                                });
+                              },
+                            ),
+                            RadioListTile<String>(
+                              title: const Text('Finition 2'),
+                              value: 'Finition 2',
+                              groupValue: choice,
+                              onChanged: (String val) {
+                                setState(() {
+                                  choice = val;
+                                });
+                              },
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
                   ),
                 ],
               ),
@@ -135,7 +200,8 @@ class _FinishingsState extends State<Finishings> {
                   tooltip: "Valider finition",
                   onPressed: () {
                     log.d("Adding Finishings...");
-                    Provider.of<ProviderProjet>(context).setFinitions(choice);
+                    providerProjet.addModuleToListProduitModuleProjet();
+                    //Provider.of<ProviderProjet>(context).setFinitions(choice);
                     Provider.of<MaderaNav>(context)
                         .redirectToPage(context, ProductCreation(), null);
                   },

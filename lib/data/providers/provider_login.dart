@@ -73,8 +73,8 @@ class ProviderLogin with ChangeNotifier {
     }
   }
 
-  // Méthode pour vérifier si le serveur est joignable, vérification à effectuer
-  // avant chaque méthode faisant des appels serveurs, sauf si le status est déjà offline
+  /// Méthode pour vérifier si le serveur est joignable, vérification à effectuer
+  /// avant chaque méthode faisant des appels serveurs, sauf si le status est déjà offline
   Future<bool> ping() async {
     try {
       var response =

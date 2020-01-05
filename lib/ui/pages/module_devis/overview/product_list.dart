@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:logger/logger.dart';
+import 'package:proto_madera_front/data/providers/provider_login.dart';
 import 'package:provider/provider.dart';
 
 import 'package:proto_madera_front/ui/widgets/custom_widgets.dart';
 import 'package:proto_madera_front/data/providers/providers.dart'
-    show MaderaNav, ProviderProjet;
+    show MaderaNav, ProviderBdd, ProviderProjet, ProviderSynchro;
 import 'package:proto_madera_front/ui/pages/pages.dart'
     show QuoteOverview, ProductCreation;
 import 'package:proto_madera_front/theme.dart' as cTheme;
@@ -38,7 +39,8 @@ class _ProductListState extends State<ProductList> {
 
   @override
   Widget build(BuildContext context) {
-    final productList = Provider.of<ProviderProjet>(context).productList;
+    var providerProjet = Provider.of<ProviderProjet>(context);
+    var providerBdd = Provider.of<ProviderBdd>(context);
     return MaderaScaffold(
       passedContext: context,
       child: Center(
@@ -61,9 +63,9 @@ class _ProductListState extends State<ProductList> {
                       horizontal: MediaQuery.of(context).size.width / 7.3,
                       vertical: 10.0,
                     ),
-                    itemCount: productList.length,
+                    itemCount: providerProjet.listProduitWithModule.length,
                     itemBuilder: (c, i) =>
-                        _createProductTile(i, productList[i].nomDeProduit),
+                        _createProductTile(i, providerProjet.listProduitWithModule[i].produit.produitNom),
                     separatorBuilder: (c, i) => SizedBox(
                       height: 10.0,
                     ),
@@ -100,6 +102,7 @@ class _ProductListState extends State<ProductList> {
                               tooltip: "Supprimer produit",
                               onPressed: () {
                                 log.d("Adding a new product");
+                                //TODO supprimer le produit
                                 Provider.of<MaderaNav>(context).redirectToPage(
                                     context, ProductCreation(), null);
                               },
@@ -136,9 +139,20 @@ class _ProductListState extends State<ProductList> {
                 ),
                 child: IconButton(
                   tooltip: "Valider Projet",
-                  onPressed: () {
+                  onPressed: () async {
+                    log.d("Create projetWithAllInfos");
+                    providerProjet.initProjetWithAllInfos();
+                    if(!await Provider.of<ProviderLogin>(context).ping()) {
+                      log.d("Appel serveur");
+                      await Provider.of<ProviderSynchro>(context).createProjectOnServer(providerProjet.projetWithAllInfos);
+                    } else {
+                      log.d("Application offline, register in bdd local");
+                      providerBdd.createAll(providerProjet.projetWithAllInfos);
+                    }
+                    //TODO reset infos providerProjet !
                     log.d("Quote Overview");
                     Provider.of<ProviderProjet>(context).validate(true);
+
                     Provider.of<MaderaNav>(context)
                         .redirectToPage(context, QuoteOverview(), null);
                   },

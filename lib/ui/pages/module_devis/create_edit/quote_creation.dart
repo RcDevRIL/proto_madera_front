@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:logger/logger.dart';
-import 'package:provider/provider.dart';
-
+import 'package:proto_madera_front/data/database/madera_database.dart';
 import 'package:proto_madera_front/data/providers/providers.dart'
-    show MaderaNav, ProviderProjet;
+    show MaderaNav, ProviderBdd, ProviderProjet;
+import 'package:proto_madera_front/theme.dart' as cTheme;
 import 'package:proto_madera_front/ui/pages/pages.dart' show ProductCreation;
 import 'package:proto_madera_front/ui/widgets/custom_widgets.dart';
-import 'package:proto_madera_front/theme.dart' as cTheme;
+import 'package:provider/provider.dart';
 
 ///
 /// Entry point for the quote creation module of our prototype
@@ -23,12 +23,13 @@ class QuoteCreation extends StatefulWidget {
 
 class _QuoteCreationState extends State<QuoteCreation> {
   String dateCreationProjet;
-  String refProjet;
+  TextEditingController _projetNomTextEditingController;
   ScrollController _formScrollController;
   TextEditingController _clientMailTextEditingController;
   TextEditingController _clientTelTextEditingController;
   TextEditingController _clientAdressTextEditingController;
   TextEditingController _clientNameTextEditingController;
+  TextEditingController _clientPrenomTextEditingController;
 
   final log = Logger();
 
@@ -40,11 +41,13 @@ class _QuoteCreationState extends State<QuoteCreation> {
     _clientTelTextEditingController = TextEditingController();
     _clientAdressTextEditingController = TextEditingController();
     _clientNameTextEditingController = TextEditingController();
+    _projetNomTextEditingController = TextEditingController();
   }
 
   @override
   void dispose() {
     _formScrollController?.dispose();
+    _projetNomTextEditingController.dispose();
     _clientMailTextEditingController?.dispose();
     _clientTelTextEditingController?.dispose();
     _clientAdressTextEditingController?.dispose();
@@ -56,14 +59,17 @@ class _QuoteCreationState extends State<QuoteCreation> {
   void didChangeDependencies() {
     /* J'ai du rendre inéditables les fields pour le client car comportement bizarre remplissage que par le dialogue
     */
-    _clientNameTextEditingController.text =
-        Provider.of<ProviderProjet>(context).clientName;
-    _clientAdressTextEditingController.text =
-        Provider.of<ProviderProjet>(context).clientAdress;
-    _clientTelTextEditingController.text =
-        Provider.of<ProviderProjet>(context).clientTel;
-    _clientMailTextEditingController.text =
-        Provider.of<ProviderProjet>(context).clientMail;
+    if (Provider.of<ProviderProjet>(context).client != null) {
+      _projetNomTextEditingController.text = Provider.of<ProviderProjet>(context).projetNom;
+      _clientNameTextEditingController.text =
+          Provider.of<ProviderProjet>(context).client.nom;
+      //TODO gérer les adresses
+      _clientAdressTextEditingController.text = 'Cest une adresse';
+      _clientTelTextEditingController.text =
+          Provider.of<ProviderProjet>(context).client.mail;
+      _clientMailTextEditingController.text =
+          Provider.of<ProviderProjet>(context).client.numTel;
+    }
 
     super.didChangeDependencies();
   }
@@ -71,8 +77,7 @@ class _QuoteCreationState extends State<QuoteCreation> {
   @override
   Widget build(BuildContext context) {
     var providerProjet = Provider.of<ProviderProjet>(context);
-    dateCreationProjet = providerProjet.dateCreation;
-    refProjet = providerProjet.refProjet;
+    var providerBdd = Provider.of<ProviderBdd>(context);
     return MaderaScaffold(
       passedContext: context,
       child: Center(
@@ -113,14 +118,19 @@ class _QuoteCreationState extends State<QuoteCreation> {
                           ),
                         ),
                         child: Center(
-                          child: Text(dateCreationProjet),
+                          child: Text(providerProjet.dateNow),
                         ),
                       ),
                       MaderaCard(
                         cardWidth: 250.0,
                         cardHeight: cTheme.Dimens.cardHeight,
                         child: Center(
-                          child: Text(dateCreationProjet + '_MMP123'),
+                          child: TextField(
+                            controller: _projetNomTextEditingController,
+                            onChanged: (String newValue) {
+                              providerProjet.projetNom = newValue;
+                            },
+                          ),
                         ),
                         header: LabelledIcon(
                           icon: Icon(
@@ -128,7 +138,7 @@ class _QuoteCreationState extends State<QuoteCreation> {
                             color: cTheme.MaderaColors.textHeaderColor,
                           ),
                           text: Text(
-                            'ID. Projet',
+                            'Nom du Projet',
                             style: cTheme.MaderaTextStyles.appBarTitle.copyWith(
                               fontSize: 15.0,
                               fontWeight: FontWeight.w900,
@@ -178,10 +188,6 @@ class _QuoteCreationState extends State<QuoteCreation> {
                               maxLines: 1,
                               onTap: () =>
                                   _formScrollController.position.moveTo(110.0),
-                              onChanged: (text) {
-                                providerProjet.clientName =
-                                    _clientNameTextEditingController.text;
-                              },
                               controller: _clientNameTextEditingController,
                               enabled: false,
                               keyboardType: TextInputType.text,
@@ -212,10 +218,6 @@ class _QuoteCreationState extends State<QuoteCreation> {
                               maxLines: 1,
                               onTap: () =>
                                   _formScrollController.position.moveTo(110.0),
-                              onChanged: (text) {
-                                providerProjet.clientAdress =
-                                    _clientAdressTextEditingController.text;
-                              },
                               controller: _clientAdressTextEditingController,
                               keyboardType: TextInputType.text,
                               enabled: false,
@@ -265,10 +267,6 @@ class _QuoteCreationState extends State<QuoteCreation> {
                               maxLines: 1,
                               onTap: () =>
                                   _formScrollController.position.moveTo(110.0),
-                              onChanged: (text) {
-                                providerProjet.clientTel =
-                                    _clientTelTextEditingController.text;
-                              },
                               controller: _clientTelTextEditingController,
                               keyboardType: TextInputType.phone,
                               enabled: false,
@@ -299,10 +297,6 @@ class _QuoteCreationState extends State<QuoteCreation> {
                               maxLines: 1,
                               onTap: () =>
                                   _formScrollController.position.moveTo(110.0),
-                              onChanged: (text) {
-                                providerProjet.clientMail =
-                                    _clientMailTextEditingController.text;
-                              },
                               controller: _clientMailTextEditingController,
                               keyboardType: TextInputType.emailAddress,
                               enabled: false,
@@ -377,9 +371,11 @@ class _QuoteCreationState extends State<QuoteCreation> {
                       : Colors.grey,
                 ),
                 child: IconButton(
+                  //TODO changer les conditions dans isFilled
                   onPressed: providerProjet.isFilled('QuoteCreation')
                       ? () {
                           log.d('Saving form...');
+                          providerProjet.initProjet();
                           providerProjet.logQC();
                           log.d('Done.');
                           Provider.of<MaderaNav>(context)
@@ -432,9 +428,8 @@ class _QuoteCreationState extends State<QuoteCreation> {
                             children: <Widget>[
                               DropdownButton<String>(
                                 isExpanded: true,
-                                hint: (providerProjet.clientName != null &&
-                                        providerProjet.clientName.isNotEmpty)
-                                    ? Text(providerProjet.clientName)
+                                hint: (providerProjet.client != null)
+                                    ? Text(providerProjet.client.nom)
                                     : Text('Sélectionnez un client...'),
                                 icon: Icon(Icons.arrow_drop_down,
                                     color:
@@ -451,44 +446,23 @@ class _QuoteCreationState extends State<QuoteCreation> {
                                   color: Colors.transparent,
                                 ),
                                 onChanged: (String newValue) {
-                                  switch (newValue) {
-                                    case 'Client 1':
-                                      //TODO récupérer les infos clients en bdd
-                                      providerProjet.client = {
-                                        'id': '1',
-                                        'name': newValue,
-                                        'adresse': 'Dijon',
-                                        'mail': 'test@test.com',
-                                        'tel': '111111',
-                                      };
-                                      break;
-                                    case 'Client 2':
-                                      //TODO récupérer les infos clients en bdd
-                                      providerProjet.client = {
-                                        'id': '2',
-                                        'name': newValue,
-                                        'adresse': 'Quetigny',
-                                        'mail': 'testnumero2@test.com',
-                                        'tel': '222222',
-                                      };
-                                      break;
-                                    default:
-                                      {}
-                                      break;
-                                  }
-                                  providerProjet.clientName = newValue;
+                                  providerBdd.listClient.forEach((client) => {
+                                        if (client.nom == newValue)
+                                          {
+                                            providerProjet
+                                                .initClientWithClient(client),
+                                          }
+                                      });
                                   Navigator.of(context).pop();
+                                  didChangeDependencies();
                                 },
-                                items: <String>[
-                                  'Client 1',
-                                  'Client 2',
-                                  'Client 3',
-                                ]
+                                items: providerBdd.listClient
                                     .map<DropdownMenuItem<String>>(
-                                        (String value) =>
+                                        (ClientData client) =>
                                             DropdownMenuItem<String>(
-                                              value: value,
-                                              child: Text(value),
+                                              //TODO nom + prenom ?
+                                              value: client.nom,
+                                              child: Text(client.nom),
                                             ))
                                     .toList(),
                               ),
@@ -501,23 +475,28 @@ class _QuoteCreationState extends State<QuoteCreation> {
                                       Container(
                                         width: 100,
                                         child: TextField(
-                                          onChanged: (value) =>
-                                              providerProjet.clientName = value,
-                                          controller: TextEditingController(
-                                              text: providerProjet.clientName),
+                                          controller:
+                                              _clientNameTextEditingController,
                                           decoration: InputDecoration(
-                                            hintText: 'Ex: DUPONT Nicolas',
+                                            hintText: 'Ex: DUPONT',
                                           ),
                                         ),
                                       ),
                                       Container(
                                         width: 100,
                                         child: TextField(
-                                          onChanged: (value) => providerProjet
-                                              .clientAdress = value,
-                                          controller: TextEditingController(
-                                              text:
-                                                  providerProjet.clientAdress),
+                                          controller:
+                                              _clientPrenomTextEditingController,
+                                          decoration: InputDecoration(
+                                            hintText: 'Ex: Nicolas',
+                                          ),
+                                        ),
+                                      ),
+                                      Container(
+                                        width: 100,
+                                        child: TextField(
+                                          controller:
+                                              _clientAdressTextEditingController,
                                           decoration: InputDecoration(
                                             hintText: 'Rue complète, CP, ville',
                                           ),
@@ -530,10 +509,8 @@ class _QuoteCreationState extends State<QuoteCreation> {
                                       Container(
                                         width: 100,
                                         child: TextField(
-                                          onChanged: (value) =>
-                                              providerProjet.clientTel = value,
-                                          controller: TextEditingController(
-                                              text: providerProjet.clientTel),
+                                          controller:
+                                              _clientTelTextEditingController,
                                           decoration: InputDecoration(
                                             hintText: 'Téléphone...',
                                           ),
@@ -542,10 +519,8 @@ class _QuoteCreationState extends State<QuoteCreation> {
                                       Container(
                                         width: 100,
                                         child: TextField(
-                                          onChanged: (value) =>
-                                              providerProjet.clientMail = value,
-                                          controller: TextEditingController(
-                                              text: providerProjet.clientMail),
+                                          controller:
+                                              _clientMailTextEditingController,
                                           decoration: InputDecoration(
                                             hintText: 'Adresse mail...',
                                           ),
@@ -564,6 +539,13 @@ class _QuoteCreationState extends State<QuoteCreation> {
                           key: Key('ok-button'),
                           child: Text('Ok'),
                           onPressed: () {
+                            if (providerProjet.client != null) {
+                              providerProjet.initClient(
+                                  _clientNameTextEditingController.text,
+                                  _clientPrenomTextEditingController.text,
+                                  _clientMailTextEditingController.text,
+                                  _clientTelTextEditingController.text);
+                            }
                             Navigator.of(context).pop();
                           },
                         ),

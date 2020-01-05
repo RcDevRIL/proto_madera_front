@@ -34,7 +34,30 @@ class ProjetDao extends DatabaseAccessor<MaderaDatabase> with _$ProjetDaoMixin {
   }
 
   ///Méthode de création d'un projet
-  Future<int> createProject(ProjetCompanion projetCompanion) async {
+  Future<int> createProject(ProjetData projetData) async {
+    ProjetCompanion projetCompanion;
+    if (projetData.projetId != -1 && projetData.projetId != null) {
+      projetCompanion = ProjetCompanion(
+        projetId: Value(projetData.projetId),
+        nomProjet: Value(projetData.nomProjet),
+        refProjet: Value(projetData.refProjet),
+        dateProjet: Value(
+          projetData.dateProjet,
+        ),
+        clientId: Value(projetData.clientId),
+        devisEtatId: Value(projetData.devisEtatId),
+      );
+    } else {
+      projetCompanion = ProjetCompanion(
+        nomProjet: Value(projetData.nomProjet),
+        refProjet: Value(projetData.refProjet),
+        dateProjet: Value(
+          projetData.dateProjet,
+        ),
+        clientId: Value(projetData.clientId),
+        devisEtatId: Value(projetData.devisEtatId),
+      );
+    }
     return await into(projet).insert(projetCompanion);
   }
 }

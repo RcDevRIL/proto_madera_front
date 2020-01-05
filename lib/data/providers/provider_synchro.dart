@@ -8,6 +8,7 @@ import 'package:moor_flutter/moor_flutter.dart';
 import 'package:proto_madera_front/data/constants/url.dart';
 import 'package:proto_madera_front/data/database/daos.dart';
 import 'package:proto_madera_front/data/database/madera_database.dart';
+import 'package:proto_madera_front/data/models/projet_with_all_infos.dart';
 
 ///
 /// Provider to handle backend synchronization state
@@ -195,7 +196,6 @@ class ProviderSynchro with ChangeNotifier {
   ///Paramètre(s):
   /// String [responseBody] le "body" de la réponse suite à la requête HTTP
   Future _insertUserData(responseBody) async {
-    //TODO mettre String pour la variable?? j'étais pas sur donc pour l'instant: dynamic
     var data = jsonDecode(responseBody);
     List<ClientData> listClient =
         (data['client'] as List).map((f) => ClientData.fromJson(f)).toList();
@@ -316,7 +316,6 @@ class ProviderSynchro with ChangeNotifier {
             .map((p) => ProduitModuleData.fromJson(p))
             .toList();
 
-    //TODO Optimisation: faire un comparatif des données et update seulement le nécessaire
     //Insertion des données en base
     await composantDao.insertAll(listComposant);
     await gammeDao.insertAll(listGamme);
@@ -324,7 +323,37 @@ class ProviderSynchro with ChangeNotifier {
     await moduleComposantDao.insertAll(listModuleComposant);
     await devisEtatDao.insertAll(listDevisEtat);
     await composantGroupeDao.insertAll(listComposantGroupe);
-    await produitModuleDao.insertAll(listProduitModuleModele);
+    await produitModuleDao.deleteAndInsertAll(listProduitModuleModele);
     await produitDao.insertProduitModele(listProduitModele);
+  }
+
+  //TODO effectuer la synchro avant ! et si serveur pas en ligne et ben pas delete !!!
+  //TODO faire une methode pour preparer la base à une synchro ! (delete OU UPDATE,...) IMPORTANT
+
+  Future createProjectOnServer(ProjetWithAllInfos projetWithAllInfos) async {
+    log.i("Création du projet sur le serveur...");
+    UtilisateurData utilisateurData;
+    if (http.runtimeType != MockClient)
+      utilisateurData = await utilisateurDao.getUser();
+    else
+      utilisateurData = UtilisateurData(
+          utilisateurId: 4, login: 'testuser', token: 'fesfk-feksnf-fesf');
+    var response;
+    var body = jsonEncode(projetWithAllInfos.toJson());
+    try {
+      response = await http.post(
+        MaderaUrl.urlCreateProject,
+        headers: {
+          'Authorization': 'Bearer ${utilisateurData.token}',
+          'Content-Type': 'application/json'
+        },
+        body: body,
+      );
+    } catch (e) {
+      log.e('Error when trying to call ${MaderaUrl.urlCreateProject}:\n' +
+          e.toString());
+      return false;
+    }
+    print(response);
   }
 }

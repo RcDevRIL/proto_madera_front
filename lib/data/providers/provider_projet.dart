@@ -1,6 +1,10 @@
+import 'dart:core';
+
 import 'package:flutter/material.dart';
 import 'package:logger/logger.dart';
 import 'package:proto_madera_front/data/database/madera_database.dart';
+import 'package:proto_madera_front/data/models/produit_with_module.dart';
+import 'package:proto_madera_front/data/models/projet_with_all_infos.dart';
 import 'package:proto_madera_front/data/models/quote_creation_model.dart';
 import 'package:proto_madera_front/data/models/quote_model.dart';
 
@@ -11,6 +15,8 @@ import 'package:proto_madera_front/data/models/quote_model.dart';
 ///
 /// @version 0.4-RELEASE
 class ProviderProjet with ChangeNotifier {
+  String produitNom;
+  String projetNom;
   QuoteCreationModel _quoteCreationValues;
   QuoteModel _quoteValues;
   int _editModuleIndex;
@@ -18,13 +24,27 @@ class ProviderProjet with ChangeNotifier {
   List<QuoteModel> productList;
   bool canInit = true;
 
+  ProjetWithAllInfos projetWithAllInfos;
+  ProjetData projet;
+  List<ProduitWithModule> listProduitWithModule;
+  ClientData client;
+
+  //Produits
+  ProduitData produitCourant;
+
+  static DateTime dateProjet = DateTime.now();
+
   List<ProduitModuleData> listProduitModuleProjet;
+  ModuleData moduleChoice;
+  ProduitWithModule produitWithModule;
+  ProduitModuleData moduleAdd;
 
   final Logger log = Logger();
-  final String _now =
-      DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day)
-          .toString()
-          .substring(0, 10);
+  String dateNow = dateProjet.year.toString() +
+      '/' +
+      dateProjet.month.toString() +
+      '/' +
+      dateProjet.day.toString();
 
   void initAndHold() {
     //TODO Appeler cette méthode à chaque fois qu'on fait une redirection vers QuoteCreation
@@ -39,32 +59,16 @@ class ProviderProjet with ChangeNotifier {
       log.i('Saving project with following values...');
       log.i(_quoteCreationValues);
       productList.forEach((quoteModel) => log.i(quoteModel));
-      //TODO save en bdd?, a faire coté ui je pense pour pouvoir utiliser provider.of(context)
       canInit = true;
     } else
       canInit = true;
   }
 
   void init() {
-    //TODO Rajouter un paramètre: le clientId, puisqu'a priori si on n'initialise le stockage du formulaire, on sait pour quel client on le fait
     listProduitModuleProjet = new List();
-    var clientId = 123;
+    listProduitWithModule = new List();
     log.i('init called');
     canInit = false;
-    // Initialisation des champs à null en respectant les conditions des constructeurs
-    _quoteCreationValues = QuoteCreationModel(
-      client: {
-        'clientId': '$clientId',
-        'name': '',
-        'adresse': '',
-        'tel': '',
-        'mail': ''
-      },
-      dateDeCreation: _now,
-      descriptionProjet: '',
-      refProjet: _now +
-          '_MMP$clientId', //à voir comment on construit nos ref de projet? j'ai mis yyyyMMdd_MMP123, MMP pour 'MaisonModulaireProjet', 123 pour l'ID client
-    );
     productList = [];
     initProductCreationModel();
   }
@@ -81,6 +85,7 @@ class ProviderProjet with ChangeNotifier {
   }
 
   void initProductCreationModel() {
+    //TODO modifier ici
     _quoteValues = QuoteModel(
         gamme: null,
         nomDeProduit: null,
@@ -136,49 +141,6 @@ class ProviderProjet with ChangeNotifier {
 
   String get description => _quoteCreationValues.descriptionProjet;
 
-  set client(Map<String, String> newClient) {
-    _quoteCreationValues.client = newClient;
-  }
-
-  Map<String, String> get client => _quoteCreationValues.client;
-
-  set clientName(String clientName) {
-    _quoteCreationValues.client
-        .update('name', (old) => clientName, ifAbsent: () => clientName);
-    notifyListeners();
-  }
-
-  String get clientName => _quoteCreationValues.client['name'];
-
-  set clientAdress(String clientAdress) {
-    _quoteCreationValues.client
-        .update('adresse', (old) => clientAdress, ifAbsent: () => clientAdress);
-    notifyListeners();
-  }
-
-  String get clientAdress => _quoteCreationValues.client['adresse'];
-
-  set clientTel(String clientTel) {
-    _quoteCreationValues.client
-        .update('tel', (old) => clientTel, ifAbsent: () => clientTel);
-    notifyListeners();
-  }
-
-  String get clientTel => _quoteCreationValues.client['tel'];
-
-  set clientMail(String clientMail) {
-    _quoteCreationValues.client
-        .update('mail', (old) => clientMail, ifAbsent: () => clientMail);
-    notifyListeners();
-  }
-
-  String get clientMail => _quoteCreationValues.client['mail'];
-
-  void setNomDeProduit(String nomDeProduit) {
-    _quoteValues.nomDeProduit = nomDeProduit;
-    notifyListeners();
-  }
-
   String get nomDeProduit => _quoteValues.nomDeProduit;
 
   void setGamme(String nomGamme) {
@@ -195,10 +157,35 @@ class ProviderProjet with ChangeNotifier {
 
   String get model => _quoteValues.modeleChoisi;
 
-  void updateModuleInfos(Map<String, dynamic> moduleSpec) {
-    _quoteValues.listeModule.remove(
-        _quoteValues.listeModule.entries.elementAt(editModuleIndex).key);
-    _quoteValues.listeModule.addAll({'${moduleSpec['name']}': moduleSpec});
+  void updateModuleInfos(
+      String nomModule, String angle, String longueur1, String longueur2) {
+    if (moduleChoice != null) {
+      Map<String, Object> sections;
+      if (angle == 'Entrant' || angle == 'Sortant') {
+        sections = {
+          'sections': [
+            {'longueur': int.parse(longueur1)},
+            {'longueur': int.parse(longueur2)}
+          ]
+        };
+      } else {
+        sections = {
+          'sections': [
+            {'longueur': int.parse(longueur1)}
+          ]
+        };
+      }
+      //La valeur -1 signifie qu'il n'est pas enregistrée en bdd
+      moduleAdd = new ProduitModuleData(
+        projetModuleId: -1,
+        produitId: -1,
+        produitModuleNom: nomModule,
+        moduleId: moduleChoice.moduleId,
+        produitModuleAngle: angle,
+        produitModuleSectionLongueur: sections.toString(),
+      );
+      print(moduleAdd);
+    }
   }
 
   Map<String, dynamic> get productModules => _quoteValues.listeModule;
@@ -216,14 +203,10 @@ class ProviderProjet with ChangeNotifier {
   bool isFilled(String pageName) {
     switch (pageName) {
       case 'QuoteCreation':
-        return (clientAdress.isNotEmpty &&
-            clientName.isNotEmpty &&
-            clientTel.isNotEmpty &&
-            clientMail.isNotEmpty &&
-            description.isNotEmpty);
+        return (client != null && projetNom != null);
         break;
       case 'ProductCreation':
-        return (nomDeProduit != null);
+        return (produitNom != null);
         break;
       case 'AddModule':
         return (productModules.values
@@ -245,7 +228,9 @@ class ProviderProjet with ChangeNotifier {
   void initListProduitModuleProjet(List<ProduitModuleData> listProduitModule) {
     if (listProduitModule != null) {
       listProduitModule.forEach(
-        (produitModule) => {listProduitModuleProjet.add(produitModule)},
+        (produitModule) => {
+          listProduitModuleProjet.add(produitModule),
+        },
       );
       notifyListeners();
     }
@@ -256,11 +241,59 @@ class ProviderProjet with ChangeNotifier {
       listProduitModule.forEach(
           (produitModule) => listProduitModuleProjet.remove(produitModule));
     }
+    notifyListeners();
   }
 
   void setFinitions(String choice) {
     productModules.values
         .elementAt(editModuleIndex)
         .addAll({'finitions': choice});
+  }
+
+  void addModuleToListProduitModuleProjet() {
+    listProduitModuleProjet.add(moduleAdd);
+    notifyListeners();
+  }
+
+  void initClient(
+      String nom, String prenom, String mailClient, String telClient) {
+    client = new ClientData(
+        id: -1, nom: nom, prenom: prenom, mail: mailClient, numTel: telClient);
+  }
+
+  void initClientWithClient(ClientData client) {
+    this.client = client;
+    notifyListeners();
+  }
+
+  void initProjet() {
+    //TODO ajouter un champ description en bdd ?
+    projet = new ProjetData(
+      projetId: -1,
+      nomProjet: projetNom,
+      refProjet: projetNom + '-' + dateNow,
+      dateProjet: dateProjet,
+      devisEtatId: 2,
+      clientId: client.id,
+    );
+    notifyListeners();
+  }
+
+  void initProduitWithModule(String produitNom, int gammesId) {
+    produitWithModule = ProduitWithModule(
+        ProduitData(
+            produitId: -1,
+            produitNom: produitNom,
+            gammesId: gammesId,
+            prixProduit: 0.0,
+            modele: false),
+        listProduitModuleProjet);
+    listProduitWithModule.add(produitWithModule);
+    notifyListeners();
+  }
+
+  void initProjetWithAllInfos() {
+    projetWithAllInfos = ProjetWithAllInfos(projet, listProduitWithModule);
+    notifyListeners();
   }
 }

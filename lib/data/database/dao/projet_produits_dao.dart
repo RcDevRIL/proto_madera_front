@@ -16,7 +16,10 @@ class ProjetProduitsDao extends DatabaseAccessor<MaderaDatabase>
 
   Future createProjetProduit(int projetId, int produitId) async {
     await into(projetProduits).insert(
-      ProjetProduit(projetId: projetId, produitId: produitId),
+      ProjetProduitsCompanion(
+        projetId: Value(projetId),
+        produitId: Value(produitId),
+      ),
     );
   }
 }

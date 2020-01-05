@@ -28,17 +28,32 @@ class _ProductCreationState extends State<ProductCreation> {
   String dropdownGammeValue;
   String dropdownModeleValue;
   bool canValidateForm;
+  int gammesId;
+
+  TextEditingController _produitNomEditingController;
 
   //added to prepare for scaling
   @override
   void initState() {
+    _produitNomEditingController = TextEditingController();
+    gammesId = 0;
     super.initState();
   }
 
   //added to prepare for scaling
   @override
   void dispose() {
+    _produitNomEditingController.dispose();
     super.dispose();
+  }
+
+  @override
+  void didChangeDependencies() {
+    if (Provider.of<ProviderProjet>(context).produitNom != null) {
+      _produitNomEditingController.text =
+          Provider.of<ProviderProjet>(context).produitNom;
+    }
+    super.didChangeDependencies();
   }
 
   @override
@@ -69,11 +84,9 @@ class _ProductCreationState extends State<ProductCreation> {
                       maxLines: 1,
                       keyboardType: TextInputType.text,
                       enabled: true,
-                      controller: TextEditingController(
-                        text: providerProjet.nomDeProduit,
-                      ),
-                      onChanged: (text) {
-                        providerProjet.setNomDeProduit(text);
+                      controller: _produitNomEditingController,
+                      onChanged: (String newValue) {
+                        providerProjet.produitNom = newValue;
                       },
                       decoration: InputDecoration(
                         hintText: 'Nom du produit...',
@@ -135,12 +148,15 @@ class _ProductCreationState extends State<ProductCreation> {
                           (gamme) async => {
                             if (gamme.libelleGammes == newValue)
                               {
-                                providerProjet.setModel(null),
+                                providerProjet.setModel(dropdownModeleValue),
                                 //Enregistre la nouvelle gamme
                                 providerProjet.setGamme(newValue),
+                                gammesId = gamme.gammeId,
                                 //Initialise la liste des modeles avec la gamme
                                 await providerBdd
                                     .initListProduitModele(gamme.gammeId),
+                                providerProjet.resetListProduitModuleProjet(
+                                    providerBdd.listProduitModule),
                               }
                           },
                         );
@@ -183,15 +199,17 @@ class _ProductCreationState extends State<ProductCreation> {
                                 (produit) async => {
                                   if (produit.produitNom == newValue)
                                     {
+                                      //TODO probleme lors de l'init de la valeur modele ! (ex : on revient de l'ajout de module ca marche pas)
                                       providerProjet
                                           .setModel(dropdownModeleValue),
-                                      providerProjet.resetListProduitModuleProjet(providerBdd.listProduitModule),
                                       //Charge les produitModules
                                       await providerBdd.initListProduitModule(
                                         produit.produitId,
                                       ),
-                                      providerProjet.initListProduitModuleProjet(
-                                          providerBdd.listProduitModule)
+                                      providerProjet
+                                          .initListProduitModuleProjet(
+                                        providerBdd.listProduitModule,
+                                      ),
                                     }
                                 },
                               );
@@ -199,7 +217,6 @@ class _ProductCreationState extends State<ProductCreation> {
                           : null,
                     ),
                   ),
-                  //TODO ya une erreur, quelque part..
                   SizedBox(height: 20.0),
                   MaderaCard(
                     cardHeight: MediaQuery.of(context).size.height / 3.2,
@@ -255,7 +272,6 @@ class _ProductCreationState extends State<ProductCreation> {
                                         'nature': '',
                                       },
                                     );
-                                    //TODO passer le providerProjet en param
                                     Provider.of<MaderaNav>(context)
                                         .redirectToPage(
                                             context, AddModule(), null);
@@ -309,6 +325,8 @@ class _ProductCreationState extends State<ProductCreation> {
                           providerProjet.logQ();
                           providerProjet.productList[providerProjet
                               .editProductIndex] = providerProjet.quoteValues;
+                          providerProjet.initProduitWithModule(
+                              _produitNomEditingController.text, gammesId);
                           log.d('Done.');
                           log.d('Quote Overview');
                           Provider.of<MaderaNav>(context)

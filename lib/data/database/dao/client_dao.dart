@@ -12,4 +12,8 @@ class ClientDao extends DatabaseAccessor<MaderaDatabase> with _$ClientDaoMixin {
     await delete(client).go();
     await db.batch((b) => b.insertAll(client, listClient));
   }
+
+  Future<List<ClientData>> getAllClient() async {
+    return await select(client).get();
+  }
 }
