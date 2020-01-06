@@ -275,6 +275,7 @@ class ProviderProjet with ChangeNotifier {
       dateProjet: dateProjet,
       devisEtatId: 2,
       clientId: client.id,
+      prixTotal: 0.0,
     );
     notifyListeners();
   }

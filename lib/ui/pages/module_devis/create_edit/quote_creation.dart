@@ -60,7 +60,8 @@ class _QuoteCreationState extends State<QuoteCreation> {
     /* J'ai du rendre inéditables les fields pour le client car comportement bizarre remplissage que par le dialogue
     */
     if (Provider.of<ProviderProjet>(context).client != null) {
-      _projetNomTextEditingController.text = Provider.of<ProviderProjet>(context).projetNom;
+      _projetNomTextEditingController.text =
+          Provider.of<ProviderProjet>(context).projetNom;
       _clientNameTextEditingController.text =
           Provider.of<ProviderProjet>(context).client.nom;
       //TODO gérer les adresses
@@ -99,7 +100,7 @@ class _QuoteCreationState extends State<QuoteCreation> {
                 shrinkWrap: true,
                 children: <Widget>[
                   Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    mainAxisAlignment: MainAxisAlignment.start,
                     children: <Widget>[
                       MaderaCard(
                         cardWidth: cTheme.Dimens.cardSizeXSmall,
@@ -122,14 +123,26 @@ class _QuoteCreationState extends State<QuoteCreation> {
                         ),
                       ),
                       MaderaCard(
-                        cardWidth: 250.0,
+                        cardWidth:
+                            MediaQuery.of(context).size.width / 2.4 - 168.0,
                         cardHeight: cTheme.Dimens.cardHeight,
-                        child: Center(
-                          child: TextField(
-                            controller: _projetNomTextEditingController,
-                            onChanged: (String newValue) {
-                              providerProjet.projetNom = newValue;
-                            },
+                        child: TextField(
+                          controller: _projetNomTextEditingController,
+                          onChanged: (String newValue) {
+                            providerProjet.projetNom = newValue;
+                          },
+                          decoration: InputDecoration(
+                            border: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                color: Colors.black,
+                                width: 2.0,
+                                style: BorderStyle.solid,
+                              ),
+                              borderRadius: BorderRadius.only(
+                                bottomLeft: Radius.circular(20.0),
+                                bottomRight: Radius.circular(20.0),
+                              ),
+                            ),
                           ),
                         ),
                         header: LabelledIcon(
@@ -139,6 +152,29 @@ class _QuoteCreationState extends State<QuoteCreation> {
                           ),
                           text: Text(
                             'Nom du Projet',
+                            style: cTheme.MaderaTextStyles.appBarTitle.copyWith(
+                              fontSize: 15.0,
+                              fontWeight: FontWeight.w900,
+                            ),
+                          ),
+                        ),
+                      ),
+                      SizedBox(
+                        width: 150.0,
+                      ),
+                      MaderaCard(
+                        cardWidth: 250.0,
+                        cardHeight: cTheme.Dimens.cardHeight,
+                        child: Center(
+                          child: Text(providerProjet.dateNow + '_MMP123'),
+                        ),
+                        header: LabelledIcon(
+                          icon: Icon(
+                            Icons.info,
+                            color: cTheme.MaderaColors.textHeaderColor,
+                          ),
+                          text: Text(
+                            'ID. Projet',
                             style: cTheme.MaderaTextStyles.appBarTitle.copyWith(
                               fontSize: 15.0,
                               fontWeight: FontWeight.w900,
