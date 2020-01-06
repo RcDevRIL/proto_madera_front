@@ -1,4 +1,5 @@
 import 'dart:core';
+import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:logger/logger.dart';
@@ -268,10 +269,12 @@ class ProviderProjet with ChangeNotifier {
 
   void initProjet() {
     //TODO ajouter un champ description en bdd ?
+    var r = Random();
+    int test = r.nextInt(539985);
     projet = new ProjetData(
       projetId: -1,
       nomProjet: projetNom,
-      refProjet: projetNom + '-' + dateNow,
+      refProjet: dateNow + '_' + client.id.toString() + '_' + test.toString(),
       dateProjet: dateProjet,
       devisEtatId: 2,
       clientId: client.id,

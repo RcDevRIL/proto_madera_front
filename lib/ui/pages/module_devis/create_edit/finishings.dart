@@ -200,8 +200,8 @@ class _FinishingsState extends State<Finishings> {
                   tooltip: "Valider finition",
                   onPressed: () {
                     log.d("Adding Finishings...");
+                    //TODO Changer les composants de finitions du module
                     providerProjet.addModuleToListProduitModuleProjet();
-                    //Provider.of<ProviderProjet>(context).setFinitions(choice);
                     Provider.of<MaderaNav>(context)
                         .redirectToPage(context, ProductCreation(), null);
                   },

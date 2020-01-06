@@ -65,7 +65,8 @@ class _QuoteCreationState extends State<QuoteCreation> {
       _clientNameTextEditingController.text =
           Provider.of<ProviderProjet>(context).client.nom;
       //TODO gérer les adresses
-      _clientAdressTextEditingController.text = 'Cest une adresse';
+      _clientAdressTextEditingController.text =
+          '4 rue Jean Jaurès, 21000 Dijon';
       _clientTelTextEditingController.text =
           Provider.of<ProviderProjet>(context).client.mail;
       _clientMailTextEditingController.text =
@@ -166,7 +167,10 @@ class _QuoteCreationState extends State<QuoteCreation> {
                         cardWidth: 250.0,
                         cardHeight: cTheme.Dimens.cardHeight,
                         child: Center(
-                          child: Text(providerProjet.dateNow + '_MMP123'),
+                          child: providerProjet.client != null
+                              ? Text(
+                                  '${providerProjet.dateNow}_${providerProjet.client.id}')
+                              : Text('${providerProjet.dateNow}'),
                         ),
                         header: LabelledIcon(
                           icon: Icon(
@@ -222,8 +226,6 @@ class _QuoteCreationState extends State<QuoteCreation> {
                             ),
                             TextField(
                               maxLines: 1,
-                              onTap: () =>
-                                  _formScrollController.position.moveTo(110.0),
                               controller: _clientNameTextEditingController,
                               enabled: false,
                               keyboardType: TextInputType.text,
@@ -252,8 +254,6 @@ class _QuoteCreationState extends State<QuoteCreation> {
                             ),
                             TextField(
                               maxLines: 1,
-                              onTap: () =>
-                                  _formScrollController.position.moveTo(110.0),
                               controller: _clientAdressTextEditingController,
                               keyboardType: TextInputType.text,
                               enabled: false,
@@ -301,8 +301,6 @@ class _QuoteCreationState extends State<QuoteCreation> {
                             ),
                             TextField(
                               maxLines: 1,
-                              onTap: () =>
-                                  _formScrollController.position.moveTo(110.0),
                               controller: _clientTelTextEditingController,
                               keyboardType: TextInputType.phone,
                               enabled: false,
@@ -331,8 +329,6 @@ class _QuoteCreationState extends State<QuoteCreation> {
                             ),
                             TextField(
                               maxLines: 1,
-                              onTap: () =>
-                                  _formScrollController.position.moveTo(110.0),
                               controller: _clientMailTextEditingController,
                               keyboardType: TextInputType.emailAddress,
                               enabled: false,

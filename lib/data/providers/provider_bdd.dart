@@ -31,7 +31,6 @@ class ProviderBdd with ChangeNotifier {
   ComposantGroupeDao composantGroupeDao;
   ProjetProduitsDao projetProduitsDao;
   List<DatabaseAccessor<MaderaDatabase>> daosSynchroList;
-  List<DatabaseAccessor<MaderaDatabase>> daosProjetList;
 
   Future<List<ProjetWithClient>> listProjetWithClient;
 
@@ -77,12 +76,6 @@ class ProviderBdd with ChangeNotifier {
       produitModuleDao,
       composantGroupeDao,
       projetProduitsDao
-    ];
-    daosProjetList = <DatabaseAccessor<MaderaDatabase>>[
-      gammeDao,
-      moduleDao,
-      produitModuleDao,
-      produitDao
     ];
   }
 

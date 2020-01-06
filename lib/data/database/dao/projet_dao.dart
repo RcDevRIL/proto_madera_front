@@ -46,6 +46,7 @@ class ProjetDao extends DatabaseAccessor<MaderaDatabase> with _$ProjetDaoMixin {
         ),
         clientId: Value(projetData.clientId),
         devisEtatId: Value(projetData.devisEtatId),
+        prixTotal: Value(projetData.prixTotal),
       );
     } else {
       projetCompanion = ProjetCompanion(
@@ -56,6 +57,7 @@ class ProjetDao extends DatabaseAccessor<MaderaDatabase> with _$ProjetDaoMixin {
         ),
         clientId: Value(projetData.clientId),
         devisEtatId: Value(projetData.devisEtatId),
+        prixTotal: Value(projetData.prixTotal),
       );
     }
     return await into(projet).insert(projetCompanion);
