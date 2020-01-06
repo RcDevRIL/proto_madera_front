@@ -14,4 +14,5 @@ class MaderaUrl {
   static const String urlDeconnection = baseUrl + '/deconnection';
   static const String urlSynchroRef = baseUrl + '/referentiel';
   static const String urlSynchroData = baseUrl + '/synchro';
+  static const String urlCreateProject = baseUrl + '/project';
 }
