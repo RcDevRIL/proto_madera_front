@@ -12,11 +12,14 @@ class ProjetDao extends DatabaseAccessor<MaderaDatabase> with _$ProjetDaoMixin {
   String get selectProjetWithClient =>
       "SELECT * FROM projet JOIN client ON client.id = projet.client_id";
 
+  String get queryProjetIfIsProjetSynchro =>
+      "SELECT * FROM projet WHERE projet.is_synchro = 1";
+
   Future insertAll(List<ProjetData> listProjet) async {
-    await delete(projet).go();
     await db.batch((b) => b.insertAll(projet, listProjet));
   }
 
+  ///Récupère toute la liste des projetWithClient
   Future<List<ProjetWithClient>> getAll() async {
     return await customSelectQuery(
       selectProjetWithClient,
@@ -59,5 +62,24 @@ class ProjetDao extends DatabaseAccessor<MaderaDatabase> with _$ProjetDaoMixin {
       );
     }
     return await into(projet).insert(projetCompanion);
+  }
+
+  ///Supprime les occurences de projet
+  Future<int> deleteAll() async {
+    //Récupère la liste des projet qui doivent être supprimés (en fonction de is_synchro de projet)
+    List<int> listProjetId = await customSelectQuery(
+            queryProjetIfIsProjetSynchro,
+            readsFrom: {projet}).get().then(
+          (rows) => rows
+              .map<int>(
+                (row) => row.readInt("projet_id"),
+              )
+              .toList(),
+        );
+    return await (delete(projet)
+          ..where(
+            (pro) => pro.projetId.isIn(listProjetId),
+          ))
+        .go();
   }
 }

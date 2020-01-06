@@ -10,7 +10,10 @@ class ComposantGroupeDao extends DatabaseAccessor<MaderaDatabase>
   ComposantGroupeDao(MaderaDatabase db) : super(db);
 
   Future insertAll(List<ComposantGroupeData> listComposantGroupe) async {
-    await delete(composantGroupe).go();
     await db.batch((b) => b.insertAll(composantGroupe, listComposantGroupe));
+  }
+
+  Future<int> deleteAll() async {
+    return await delete(composantGroupe).go();
   }
 }

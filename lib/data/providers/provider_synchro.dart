@@ -115,34 +115,39 @@ class ProviderSynchro with ChangeNotifier {
   Future<void> synchro() async {
     // r d
     // 1 ?
-    if (_refSynced) {
-      // 1 1
-      if (_dataSynced)
-        log.i('Synchronisation globale déjà effectuée aujourd' 'hui!');
-      // 1 0
+    bool isDeletedOk = await deleteForSynchro();
+    if (isDeletedOk) {
+      if (_refSynced) {
+        // 1 1
+        if (_dataSynced)
+          log.i('Synchronisation globale déjà effectuée aujourd' 'hui!');
+        // 1 0
+        else {
+          log.i(
+              'Synchronisation des référentiels déjà effectuée le ${refsLastSyncDate.toString().substring(0, 10)}!');
+          _dataSynced = await synchroData();
+          log.i('Synchronisation globale effectuée');
+        }
+      }
+      // 0 ?
       else {
-        log.i(
-            'Synchronisation des référentiels déjà effectuée le ${refsLastSyncDate.toString().substring(0, 10)}!');
-        _dataSynced = await synchroData();
-        log.i('Synchronisation globale effectuée');
+        // 0 1
+        if (_dataSynced) {
+          log.i(
+              'Synchronisation des données déjà effectuée le ${dataLastSyncDate.toString().substring(0, 10)}!');
+          _refSynced = await synchroReferentiel();
+          log.i('Synchronisation globale effectuée');
+        }
+        // 0 0
+        else {
+          log.i('Synchronisation lancée...');
+          _refSynced = await synchroReferentiel();
+          _dataSynced = await synchroData();
+          log.i('Synchronisation globale effectuée');
+        }
       }
-    }
-    // 0 ?
-    else {
-      // 0 1
-      if (_dataSynced) {
-        log.i(
-            'Synchronisation des données déjà effectuée le ${dataLastSyncDate.toString().substring(0, 10)}!');
-        _refSynced = await synchroReferentiel();
-        log.i('Synchronisation globale effectuée');
-      }
-      // 0 0
-      else {
-        log.i('Synchronisation lancée...');
-        _refSynced = await synchroReferentiel();
-        _dataSynced = await synchroData();
-        log.i('Synchronisation globale effectuée');
-      }
+    } else {
+      log.e('Erreur lors de la suppression des données');
     }
   }
 
@@ -231,7 +236,7 @@ class ProviderSynchro with ChangeNotifier {
     await clientAdresseDao.insertAll(listClientAdresse);
     await adresseDao.insertAll(listAdresse);
     await projetDao.insertAll(listProjet);
-    await produitDao.insertProduitClient(listProduit);
+    await produitDao.insertAll(listProduit);
     await produitModuleDao.insertAll(listProduitModule);
     await projetProduitsDao.insertAll(listProjetProduit);
   }
@@ -323,13 +328,54 @@ class ProviderSynchro with ChangeNotifier {
     await moduleComposantDao.insertAll(listModuleComposant);
     await devisEtatDao.insertAll(listDevisEtat);
     await composantGroupeDao.insertAll(listComposantGroupe);
-    await produitModuleDao.deleteAndInsertAll(listProduitModuleModele);
-    await produitDao.insertProduitModele(listProduitModele);
+    await produitModuleDao.insertAll(listProduitModuleModele);
+    await produitDao.insertAll(listProduitModele);
   }
 
-  //TODO effectuer la synchro avant ! et si serveur pas en ligne et ben pas delete !!!
-  //TODO faire une methode pour preparer la base à une synchro ! (delete OU UPDATE,...) IMPORTANT
+  //TODO regardez si projet is synchro
 
+  ///Méthode qui va purger la base de données sans effacer les projets non synchronisés
+  Future<bool> deleteForSynchro() async {
+    int linesDeleted = 0;
+    linesDeleted = await composantDao.deleteAll();
+    log.i("Table composant : " + linesDeleted.toString() + " lines deleted");
+    linesDeleted = await gammeDao.deleteAll();
+    log.i("Table gamme : " + linesDeleted.toString() + " lines deleted");
+    linesDeleted = await moduleDao.deleteAll();
+    log.i("Table module : " + linesDeleted.toString() + " lines deleted");
+    linesDeleted = await moduleComposantDao.deleteAll();
+    log.i("Table moduleComposant : " +
+        linesDeleted.toString() +
+        " lines deleted");
+    linesDeleted = await devisEtatDao.deleteAll();
+    log.i("Table devisEtat : " + linesDeleted.toString() + " lines deleted");
+    linesDeleted = await composantGroupeDao.deleteAll();
+    log.i("Table composantGroupe : " +
+        linesDeleted.toString() +
+        " lines deleted");
+    linesDeleted = await clientDao.deleteAll();
+    log.i("Table client : " + linesDeleted.toString() + " lines deleted");
+    linesDeleted = await clientAdresseDao.deleteAll();
+    log.i(
+        "Table clientAdresse : " + linesDeleted.toString() + " lines deleted");
+    linesDeleted = await adresseDao.deleteAll();
+    log.i("Table adresse : " + linesDeleted.toString() + " lines deleted");
+    linesDeleted = await projetDao.deleteAll();
+    log.i("Table projetDao : " + linesDeleted.toString() + " lines deleted");
+    linesDeleted = await produitDao.deleteAll();
+    log.i("Table produitDao : " + linesDeleted.toString() + " lines deleted");
+    linesDeleted = await produitModuleDao.deleteAll();
+    log.i("Table produitModuleDao : " +
+        linesDeleted.toString() +
+        " lines deleted");
+    linesDeleted = await projetProduitsDao.deleteAll();
+    log.i("Table projetProduitsDao : " +
+        linesDeleted.toString() +
+        " lines deleted");
+    return linesDeleted != 0;
+  }
+
+  ///Appel serveur pour créer le projet
   Future createProjectOnServer(ProjetWithAllInfos projetWithAllInfos) async {
     log.i("Création du projet sur le serveur...");
     UtilisateurData utilisateurData;

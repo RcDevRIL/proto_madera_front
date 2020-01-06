@@ -8,10 +8,16 @@ part 'module_dao.g.dart';
 class ModuleDao extends DatabaseAccessor<MaderaDatabase> with _$ModuleDaoMixin {
   ModuleDao(MaderaDatabase db) : super(db);
 
-  String get queryNatureModule => "SELECT DISTINCT module.nature_module FROM module";
+  String get queryNatureModule =>
+      "SELECT DISTINCT module.nature_module FROM module";
+
+  String get querySelectModuleOfProjetSynchro => "SELECT * FROM module "
+      "JOIN produit_module ON produit_module.module_id = module.module_id "
+      "JOIN projet_produits ON projet_produits.produit_id = produit_module.produit_id "
+      "JOIN projet ON projet.projet_id = projet_produits.projet_id "
+      "WHERE projet.is_synchro = 1";
 
   Future insertAll(List<ModuleData> listModule) async {
-    await delete(module).go();
     await db.batch((b) => b.insertAll(module, listModule));
   }
 
@@ -29,10 +35,24 @@ class ModuleDao extends DatabaseAccessor<MaderaDatabase> with _$ModuleDaoMixin {
         return row.readString("nature_module");
       }).toList();
     });
-    /*return await select(module).get().then((rows) {
-      return rows.map<String>((row) {
-        return row.natureModule;
-      }).toList();
-    });*/
+  }
+
+  ///Supprime les occurences de module
+  Future<int> deleteAll() async {
+    //Récupère la liste des modules qui doivent être supprimés (en fonction de is_synchro de projet)
+    List<int> listModuleId = await customSelectQuery(
+            querySelectModuleOfProjetSynchro,
+            readsFrom: {module}).get().then(
+          (rows) => rows
+              .map<int>(
+                (row) => row.readInt("module_id"),
+              )
+              .toList(),
+        );
+    return await (delete(module)
+          ..where(
+            (module) => module.moduleId.isIn(listModuleId),
+          ))
+        .go();
   }
 }
