@@ -42,7 +42,7 @@ class _InitializationPageState extends State<InitializationPage> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
                 Image(
-                  image: AssetImage("assets/img/logo-madera.png"),
+                  image: AssetImage('assets/img/logo-madera.png'),
                 ),
                 MyLinearProgressIndicator(
                   backgroundColor: Colors.blueGrey,

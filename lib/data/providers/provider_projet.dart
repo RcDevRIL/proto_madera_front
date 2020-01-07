@@ -19,8 +19,8 @@ class ProviderProjet with ChangeNotifier {
   String _produitNom;
   String _projetNom;
   String _projetDesc;
-  GammeData _projetGamme;
-  ProduitData _projetModele;
+  GammeData _produitGamme;
+  ProduitData _produitModele;
   QuoteCreationModel _quoteCreationValues;
   QuoteModel _quoteValues;
   int _editModuleIndex;
@@ -77,26 +77,35 @@ class ProviderProjet with ChangeNotifier {
     listProduitProjet = new List();
     productList = [];
     client = null;
-    _projetGamme = null;
-    _projetModele = null;
+    _produitGamme = null;
+    _produitModele = null;
     _projetNom = '';
     _projetDesc = '';
     initProductCreationModel();
   }
 
   void deleteProductCreationModel(int productID) {
-    productList.removeAt(productID);
+    listProduitProjet.removeAt(productID);
     notifyListeners();
   }
 
-  void loadProductCreationModel(int index) {
-    _editProductIndex = index;
+  void loadProductCreationModel(int productIndex) {
+    _editModuleIndex = 0;
+    _editProductIndex = productIndex;
+    _produitModele = null;
+    _produitNom = listProduitProjet[_editProductIndex].produit.produitNom;
+    _listProduitModuleProjet =
+        listProduitProjet[_editProductIndex].listProduitModule;
     notifyListeners();
   }
 
   void initProductCreationModel() {
-    //TODO modifier ici
+    _editModuleIndex = 0;
+    _editProductIndex = 0;
+    _produitGamme = null;
+    _produitModele = null;
     _produitNom = '';
+    _listProduitModuleProjet = List();
     notifyListeners();
   }
 
@@ -157,19 +166,19 @@ class ProviderProjet with ChangeNotifier {
 
   String get produitNom => _produitNom;
 
-  void setGamme(GammeData gammeChoisie) {
-    _projetGamme = gammeChoisie;
+  set gamme(GammeData gammeChoisie) {
+    _produitGamme = gammeChoisie;
     notifyListeners();
   }
 
-  GammeData get gamme => _projetGamme;
+  GammeData get gamme => _produitGamme;
 
   void setModele(ProduitData modeleChoisi) {
-    _projetModele = modeleChoisi;
+    _produitModele = modeleChoisi;
     notifyListeners();
   }
 
-  ProduitData get modelProduit => _projetModele;
+  ProduitData get modelProduit => _produitModele;
 
   void setModel(String nomModel) {
     _quoteValues.modeleChoisi = nomModel;
@@ -270,7 +279,7 @@ class ProviderProjet with ChangeNotifier {
     if (listProduitModule != null && _listProduitModuleProjet != null) {
       listProduitModule.forEach(
           (produitModule) => _listProduitModuleProjet.remove(produitModule));
-      _projetModele = null;
+      _produitModele = null;
       notifyListeners();
     } else
       log.e('ERROR in resetListProduitModuleProjet()!');
@@ -318,7 +327,7 @@ class ProviderProjet with ChangeNotifier {
         ProduitData(
             produitId: -1,
             produitNom: produitNom,
-            gammesId: _projetGamme.gammeId,
+            gammesId: _produitGamme.gammeId,
             prixProduit: 0.0,
             modele: false),
         _listProduitModuleProjet);

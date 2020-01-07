@@ -37,11 +37,11 @@ class AppBarMadera extends StatelessWidget {
                     onPressed: () =>
                         mN.redirectToPage(context, HomePage(), null),
                     child: Image(
-                      image: AssetImage("assets/img/logo-madera.png"),
+                      image: AssetImage('assets/img/logo-madera.png'),
                     ),
                   )
                 : Image(
-                    image: AssetImage("assets/img/logo-madera.png"),
+                    image: AssetImage('assets/img/logo-madera.png'),
                   ),
           ],
         ),

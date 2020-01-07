@@ -46,7 +46,7 @@ class ProviderLogin with ChangeNotifier {
           )
           .timeout(Duration(seconds: timeOut));
     } catch (e) {
-      log.e("Error when trying to connect:\n" + e.toString());
+      log.e('Error when trying to connect:\n' + e.toString());
       this.status = HttpStatus.OFFLINE;
       return false;
     }
@@ -76,19 +76,27 @@ class ProviderLogin with ChangeNotifier {
   /// Méthode pour vérifier si le serveur est joignable, vérification à effectuer
   /// avant chaque méthode faisant des appels serveurs, sauf si le status est déjà offline
   Future<bool> ping() async {
+    var response;
     try {
-      var response =
+      response =
           await http.get(MaderaUrl.baseUrl).timeout(Duration(seconds: timeOut));
-      if (response.statusCode == 200) {
-        this.status = HttpStatus.ONLINE;
-        return true;
-      }
     } catch (e) {
-      log.e("Error when trying to ping:\n" + e.toString());
+      log.e('Error when trying to ping:\n' + e.toString());
       this.status = HttpStatus.OFFLINE;
       return false;
     }
-    return false;
+    if (response != null) {
+      if (response.statusCode == 200) {
+        this.status = HttpStatus.ONLINE;
+        return true;
+      } else {
+        this.status = HttpStatus.OFFLINE;
+        return false;
+      }
+    } else {
+      this.status = HttpStatus.OFFLINE;
+      return false;
+    }
   }
 
   Future<bool> logout() async {
@@ -112,7 +120,7 @@ class ProviderLogin with ChangeNotifier {
           )
           .timeout(Duration(seconds: timeOut));
     } catch (exception) {
-      log.e("Error when tryiing to deconnect:\n" + exception.toString());
+      log.e('Error when tryiing to deconnect:\n' + exception.toString());
     }
     if (response?.statusCode == 200) {
       //Supprime l'utilisateur (token et login) localement

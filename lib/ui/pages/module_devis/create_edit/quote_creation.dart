@@ -416,6 +416,7 @@ class _QuoteCreationState extends State<QuoteCreation> {
                       ? () {
                           log.d('Saving form...');
                           providerProjet.initProjet();
+                          providerProjet.initProductCreationModel();
                           providerProjet.logQC();
                           log.d('Done.');
                           Provider.of<MaderaNav>(context)

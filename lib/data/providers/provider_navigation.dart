@@ -27,7 +27,7 @@ class MaderaNav with ChangeNotifier {
   @override
   String toString() {
     //overwritten for convenience
-    return '"$_pageTitle", $_pageIndex';
+    return '\'$_pageTitle\', $_pageIndex';
   }
 
   @override
@@ -70,7 +70,7 @@ class MaderaNav with ChangeNotifier {
         break;
       case QuoteCreation:
         {
-          _pageTitle = "Outil de création de devis";
+          _pageTitle = 'Outil de création de devis';
           _pageIndex = 1;
           log.d(
               'Updating current navigation properties:                        \n' +
@@ -80,7 +80,7 @@ class MaderaNav with ChangeNotifier {
         break;
       case QuoteOverview:
         {
-          _pageTitle = "Suivi des devis enregistrés";
+          _pageTitle = 'Suivi des devis enregistrés';
           _pageIndex = 2;
           log.d(
               'Updating current navigation properties:                        \n' +
@@ -90,7 +90,7 @@ class MaderaNav with ChangeNotifier {
         break;
       case NotificationPage:
         {
-          _pageTitle = "Page des notifications";
+          _pageTitle = 'Page des notifications';
           _pageIndex = 3;
           log.d(
               'Updating current navigation properties:                        \n' +
@@ -100,7 +100,7 @@ class MaderaNav with ChangeNotifier {
         break;
       case SettingsPage:
         {
-          _pageTitle = "Paramètres";
+          _pageTitle = 'Paramètres';
           _pageIndex = 4;
           log.d(
               'Updating current navigation properties:                        \n' +
@@ -110,7 +110,7 @@ class MaderaNav with ChangeNotifier {
         break;
       case ProductCreation:
         {
-          _pageTitle = "Outil de création de devis";
+          _pageTitle = 'Outil de création de devis';
           _pageIndex = 1;
           log.d(
               'Updating current navigation properties:                        \n' +
@@ -120,7 +120,7 @@ class MaderaNav with ChangeNotifier {
         break;
       case AddModule:
         {
-          _pageTitle = "Outil de création de devis";
+          _pageTitle = 'Outil de création de devis';
           _pageIndex = 1;
           log.d(
               'Updating current navigation properties:                        \n' +
@@ -130,7 +130,7 @@ class MaderaNav with ChangeNotifier {
         break;
       case Finishings:
         {
-          _pageTitle = "Outil de création de devis";
+          _pageTitle = 'Outil de création de devis';
           _pageIndex = 1;
           log.d(
               'Updating current navigation properties:                        \n' +
@@ -140,7 +140,7 @@ class MaderaNav with ChangeNotifier {
         break;
       case ProductList:
         {
-          _pageTitle = "Outil de création de devis";
+          _pageTitle = 'Outil de création de devis';
           _pageIndex = 1;
           log.d(
               'Updating current navigation properties:                        \n' +
@@ -150,7 +150,7 @@ class MaderaNav with ChangeNotifier {
         break;
       case UserProfilePage:
         {
-          _pageTitle = "Profil";
+          _pageTitle = 'Profil';
           _pageIndex = 5;
           log.d(
               'Updating current navigation properties:                        \n' +
@@ -160,10 +160,10 @@ class MaderaNav with ChangeNotifier {
         break;
       default:
         {
-          log.e("MaderaNav.updateCurrent() ERROR:                        \n\tpage.runtimeType : " +
-              "$page                        \n" +
-              "Navigator properties reset to default.                        ");
-          _pageTitle = "default";
+          log.e('MaderaNav.updateCurrent() ERROR:                        \n\tpage.runtimeType : ' +
+              '$page                        \n' +
+              'Navigator properties reset to default.                        ');
+          _pageTitle = 'default';
           _pageIndex = -1;
         }
         break;

@@ -94,7 +94,7 @@ class _ProductCreationState extends State<ProductCreation> {
                         color: cTheme.MaderaColors.textHeaderColor,
                       ),
                       text: Text(
-                        "Nom du produit",
+                        'Nom du produit',
                         style: cTheme.MaderaTextStyles.appBarTitle.copyWith(
                           fontSize: 13.0,
                           fontWeight: FontWeight.w600,
@@ -138,7 +138,8 @@ class _ProductCreationState extends State<ProductCreation> {
                             if (gamme.libelleGammes == newValue)
                               {
                                 //Enregistre la nouvelle gamme
-                                providerProjet.setGamme(gamme),
+                                providerProjet.gamme =
+                                    gamme, //TODO par contre depuis quand c'est des ',' pour finir une ligne? :o
                                 //Initialise la liste des modeles avec la gamme
                                 await providerBdd
                                     .initListProduitModele(gamme.gammeId),
@@ -225,7 +226,7 @@ class _ProductCreationState extends State<ProductCreation> {
                                       ),
                                     ),
                                     onTap: () {
-                                      log.d("Modifying module...");
+                                      log.d('Modifying module...');
                                       providerProjet.editModuleIndex = i;
                                       Provider.of<MaderaNav>(context)
                                           .redirectToPage(
@@ -243,7 +244,7 @@ class _ProductCreationState extends State<ProductCreation> {
                           child: MaderaButton(
                             onPressed: providerProjet.produitModules != null
                                 ? () {
-                                    log.d("Adding Module for this quote");
+                                    log.d('Adding Module for this quote');
                                     providerProjet.editModuleIndex =
                                         providerProjet.produitModules
                                             .length; //on veut indexmax+1
@@ -254,7 +255,7 @@ class _ProductCreationState extends State<ProductCreation> {
                                 : null,
                             child: LabelledIcon(
                               icon: Icon(Icons.add),
-                              text: Text("Ajouter Module"),
+                              text: Text('Ajouter Module'),
                             ),
                           ),
                         ),
@@ -293,7 +294,7 @@ class _ProductCreationState extends State<ProductCreation> {
                       : Colors.grey,
                 ),
                 child: IconButton(
-                  tooltip: "Valider produit",
+                  tooltip: 'Valider produit',
                   onPressed: providerProjet.isFilled('ProductCreation')
                       ? () {
                           log.d('Saving form...');
@@ -322,7 +323,7 @@ class _ProductCreationState extends State<ProductCreation> {
                         color: cTheme.MaderaColors.maderaLightGreen, width: 2),
                     color: cTheme.MaderaColors.maderaBlueGreen),
                 child: IconButton(
-                  tooltip: "Supprimer produit",
+                  tooltip: 'Supprimer produit',
                   onPressed: () {},
                   icon: Icon(
                     Icons.delete,

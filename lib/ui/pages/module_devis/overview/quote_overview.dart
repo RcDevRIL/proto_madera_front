@@ -23,7 +23,7 @@ class QuoteOverview extends StatefulWidget {
 
 class _QuoteOverviewState extends State<QuoteOverview> {
   ///
-  /// Prevents the use of the "back" button
+  /// Prevents the use of the 'back' button
   ///
   Future<bool> _onWillPopScope() async {
     return false;

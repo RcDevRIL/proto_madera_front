@@ -206,7 +206,7 @@ class _AddModuleState extends State<AddModule> {
                                   color: cTheme.MaderaColors.textHeaderColor,
                                 ),
                                 text: Text(
-                                  "Nom du module",
+                                  'Nom du module',
                                   style: cTheme.MaderaTextStyles.appBarTitle
                                       .copyWith(
                                     fontSize: 13.0,
@@ -230,7 +230,7 @@ class _AddModuleState extends State<AddModule> {
                           cardWidth: 280.0,
                           header: LabelledIcon(
                             icon: Icon(Icons.signal_cellular_null),
-                            text: Text("Section (en centimètres)"),
+                            text: Text('Section (en centimètres)'),
                           ),
                           child: TextField(
                             maxLines: 1,
@@ -252,7 +252,7 @@ class _AddModuleState extends State<AddModule> {
                           cardWidth: 280.0,
                           header: LabelledIcon(
                             icon: Icon(Icons.signal_cellular_null),
-                            text: Text("Angle (Sortant ou Entrant)"),
+                            text: Text('Angle (Sortant ou Entrant)'),
                           ),
                           child: TextField(
                             onTap: () => _formScrollController.jumpTo(
@@ -276,7 +276,7 @@ class _AddModuleState extends State<AddModule> {
                           cardWidth: 280.0,
                           header: LabelledIcon(
                             icon: Icon(Icons.signal_cellular_null),
-                            text: Text("Section (en centimètres)"),
+                            text: Text('Section (en centimètres)'),
                           ),
                           child: TextField(
                             onTap: () => _formScrollController.jumpTo(
@@ -332,7 +332,7 @@ class _AddModuleState extends State<AddModule> {
                 child: IconButton(
                   onPressed: providerProjet.isFilled('AddModule')
                       ? () {
-                          log.d("Validating Module...");
+                          log.d('Validating Module...');
                           //TODO bloquer le champ de size2 si l'angle n'est pas renseigné !
                           providerProjet.updateModuleInfos(
                               _nameTextController.text,
@@ -365,10 +365,11 @@ class _AddModuleState extends State<AddModule> {
                 child: IconButton(
                   onPressed: providerProjet.isFilled('AddModule')
                       ? () {
-                          log.d("Canceling Module...");
+                          log.d('Canceling Module...');
+                          /* TODO Fix cet algorithme
                           providerProjet.produitModules.remove(providerProjet
                               .produitModules
-                              .elementAt(providerProjet.editModuleIndex));
+                              .elementAt(providerProjet.editModuleIndex)); */
                           Provider.of<MaderaNav>(context)
                               .redirectToPage(context, ProductCreation(), null);
                         }

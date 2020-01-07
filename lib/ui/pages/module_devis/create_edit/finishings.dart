@@ -30,7 +30,7 @@ class _FinishingsState extends State<Finishings> {
   @override
   void initState() {
     super.initState();
-    choice = "Finition 1";
+    choice = 'Finition 1';
   }
 
   @override
@@ -197,9 +197,9 @@ class _FinishingsState extends State<Finishings> {
                   color: cTheme.MaderaColors.maderaBlueGreen,
                 ),
                 child: IconButton(
-                  tooltip: "Valider finition",
+                  tooltip: 'Valider finition',
                   onPressed: () {
-                    log.d("Adding Finishings...");
+                    log.d('Adding Finishings...');
                     //TODO Changer les composants de finitions du module
                     providerProjet.addModuleToListProduitModuleProjet();
                     Provider.of<MaderaNav>(context)
@@ -219,9 +219,9 @@ class _FinishingsState extends State<Finishings> {
                         color: cTheme.MaderaColors.maderaLightGreen, width: 2),
                     color: cTheme.MaderaColors.maderaBlueGreen),
                 child: IconButton(
-                  tooltip: "Annuler",
+                  tooltip: 'Annuler',
                   onPressed: () {
-                    log.d("Canceling finishings, going back...");
+                    log.d('Canceling finishings, going back...');
                     Provider.of<MaderaNav>(context)
                         .redirectToPage(context, AddModule(), null);
                   },

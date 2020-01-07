@@ -93,7 +93,7 @@ class ProviderSynchro with ChangeNotifier {
           projetProduitsDao = dao;
           break;
         default:
-          log.e("ERROR, NO DAO ASSIGNED TO THIS VALUE: ${dao.runtimeType}");
+          log.e('ERROR, NO DAO ASSIGNED TO THIS VALUE: ${dao.runtimeType}');
       }
     }
   }
@@ -184,7 +184,7 @@ class ProviderSynchro with ChangeNotifier {
         log.i('Done.');
         return true;
       } else {
-        log.e("Erreur lors de la synchronisation des données utilisateur");
+        log.e('Erreur lors de la synchronisation des données utilisateur');
         return false;
       }
     }
@@ -194,7 +194,7 @@ class ProviderSynchro with ChangeNotifier {
   /// Méthode pour sauvegarder les données utilisateurs renvoyées par le backend
   ///
   ///Paramètre(s):
-  /// String [responseBody] le "body" de la réponse suite à la requête HTTP
+  /// String [responseBody] le 'body' de la réponse suite à la requête HTTP
   Future _insertUserData(responseBody) async {
     var data = jsonDecode(responseBody);
     List<ClientData> listClient =
@@ -271,7 +271,7 @@ class ProviderSynchro with ChangeNotifier {
         log.i('Done.');
         return true;
       } else {
-        log.e("Erreur lors de la synchronisation des référentiels");
+        log.e('Erreur lors de la synchronisation des référentiels');
         return false;
       }
     }
@@ -281,7 +281,7 @@ class ProviderSynchro with ChangeNotifier {
   /// Méthode pour sauvegarder les données des référentiels renvoyées par le backend
   ///
   ///Paramètre(s):
-  /// String [responseBody] le "body" de la réponse suite à la requête HTTP
+  /// String [responseBody] le 'body' de la réponse suite à la requête HTTP
   Future _insertReferentiel(responseBody) async {
     var data = jsonDecode(responseBody);
     List<ComposantData> listComposant = (data['composant'] as List)
@@ -331,7 +331,7 @@ class ProviderSynchro with ChangeNotifier {
   //TODO faire une methode pour preparer la base à une synchro ! (delete OU UPDATE,...) IMPORTANT
 
   Future createProjectOnServer(ProjetWithAllInfos projetWithAllInfos) async {
-    log.i("Création du projet sur le serveur...");
+    log.i('Création du projet sur le serveur...');
     UtilisateurData utilisateurData;
     if (http.runtimeType != MockClient)
       utilisateurData = await utilisateurDao.getUser();

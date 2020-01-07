@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:logger/logger.dart';
+import 'package:proto_madera_front/data/database/madera_database.dart';
 import 'package:proto_madera_front/data/providers/provider_login.dart';
 import 'package:provider/provider.dart';
 
@@ -7,7 +8,7 @@ import 'package:proto_madera_front/ui/widgets/custom_widgets.dart';
 import 'package:proto_madera_front/data/providers/providers.dart'
     show MaderaNav, ProviderBdd, ProviderProjet, ProviderSynchro;
 import 'package:proto_madera_front/ui/pages/pages.dart'
-    show QuoteOverview, ProductCreation;
+    show HomePage, ProductCreation, QuoteOverview;
 import 'package:proto_madera_front/theme.dart' as cTheme;
 
 ///
@@ -64,8 +65,8 @@ class _ProductListState extends State<ProductList> {
                       vertical: 10.0,
                     ),
                     itemCount: providerProjet.listProduitProjet.length,
-                    itemBuilder: (c, i) => _createProductTile(i,
-                        providerProjet.listProduitProjet[i].produit.produitNom),
+                    itemBuilder: (c, i) => _createProductTile(
+                        i, providerProjet.listProduitProjet[i].produit),
                     separatorBuilder: (c, i) => SizedBox(
                       height: 10.0,
                     ),
@@ -83,9 +84,8 @@ class _ProductListState extends State<ProductList> {
                       boxHeight: 50,
                       child: InkWell(
                         onTap: () {
-                          log.d("Adding a new product");
-                          Provider.of<ProviderProjet>(context)
-                              .initProductCreationModel();
+                          log.d('Adding a new product');
+                          providerProjet.initProductCreationModel();
                           Provider.of<MaderaNav>(context)
                               .redirectToPage(context, ProductCreation(), null);
                         },
@@ -99,10 +99,10 @@ class _ProductListState extends State<ProductList> {
                                     width: 2),
                                 color: Colors.grey),
                             child: IconButton(
-                              tooltip: "Supprimer produit",
+                              tooltip: 'Ajouter un produit',
                               onPressed: () {
-                                log.d("Adding a new product");
-                                //TODO supprimer le produit
+                                log.d('Adding a new product');
+                                providerProjet.initProductCreationModel();
                                 Provider.of<MaderaNav>(context).redirectToPage(
                                     context, ProductCreation(), null);
                               },
@@ -138,23 +138,22 @@ class _ProductListState extends State<ProductList> {
                   color: cTheme.MaderaColors.maderaBlueGreen,
                 ),
                 child: IconButton(
-                  tooltip: "Valider Projet",
+                  tooltip: 'Valider Projet',
                   onPressed: () async {
-                    log.d("Create projetWithAllInfos");
+                    log.d('Create projetWithAllInfos');
                     providerProjet.initProjetWithAllInfos();
-                    if (!await Provider.of<ProviderLogin>(context).ping()) {
-                      log.d("Appel serveur");
+                    if (await Provider.of<ProviderLogin>(context).ping()) {
+                      log.d('Appel serveur réussi.');
+                      log.d('Synchronisation du projet avec le serveur...');
                       await Provider.of<ProviderSynchro>(context)
                           .createProjectOnServer(
                               providerProjet.projetWithAllInfos);
                     } else {
-                      log.d("Application offline, register in bdd local");
+                      log.d('Application offline, register in bdd local');
                       providerBdd.createAll(providerProjet.projetWithAllInfos);
                     }
                     //TODO reset infos providerProjet !
-                    log.d("Quote Overview");
-                    Provider.of<ProviderProjet>(context).validate(true);
-
+                    providerProjet.validate(true);
                     Provider.of<MaderaNav>(context)
                         .redirectToPage(context, QuoteOverview(), null);
                   },
@@ -175,8 +174,17 @@ class _ProductListState extends State<ProductList> {
                   color: cTheme.MaderaColors.maderaBlueGreen,
                 ),
                 child: IconButton(
-                  tooltip: "Supprimer produit",
-                  onPressed: () {},
+                  tooltip: 'Abandonner le projet en cours',
+                  onPressed: () {
+                    Provider.of<MaderaNav>(context).showNothingYouCanDoPopup(
+                        context,
+                        Icons.warning,
+                        'Abandon du projet',
+                        'Le projet en cours de création va être supprimé.');
+                    providerProjet.validate(false);
+                    Provider.of<MaderaNav>(context)
+                        .redirectToPage(context, HomePage(), null);
+                  },
                   icon: Icon(
                     Icons.delete,
                     color: Colors.white,
@@ -190,7 +198,7 @@ class _ProductListState extends State<ProductList> {
     );
   }
 
-  Widget _createProductTile(int productID, String product) {
+  Widget _createProductTile(int productIndex, ProduitData product) {
     return MaderaRoundedBox(
       edgeInsetsPadding: EdgeInsets.symmetric(horizontal: 8.0),
       boxHeight: 50,
@@ -199,12 +207,13 @@ class _ProductListState extends State<ProductList> {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.start,
           children: <Widget>[
-            Text('$productID | $product'),
+            Text(
+                '${productIndex + 1} | ID:${product.produitId} - ${product.produitNom}'),
             IconButton(
               icon: Icon(
                 Icons.mode_edit,
                 color: cTheme.MaderaColors.maderaBlueGreen,
-                semanticLabel: 'Bouton d' 'édition',
+                semanticLabel: 'Bouton d\'édition',
               ),
               alignment: Alignment.center,
               color: Colors.transparent,
@@ -212,9 +221,18 @@ class _ProductListState extends State<ProductList> {
               iconSize: 24.0,
               tooltip: 'Editer produit',
               onPressed: () {
-                log.d("Modifying product...");
+                log.d('Modifying product...');
                 Provider.of<ProviderProjet>(context)
-                    .loadProductCreationModel(productID);
+                    .loadProductCreationModel(productIndex);
+                // Je set la gamme ici car besoin de récupérer tout le GammeData
+                Provider.of<ProviderProjet>(context).gamme =
+                    Provider.of<ProviderBdd>(context).listGammes.firstWhere(
+                        (gammeData) =>
+                            gammeData.gammeId ==
+                            Provider.of<ProviderProjet>(context)
+                                .listProduitProjet[productIndex]
+                                .produit
+                                .gammesId);
                 Provider.of<MaderaNav>(context)
                     .redirectToPage(context, ProductCreation(), null);
               },
@@ -231,9 +249,9 @@ class _ProductListState extends State<ProductList> {
               iconSize: 24.0,
               tooltip: 'Supprimer produit',
               onPressed: () {
-                log.d("Deleting product...");
+                log.d('Deleting product...');
                 Provider.of<ProviderProjet>(context)
-                    .deleteProductCreationModel(productID);
+                    .deleteProductCreationModel(productIndex);
               },
             ),
           ],
