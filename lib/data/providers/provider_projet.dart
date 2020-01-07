@@ -36,7 +36,12 @@ class ProviderProjet with ChangeNotifier {
   //Produits
   ProduitData produitCourant;
 
-  static DateTime dateProjet = DateTime.now();
+  static final DateTime _dateProjet = DateTime.now();
+  static final String _dateNow = _dateProjet.year.toString() +
+      '/' +
+      _dateProjet.month.toString() +
+      '/' +
+      _dateProjet.day.toString();
 
   List<ProduitModuleData> _listProduitModuleProjet;
   ModuleData moduleChoice;
@@ -44,11 +49,6 @@ class ProviderProjet with ChangeNotifier {
   ProduitModuleData moduleAdd;
 
   final Logger log = Logger();
-  String dateNow = dateProjet.year.toString() +
-      '/' +
-      dateProjet.month.toString() +
-      '/' +
-      dateProjet.day.toString();
 
   void initAndHold() {
     //TODO Appeler cette méthode à chaque fois qu'on fait une redirection vers QuoteCreation
@@ -134,7 +134,7 @@ class ProviderProjet with ChangeNotifier {
     notifyListeners();
   }
 
-  String get dateCreation => _quoteCreationValues.dateDeCreation.toString();
+  String get dateNow => _dateNow;
 
   set refProjet(String refProjet) {
     _quoteCreationValues.refProjet = refProjet;
@@ -234,9 +234,7 @@ class ProviderProjet with ChangeNotifier {
   bool isFilled(String pageName) {
     switch (pageName) {
       case 'QuoteCreation':
-        return (client != null &&
-            _projetNom != null &&
-            (_projetDesc != null && _projetDesc.isNotEmpty));
+        return (client != null && _projetNom != null && _projetDesc.isNotEmpty);
         break;
       case 'ProductCreation':
         return (_produitNom != null && _produitNom.isNotEmpty);
@@ -300,12 +298,12 @@ class ProviderProjet with ChangeNotifier {
     projet = new ProjetData(
       projetId: -1,
       nomProjet: projetNom,
-      refProjet: dateNow.replaceAll('/', '') +
+      refProjet: _dateNow.replaceAll('/', '') +
           '_' +
           client.id.toString() +
           '_' +
           test.toString(),
-      dateProjet: dateProjet,
+      dateProjet: _dateProjet,
       devisEtatId: 2,
       clientId: client.id,
       prixTotal: 0.0,

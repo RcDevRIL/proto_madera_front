@@ -23,7 +23,6 @@ class QuoteCreation extends StatefulWidget {
 
 class _QuoteCreationState extends State<QuoteCreation> {
   ScrollController _formScrollController;
-  TextEditingController _clientAdressTextEditingController;
 
   final log = Logger();
 
@@ -31,24 +30,16 @@ class _QuoteCreationState extends State<QuoteCreation> {
   void initState() {
     super.initState();
     _formScrollController = ScrollController();
-    _clientAdressTextEditingController = TextEditingController();
   }
 
   @override
   void dispose() {
     _formScrollController?.dispose();
-    _clientAdressTextEditingController?.dispose();
     super.dispose();
   }
 
   @override
   void didChangeDependencies() {
-    if (Provider.of<ProviderProjet>(context).client != null) {
-      //TODO gérer les adresses
-      _clientAdressTextEditingController.text =
-          '4 rue Jean Jaurès, 21000 Dijon';
-    }
-
     super.didChangeDependencies();
   }
 
@@ -241,18 +232,28 @@ class _QuoteCreationState extends State<QuoteCreation> {
                                 ),
                               ),
                             ),
+                            //TODO trouver une autre implémentation pour éviter le futurebuilder?
                             providerProjet.client != null
-                                ? Container(
-                                    height: 50.0,
-                                    padding: const EdgeInsets.symmetric(
-                                      horizontal: 8.0,
-                                    ),
-                                    child: Align(
-                                      alignment: Alignment.centerLeft,
-                                      child: Text(
-                                        '4 rue Jean Jaurès, 21000 Dijon',
-                                      ),
-                                    ),
+                                ? FutureBuilder(
+                                    future: providerBdd.buildClientAdresse(
+                                        providerProjet.client.id),
+                                    initialData: 'NO ADRESS LOADED',
+                                    builder: (c, s) {
+                                      if (s.hasData) {
+                                        return Container(
+                                          height: 50.0,
+                                          padding: const EdgeInsets.symmetric(
+                                            horizontal: 8.0,
+                                          ),
+                                          child: Align(
+                                            alignment: Alignment.centerLeft,
+                                            child: Text(s.data),
+                                          ),
+                                        );
+                                      } else {
+                                        return CircularProgressIndicator();
+                                      }
+                                    },
                                   )
                                 : Container(
                                     height: 50.0,
