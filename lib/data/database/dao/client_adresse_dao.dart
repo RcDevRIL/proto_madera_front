@@ -13,4 +13,12 @@ class ClientAdresseDao extends DatabaseAccessor<MaderaDatabase>
     await delete(clientAdresse).go();
     await db.batch((b) => b.insertAll(clientAdresse, listClientAdresse));
   }
+
+  Future<int> getClientAdresseId(int clientId) async {
+    int adresseId;
+    await (select(clientAdresse)..where((cA) => cA.clientId.equals(clientId)))
+        .getSingle()
+        .then((cAD) => adresseId = cAD.adresseId);
+    return adresseId;
+  }
 }

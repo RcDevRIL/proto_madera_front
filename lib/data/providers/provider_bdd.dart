@@ -155,6 +155,21 @@ class ProviderBdd with ChangeNotifier {
     listClient = await clientDao.getAllClient();
   }
 
+  Future<String> buildClientAdresse(int clientId) async {
+    StringBuffer sbuf = StringBuffer();
+    int clientAdresseId = await clientAdresseDao.getClientAdresseId(clientId);
+    AdresseData clientAdresseData =
+        await adresseDao.getAdresse(clientAdresseId);
+    sbuf.write(clientAdresseData.numero);
+    sbuf.write(', ');
+    sbuf.write(clientAdresseData.rue);
+    sbuf.write(' ');
+    sbuf.write(clientAdresseData.codePostale);
+    sbuf.write(' ');
+    sbuf.write(clientAdresseData.ville);
+    return sbuf.toString();
+  }
+
   Future initGammes() async {
     listGammes = await gammeDao.getAllGammes();
   }
