@@ -10,9 +10,11 @@ class AdresseDao extends DatabaseAccessor<MaderaDatabase>
   AdresseDao(MaderaDatabase db) : super(db);
 
   Future insertAll(List<AdresseData> listAdresse) async {
+    deleteAll();
     await db.batch((b) => b.insertAll(adresse, listAdresse));
   }
 
+  ///Supprimes les occurences
   Future<int> deleteAll() async {
     return await delete(adresse).go();
   }

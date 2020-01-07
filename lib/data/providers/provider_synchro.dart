@@ -115,8 +115,7 @@ class ProviderSynchro with ChangeNotifier {
   Future<void> synchro() async {
     // r d
     // 1 ?
-    bool isDeletedOk = await deleteForSynchro();
-    if (isDeletedOk) {
+    await deleteForSynchro();
       if (_refSynced) {
         // 1 1
         if (_dataSynced)
@@ -146,9 +145,6 @@ class ProviderSynchro with ChangeNotifier {
           log.i('Synchronisation globale effectuée');
         }
       }
-    } else {
-      log.e('Erreur lors de la suppression des données');
-    }
   }
 
   ///Synchronisation des données de l'utilisateur connecté
@@ -335,44 +331,20 @@ class ProviderSynchro with ChangeNotifier {
   //TODO regardez si projet is synchro
 
   ///Méthode qui va purger la base de données sans effacer les projets non synchronisés
-  Future<bool> deleteForSynchro() async {
-    int linesDeleted = 0;
-    linesDeleted = await composantDao.deleteAll();
-    log.i("Table composant : " + linesDeleted.toString() + " lines deleted");
-    linesDeleted = await gammeDao.deleteAll();
-    log.i("Table gamme : " + linesDeleted.toString() + " lines deleted");
-    linesDeleted = await moduleDao.deleteAll();
-    log.i("Table module : " + linesDeleted.toString() + " lines deleted");
-    linesDeleted = await moduleComposantDao.deleteAll();
-    log.i("Table moduleComposant : " +
-        linesDeleted.toString() +
-        " lines deleted");
-    linesDeleted = await devisEtatDao.deleteAll();
-    log.i("Table devisEtat : " + linesDeleted.toString() + " lines deleted");
-    linesDeleted = await composantGroupeDao.deleteAll();
-    log.i("Table composantGroupe : " +
-        linesDeleted.toString() +
-        " lines deleted");
-    linesDeleted = await clientDao.deleteAll();
-    log.i("Table client : " + linesDeleted.toString() + " lines deleted");
-    linesDeleted = await clientAdresseDao.deleteAll();
-    log.i(
-        "Table clientAdresse : " + linesDeleted.toString() + " lines deleted");
-    linesDeleted = await adresseDao.deleteAll();
-    log.i("Table adresse : " + linesDeleted.toString() + " lines deleted");
-    linesDeleted = await projetDao.deleteAll();
-    log.i("Table projetDao : " + linesDeleted.toString() + " lines deleted");
-    linesDeleted = await produitDao.deleteAll();
-    log.i("Table produitDao : " + linesDeleted.toString() + " lines deleted");
-    linesDeleted = await produitModuleDao.deleteAll();
-    log.i("Table produitModuleDao : " +
-        linesDeleted.toString() +
-        " lines deleted");
-    linesDeleted = await projetProduitsDao.deleteAll();
-    log.i("Table projetProduitsDao : " +
-        linesDeleted.toString() +
-        " lines deleted");
-    return linesDeleted != 0;
+  Future deleteForSynchro() async {
+    await composantDao.deleteAll();
+    await gammeDao.deleteAll();
+    await moduleDao.deleteAll();
+    await moduleComposantDao.deleteAll();
+    await devisEtatDao.deleteAll();
+    await composantGroupeDao.deleteAll();
+    await clientDao.deleteAll();
+    await clientAdresseDao.deleteAll();
+    await adresseDao.deleteAll();
+    await projetDao.deleteAll();
+    await produitDao.deleteAll();
+    await produitModuleDao.deleteAll();
+    await projetProduitsDao.deleteAll();
   }
 
   ///Appel serveur pour créer le projet

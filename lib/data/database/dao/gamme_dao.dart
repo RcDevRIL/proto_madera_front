@@ -8,16 +8,17 @@ part 'gamme_dao.g.dart';
 class GammeDao extends DatabaseAccessor<MaderaDatabase> with _$GammeDaoMixin {
   GammeDao(MaderaDatabase db) : super(db);
 
-  String get queryGammeOfProjetIsSynchro => "SELECT * FROM gamme "
-      "JOIN produit ON produit.gammes_id = gamme.gamme_id "
-      "JOIN projet_produits ON projet_produits.produit_id = produit.produit_id "
-      "JOIN projet ON projet.projet_id = projet_produits.projet_id "
-      "WHERE projet.is_synchro = 1";
+  String get queryGammeOfProjetIsSynchro => "SELECT gamme.gamme_id FROM gamme "
+      "LEFT JOIN produit ON produit.gammes_id = gamme.gamme_id "
+      "LEFT JOIN projet_produits ON projet_produits.produit_id = produit.produit_id "
+      "LEFT JOIN projet ON projet.projet_id = projet_produits.projet_id "
+      "WHERE projet.is_synchro = 1 OR projet.projet_id IS NULL";
 
   Future<List<GammeData>> getAllGammes() async {
     return await select(gamme).get();
   }
 
+  ///Ajout d'une liste de gammeData / utilisée lors de la méthode de synchro
   Future insertAll(List<GammeData> listGamme) async {
     await db.batch((b) => b.insertAll(gamme, listGamme));
   }

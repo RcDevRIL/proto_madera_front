@@ -13,7 +13,7 @@ class ProjetDao extends DatabaseAccessor<MaderaDatabase> with _$ProjetDaoMixin {
       "SELECT * FROM projet JOIN client ON client.id = projet.client_id";
 
   String get queryProjetIfIsProjetSynchro =>
-      "SELECT * FROM projet WHERE projet.is_synchro = 1";
+      "SELECT projet.projet_id FROM projet WHERE projet.is_synchro = 1 OR projet.projet_id IS NULL";
 
   Future insertAll(List<ProjetData> listProjet) async {
     await db.batch((b) => b.insertAll(projet, listProjet));
@@ -49,6 +49,7 @@ class ProjetDao extends DatabaseAccessor<MaderaDatabase> with _$ProjetDaoMixin {
         ),
         clientId: Value(projetData.clientId),
         devisEtatId: Value(projetData.devisEtatId),
+        isSynchro: Value(projetData.isSynchro),
       );
     } else {
       projetCompanion = ProjetCompanion(
@@ -59,6 +60,7 @@ class ProjetDao extends DatabaseAccessor<MaderaDatabase> with _$ProjetDaoMixin {
         ),
         clientId: Value(projetData.clientId),
         devisEtatId: Value(projetData.devisEtatId),
+        isSynchro: Value(false),
       );
     }
     return await into(projet).insert(projetCompanion);

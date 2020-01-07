@@ -10,10 +10,10 @@ class ProduitModuleDao extends DatabaseAccessor<MaderaDatabase>
   ProduitModuleDao(MaderaDatabase db) : super(db);
 
   String get queryProduitModuleOfProjetIsSynchro =>
-      "SELECT * FROM produit_module "
-      "JOIN projet_produits ON projet_produits.produit_id = produit_module.produit_id "
-      "JOIN projet ON projet.projet_id = projet_produits.projet_id "
-      "WHERE projet.is_synchro = 1";
+      "SELECT produit_module.projet_module_id FROM produit_module "
+      "LEFT JOIN projet_produits ON projet_produits.produit_id = produit_module.produit_id "
+      "LEFT JOIN projet ON projet.projet_id = projet_produits.projet_id "
+      "WHERE projet.is_synchro = 1 OR projet.projet_id IS NULL";
 
   ///Méthode de synchronisation
   Future insertAll(List<ProduitModuleData> listProduitModule) async {
@@ -76,7 +76,7 @@ class ProduitModuleDao extends DatabaseAccessor<MaderaDatabase>
             readsFrom: {produitModule}).get().then(
           (rows) => rows
               .map<int>(
-                (row) => row.readInt("produit_module_id"),
+                (row) => row.readInt("projet_module_id"),
               )
               .toList(),
         );

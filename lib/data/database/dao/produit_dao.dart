@@ -8,15 +8,12 @@ part 'produit_dao.g.dart';
 class ProduitDao extends DatabaseAccessor<MaderaDatabase>
     with _$ProduitDaoMixin {
   ProduitDao(MaderaDatabase db) : super(db);
+  String get queryProduitOfProjetIsSynchro => "SELECT produit.produit_id from produit "
+      "LEFT JOIN projet_produits ON projet_produits.produit_id "
+      "LEFT JOIN projet ON projet.projet_id = projet_produits.projet_id "
+      "WHERE projet.is_synchro = 1 OR projet.projet_id IS NULL";
 
-  String get deleteProduitModele =>
-      "DELETE * FROM produit where produit.modele == false";
-
-  String get queryProduitOfProjetIsSynchro => "SELECT * from produit "
-      "JOIN projet_produits ON projet_produits.produit_id "
-      "JOIN projet ON projet.projet_id = projet_produits.projet_id "
-      "WHERE projet.is_synchro = 1";
-
+  ///Ajout d'une liste de produit / utilisée lors de la méthode de synchro
   Future insertAll(List<ProduitData> listProduit) async {
     await db.batch((b) => b.insertAll(produit, listProduit));
   }
@@ -43,6 +40,7 @@ class ProduitDao extends DatabaseAccessor<MaderaDatabase>
     );
   }
 
+  ///Recupere les produits en fonction de la gamme et s'ils sont un models ou non
   Future<List<ProduitData>> getProduitModeleByGammeId(int gammeId) async {
     return await (select(produit)
           ..where(

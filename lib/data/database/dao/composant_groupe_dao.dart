@@ -9,10 +9,13 @@ class ComposantGroupeDao extends DatabaseAccessor<MaderaDatabase>
     with _$ComposantGroupeDaoMixin {
   ComposantGroupeDao(MaderaDatabase db) : super(db);
 
+  ///Ajout d'une list de composantGroupe / utilisée lors de la méthode de synchro
   Future insertAll(List<ComposantGroupeData> listComposantGroupe) async {
+    deleteAll();
     await db.batch((b) => b.insertAll(composantGroupe, listComposantGroupe));
   }
 
+  ///Supprime les occurrences de composantGroupe
   Future<int> deleteAll() async {
     return await delete(composantGroupe).go();
   }

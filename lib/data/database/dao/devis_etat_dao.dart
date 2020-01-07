@@ -10,7 +10,7 @@ class DevisEtatDao extends DatabaseAccessor<MaderaDatabase>
   DevisEtatDao(MaderaDatabase db) : super(db);
 
   String get queryDevisEtatIdOfProjetIsSynchro =>
-      "SELECT * FROM devis_etat JOIN projet ON projet.devis_etat_id = devis_etat.devis_etat_id WHERE projet.is_synchro = 1";
+      "SELECT devis_etat.devis_etat_id FROM devis_etat LEFT JOIN projet ON projet.devis_etat_id = devis_etat.devis_etat_id WHERE projet.is_synchro = 1 OR projet.projet_id IS NULL";
 
   Future insertAll(List<DevisEtatData> listDevisEtat) async {
     await db.batch((b) => b.insertAll(devisEtat, listDevisEtat));

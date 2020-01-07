@@ -10,7 +10,9 @@ class ProjetProduitsDao extends DatabaseAccessor<MaderaDatabase>
   ProjetProduitsDao(MaderaDatabase db) : super(db);
 
   String get queryProjetProduitOfProjetIsSynchro =>
-      "SELECT * FROM projet_produits JOIN projet ON projet.projet_id = projet_produits.projet_id WHERE projet.is_synchro = 1";
+      "SELECT projet_produits.projet_id FROM projet_produits "
+      "LEFT JOIN projet ON projet.projet_id = projet_produits.projet_id "
+      "WHERE projet.is_synchro = 1 OR projet.projet_id IS NULL";
 
   ///Récupére toute la liste des projetProduits
   Future insertAll(List<ProjetProduit> listProjetPoduit) async {

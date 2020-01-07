@@ -11,11 +11,11 @@ class ModuleDao extends DatabaseAccessor<MaderaDatabase> with _$ModuleDaoMixin {
   String get queryNatureModule =>
       "SELECT DISTINCT module.nature_module FROM module";
 
-  String get querySelectModuleOfProjetSynchro => "SELECT * FROM module "
-      "JOIN produit_module ON produit_module.module_id = module.module_id "
-      "JOIN projet_produits ON projet_produits.produit_id = produit_module.produit_id "
-      "JOIN projet ON projet.projet_id = projet_produits.projet_id "
-      "WHERE projet.is_synchro = 1";
+  String get querySelectModuleOfProjetSynchro => "SELECT module.module_id FROM module "
+      "LEFT JOIN produit_module ON produit_module.module_id = module.module_id "
+      "LEFT JOIN projet_produits ON projet_produits.produit_id = produit_module.produit_id "
+      "LEFT JOIN projet ON projet.projet_id = projet_produits.projet_id "
+      "WHERE projet.is_synchro = 1 OR projet.projet_id IS NULL";
 
   Future insertAll(List<ModuleData> listModule) async {
     await db.batch((b) => b.insertAll(module, listModule));

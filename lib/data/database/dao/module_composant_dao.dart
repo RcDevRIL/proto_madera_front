@@ -10,16 +10,17 @@ class ModuleComposantDao extends DatabaseAccessor<MaderaDatabase>
   ModuleComposantDao(MaderaDatabase db) : super(db);
 
   String get querySelectModuleComposantOfProjetSynchro =>
-      "SELECT * FROM module_composant "
-      "JOIN produit_module ON produit_module.module_id = module_composant.module_id "
-      "JOIN projet_produits ON projet_produits.produit_id = produit_module.produit_id "
-      "JOIN projet ON projet.projet_id = projet_produits.projet_id "
-      "WHERE projet.is_synchro = 1";
+      "SELECT module_composant.module_id FROM module_composant "
+      "LEFT JOIN produit_module ON produit_module.module_id = module_composant.module_id "
+      "LEFT JOIN projet_produits ON projet_produits.produit_id = produit_module.produit_id "
+      "LEFT JOIN projet ON projet.projet_id = projet_produits.projet_id "
+      "WHERE projet.is_synchro = 1 OR projet.projet_id IS NULL";
 
   Future insertAll(List<ModuleComposantData> listModuleComposant) async {
     await db.batch((b) => b.insertAll(moduleComposant, listModuleComposant));
   }
 
+  ///Supprime les occurences de moduleComposant
   Future<int> deleteAll() async {
     //Récupère la liste des moduleComposant qui doivent être supprimés (en fonction de is_synchro de projet)
     //C'est une liste de moduleId, puisqu'il n'y pas de champ moduleComposantId
