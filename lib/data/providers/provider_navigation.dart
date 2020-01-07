@@ -218,6 +218,8 @@ class MaderaNav with ChangeNotifier {
     else
       titleAndIconColor = cTheme.MaderaColors.textHeaderColor;
     showDialog(
+      barrierDismissible:
+          false, // /!\ Rend obligatoire le clic sur un bouton qui fait Navigator.of(context).pop() /!\
       context: context,
       builder: (BuildContext context) {
         return MaderaDialog(

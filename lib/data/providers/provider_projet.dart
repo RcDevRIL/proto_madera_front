@@ -270,11 +270,16 @@ class ProviderProjet with ChangeNotifier {
   void initProjet() {
     //TODO ajouter un champ description en bdd ?
     var r = Random();
-    int test = r.nextInt(539985);
+    int test = r.nextInt(
+        539985); // valeur borne haute choisie au hasard, 2 chiffres par contributeurs
     projet = new ProjetData(
       projetId: -1,
       nomProjet: projetNom,
-      refProjet: dateNow + '_' + client.id.toString() + '_' + test.toString(),
+      refProjet: dateNow.replaceAll('/', '') +
+          '_' +
+          client.id.toString() +
+          '_' +
+          test.toString(),
       dateProjet: dateProjet,
       devisEtatId: 2,
       clientId: client.id,

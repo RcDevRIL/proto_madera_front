@@ -22,14 +22,10 @@ class QuoteCreation extends StatefulWidget {
 }
 
 class _QuoteCreationState extends State<QuoteCreation> {
-  String dateCreationProjet;
   TextEditingController _projetNomTextEditingController;
+  TextEditingController _projetDescTextEditingController;
   ScrollController _formScrollController;
-  TextEditingController _clientMailTextEditingController;
-  TextEditingController _clientTelTextEditingController;
   TextEditingController _clientAdressTextEditingController;
-  TextEditingController _clientNameTextEditingController;
-  TextEditingController _clientPrenomTextEditingController;
 
   final log = Logger();
 
@@ -37,40 +33,28 @@ class _QuoteCreationState extends State<QuoteCreation> {
   void initState() {
     super.initState();
     _formScrollController = ScrollController();
-    _clientMailTextEditingController = TextEditingController();
-    _clientTelTextEditingController = TextEditingController();
     _clientAdressTextEditingController = TextEditingController();
-    _clientNameTextEditingController = TextEditingController();
     _projetNomTextEditingController = TextEditingController();
+    _projetDescTextEditingController = TextEditingController();
   }
 
   @override
   void dispose() {
     _formScrollController?.dispose();
-    _projetNomTextEditingController.dispose();
-    _clientMailTextEditingController?.dispose();
-    _clientTelTextEditingController?.dispose();
+    _projetDescTextEditingController?.dispose();
+    _projetNomTextEditingController?.dispose();
     _clientAdressTextEditingController?.dispose();
-    _clientNameTextEditingController?.dispose();
     super.dispose();
   }
 
   @override
   void didChangeDependencies() {
-    /* J'ai du rendre inéditables les fields pour le client car comportement bizarre remplissage que par le dialogue
-    */
     if (Provider.of<ProviderProjet>(context).client != null) {
       _projetNomTextEditingController.text =
           Provider.of<ProviderProjet>(context).projetNom;
-      _clientNameTextEditingController.text =
-          Provider.of<ProviderProjet>(context).client.nom;
       //TODO gérer les adresses
       _clientAdressTextEditingController.text =
           '4 rue Jean Jaurès, 21000 Dijon';
-      _clientTelTextEditingController.text =
-          Provider.of<ProviderProjet>(context).client.mail;
-      _clientMailTextEditingController.text =
-          Provider.of<ProviderProjet>(context).client.numTel;
     }
 
     super.didChangeDependencies();
@@ -169,7 +153,7 @@ class _QuoteCreationState extends State<QuoteCreation> {
                         child: Center(
                           child: providerProjet.client != null
                               ? Text(
-                                  '${providerProjet.dateNow}_${providerProjet.client.id}')
+                                  '${providerProjet.dateNow.replaceAll('/', '')}_${providerProjet.client.id}')
                               : Text('${providerProjet.dateNow}'),
                         ),
                         header: LabelledIcon(
@@ -226,7 +210,13 @@ class _QuoteCreationState extends State<QuoteCreation> {
                             ),
                             TextField(
                               maxLines: 1,
-                              controller: _clientNameTextEditingController,
+                              controller: providerProjet.client != null
+                                  ? TextEditingController(
+                                      text: providerProjet.client.nom +
+                                          ' ' +
+                                          providerProjet.client.prenom,
+                                    )
+                                  : null,
                               enabled: false,
                               keyboardType: TextInputType.text,
                               decoration: InputDecoration(
@@ -301,7 +291,11 @@ class _QuoteCreationState extends State<QuoteCreation> {
                             ),
                             TextField(
                               maxLines: 1,
-                              controller: _clientTelTextEditingController,
+                              controller: providerProjet.client != null
+                                  ? TextEditingController(
+                                      text: providerProjet.client.numTel,
+                                    )
+                                  : null,
                               keyboardType: TextInputType.phone,
                               enabled: false,
                               decoration: InputDecoration(
@@ -329,7 +323,11 @@ class _QuoteCreationState extends State<QuoteCreation> {
                             ),
                             TextField(
                               maxLines: 1,
-                              controller: _clientMailTextEditingController,
+                              controller: providerProjet.client != null
+                                  ? TextEditingController(
+                                      text: providerProjet.client.mail,
+                                    )
+                                  : null,
                               keyboardType: TextInputType.emailAddress,
                               enabled: false,
                               decoration: InputDecoration(
@@ -455,115 +453,47 @@ class _QuoteCreationState extends State<QuoteCreation> {
                           10.0,
                           0.0,
                         ),
-                        child: SingleChildScrollView(
-                          child: Column(
-                            children: <Widget>[
-                              DropdownButton<String>(
-                                isExpanded: true,
-                                hint: (providerProjet.client != null)
-                                    ? Text(providerProjet.client.nom)
-                                    : Text('Sélectionnez un client...'),
-                                icon: Icon(Icons.arrow_drop_down,
-                                    color:
-                                        cTheme.MaderaColors.maderaLightGreen),
-                                iconSize: 35,
-                                elevation: 16,
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .title
-                                    .apply(fontSizeDelta: -4),
-                                underline: Container(
-                                  height: 2,
-                                  width: 100.0,
-                                  color: Colors.transparent,
-                                ),
-                                onChanged: (String newValue) {
-                                  providerBdd.listClient.forEach((client) => {
-                                        if (client.nom == newValue)
-                                          {
-                                            providerProjet
-                                                .initClientWithClient(client),
-                                          }
-                                      });
-                                  Navigator.of(context).pop();
-                                  didChangeDependencies();
-                                },
-                                items: providerBdd.listClient
-                                    .map<DropdownMenuItem<String>>(
-                                        (ClientData client) =>
-                                            DropdownMenuItem<String>(
-                                              //TODO nom + prenom ?
-                                              value: client.nom,
-                                              child: Text(client.nom),
-                                            ))
-                                    .toList(),
-                              ),
-                              Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: <Widget>[
-                                  Column(
-                                    children: <Widget>[
-                                      Container(
-                                        width: 100,
-                                        child: TextField(
-                                          controller:
-                                              _clientNameTextEditingController,
-                                          decoration: InputDecoration(
-                                            hintText: 'Ex: DUPONT',
-                                          ),
-                                        ),
-                                      ),
-                                      Container(
-                                        width: 100,
-                                        child: TextField(
-                                          controller:
-                                              _clientPrenomTextEditingController,
-                                          decoration: InputDecoration(
-                                            hintText: 'Ex: Nicolas',
-                                          ),
-                                        ),
-                                      ),
-                                      Container(
-                                        width: 100,
-                                        child: TextField(
-                                          controller:
-                                              _clientAdressTextEditingController,
-                                          decoration: InputDecoration(
-                                            hintText: 'Rue complète, CP, ville',
-                                          ),
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                  Column(
-                                    children: <Widget>[
-                                      Container(
-                                        width: 100,
-                                        child: TextField(
-                                          controller:
-                                              _clientTelTextEditingController,
-                                          decoration: InputDecoration(
-                                            hintText: 'Téléphone...',
-                                          ),
-                                        ),
-                                      ),
-                                      Container(
-                                        width: 100,
-                                        child: TextField(
-                                          controller:
-                                              _clientMailTextEditingController,
-                                          decoration: InputDecoration(
-                                            hintText: 'Adresse mail...',
-                                          ),
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ],
-                              ),
-                            ],
+                        child: DropdownButton<String>(
+                          isExpanded: true,
+                          hint: providerProjet.client != null
+                              ? Text(providerProjet.client.nom +
+                                  ' ' +
+                                  providerProjet.client.prenom)
+                              : Text('Sélectionnez un client...'),
+                          icon: Icon(Icons.arrow_drop_down,
+                              color: cTheme.MaderaColors.maderaLightGreen),
+                          iconSize: 35,
+                          elevation: 16,
+                          style: Theme.of(context)
+                              .textTheme
+                              .title
+                              .apply(fontSizeDelta: -8),
+                          underline: Container(
+                            height: 2,
+                            width: 100.0,
+                            color: Colors.transparent,
                           ),
+                          onChanged: (String newValue) {
+                            providerBdd.listClient.forEach((client) => {
+                                  if (client.nom + ' ' + client.prenom ==
+                                      newValue)
+                                    {
+                                      providerProjet
+                                          .initClientWithClient(client),
+                                    }
+                                });
+                            Navigator.of(context).pop();
+                            didChangeDependencies();
+                          },
+                          items: providerBdd.listClient
+                              .map<DropdownMenuItem<String>>(
+                                  (ClientData client) =>
+                                      DropdownMenuItem<String>(
+                                        value: client.nom + ' ' + client.prenom,
+                                        child: Text(
+                                            client.nom + ' ' + client.prenom),
+                                      ))
+                              .toList(),
                         ),
                       ),
                       [
@@ -571,13 +501,6 @@ class _QuoteCreationState extends State<QuoteCreation> {
                           key: Key('ok-button'),
                           child: Text('Ok'),
                           onPressed: () {
-                            if (providerProjet.client != null) {
-                              providerProjet.initClient(
-                                  _clientNameTextEditingController.text,
-                                  _clientPrenomTextEditingController.text,
-                                  _clientMailTextEditingController.text,
-                                  _clientTelTextEditingController.text);
-                            }
                             Navigator.of(context).pop();
                           },
                         ),

@@ -58,7 +58,8 @@ class MaderaDialog extends StatelessWidget {
               child: body,
             )
           : Container(
-              height: 150.0,
+              height: 50.0,
+              width: 200.0,
               child: body,
             ),
       actions: actions,
