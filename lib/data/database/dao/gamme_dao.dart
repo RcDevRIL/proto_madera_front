@@ -20,7 +20,7 @@ class GammeDao extends DatabaseAccessor<MaderaDatabase> with _$GammeDaoMixin {
 
   ///Ajout d'une liste de gammeData / utilisée lors de la méthode de synchro
   Future insertAll(List<GammeData> listGamme) async {
-    await db.batch((b) => b.insertAll(gamme, listGamme));
+    await db.batch((b) => b.insertAll(gamme, listGamme, mode: InsertMode.insertOrReplace));
   }
 
   ///Supprime les occurrences de gamme

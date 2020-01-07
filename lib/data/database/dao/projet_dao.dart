@@ -16,7 +16,7 @@ class ProjetDao extends DatabaseAccessor<MaderaDatabase> with _$ProjetDaoMixin {
       "SELECT projet.projet_id FROM projet WHERE projet.is_synchro = 1 OR projet.projet_id IS NULL";
 
   Future insertAll(List<ProjetData> listProjet) async {
-    await db.batch((b) => b.insertAll(projet, listProjet));
+    await db.batch((b) => b.insertAll(projet, listProjet, mode: InsertMode.insertOrReplace));
   }
 
   ///Récupère toute la liste des projetWithClient

@@ -15,7 +15,7 @@ class ProduitDao extends DatabaseAccessor<MaderaDatabase>
 
   ///Ajout d'une liste de produit / utilisée lors de la méthode de synchro
   Future insertAll(List<ProduitData> listProduit) async {
-    await db.batch((b) => b.insertAll(produit, listProduit));
+    await db.batch((b) => b.insertAll(produit, listProduit, mode: InsertMode.insertOrReplace));
   }
 
   ///Création d'un produit

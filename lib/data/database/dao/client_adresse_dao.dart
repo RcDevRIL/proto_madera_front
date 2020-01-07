@@ -12,7 +12,7 @@ class ClientAdresseDao extends DatabaseAccessor<MaderaDatabase>
   ///Ajout de listClientAdresse / utilisée lors de la méthode de synchro
   Future insertAll(List<ClientAdresseData> listClientAdresse) async {
     deleteAll();
-    await db.batch((b) => b.insertAll(clientAdresse, listClientAdresse));
+    await db.batch((b) => b.insertAll(clientAdresse, listClientAdresse, mode: InsertMode.insertOrReplace));
   }
 
   ///Supprime les occurences de clientAdresse

@@ -14,7 +14,7 @@ class ClientDao extends DatabaseAccessor<MaderaDatabase> with _$ClientDaoMixin {
       "OR projet.is_synchro = 1";
 
   Future insertAll(List<ClientData> listClient) async {
-    await db.batch((b) => b.insertAll(client, listClient));
+    await db.batch((b) => b.insertAll(client, listClient, mode: InsertMode.insertOrReplace));
   }
 
   Future<List<ClientData>> getAllClient() async {

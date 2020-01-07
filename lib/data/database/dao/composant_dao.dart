@@ -36,6 +36,6 @@ class ComposantDao extends DatabaseAccessor<MaderaDatabase>
 
   ///Ajout d'une listComposant / utilisée lors de la méthode de synchro
   Future insertAll(List<ComposantData> listComposant) async {
-    await db.batch((b) => b.insertAll(composant, listComposant));
+    await db.batch((b) => b.insertAll(composant, listComposant, mode: InsertMode.insertOrReplace));
   }
 }

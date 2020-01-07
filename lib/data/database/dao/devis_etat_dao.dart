@@ -13,7 +13,7 @@ class DevisEtatDao extends DatabaseAccessor<MaderaDatabase>
       "SELECT devis_etat.devis_etat_id FROM devis_etat LEFT JOIN projet ON projet.devis_etat_id = devis_etat.devis_etat_id WHERE projet.is_synchro = 1 OR projet.projet_id IS NULL";
 
   Future insertAll(List<DevisEtatData> listDevisEtat) async {
-    await db.batch((b) => b.insertAll(devisEtat, listDevisEtat));
+    await db.batch((b) => b.insertAll(devisEtat, listDevisEtat, mode: InsertMode.insertOrReplace));
   }
 
   /// Méthode utilisée pour récupérer les données dans la table devisEtat

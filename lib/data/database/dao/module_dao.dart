@@ -18,7 +18,7 @@ class ModuleDao extends DatabaseAccessor<MaderaDatabase> with _$ModuleDaoMixin {
       "WHERE projet.is_synchro = 1 OR projet.projet_id IS NULL";
 
   Future insertAll(List<ModuleData> listModule) async {
-    await db.batch((b) => b.insertAll(module, listModule));
+    await db.batch((b) => b.insertAll(module, listModule, mode: InsertMode.insertOrReplace));
   }
 
   Future<List<ModuleData>> getAllModules(String natureModule) async {

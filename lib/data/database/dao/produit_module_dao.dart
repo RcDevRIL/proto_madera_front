@@ -17,7 +17,7 @@ class ProduitModuleDao extends DatabaseAccessor<MaderaDatabase>
 
   ///Méthode de synchronisation
   Future insertAll(List<ProduitModuleData> listProduitModule) async {
-    await db.batch((b) => b.insertAll(produitModule, listProduitModule));
+    await db.batch((b) => b.insertAll(produitModule, listProduitModule, mode: InsertMode.insertOrReplace));
   }
 
   ///Création d'un produitModule

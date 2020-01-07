@@ -17,7 +17,7 @@ class ModuleComposantDao extends DatabaseAccessor<MaderaDatabase>
       "WHERE projet.is_synchro = 1 OR projet.projet_id IS NULL";
 
   Future insertAll(List<ModuleComposantData> listModuleComposant) async {
-    await db.batch((b) => b.insertAll(moduleComposant, listModuleComposant));
+    await db.batch((b) => b.insertAll(moduleComposant, listModuleComposant, mode: InsertMode.insertOrReplace));
   }
 
   ///Supprime les occurences de moduleComposant

@@ -16,7 +16,7 @@ class ProjetProduitsDao extends DatabaseAccessor<MaderaDatabase>
 
   ///Récupére toute la liste des projetProduits
   Future insertAll(List<ProjetProduit> listProjetPoduit) async {
-    await db.batch((b) => b.insertAll(projetProduits, listProjetPoduit));
+    await db.batch((b) => b.insertAll(projetProduits, listProjetPoduit, mode: InsertMode.insertOrReplace));
   }
 
   ///Création d'un projetProduit
