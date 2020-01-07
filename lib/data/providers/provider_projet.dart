@@ -25,12 +25,12 @@ class ProviderProjet with ChangeNotifier {
   QuoteModel _quoteValues;
   int _editModuleIndex;
   int _editProductIndex;
-  List<QuoteModel> productList;
+  List<ProjetData> productList;
   bool canInit = true;
 
   ProjetWithAllInfos projetWithAllInfos;
   ProjetData projet;
-  List<ProduitWithModule> listProduitWithModule;
+  List<ProduitWithModule> listProduitProjet;
   ClientData client;
 
   //Produits
@@ -61,8 +61,8 @@ class ProviderProjet with ChangeNotifier {
   void validate(bool saveIt) {
     if (saveIt) {
       log.i('Saving project with following values...');
-      log.i(_quoteCreationValues);
-      productList.forEach((quoteModel) => log.i(quoteModel));
+      logQC();
+      logQ();
       canInit = true;
     } else
       canInit = true;
@@ -71,8 +71,10 @@ class ProviderProjet with ChangeNotifier {
   void init() {
     log.i('init called');
     canInit = false;
+    _editModuleIndex = 0;
+    _editProductIndex = 0;
     _listProduitModuleProjet = new List();
-    listProduitWithModule = new List();
+    listProduitProjet = new List();
     productList = [];
     client = null;
     _projetGamme = null;
@@ -88,22 +90,13 @@ class ProviderProjet with ChangeNotifier {
   }
 
   void loadProductCreationModel(int index) {
-    _quoteValues = productList[index];
     _editProductIndex = index;
     notifyListeners();
   }
 
   void initProductCreationModel() {
     //TODO modifier ici
-    _quoteValues = QuoteModel(
-        gamme: null,
-        nomDeProduit: null,
-        //TODO listeModele a suppr
-        listeModele: {'Modèle Premium n°1': null, 'Modèle Premium n°2': null},
-        listeModule: Map<String, dynamic>(),
-        modeleChoisi: null);
-    productList.add(_quoteValues);
-    _editProductIndex = productList.indexOf(_quoteValues);
+    _produitNom = '';
     notifyListeners();
   }
 
@@ -221,23 +214,28 @@ class ProviderProjet with ChangeNotifier {
   Map<String, dynamic> get modeleList => _quoteValues.listeModele;
 
   void logQC() {
-    if (projet != null)
-      log.i('QuoteCreation values:\n$projet');
-    else
-      log.e('Please create the project...');
+    projet != null
+        ? log.i('QuoteCreation values:\n$projet')
+        : log.e('Please create the project...');
   }
 
   void logQ() {
-    log.i('Quote values:\n${_quoteValues.toString()}');
+    productList != null
+        ? productList.forEach((p) => log.i(p))
+        : log.e('ERROR: No product List created.');
   }
 
   bool isFilled(String pageName) {
     switch (pageName) {
       case 'QuoteCreation':
-        return (client != null && _projetNom != null && _projetDesc.isNotEmpty);
+        return (client != null &&
+            _projetNom.isNotEmpty &&
+            _projetDesc.isNotEmpty);
         break;
       case 'ProductCreation':
-        return (_produitNom != null && _produitNom.isNotEmpty);
+        return (_produitNom.isNotEmpty &&
+            gamme != null &&
+            listProduitProjet.length != 0);
         break;
       case 'AddModule':
         return false;
@@ -263,15 +261,19 @@ class ProviderProjet with ChangeNotifier {
         },
       );
       notifyListeners();
-    }
+    } else
+      log.e('Error in initListProduitModuleProjet()!');
   }
 
+  ///Supprime les produitsModules du modèle de produit tout en gardant ceux ajoutés par l'utilisateur
   void resetListProduitModuleProjet(List<ProduitModuleData> listProduitModule) {
     if (listProduitModule != null && _listProduitModuleProjet != null) {
       listProduitModule.forEach(
           (produitModule) => _listProduitModuleProjet.remove(produitModule));
-    }
-    notifyListeners();
+      _projetModele = null;
+      notifyListeners();
+    } else
+      log.e('ERROR in resetListProduitModuleProjet()!');
   }
 
   void setFinitions(String choice) {
@@ -316,16 +318,16 @@ class ProviderProjet with ChangeNotifier {
         ProduitData(
             produitId: -1,
             produitNom: produitNom,
-            gammesId: gamme.gammeId,
+            gammesId: _projetGamme.gammeId,
             prixProduit: 0.0,
             modele: false),
         _listProduitModuleProjet);
-    listProduitWithModule.add(produitWithModule);
+    listProduitProjet.add(produitWithModule);
     notifyListeners();
   }
 
   void initProjetWithAllInfos() {
-    projetWithAllInfos = ProjetWithAllInfos(projet, listProduitWithModule);
+    projetWithAllInfos = ProjetWithAllInfos(projet, listProduitProjet);
     notifyListeners();
   }
 }

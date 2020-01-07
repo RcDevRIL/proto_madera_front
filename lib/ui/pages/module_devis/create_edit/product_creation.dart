@@ -142,6 +142,7 @@ class _ProductCreationState extends State<ProductCreation> {
                                 //Initialise la liste des modeles avec la gamme
                                 await providerBdd
                                     .initListProduitModele(gamme.gammeId),
+                                //Supprime les modules du modèle précédent qui sont encore listés en bas de l'interface
                                 providerProjet.resetListProduitModuleProjet(
                                     providerBdd.listProduitModule),
                               }
@@ -207,12 +208,10 @@ class _ProductCreationState extends State<ProductCreation> {
                     cardHeight: MediaQuery.of(context).size.height / 3.2,
                     child: Stack(
                       children: <Widget>[
-                        providerProjet.produitModules != null
+                        providerProjet.produitModules.length != 0
                             ? ListView.separated(
                                 shrinkWrap: true,
-                                itemCount: providerProjet.produitModules != null
-                                    ? providerProjet.produitModules.length
-                                    : 0,
+                                itemCount: providerProjet.produitModules.length,
                                 itemBuilder: (c, i) => Material(
                                   child: InkWell(
                                     highlightColor: Colors.transparent,
@@ -298,10 +297,11 @@ class _ProductCreationState extends State<ProductCreation> {
                   onPressed: providerProjet.isFilled('ProductCreation')
                       ? () {
                           log.d('Saving form...');
-                          providerProjet.logQ();
-                          providerProjet.productList[providerProjet
-                              .editProductIndex] = providerProjet.quoteValues;
                           providerProjet.initProduitWithModule();
+                          providerProjet.listProduitProjet[
+                                  providerProjet.editProductIndex] =
+                              providerProjet.produitWithModule;
+                          providerProjet.logQ();
                           log.d('Done.');
                           log.d('Quote Overview');
                           Provider.of<MaderaNav>(context)

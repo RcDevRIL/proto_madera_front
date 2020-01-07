@@ -63,9 +63,9 @@ class _ProductListState extends State<ProductList> {
                       horizontal: MediaQuery.of(context).size.width / 7.3,
                       vertical: 10.0,
                     ),
-                    itemCount: providerProjet.listProduitWithModule.length,
-                    itemBuilder: (c, i) =>
-                        _createProductTile(i, providerProjet.listProduitWithModule[i].produit.produitNom),
+                    itemCount: providerProjet.listProduitProjet.length,
+                    itemBuilder: (c, i) => _createProductTile(i,
+                        providerProjet.listProduitProjet[i].produit.produitNom),
                     separatorBuilder: (c, i) => SizedBox(
                       height: 10.0,
                     ),
@@ -142,9 +142,11 @@ class _ProductListState extends State<ProductList> {
                   onPressed: () async {
                     log.d("Create projetWithAllInfos");
                     providerProjet.initProjetWithAllInfos();
-                    if(!await Provider.of<ProviderLogin>(context).ping()) {
+                    if (!await Provider.of<ProviderLogin>(context).ping()) {
                       log.d("Appel serveur");
-                      await Provider.of<ProviderSynchro>(context).createProjectOnServer(providerProjet.projetWithAllInfos);
+                      await Provider.of<ProviderSynchro>(context)
+                          .createProjectOnServer(
+                              providerProjet.projetWithAllInfos);
                     } else {
                       log.d("Application offline, register in bdd local");
                       providerBdd.createAll(providerProjet.projetWithAllInfos);

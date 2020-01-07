@@ -237,7 +237,7 @@ class _QuoteCreationState extends State<QuoteCreation> {
                                 ? FutureBuilder(
                                     future: providerBdd.buildClientAdresse(
                                         providerProjet.client.id),
-                                    initialData: 'NO ADRESS LOADED',
+                                    // initialData: 'NO ADRESS LOADED',
                                     builder: (c, s) {
                                       if (s.hasData) {
                                         return Container(
