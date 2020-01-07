@@ -22,8 +22,6 @@ class QuoteCreation extends StatefulWidget {
 }
 
 class _QuoteCreationState extends State<QuoteCreation> {
-  TextEditingController _projetNomTextEditingController;
-  TextEditingController _projetDescTextEditingController;
   ScrollController _formScrollController;
   TextEditingController _clientAdressTextEditingController;
 
@@ -34,15 +32,11 @@ class _QuoteCreationState extends State<QuoteCreation> {
     super.initState();
     _formScrollController = ScrollController();
     _clientAdressTextEditingController = TextEditingController();
-    _projetNomTextEditingController = TextEditingController();
-    _projetDescTextEditingController = TextEditingController();
   }
 
   @override
   void dispose() {
     _formScrollController?.dispose();
-    _projetDescTextEditingController?.dispose();
-    _projetNomTextEditingController?.dispose();
     _clientAdressTextEditingController?.dispose();
     super.dispose();
   }
@@ -50,8 +44,6 @@ class _QuoteCreationState extends State<QuoteCreation> {
   @override
   void didChangeDependencies() {
     if (Provider.of<ProviderProjet>(context).client != null) {
-      _projetNomTextEditingController.text =
-          Provider.of<ProviderProjet>(context).projetNom;
       //TODO gérer les adresses
       _clientAdressTextEditingController.text =
           '4 rue Jean Jaurès, 21000 Dijon';
@@ -71,10 +63,12 @@ class _QuoteCreationState extends State<QuoteCreation> {
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
-            Text('Informations générales',
-                style: cTheme.MaderaTextStyles.appBarTitle.copyWith(
-                  fontSize: 32.0,
-                )),
+            Text(
+              'Informations générales',
+              style: cTheme.MaderaTextStyles.appBarTitle.copyWith(
+                fontSize: 32.0,
+              ),
+            ),
             GradientFrame(
               child: ListView(
                 controller: _formScrollController,
@@ -112,11 +106,14 @@ class _QuoteCreationState extends State<QuoteCreation> {
                             MediaQuery.of(context).size.width / 2.4 - 168.0,
                         cardHeight: cTheme.Dimens.cardHeight,
                         child: TextField(
-                          controller: _projetNomTextEditingController,
                           onChanged: (String newValue) {
-                            providerProjet.projetNom = newValue;
+                            providerProjet.setProjetNom(newValue);
                           },
                           decoration: InputDecoration(
+                            hintText: providerProjet.projetNom == null ||
+                                    providerProjet.projetNom.isEmpty
+                                ? null
+                                : providerProjet.projetNom,
                             border: OutlineInputBorder(
                               borderSide: BorderSide(
                                 color: Colors.black,
@@ -154,7 +151,8 @@ class _QuoteCreationState extends State<QuoteCreation> {
                           child: providerProjet.client != null
                               ? Text(
                                   '${providerProjet.dateNow.replaceAll('/', '')}_${providerProjet.client.id}')
-                              : Text('${providerProjet.dateNow}'),
+                              : Text(
+                                  '${providerProjet.dateNow.replaceAll('/', '')}'),
                         ),
                         header: LabelledIcon(
                           icon: Icon(
@@ -208,23 +206,24 @@ class _QuoteCreationState extends State<QuoteCreation> {
                                 ),
                               ),
                             ),
-                            TextField(
-                              maxLines: 1,
-                              controller: providerProjet.client != null
-                                  ? TextEditingController(
-                                      text: providerProjet.client.nom +
-                                          ' ' +
-                                          providerProjet.client.prenom,
-                                    )
-                                  : null,
-                              enabled: false,
-                              keyboardType: TextInputType.text,
-                              decoration: InputDecoration(
-                                border: OutlineInputBorder(
-                                  borderSide: BorderSide.none,
-                                ),
-                              ),
-                            ),
+                            providerProjet.client != null
+                                ? Container(
+                                    height: 50.0,
+                                    padding: const EdgeInsets.symmetric(
+                                      horizontal: 8.0,
+                                    ),
+                                    child: Align(
+                                      alignment: Alignment.centerLeft,
+                                      child: Text(
+                                        providerProjet.client.nom +
+                                            ' ' +
+                                            providerProjet.client.prenom,
+                                      ),
+                                    ),
+                                  )
+                                : Container(
+                                    height: 50.0,
+                                  ),
                             Align(
                               alignment: Alignment.centerLeft,
                               child: LabelledIcon(
@@ -242,17 +241,22 @@ class _QuoteCreationState extends State<QuoteCreation> {
                                 ),
                               ),
                             ),
-                            TextField(
-                              maxLines: 1,
-                              controller: _clientAdressTextEditingController,
-                              keyboardType: TextInputType.text,
-                              enabled: false,
-                              decoration: InputDecoration(
-                                border: OutlineInputBorder(
-                                  borderSide: BorderSide.none,
-                                ),
-                              ),
-                            ),
+                            providerProjet.client != null
+                                ? Container(
+                                    height: 50.0,
+                                    padding: const EdgeInsets.symmetric(
+                                      horizontal: 8.0,
+                                    ),
+                                    child: Align(
+                                      alignment: Alignment.centerLeft,
+                                      child: Text(
+                                        '4 rue Jean Jaurès, 21000 Dijon',
+                                      ),
+                                    ),
+                                  )
+                                : Container(
+                                    height: 50.0,
+                                  ),
                           ],
                         ),
                       ),
@@ -289,21 +293,22 @@ class _QuoteCreationState extends State<QuoteCreation> {
                                 ),
                               ),
                             ),
-                            TextField(
-                              maxLines: 1,
-                              controller: providerProjet.client != null
-                                  ? TextEditingController(
-                                      text: providerProjet.client.numTel,
-                                    )
-                                  : null,
-                              keyboardType: TextInputType.phone,
-                              enabled: false,
-                              decoration: InputDecoration(
-                                border: OutlineInputBorder(
-                                  borderSide: BorderSide.none,
-                                ),
-                              ),
-                            ),
+                            providerProjet.client != null
+                                ? Container(
+                                    height: 50.0,
+                                    padding: const EdgeInsets.symmetric(
+                                      horizontal: 8.0,
+                                    ),
+                                    child: Align(
+                                      alignment: Alignment.centerLeft,
+                                      child: Text(
+                                        providerProjet.client.numTel,
+                                      ),
+                                    ),
+                                  )
+                                : Container(
+                                    height: 50.0,
+                                  ),
                             Align(
                               alignment: Alignment.centerLeft,
                               child: LabelledIcon(
@@ -321,21 +326,22 @@ class _QuoteCreationState extends State<QuoteCreation> {
                                 ),
                               ),
                             ),
-                            TextField(
-                              maxLines: 1,
-                              controller: providerProjet.client != null
-                                  ? TextEditingController(
-                                      text: providerProjet.client.mail,
-                                    )
-                                  : null,
-                              keyboardType: TextInputType.emailAddress,
-                              enabled: false,
-                              decoration: InputDecoration(
-                                border: OutlineInputBorder(
-                                  borderSide: BorderSide.none,
-                                ),
-                              ),
-                            ),
+                            providerProjet.client != null
+                                ? Container(
+                                    height: 50.0,
+                                    padding: const EdgeInsets.symmetric(
+                                      horizontal: 8.0,
+                                    ),
+                                    child: Align(
+                                      alignment: Alignment.centerLeft,
+                                      child: Text(
+                                        providerProjet.client.mail,
+                                      ),
+                                    ),
+                                  )
+                                : Container(
+                                    height: 50.0,
+                                  ),
                           ],
                         ),
                       ),
@@ -353,7 +359,10 @@ class _QuoteCreationState extends State<QuoteCreation> {
                       keyboardType: TextInputType.multiline,
                       enabled: true,
                       decoration: InputDecoration(
-                        hintText: 'Rentrez la description du projet ici',
+                        hintText: providerProjet.description == null ||
+                                providerProjet.description.isEmpty
+                            ? 'Rentrez la description du projet ici'
+                            : providerProjet.description,
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.only(
                             bottomRight: Radius.circular(20.0),

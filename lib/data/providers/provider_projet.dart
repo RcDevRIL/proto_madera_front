@@ -16,8 +16,11 @@ import 'package:proto_madera_front/data/models/quote_model.dart';
 ///
 /// @version 0.4-RELEASE
 class ProviderProjet with ChangeNotifier {
-  String produitNom;
-  String projetNom;
+  String _produitNom;
+  String _projetNom;
+  String _projetDesc;
+  GammeData _projetGamme;
+  ProduitData _projetModele;
   QuoteCreationModel _quoteCreationValues;
   QuoteModel _quoteValues;
   int _editModuleIndex;
@@ -35,7 +38,7 @@ class ProviderProjet with ChangeNotifier {
 
   static DateTime dateProjet = DateTime.now();
 
-  List<ProduitModuleData> listProduitModuleProjet;
+  List<ProduitModuleData> _listProduitModuleProjet;
   ModuleData moduleChoice;
   ProduitWithModule produitWithModule;
   ProduitModuleData moduleAdd;
@@ -66,11 +69,16 @@ class ProviderProjet with ChangeNotifier {
   }
 
   void init() {
-    listProduitModuleProjet = new List();
-    listProduitWithModule = new List();
     log.i('init called');
     canInit = false;
+    _listProduitModuleProjet = new List();
+    listProduitWithModule = new List();
     productList = [];
+    client = null;
+    _projetGamme = null;
+    _projetModele = null;
+    _projetNom = '';
+    _projetDesc = '';
     initProductCreationModel();
   }
 
@@ -136,20 +144,39 @@ class ProviderProjet with ChangeNotifier {
   String get refProjet => _quoteCreationValues.refProjet;
 
   void setDescription(String desc) {
-    _quoteCreationValues.descriptionProjet = desc;
+    _projetDesc = desc;
     notifyListeners();
   }
 
-  String get description => _quoteCreationValues.descriptionProjet;
+  String get description => _projetDesc;
 
-  String get nomDeProduit => _quoteValues.nomDeProduit;
-
-  void setGamme(String nomGamme) {
-    _quoteValues.gamme = nomGamme;
+  void setProjetNom(String nom) {
+    _projetNom = nom;
     notifyListeners();
   }
 
-  String get gamme => _quoteValues.gamme;
+  String get projetNom => _projetNom;
+
+  void setProduitNom(String nom) {
+    _produitNom = nom;
+    notifyListeners();
+  }
+
+  String get produitNom => _produitNom;
+
+  void setGamme(GammeData gammeChoisie) {
+    _projetGamme = gammeChoisie;
+    notifyListeners();
+  }
+
+  GammeData get gamme => _projetGamme;
+
+  void setModele(ProduitData modeleChoisi) {
+    _projetModele = modeleChoisi;
+    notifyListeners();
+  }
+
+  ProduitData get modelProduit => _projetModele;
 
   void setModel(String nomModel) {
     _quoteValues.modeleChoisi = nomModel;
@@ -189,12 +216,15 @@ class ProviderProjet with ChangeNotifier {
     }
   }
 
-  Map<String, dynamic> get productModules => _quoteValues.listeModule;
+  List<ProduitModuleData> get produitModules => _listProduitModuleProjet;
 
   Map<String, dynamic> get modeleList => _quoteValues.listeModele;
 
   void logQC() {
-    log.i('QuoteCreation values:\n$_quoteCreationValues');
+    if (projet != null)
+      log.i('QuoteCreation values:\n$projet');
+    else
+      log.e('Please create the project...');
   }
 
   void logQ() {
@@ -204,15 +234,15 @@ class ProviderProjet with ChangeNotifier {
   bool isFilled(String pageName) {
     switch (pageName) {
       case 'QuoteCreation':
-        return (client != null && projetNom != null);
+        return (client != null &&
+            _projetNom != null &&
+            (_projetDesc != null && _projetDesc.isNotEmpty));
         break;
       case 'ProductCreation':
-        return (produitNom != null);
+        return (_produitNom != null && _produitNom.isNotEmpty);
         break;
       case 'AddModule':
-        return (productModules.values
-            .elementAt(editModuleIndex)['nature']
-            .isNotEmpty);
+        return false;
         break;
       default:
         return false;
@@ -221,7 +251,8 @@ class ProviderProjet with ChangeNotifier {
   }
 
   void updateModuleNature(String newValue) {
-    productModules.values.elementAt(editModuleIndex)['nature'] = newValue;
+    _quoteValues.listeModule.values.elementAt(editModuleIndex)['nature'] =
+        newValue;
     notifyListeners();
   }
 
@@ -230,7 +261,7 @@ class ProviderProjet with ChangeNotifier {
     if (listProduitModule != null) {
       listProduitModule.forEach(
         (produitModule) => {
-          listProduitModuleProjet.add(produitModule),
+          _listProduitModuleProjet.add(produitModule),
         },
       );
       notifyListeners();
@@ -238,28 +269,22 @@ class ProviderProjet with ChangeNotifier {
   }
 
   void resetListProduitModuleProjet(List<ProduitModuleData> listProduitModule) {
-    if (listProduitModule != null && listProduitModuleProjet != null) {
+    if (listProduitModule != null && _listProduitModuleProjet != null) {
       listProduitModule.forEach(
-          (produitModule) => listProduitModuleProjet.remove(produitModule));
+          (produitModule) => _listProduitModuleProjet.remove(produitModule));
     }
     notifyListeners();
   }
 
   void setFinitions(String choice) {
-    productModules.values
+    _quoteValues.listeModule.values
         .elementAt(editModuleIndex)
         .addAll({'finitions': choice});
   }
 
   void addModuleToListProduitModuleProjet() {
-    listProduitModuleProjet.add(moduleAdd);
+    _listProduitModuleProjet.add(moduleAdd);
     notifyListeners();
-  }
-
-  void initClient(
-      String nom, String prenom, String mailClient, String telClient) {
-    client = new ClientData(
-        id: -1, nom: nom, prenom: prenom, mail: mailClient, numTel: telClient);
   }
 
   void initClientWithClient(ClientData client) {
@@ -288,15 +313,15 @@ class ProviderProjet with ChangeNotifier {
     notifyListeners();
   }
 
-  void initProduitWithModule(String produitNom, int gammesId) {
+  void initProduitWithModule() {
     produitWithModule = ProduitWithModule(
         ProduitData(
             produitId: -1,
             produitNom: produitNom,
-            gammesId: gammesId,
+            gammesId: gamme.gammeId,
             prixProduit: 0.0,
             modele: false),
-        listProduitModuleProjet);
+        _listProduitModuleProjet);
     listProduitWithModule.add(produitWithModule);
     notifyListeners();
   }

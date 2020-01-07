@@ -25,34 +25,21 @@ class ProductCreation extends StatefulWidget {
 
 class _ProductCreationState extends State<ProductCreation> {
   final log = Logger();
-  String dropdownGammeValue;
-  String dropdownModeleValue;
-  bool canValidateForm;
-  int gammesId;
-
-  TextEditingController _produitNomEditingController;
 
   //added to prepare for scaling
   @override
   void initState() {
-    _produitNomEditingController = TextEditingController();
-    gammesId = 0;
     super.initState();
   }
 
   //added to prepare for scaling
   @override
   void dispose() {
-    _produitNomEditingController.dispose();
     super.dispose();
   }
 
   @override
   void didChangeDependencies() {
-    if (Provider.of<ProviderProjet>(context).produitNom != null) {
-      _produitNomEditingController.text =
-          Provider.of<ProviderProjet>(context).produitNom;
-    }
     super.didChangeDependencies();
   }
 
@@ -84,12 +71,15 @@ class _ProductCreationState extends State<ProductCreation> {
                       maxLines: 1,
                       keyboardType: TextInputType.text,
                       enabled: true,
-                      controller: _produitNomEditingController,
                       onChanged: (String newValue) {
-                        providerProjet.produitNom = newValue;
+                        providerProjet.setProduitNom(newValue);
                       },
                       decoration: InputDecoration(
-                        hintText: 'Nom du produit...',
+                        //TODO style dynamique : style hint si pas de produit, style defaulttextstyle si produit nom renseigné
+                        hintText: providerProjet.produitNom == null ||
+                                providerProjet.produitNom.isEmpty
+                            ? 'Nom du produit...'
+                            : providerProjet.produitNom,
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.only(
                             bottomRight: Radius.circular(20.0),
@@ -123,8 +113,9 @@ class _ProductCreationState extends State<ProductCreation> {
                     ),
                     child: DropdownButton<String>(
                       isExpanded: true,
-                      value: providerProjet.gamme,
-                      hint: Text('Sélectionnez une gamme...'),
+                      hint: providerProjet.gamme == null
+                          ? Text('Sélectionnez une gamme...')
+                          : Text(providerProjet.gamme.libelleGammes),
                       icon: Icon(Icons.arrow_drop_down,
                           color: cTheme.MaderaColors.maderaLightGreen),
                       iconSize: 20,
@@ -142,16 +133,12 @@ class _ProductCreationState extends State<ProductCreation> {
                                   ))
                           .toList(),
                       onChanged: (String newValue) {
-                        dropdownGammeValue = newValue;
-                        dropdownModeleValue = null;
                         providerBdd.listGammes.forEach(
                           (gamme) async => {
                             if (gamme.libelleGammes == newValue)
                               {
-                                providerProjet.setModel(dropdownModeleValue),
                                 //Enregistre la nouvelle gamme
-                                providerProjet.setGamme(newValue),
-                                gammesId = gamme.gammeId,
+                                providerProjet.setGamme(gamme),
                                 //Initialise la liste des modeles avec la gamme
                                 await providerBdd
                                     .initListProduitModele(gamme.gammeId),
@@ -170,8 +157,9 @@ class _ProductCreationState extends State<ProductCreation> {
                     edgeInsetsPadding: EdgeInsets.symmetric(horizontal: 8.0),
                     child: DropdownButton<String>(
                       isExpanded: true,
-                      value: providerProjet.model,
-                      hint: Text('Sélectionnez un modèle...'),
+                      hint: providerProjet.modelProduit == null
+                          ? Text('Sélectionnez un modèle de produit...')
+                          : Text(providerProjet.modelProduit.produitNom),
                       icon: Icon(Icons.arrow_drop_down,
                           color: cTheme.MaderaColors.maderaLightGreen),
                       iconSize: 20,
@@ -192,16 +180,13 @@ class _ProductCreationState extends State<ProductCreation> {
                               )
                               .toList()
                           : null,
-                      onChanged: dropdownGammeValue != null
+                      onChanged: providerProjet.gamme != null
                           ? (String newValue) {
-                              dropdownModeleValue = newValue;
                               providerBdd.listProduitModele.forEach(
                                 (produit) async => {
                                   if (produit.produitNom == newValue)
                                     {
-                                      //TODO probleme lors de l'init de la valeur modele ! (ex : on revient de l'ajout de module ca marche pas)
-                                      providerProjet
-                                          .setModel(dropdownModeleValue),
+                                      providerProjet.setModele(produit),
                                       //Charge les produitModules
                                       await providerBdd.initListProduitModule(
                                         produit.produitId,
@@ -222,15 +207,12 @@ class _ProductCreationState extends State<ProductCreation> {
                     cardHeight: MediaQuery.of(context).size.height / 3.2,
                     child: Stack(
                       children: <Widget>[
-                        providerProjet.productModules != null
+                        providerProjet.produitModules != null
                             ? ListView.separated(
                                 shrinkWrap: true,
-                                itemCount:
-                                    providerProjet.listProduitModuleProjet !=
-                                            null
-                                        ? providerProjet
-                                            .listProduitModuleProjet.length
-                                        : 0,
+                                itemCount: providerProjet.produitModules != null
+                                    ? providerProjet.produitModules.length
+                                    : 0,
                                 itemBuilder: (c, i) => Material(
                                   child: InkWell(
                                     highlightColor: Colors.transparent,
@@ -238,7 +220,7 @@ class _ProductCreationState extends State<ProductCreation> {
                                         cTheme.MaderaColors.maderaBlueGreen,
                                     child: ListTile(
                                       title: Text(
-                                        providerProjet.listProduitModuleProjet
+                                        providerProjet.produitModules
                                             .elementAt(i)
                                             .produitModuleNom,
                                       ),
@@ -260,18 +242,12 @@ class _ProductCreationState extends State<ProductCreation> {
                         Align(
                           alignment: Alignment.bottomRight,
                           child: MaderaButton(
-                            onPressed: providerProjet.productModules != null
+                            onPressed: providerProjet.produitModules != null
                                 ? () {
                                     log.d("Adding Module for this quote");
                                     providerProjet.editModuleIndex =
-                                        providerProjet.productModules.length;
-                                    providerProjet.productModules.putIfAbsent(
-                                      'untitled module',
-                                      () => {
-                                        'name': 'untitled module',
-                                        'nature': '',
-                                      },
-                                    );
+                                        providerProjet.produitModules
+                                            .length; //on veut indexmax+1
                                     Provider.of<MaderaNav>(context)
                                         .redirectToPage(
                                             context, AddModule(), null);
@@ -309,7 +285,7 @@ class _ProductCreationState extends State<ProductCreation> {
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
                   border: Border.all(
-                      color: providerProjet.productModules != null
+                      color: providerProjet.isFilled('ProductCreation')
                           ? cTheme.MaderaColors.maderaLightGreen
                           : Colors.grey,
                       width: 2),
@@ -325,8 +301,7 @@ class _ProductCreationState extends State<ProductCreation> {
                           providerProjet.logQ();
                           providerProjet.productList[providerProjet
                               .editProductIndex] = providerProjet.quoteValues;
-                          providerProjet.initProduitWithModule(
-                              _produitNomEditingController.text, gammesId);
+                          providerProjet.initProduitWithModule();
                           log.d('Done.');
                           log.d('Quote Overview');
                           Provider.of<MaderaNav>(context)
