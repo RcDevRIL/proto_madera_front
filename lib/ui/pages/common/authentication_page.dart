@@ -263,7 +263,7 @@ class _AuthenticationPageState extends State<AuthenticationPage> {
             context,
             Icons.warning,
             'Erreur réseau',
-            'Le serveur n\'est pas joignable.',
+            'Le serveur n\'est pas joignable.',null,
           );
         }
         break;
@@ -273,7 +273,7 @@ class _AuthenticationPageState extends State<AuthenticationPage> {
             context,
             Icons.warning,
             'Erreur d\'authentification',
-            'Le login et / ou le mot de passe sont incorrects',
+            'Le login et / ou le mot de passe sont incorrects',null,
           );
         }
         break;
@@ -283,7 +283,7 @@ class _AuthenticationPageState extends State<AuthenticationPage> {
             context,
             Icons.warning,
             'Autorisation requise',
-            'Les identifiants sont incorrects',
+            'Les identifiants sont incorrects',null,
           );
         }
         break;
@@ -293,7 +293,7 @@ class _AuthenticationPageState extends State<AuthenticationPage> {
             context,
             Icons.warning,
             'Default',
-            'Oups! Ceci ne devrait pas arriver...',
+            'Oups! Ceci ne devrait pas arriver...',null,
           );
         }
         break;
@@ -306,7 +306,7 @@ class _AuthenticationPageState extends State<AuthenticationPage> {
       Icons.warning,
       'Erreur de synchronisation',
       'Erreur lors de l'
-          'appel à la méthode $synchroTried().',
+          'appel à la méthode $synchroTried().',null,
     );
   }
 }

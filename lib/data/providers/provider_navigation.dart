@@ -192,9 +192,10 @@ class MaderaNav with ChangeNotifier {
       });
   }
 
-  //Je rajoute cette méthode qui permet de gagner du temps si on veut juste un bouton OK nav.pop()
+  ///Custom alert dialog when user can't do anything but accept message.
+  ///Can accept a Page to redirect on click on the 'Ok' button
   void showNothingYouCanDoPopup(
-          BuildContext context, IconData icon, String title, String message) =>
+          BuildContext context, IconData icon, String title, String message, Widget thenRedirectToPage) =>
       showPopup(
         context,
         icon,
@@ -206,6 +207,8 @@ class MaderaNav with ChangeNotifier {
             child: Text('Ok'),
             onPressed: () {
               Navigator.of(context).pop();
+              if(thenRedirectToPage != null)
+               redirectToPage(context, thenRedirectToPage, null);
             },
           ),
         ],

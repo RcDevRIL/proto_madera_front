@@ -411,7 +411,6 @@ class _QuoteCreationState extends State<QuoteCreation> {
                       : Colors.grey,
                 ),
                 child: IconButton(
-                  //TODO changer les conditions dans isFilled
                   onPressed: providerProjet.isFilled('QuoteCreation')
                       ? () {
                           log.d('Saving form...');

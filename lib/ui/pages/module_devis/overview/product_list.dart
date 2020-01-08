@@ -86,6 +86,8 @@ class _ProductListState extends State<ProductList> {
                         onTap: () {
                           log.d('Adding a new product');
                           providerProjet.initProductCreationModel();
+                          providerProjet.editProductIndex = providerProjet
+                              .listProduitProjet.length; //on veut index max +1
                           Provider.of<MaderaNav>(context)
                               .redirectToPage(context, ProductCreation(), null);
                         },
@@ -103,6 +105,9 @@ class _ProductListState extends State<ProductList> {
                               onPressed: () {
                                 log.d('Adding a new product');
                                 providerProjet.initProductCreationModel();
+                                providerProjet.editProductIndex = providerProjet
+                                    .listProduitProjet
+                                    .length; //on veut index max +1
                                 Provider.of<MaderaNav>(context).redirectToPage(
                                     context, ProductCreation(), null);
                               },
@@ -148,11 +153,12 @@ class _ProductListState extends State<ProductList> {
                       await Provider.of<ProviderSynchro>(context)
                           .createProjectOnServer(
                               providerProjet.projetWithAllInfos);
+                      await Provider.of<ProviderSynchro>(context).synchroData()
+                    ? log.i('New project loaded from backend server') : log.e('Error when trying to synchro user data');
                     } else {
                       log.d('Application offline, register in bdd local');
                       providerBdd.createAll(providerProjet.projetWithAllInfos);
                     }
-                    //TODO reset infos providerProjet !
                     providerProjet.validate(true);
                     Provider.of<MaderaNav>(context)
                         .redirectToPage(context, QuoteOverview(), null);
@@ -180,10 +186,8 @@ class _ProductListState extends State<ProductList> {
                         context,
                         Icons.warning,
                         'Abandon du projet',
-                        'Le projet en cours de création va être supprimé.');
+                        'Le projet en cours de création va être supprimé.', HomePage());
                     providerProjet.validate(false);
-                    Provider.of<MaderaNav>(context)
-                        .redirectToPage(context, HomePage(), null);
                   },
                   icon: Icon(
                     Icons.delete,

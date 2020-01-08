@@ -33,9 +33,6 @@ class ProviderProjet with ChangeNotifier {
   List<ProduitWithModule> listProduitProjet;
   ClientData client;
 
-  //Produits
-  ProduitData produitCourant;
-
   static final DateTime _dateProjet = DateTime.now();
   static final String _dateNow = _dateProjet.year.toString() +
       '/' +
@@ -81,7 +78,8 @@ class ProviderProjet with ChangeNotifier {
     _produitModele = null;
     _projetNom = '';
     _projetDesc = '';
-    initProductCreationModel();
+    _produitNom = '';
+    notifyListeners();
   }
 
   void deleteProductCreationModel(int productID) {
@@ -114,12 +112,6 @@ class ProviderProjet with ChangeNotifier {
     super.dispose();
   }
 
-  void flush() {
-    //TODO Enregistrer la configuration actuelle du devis en BDD
-    canInit = true;
-    initAndHold();
-  }
-
   QuoteModel get quoteValues => _quoteValues;
 
   set editModuleIndex(int index) {
@@ -128,6 +120,11 @@ class ProviderProjet with ChangeNotifier {
   }
 
   int get editModuleIndex => _editModuleIndex;
+
+  set editProductIndex(int index) {
+    _editProductIndex = index;
+    notifyListeners();
+  }
 
   int get editProductIndex => _editProductIndex;
 
@@ -229,8 +226,8 @@ class ProviderProjet with ChangeNotifier {
   }
 
   void logQ() {
-    productList != null
-        ? productList.forEach((p) => log.i(p))
+    _listProduitModuleProjet != null
+        ? _listProduitModuleProjet.forEach((p) => log.i(p))
         : log.e('ERROR: No product List created.');
   }
 
@@ -244,7 +241,7 @@ class ProviderProjet with ChangeNotifier {
       case 'ProductCreation':
         return (_produitNom.isNotEmpty &&
             gamme != null &&
-            listProduitProjet.length != 0);
+            _listProduitModuleProjet.length != 0);
         break;
       case 'AddModule':
         return false;
@@ -282,7 +279,8 @@ class ProviderProjet with ChangeNotifier {
       _produitModele = null;
       notifyListeners();
     } else
-      log.e('ERROR in resetListProduitModuleProjet()!');
+      log.e(
+          'ERROR in resetListProduitModuleProjet()! First time calling it for this product ? If so, ignore.');
   }
 
   void setFinitions(String choice) {
@@ -331,12 +329,23 @@ class ProviderProjet with ChangeNotifier {
             prixProduit: 0.0,
             modele: false),
         _listProduitModuleProjet);
-    listProduitProjet.add(produitWithModule);
     notifyListeners();
   }
 
   void initProjetWithAllInfos() {
     projetWithAllInfos = ProjetWithAllInfos(projet, listProduitProjet);
+    notifyListeners();
+  }
+
+  void updateListProduitProjet() {
+    if (_editProductIndex != listProduitProjet.length) {
+      log.d('updating existing product...');
+      listProduitProjet.removeAt(_editProductIndex);
+      listProduitProjet.insert(_editProductIndex, produitWithModule);
+    } else {
+      log.d('adding new product...');
+      listProduitProjet.add(produitWithModule);
+    }
     notifyListeners();
   }
 }

@@ -25,6 +25,7 @@ class ProductCreation extends StatefulWidget {
 
 class _ProductCreationState extends State<ProductCreation> {
   final log = Logger();
+  bool isEditing = false;
 
   //added to prepare for scaling
   @override
@@ -48,16 +49,24 @@ class _ProductCreationState extends State<ProductCreation> {
     //final args = ModalRoute.of(context).settings.arguments;
     var providerProjet = Provider.of<ProviderProjet>(context);
     var providerBdd = Provider.of<ProviderBdd>(context);
+    (providerProjet.editProductIndex == providerProjet.listProduitProjet.length) ||
+            (providerProjet.listProduitProjet.length == 0)
+        ? isEditing = false
+        : isEditing = true;
+    String pageTitle;
+    isEditing
+        ? pageTitle =
+            'Edition du Produit n°${providerProjet.editProductIndex + 1}'
+        : pageTitle = 'Création d\'un nouveau produit';
     return MaderaScaffold(
       passedContext: context,
       child: Center(
-        /** Centre de la page */
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
             Text(
-              'Produit n°${Provider.of<ProviderProjet>(context).editProductIndex}', //TODO implémenter getProductNumber dans Provider Projet
+              pageTitle,
               style:
                   cTheme.MaderaTextStyles.appBarTitle.copyWith(fontSize: 32.0),
             ),
@@ -299,9 +308,7 @@ class _ProductCreationState extends State<ProductCreation> {
                       ? () {
                           log.d('Saving form...');
                           providerProjet.initProduitWithModule();
-                          providerProjet.listProduitProjet[
-                                  providerProjet.editProductIndex] =
-                              providerProjet.produitWithModule;
+                          providerProjet.updateListProduitProjet();
                           providerProjet.logQ();
                           log.d('Done.');
                           log.d('Quote Overview');
@@ -324,7 +331,13 @@ class _ProductCreationState extends State<ProductCreation> {
                     color: cTheme.MaderaColors.maderaBlueGreen),
                 child: IconButton(
                   tooltip: 'Supprimer produit',
-                  onPressed: () {},
+                  onPressed: () {
+                    log.d('Deleting product...');
+                    providerProjet
+                        .deleteProductCreationModel(
+                            providerProjet.editProductIndex);
+                    Provider.of<MaderaNav>(context).redirectToPage(context, ProductList(), null);
+                  },
                   icon: Icon(
                     Icons.delete,
                     color: Colors.white,
