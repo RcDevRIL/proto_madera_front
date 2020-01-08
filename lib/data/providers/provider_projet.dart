@@ -188,10 +188,6 @@ class ProviderProjet with ChangeNotifier {
     }
   }
 
-  Map<String, dynamic> get productModules => _quoteValues.listeModule;
-
-  Map<String, dynamic> get modeleList => _quoteValues.listeModele;
-
   void logQC() {
     log.i('QuoteCreation values:\n$_quoteCreationValues');
   }
@@ -209,19 +205,12 @@ class ProviderProjet with ChangeNotifier {
         return (produitNom != null);
         break;
       case 'AddModule':
-        return (productModules.values
-            .elementAt(editModuleIndex)['nature']
-            .isNotEmpty);
+        return true;
         break;
       default:
         return false;
         break;
     }
-  }
-
-  void updateModuleNature(String newValue) {
-    productModules.values.elementAt(editModuleIndex)['nature'] = newValue;
-    notifyListeners();
   }
 
   ///Ajoute les produitsModules chargés a la liste des produitsModules du projet
@@ -244,11 +233,7 @@ class ProviderProjet with ChangeNotifier {
     notifyListeners();
   }
 
-  void setFinitions(String choice) {
-    productModules.values
-        .elementAt(editModuleIndex)
-        .addAll({'finitions': choice});
-  }
+  void setFinitions(String choice) {}
 
   void addModuleToListProduitModuleProjet() {
     listProduitModuleProjet.add(moduleAdd);
@@ -276,6 +261,7 @@ class ProviderProjet with ChangeNotifier {
       devisEtatId: 2,
       clientId: client.id,
       prixTotal: 0.0,
+      isSynchro: false,
     );
     notifyListeners();
   }

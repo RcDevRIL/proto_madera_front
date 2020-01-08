@@ -61,15 +61,8 @@ class _AddModuleState extends State<AddModule> {
     var providerProjet = Provider.of<ProviderProjet>(context);
     var providerBdd = Provider.of<ProviderBdd>(context);
     //TODO apporter modification ici (edition)
-    if (providerProjet.editModuleIndex !=
-        providerProjet.productModules.length - 1) {
+    if (providerProjet.editModuleIndex != -1) {
       useCase = 'Modifier';
-      _nameTextController.text = providerProjet.productModules.entries
-          .elementAt(providerProjet.editModuleIndex)
-          .value['name'];
-      dropdownValue = providerProjet.productModules.entries
-          .elementAt(providerProjet.editModuleIndex)
-          .value['nature'];
     } else
       useCase = 'Ajouter';
 
@@ -115,7 +108,6 @@ class _AddModuleState extends State<AddModule> {
                                   color: Colors.transparent,
                                 ),
                                 onChanged: (String newValue) {
-                                  providerProjet.updateModuleNature(newValue);
                                   providerBdd.initModules(newValue);
                                   setState(() {
                                     dropdownValue = newValue;
@@ -367,9 +359,6 @@ class _AddModuleState extends State<AddModule> {
                   onPressed: providerProjet.isFilled('AddModule')
                       ? () {
                           log.d("Canceling Module...");
-                          providerProjet.productModules.remove(providerProjet
-                              .productModules.keys
-                              .elementAt(providerProjet.editModuleIndex));
                           Provider.of<MaderaNav>(context)
                               .redirectToPage(context, ProductCreation(), null);
                         }

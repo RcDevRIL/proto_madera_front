@@ -221,9 +221,7 @@ class _ProductCreationState extends State<ProductCreation> {
                   MaderaCard(
                     cardHeight: MediaQuery.of(context).size.height / 3.2,
                     child: Stack(
-                      children: <Widget>[
-                        providerProjet.productModules != null
-                            ? ListView.separated(
+                      children: <Widget>[ListView.separated(
                                 shrinkWrap: true,
                                 itemCount:
                                     providerProjet.listProduitModuleProjet !=
@@ -255,28 +253,15 @@ class _ProductCreationState extends State<ProductCreation> {
                                 separatorBuilder: (c, i) => Divider(
                                   color: Colors.green,
                                 ),
-                              )
-                            : Container(),
+                              ),
                         Align(
                           alignment: Alignment.bottomRight,
                           child: MaderaButton(
-                            onPressed: providerProjet.productModules != null
-                                ? () {
-                                    log.d("Adding Module for this quote");
-                                    providerProjet.editModuleIndex =
-                                        providerProjet.productModules.length;
-                                    providerProjet.productModules.putIfAbsent(
-                                      'untitled module',
-                                      () => {
-                                        'name': 'untitled module',
-                                        'nature': '',
-                                      },
-                                    );
-                                    Provider.of<MaderaNav>(context)
-                                        .redirectToPage(
-                                            context, AddModule(), null);
-                                  }
-                                : null,
+                            onPressed: () {
+                              log.d("Adding Module for this quote");
+                              Provider.of<MaderaNav>(context)
+                                  .redirectToPage(context, AddModule(), null);
+                            },
                             child: LabelledIcon(
                               icon: Icon(Icons.add),
                               text: Text("Ajouter Module"),
@@ -309,9 +294,7 @@ class _ProductCreationState extends State<ProductCreation> {
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
                   border: Border.all(
-                      color: providerProjet.productModules != null
-                          ? cTheme.MaderaColors.maderaLightGreen
-                          : Colors.grey,
+                      color:  cTheme.MaderaColors.maderaLightGreen,
                       width: 2),
                   color: providerProjet.isFilled('ProductCreation')
                       ? cTheme.MaderaColors.maderaBlueGreen
