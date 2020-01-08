@@ -25,7 +25,7 @@ class ProductCreation extends StatefulWidget {
 
 class _ProductCreationState extends State<ProductCreation> {
   final log = Logger();
-  bool isEditing = false;
+  bool isEditing;
 
   //added to prepare for scaling
   @override
@@ -49,15 +49,11 @@ class _ProductCreationState extends State<ProductCreation> {
     //final args = ModalRoute.of(context).settings.arguments;
     var providerProjet = Provider.of<ProviderProjet>(context);
     var providerBdd = Provider.of<ProviderBdd>(context);
-    (providerProjet.editProductIndex == providerProjet.listProduitProjet.length) ||
+    (providerProjet.editProductIndex ==
+                providerProjet.listProduitProjet.length) ||
             (providerProjet.listProduitProjet.length == 0)
         ? isEditing = false
         : isEditing = true;
-    String pageTitle;
-    isEditing
-        ? pageTitle =
-            'Edition du Produit n°${providerProjet.editProductIndex + 1}'
-        : pageTitle = 'Création d\'un nouveau produit';
     return MaderaScaffold(
       passedContext: context,
       child: Center(
@@ -66,7 +62,9 @@ class _ProductCreationState extends State<ProductCreation> {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
             Text(
-              pageTitle,
+              isEditing
+                  ? 'Edition du Produit n°${providerProjet.editProductIndex + 1}'
+                  : 'Création d\'un nouveau produit',
               style:
                   cTheme.MaderaTextStyles.appBarTitle.copyWith(fontSize: 32.0),
             ),
@@ -85,8 +83,7 @@ class _ProductCreationState extends State<ProductCreation> {
                       },
                       decoration: InputDecoration(
                         //TODO style dynamique : style hint si pas de produit, style defaulttextstyle si produit nom renseigné
-                        hintText: providerProjet.produitNom == null ||
-                                providerProjet.produitNom.isEmpty
+                        hintText: !isEditing
                             ? 'Nom du produit...'
                             : providerProjet.produitNom,
                         border: OutlineInputBorder(
@@ -237,6 +234,7 @@ class _ProductCreationState extends State<ProductCreation> {
                                     onTap: () {
                                       log.d('Modifying module...');
                                       providerProjet.editModuleIndex = i;
+                                      providerProjet.loadModuleInfos(i);
                                       Provider.of<MaderaNav>(context)
                                           .redirectToPage(
                                               context, AddModule(), null);
@@ -251,7 +249,7 @@ class _ProductCreationState extends State<ProductCreation> {
                         Align(
                           alignment: Alignment.bottomRight,
                           child: MaderaButton(
-                            onPressed: providerProjet.produitModules != null
+                            onPressed: providerProjet.gamme != null
                                 ? () {
                                     log.d('Adding Module for this quote');
                                     providerProjet.editModuleIndex =
@@ -311,7 +309,6 @@ class _ProductCreationState extends State<ProductCreation> {
                           providerProjet.updateListProduitProjet();
                           providerProjet.logQ();
                           log.d('Done.');
-                          log.d('Quote Overview');
                           Provider.of<MaderaNav>(context)
                               .redirectToPage(context, ProductList(), null);
                         }
@@ -332,11 +329,29 @@ class _ProductCreationState extends State<ProductCreation> {
                 child: IconButton(
                   tooltip: 'Supprimer produit',
                   onPressed: () {
-                    log.d('Deleting product...');
-                    providerProjet
-                        .deleteProductCreationModel(
-                            providerProjet.editProductIndex);
-                    Provider.of<MaderaNav>(context).redirectToPage(context, ProductList(), null);
+                    Provider.of<MaderaNav>(context).showPopup(
+                        context,
+                        Icons.warning,
+                        'Remise à zéro',
+                        Center(
+                            child: Text(
+                                'Voulez-vous vraiment remettre ce formulaire à zéro?')),
+                        [
+                          MaderaButton(
+                            onPressed: () {
+                              Navigator.of(context).pop();
+                            },
+                            child: Text('Annuler'),
+                          ),
+                          MaderaButton(
+                            onPressed: () {
+                              Provider.of<ProviderProjet>(context)
+                                  .initProductCreationModel(); //TODO Corriger, le nom reste si remplit avant clic, pourtant modele bien vide
+                              Navigator.of(context).pop();
+                            },
+                            child: Text('Oui'),
+                          ),
+                        ]);
                   },
                   icon: Icon(
                     Icons.delete,

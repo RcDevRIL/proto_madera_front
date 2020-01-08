@@ -25,12 +25,14 @@ class Finishings extends StatefulWidget {
 
 class _FinishingsState extends State<Finishings> {
   final log = Logger();
-  String choice;
+  String finitionInterieure;
+  String finitionExterieure;
 
   @override
   void initState() {
     super.initState();
-    choice = 'Finition 1';
+    finitionInterieure = 'Finition 1';
+    finitionExterieure = '';
   }
 
   @override
@@ -96,20 +98,20 @@ class _FinishingsState extends State<Finishings> {
                               title: const Text(
                                   'Finition 1 avec un texte super méga long'),
                               value: 'Finition 1',
-                              groupValue: choice,
+                              groupValue: finitionInterieure,
                               onChanged: (String val) {
                                 setState(() {
-                                  choice = val;
+                                  finitionInterieure = val;
                                 });
                               },
                             ),
                             RadioListTile<String>(
                               title: const Text('Finition 2'),
                               value: 'Finition 2',
-                              groupValue: choice,
+                              groupValue: finitionInterieure,
                               onChanged: (String val) {
                                 setState(() {
-                                  choice = val;
+                                  finitionInterieure = val;
                                 });
                               },
                             ),
@@ -155,20 +157,20 @@ class _FinishingsState extends State<Finishings> {
                               title: const Text(
                                   'Finition 1 avec un texte super méga long'),
                               value: 'Finition 1',
-                              groupValue: choice,
+                              groupValue: finitionExterieure,
                               onChanged: (String val) {
                                 setState(() {
-                                  choice = val;
+                                  finitionExterieure = val;
                                 });
                               },
                             ),
                             RadioListTile<String>(
                               title: const Text('Finition 2'),
                               value: 'Finition 2',
-                              groupValue: choice,
+                              groupValue: finitionExterieure,
                               onChanged: (String val) {
                                 setState(() {
-                                  choice = val;
+                                  finitionExterieure = val;
                                 });
                               },
                             ),

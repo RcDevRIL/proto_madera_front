@@ -19,37 +19,38 @@ class MaderaApp extends StatelessWidget {
   Widget build(BuildContext context) {
     SystemChrome.setPreferredOrientations(
         [DeviceOrientation.landscapeRight, DeviceOrientation.landscapeLeft]);
-    MaderaNav maderaNav = new MaderaNav();
-    ProviderBdd providerBdd = new ProviderBdd();
+    ProviderBdd providerBdd =
+        ProviderBdd(); // Pas sur de la stabilité. Warning 'Two opened Databases' revient mnt à l'ouverture de l'app???
+    //J'ai essayé d'enlever cette variable mais erreur sur les proxyProvider car j'essayais d'utiliser Provider.of(context)
     return MultiProvider(
         providers: [
-          ChangeNotifierProvider(
-            create: (c) => maderaNav,
+          ChangeNotifierProvider<MaderaNav>(
+            create: (c) => MaderaNav(),
           ),
-          ChangeNotifierProvider(
+          ChangeNotifierProvider<ProviderProjet>(
             create: (c) => ProviderProjet(),
           ),
-          ChangeNotifierProvider(
+          ChangeNotifierProvider<ProviderBdd>(
             create: (c) => providerBdd,
           ),
           ChangeNotifierProxyProvider<ProviderBdd, ProviderLogin>(
-            create: (context) => ProviderLogin(db: providerBdd.db),
-            update: (context, bdd, login) => ProviderLogin(db: bdd.db),
+            create: (c) => ProviderLogin(db: providerBdd.db),
+            update: (c, bdd, login) => ProviderLogin(db: bdd.db),
           ),
           ChangeNotifierProxyProvider<ProviderBdd, ProviderSynchro>(
-            create: (context) => ProviderSynchro(
+            create: (c) => ProviderSynchro(
               db: providerBdd.db,
               daosSynchroList: providerBdd.daosSynchroList,
             ),
-            update: (context, bdd, login) => ProviderSynchro(
+            update: (c, bdd, login) => ProviderSynchro(
               db: bdd.db,
-              daosSynchroList: providerBdd.daosSynchroList,
+              daosSynchroList: bdd.daosSynchroList,
             ),
           ),
         ],
         //TODO faire la redirection si l'utilisateur est déjà conneté ? Test en envoyant le token ?
         child: MaterialApp(
-          title: maderaNav.pageTitle,
+          title: 'Madera Constructions',
           theme: cTheme.MaderaTheme.maderaLightTheme,
           initialRoute: InitializationPage.routeName,
           routes: {

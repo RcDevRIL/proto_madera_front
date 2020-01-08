@@ -184,40 +184,71 @@ class ProviderProjet with ChangeNotifier {
 
   String get model => _quoteValues.modeleChoisi;
 
+  void loadModuleInfos(int index) {
+    moduleAdd = _listProduitModuleProjet.elementAt(index);
+  }
+
   void updateModuleInfos(
       String nomModule, String angle, String longueur1, String longueur2) {
-    if (moduleChoice != null) {
-      Map<String, Object> sections;
-      if (angle == 'Entrant' || angle == 'Sortant') {
-        sections = {
-          'sections': [
-            {'longueur': int.parse(longueur1)},
-            {'longueur': int.parse(longueur2)}
-          ]
-        };
-      } else {
-        sections = {
-          'sections': [
-            {'longueur': int.parse(longueur1)}
-          ]
-        };
-      }
-      //La valeur -1 signifie qu'il n'est pas enregistrée en bdd
-      moduleAdd = new ProduitModuleData(
-        projetModuleId: -1,
-        produitId: -1,
-        produitModuleNom: nomModule,
-        moduleId: moduleChoice.moduleId,
-        produitModuleAngle: angle,
-        produitModuleSectionLongueur: sections.toString(),
-      );
-      print(moduleAdd);
+    if (editModuleIndex != _listProduitModuleProjet.length) {
+      //Edition
+      if (moduleAdd.moduleId != null) {
+        Map<String, Object> sections;
+        if (angle == 'Entrant' || angle == 'Sortant') {
+          sections = {
+            'sections': [
+              {'longueur': int.parse(longueur1)},
+              {'longueur': int.parse(longueur2)}
+            ]
+          };
+        } else {
+          sections = {
+            'sections': [
+              {'longueur': int.parse(longueur1)}
+            ]
+          };
+        }
+        moduleAdd = moduleAdd.copyWith(
+          produitModuleNom: nomModule,
+          produitModuleAngle: angle,
+          produitModuleSectionLongueur: sections.toString(),
+        );
+      } else
+        log.e('ERROR NO MODEL??? WTF IS HAPPENING!!');
+    } else {
+      //Création
+      if (moduleChoice != null) {
+        Map<String, Object> sections;
+        if (angle == 'Entrant' || angle == 'Sortant') {
+          sections = {
+            'sections': [
+              {'longueur': int.parse(longueur1)},
+              {'longueur': int.parse(longueur2)}
+            ]
+          };
+        } else {
+          sections = {
+            'sections': [
+              {'longueur': int.parse(longueur1)}
+            ]
+          };
+        }
+        //La valeur -1 signifie qu'il n'est pas enregistrée en bdd
+        moduleAdd = new ProduitModuleData(
+          projetModuleId: -1,
+          produitId: -1,
+          produitModuleNom: nomModule,
+          moduleId: moduleChoice.moduleId,
+          produitModuleAngle: angle,
+          produitModuleSectionLongueur: sections.toString(),
+        );
+        print(moduleAdd);
+      } else
+        log.e('Please select a model');
     }
   }
 
   List<ProduitModuleData> get produitModules => _listProduitModuleProjet;
-
-  Map<String, dynamic> get modeleList => _quoteValues.listeModele;
 
   void logQC() {
     projet != null
@@ -244,7 +275,7 @@ class ProviderProjet with ChangeNotifier {
             _listProduitModuleProjet.length != 0);
         break;
       case 'AddModule':
-        return false;
+        return (true);
         break;
       default:
         return false;
@@ -339,11 +370,9 @@ class ProviderProjet with ChangeNotifier {
 
   void updateListProduitProjet() {
     if (_editProductIndex != listProduitProjet.length) {
-      log.d('updating existing product...');
       listProduitProjet.removeAt(_editProductIndex);
       listProduitProjet.insert(_editProductIndex, produitWithModule);
     } else {
-      log.d('adding new product...');
       listProduitProjet.add(produitWithModule);
     }
     notifyListeners();
