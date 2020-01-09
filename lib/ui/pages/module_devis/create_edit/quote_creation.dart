@@ -99,7 +99,7 @@ class _QuoteCreationState extends State<QuoteCreation> {
                         cardHeight: cTheme.Dimens.cardHeight,
                         child: TextField(
                           onChanged: (String newValue) {
-                            providerProjet.setProjetNom(newValue);
+                            providerProjet.projetNom = newValue;
                           },
                           inputFormatters: [
                             BlacklistingTextInputFormatter(
@@ -360,7 +360,7 @@ class _QuoteCreationState extends State<QuoteCreation> {
                           _formScrollController.position.maxScrollExtent),
                       maxLines: 25,
                       onChanged: (text) {
-                        providerProjet.setDescription(text);
+                        providerProjet.description = text;
                       },
                       keyboardType: TextInputType.multiline,
                       enabled: true,

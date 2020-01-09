@@ -84,7 +84,7 @@ class _ProductCreationState extends State<ProductCreation> {
                       ],
                       enabled: true,
                       onChanged: (String newValue) {
-                        providerProjet.setProduitNom(newValue);
+                        providerProjet.produitNom = newValue;
                       },
                       decoration: InputDecoration(
                         //TODO style dynamique : style hint si pas de produit, style defaulttextstyle si produit nom renseigné
@@ -199,7 +199,7 @@ class _ProductCreationState extends State<ProductCreation> {
                                 (produit) async => {
                                   if (produit.produitNom == newValue)
                                     {
-                                      providerProjet.setModele(produit),
+                                      providerProjet.modelProduit = produit,
                                       //Charge les produitModules
                                       await providerBdd.initListProduitModule(
                                         produit.produitId,

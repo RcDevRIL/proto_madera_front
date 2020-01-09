@@ -4,10 +4,8 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:logger/logger.dart';
 import 'package:proto_madera_front/data/database/madera_database.dart';
-import 'package:proto_madera_front/data/models/produit_with_module.dart';
-import 'package:proto_madera_front/data/models/projet_with_all_infos.dart';
-import 'package:proto_madera_front/data/models/quote_creation_model.dart';
-import 'package:proto_madera_front/data/models/quote_model.dart';
+import 'package:proto_madera_front/data/models/models.dart'
+    show ProduitWithModule, ProjetWithAllInfos;
 
 ///
 /// Provider to handle user input inside quote creation module
@@ -16,43 +14,68 @@ import 'package:proto_madera_front/data/models/quote_model.dart';
 ///
 /// @version 0.4-RELEASE
 class ProviderProjet with ChangeNotifier {
-  String _produitNom;
-  String _projetNom;
-  String _projetDesc;
-  String _moduleNom;
-  String _moduleSection;
-  String _moduleSection2;
-  String _moduleAngle;
-  GammeData _produitGamme;
-  ProduitData _produitModele;
-  QuoteCreationModel _quoteCreationValues;
-  QuoteModel _quoteValues;
-  int _editModuleIndex;
-  int _editProductIndex;
-  List<ProjetData> productList;
-  bool canInit = true;
+  /*
+  * Variables pour la page QuoteCreation
+  */
+  ///Date précise du projet générée lorsque l'utilisateur arrive sur la page 'Informations Générales' ([QuoteCreation])
+  static DateTime _dateProjet;
 
-  ProjetWithAllInfos projetWithAllInfos;
-  ProjetData projet;
-  List<ProduitWithModule> listProduitProjet;
-  ClientData client;
-
-  static final DateTime _dateProjet = DateTime.now();
+  ///Date du jour de la création du projet
   static final String _dateNow = _dateProjet.year.toString() +
       '/' +
       _dateProjet.month.toString() +
       '/' +
       _dateProjet.day.toString();
 
+  ///Nom du projet
+  String _projetNom;
+
+  ///Description du projet
+  String _projetDesc;
+
+  ///Client assigné à ce projet
+  ClientData _client;
+
+  ///Saving structure
+  ProjetData _projet;
+
+  /*
+  * Variables pour la page ProductCreation
+  */
+  String _produitNom;
+  GammeData _produitGamme;
+  ProduitData _produitModele;
+  int _editProductIndex;
   List<ProduitModuleData> _listProduitModuleProjet;
-  ModuleData moduleChoice;
-  ProduitWithModule produitWithModule;
+
+  ///Saving structure
+  ProduitWithModule _produitWithModule;
+
+  /*
+  * Variables pour les pages AddModule & Finishing
+  */
+  String _moduleNom;
+  String _moduleSection;
+  String _moduleSection2;
+  String _moduleAngle;
+  ModuleData _moduleChoice;
+  int _editModuleIndex;
+
+  ///Saving structure
   ProduitModuleData moduleAdd;
+
+  ///ProductList Model
+  List<ProduitWithModule> _listProduitProjet;
+
+  ///Final Saving structure to send on our backend server or to on our local [MaderaDatabase]
+  ProjetWithAllInfos projetWithAllInfos;
+
+  ///Boolean used to avoid loosing data. Is true only after a call to validate()
+  bool canInit = true;
 
   final Logger log = Logger();
 
   void initAndHold() {
-    //TODO Appeler cette méthode à chaque fois qu'on fait une redirection vers QuoteCreation
     if (canInit)
       init();
     else
@@ -72,22 +95,26 @@ class ProviderProjet with ChangeNotifier {
   void init() {
     log.i('init called');
     canInit = false;
-    _editModuleIndex = 0;
-    _editProductIndex = 0;
-    _listProduitModuleProjet = new List();
-    listProduitProjet = new List();
-    productList = [];
-    client = null;
-    _produitGamme = null;
-    _produitModele = null;
+    _dateProjet = DateTime.now();
     _projetNom = '';
     _projetDesc = '';
+    _client = null;
     _produitNom = '';
+    _produitGamme = null;
+    _produitModele = null;
+    _editProductIndex = 0;
+    _listProduitModuleProjet = new List();
+    _moduleAngle = '';
+    _moduleSection = '';
+    _moduleSection2 = '';
+    _moduleNom = '';
+    _editModuleIndex = 0;
+    _listProduitProjet = new List();
     notifyListeners();
   }
 
   void deleteProductCreationModel(int productID) {
-    listProduitProjet.removeAt(productID);
+    _listProduitProjet.removeAt(productID);
     notifyListeners();
   }
 
@@ -95,9 +122,9 @@ class ProviderProjet with ChangeNotifier {
     _editModuleIndex = 0;
     _editProductIndex = productIndex;
     _produitModele = null;
-    _produitNom = listProduitProjet[_editProductIndex].produit.produitNom;
+    _produitNom = _listProduitProjet[_editProductIndex].produit.produitNom;
     _listProduitModuleProjet =
-        listProduitProjet[_editProductIndex].listProduitModule;
+        _listProduitProjet[_editProductIndex].listProduitModule;
     notifyListeners();
   }
 
@@ -116,7 +143,16 @@ class ProviderProjet with ChangeNotifier {
     super.dispose();
   }
 
-  QuoteModel get quoteValues => _quoteValues;
+  List<ProduitWithModule> get listProduitProjet => _listProduitProjet;
+
+  ClientData get client => _client;
+
+  ModuleData get moduleChoice => _moduleChoice;
+
+  set moduleChoice(ModuleData module) {
+    _moduleChoice = module;
+    notifyListeners();
+  }
 
   set editModuleIndex(int index) {
     _editModuleIndex = index;
@@ -163,35 +199,23 @@ class ProviderProjet with ChangeNotifier {
 
   int get editProductIndex => _editProductIndex;
 
-  set dateCreation(String newDate) {
-    _quoteCreationValues.dateDeCreation = newDate;
-    notifyListeners();
-  }
-
   String get dateNow => _dateNow;
 
-  set refProjet(String refProjet) {
-    _quoteCreationValues.refProjet = refProjet;
-    notifyListeners();
-  }
-
-  String get refProjet => _quoteCreationValues.refProjet;
-
-  void setDescription(String desc) {
+  set description(String desc) {
     _projetDesc = desc;
     notifyListeners();
   }
 
   String get description => _projetDesc;
 
-  void setProjetNom(String nom) {
+  set projetNom(String nom) {
     _projetNom = nom;
     notifyListeners();
   }
 
   String get projetNom => _projetNom;
 
-  void setProduitNom(String nom) {
+  set produitNom(String nom) {
     _produitNom = nom;
     notifyListeners();
   }
@@ -205,19 +229,12 @@ class ProviderProjet with ChangeNotifier {
 
   GammeData get gamme => _produitGamme;
 
-  void setModele(ProduitData modeleChoisi) {
+  set modelProduit(ProduitData modeleChoisi) {
     _produitModele = modeleChoisi;
     notifyListeners();
   }
 
   ProduitData get modelProduit => _produitModele;
-
-  void setModel(String nomModel) {
-    _quoteValues.modeleChoisi = nomModel;
-    notifyListeners();
-  }
-
-  String get model => _quoteValues.modeleChoisi;
 
   void initModuleInfos() {
     _moduleAngle = '';
@@ -280,7 +297,7 @@ class ProviderProjet with ChangeNotifier {
         log.e('ERROR NO MODEL??? WTF IS HAPPENING!!');
     } else {
       //Création
-      if (moduleChoice != null) {
+      if (_moduleChoice != null) {
         Map<String, Object> sections;
         if (_moduleAngle.isNotEmpty) {
           sections = {
@@ -301,7 +318,7 @@ class ProviderProjet with ChangeNotifier {
           projetModuleId: -1,
           produitId: -1,
           produitModuleNom: _moduleNom,
-          moduleId: moduleChoice.moduleId,
+          moduleId: _moduleChoice.moduleId,
           produitModuleAngle: _moduleAngle,
           produitModuleSectionLongueur: sections.toString(),
         );
@@ -314,8 +331,8 @@ class ProviderProjet with ChangeNotifier {
   List<ProduitModuleData> get produitModules => _listProduitModuleProjet;
 
   void logQC() {
-    projet != null
-        ? log.i('QuoteCreation values:\n$projet')
+    _projet != null
+        ? log.i('QuoteCreation values:\n$_projet')
         : log.e('Please create the project...');
   }
 
@@ -328,7 +345,7 @@ class ProviderProjet with ChangeNotifier {
   bool isFilled(String pageName) {
     switch (pageName) {
       case 'QuoteCreation':
-        return (client != null &&
+        return (_client != null &&
             _projetNom.isNotEmpty &&
             _projetDesc.isNotEmpty);
         break;
@@ -340,7 +357,7 @@ class ProviderProjet with ChangeNotifier {
       case 'AddModule':
         {
           if (_editModuleIndex == _listProduitModuleProjet.length)
-            return moduleChoice != null &&
+            return _moduleChoice != null &&
                 (_moduleNom.isNotEmpty &&
                     _moduleSection.isNotEmpty &&
                     !(_moduleAngle.isNotEmpty ^ _moduleSection2.isNotEmpty));
@@ -355,13 +372,7 @@ class ProviderProjet with ChangeNotifier {
     }
   }
 
-  void updateModuleNature(String newValue) {
-    _quoteValues.listeModule.values.elementAt(editModuleIndex)['nature'] =
-        newValue;
-    notifyListeners();
-  }
-
-  ///Ajoute les produitsModules chargés a la liste des produitsModules du projet
+  ///Ajoute les produitsModules chargés a la liste des produitsModules du _projet
   void initListProduitModuleProjet(List<ProduitModuleData> listProduitModule) {
     if (listProduitModule != null) {
       listProduitModule.forEach(
@@ -399,8 +410,8 @@ class ProviderProjet with ChangeNotifier {
     notifyListeners();
   }
 
-  void initClientWithClient(ClientData client) {
-    this.client = client;
+  void initClientWithClient(ClientData _client) {
+    this._client = _client;
     notifyListeners();
   }
 
@@ -409,17 +420,17 @@ class ProviderProjet with ChangeNotifier {
     var r = Random();
     int test = r.nextInt(
         539985); // valeur borne haute choisie au hasard, 2 chiffres par contributeurs
-    projet = new ProjetData(
+    _projet = new ProjetData(
       projetId: -1,
       nomProjet: projetNom,
       refProjet: _dateNow.replaceAll('/', '') +
           '_' +
-          client.id.toString() +
+          _client.id.toString() +
           '_' +
           test.toString(),
       dateProjet: _dateProjet,
       devisEtatId: 2,
-      clientId: client.id,
+      clientId: _client.id,
       prixTotal: 0.0,
       isSynchro: false,
     );
@@ -427,7 +438,7 @@ class ProviderProjet with ChangeNotifier {
   }
 
   void initProduitWithModule() {
-    produitWithModule = ProduitWithModule(
+    _produitWithModule = ProduitWithModule(
         ProduitData(
             produitId: -1,
             produitNom: produitNom,
@@ -439,16 +450,16 @@ class ProviderProjet with ChangeNotifier {
   }
 
   void initProjetWithAllInfos() {
-    projetWithAllInfos = ProjetWithAllInfos(projet, listProduitProjet);
+    projetWithAllInfos = ProjetWithAllInfos(_projet, _listProduitProjet);
     notifyListeners();
   }
 
   void updateListProduitProjet() {
-    if (_editProductIndex != listProduitProjet.length) {
-      listProduitProjet.removeAt(_editProductIndex);
-      listProduitProjet.insert(_editProductIndex, produitWithModule);
+    if (_editProductIndex != _listProduitProjet.length) {
+      _listProduitProjet.removeAt(_editProductIndex);
+      _listProduitProjet.insert(_editProductIndex, _produitWithModule);
     } else {
-      listProduitProjet.add(produitWithModule);
+      _listProduitProjet.add(_produitWithModule);
     }
     notifyListeners();
   }

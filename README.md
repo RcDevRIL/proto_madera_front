@@ -1,4 +1,4 @@
-# proto_madera_front - README V1.4
+# proto_madera_front - README V1.5.0
 __Build status by branch__
 * __master :__ [![M_Codemagic build status][]][M_latest_build]
 * __int :__ [![I_Codemagic build status][]][I_latest_build]
@@ -32,7 +32,6 @@ What things you need to install and how to install them
 
 * Now you need to have the Flutter SDK to use CLI and run the app on device. Please refer to [Flutter "get started"] guide.
 
-* 
 
 If you went through all the steps on [flutter.dev][Flutter "get started"] you should have your favorite editor with plugins installed to connect to your device easily.
 
@@ -41,6 +40,8 @@ If you went through all the steps on [flutter.dev][Flutter "get started"] you sh
 To enable easy database interactions, we chose [moor_flutter]. This package use the flutter code generator ([build_runner]) engine to reduce boilerplate for developers. So at this point, you should have 100+ errors on the opened git repository. You need to run the proper command to generate missing code:
 
 * `flutter packages pub run build_runner build`
+
+__(if you want to navigate between commits you may have conflicting files. To fix this, add the following tag to the build command: `--delete-conflicting-outputs`)__
 
 Now you can consider building and running the app :upside_down_face:
 
@@ -60,11 +61,13 @@ To start tests, execute this command:
 
 * `flutter test`
 
-This will trigger the execution of tests. Depending on your IDE, you should see the results pretty easily. 
+This will trigger the execution of tests. Results will be printed on your console in the end.
+You may also use your IDE integrated test report tool. Depending on the IDE, you should see the results pretty easily. 
 
 ## Built With
 
-* [Flutter] - The Dart framework used as my mobile app development main tool
+_Direct Dependencies:_
+* [Flutter] - The Google framework based on Dart used to build this app
 * [provider] - The package used for handling state and logic of the app
 * [rxdart] - The package used for handling streams
 * [logger] - The package used for logging utilities
@@ -72,7 +75,15 @@ This will trigger the execution of tests. Depending on your IDE, you should see 
 * [crypto] - The package used to encrypt passwords
 * [sqflite] - The package used to enable the creation and interactions on a "file-based" database ([SQLite] Flutter plugin)
 * [moor_flutter] - The package used to ease database interaction (based on [sqflite])
-* [build_runner] - The package used under  "dev dependencies" to let [moor_flutter] generate boilerplate code
+* [json_serializable] - The packaged used to ease json (de)serialization
+
+_Development Dependencies:_
+* [build_runner] - The package that let [moor_flutter] generate boilerplate code
+* [moor_generator] - The packaged used with [build_runner]
+
+_Test Dependencies:_
+* [flutter_test] - The Flutter library used to implement unit tests
+* [flutter_driver] - The Flutter library used to implement automated integration tests
 
 ## Contributing
 
@@ -108,7 +119,11 @@ This project is licensed under the GNU GENERAL PUBLIC LICENSE - see the [LICENSE
 [crypto]: https://pub.dev/packages/crypto
 [sqflite]: https://pub.dev/packages/sqflite
 [moor_flutter]: https://pub.dev/packages/moor_flutter
+[moor_generator]: https://pub.dev/packages/moor_generator
 [build_runner]: https://pub.dev/packages/build_runner
+[json_serializable]: https://pub.dev/packages/json_serializable
+[flutter_test]: https://api.flutter.dev/flutter/flutter_test/flutter_test-library.html
+[flutter_driver]: https://api.flutter.dev/flutter/flutter_driver/flutter_driver-library.html
 [RcDevRIL]: https://github.com/RcDevRIL
 [BoiteSphinx]: https://github.com/BoiteSphinx
 [LadouceFabien]: https://github.com/LadouceFabien

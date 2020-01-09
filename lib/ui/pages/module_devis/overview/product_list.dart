@@ -265,9 +265,7 @@ class _ProductListState extends State<ProductList> {
             ),
           ],
         ),
-      ), // On considère que l'id est l'index dans la liste des produits
-      // mais ça changera, on prendra l'id en BDD
-    ); // supp cette ligne, et décommente celle en dessous
-    // title: Text(productList[i]),;
+      ),
+    );
   }
 }
