@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:http/http.dart';
 import 'package:http/testing.dart';
+import 'package:proto_madera_front/data/database/madera_database.dart';
 import 'package:provider/provider.dart';
 
 import 'package:proto_madera_front/data/providers/providers.dart';
@@ -44,7 +45,20 @@ void main() {
     test(
       'init providerProjet test',
       () {
-        //TODO
+        ProviderProjet providerProjet = ProviderProjet();
+        providerProjet.initAndHold();
+        expect(providerProjet.projetNom, '');
+        ClientData testClient = ClientData(
+          id: 4,
+          mail: 'test@user.com',
+          nom: 'testuser',
+          numTel: '00000000',
+          prenom: 'test',
+        );
+        expect(providerProjet.initProjet(), false); //false car pas de client
+        providerProjet
+            .initClientWithClient(testClient); //ajout d'un client de test
+        expect(providerProjet.initProjet(), true);
       },
     );
     test(

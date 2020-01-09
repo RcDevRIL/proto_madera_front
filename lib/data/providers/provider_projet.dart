@@ -167,27 +167,33 @@ class ProviderProjet with ChangeNotifier {
     }
   }
 
-  void initProjet() {
-    //TODO ajouter un champ description en bdd ?
-    var r = Random();
-    _projet = new ProjetData(
-      projetId: -1,
-      nomProjet: _projetNom,
-      refProjet: _dateNow.replaceAll('/', '') +
-          '_' +
-          _client.id.toString() +
-          '_' +
-          r
-              .nextInt(
-                  539985) // valeur borne haute choisie au hasard, 2 chiffres par contributeurs
-              .toString(),
-      dateProjet: _dateProjet,
-      devisEtatId: 2,
-      clientId: _client.id,
-      prixTotal: 0.0,
-      isSynchro: false,
-    );
-    notifyListeners();
+  bool initProjet() {
+    try {
+      //TODO ajouter un champ description en bdd ?
+      var r = Random();
+      _projet = new ProjetData(
+        projetId: -1,
+        nomProjet: _projetNom,
+        refProjet: _dateNow.replaceAll('/', '') +
+            '_' +
+            _client.id.toString() +
+            '_' +
+            r
+                .nextInt(
+                    539985) // valeur borne haute choisie au hasard, 2 chiffres par contributeurs
+                .toString(),
+        dateProjet: _dateProjet,
+        devisEtatId: 2,
+        clientId: _client.id,
+        prixTotal: 0.0,
+        isSynchro: false,
+      );
+      notifyListeners();
+      return true;
+    } catch (e) {
+      log.e('Error, can\'t instantiate a Project:\n$e');
+      return false;
+    }
   }
 
   void initClientWithClient(ClientData client) {
