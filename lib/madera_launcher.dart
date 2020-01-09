@@ -19,9 +19,7 @@ class MaderaApp extends StatelessWidget {
   Widget build(BuildContext context) {
     SystemChrome.setPreferredOrientations(
         [DeviceOrientation.landscapeRight, DeviceOrientation.landscapeLeft]);
-    ProviderBdd providerBdd =
-        ProviderBdd(); // Pas sur de la stabilité. Warning 'Two opened Databases' revient mnt à l'ouverture de l'app???
-    //J'ai essayé d'enlever cette variable mais erreur sur les proxyProvider car j'essayais d'utiliser Provider.of(context)
+    ProviderBdd providerBdd = ProviderBdd();
     return MultiProvider(
         providers: [
           ChangeNotifierProvider<MaderaNav>(

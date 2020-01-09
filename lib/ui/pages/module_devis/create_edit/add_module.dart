@@ -297,17 +297,16 @@ class _AddModuleState extends State<AddModule> {
                   onPressed: () {
                     log.d('Canceling Module...');
                     try {
-                      providerProjet.produitModules
-                          .removeAt(providerProjet.editModuleIndex);
+                      providerProjet.deleteModuleFromProduct();
                       Provider.of<MaderaNav>(context)
                           .redirectToPage(context, ProductCreation(), null);
                     } catch (e) {
                       log.e('Error when trying to cancel module:\n$e');
                       if (e.runtimeType == RangeError)
                         Provider.of<MaderaNav>(
-                                context) // Si c'est RangeError a priori c parce qu'on essai de supprimer un module qui n'existe pas dans la liste encore, alors on annule simplement et redirige vers productcreation. Si c'est une autre erreur, le bouton ne fonctionnera pas
+                                context) // Si c'est RangeError a priori c parce qu'on essai de supprimer un module qui n'existe pas dans la liste encore, alors on annule simplement et redirige vers productcreation
                             .redirectToPage(context, ProductCreation(), null);
-                      else
+                      else // Si c'est une autre erreur, le bouton ne fonctionnera pas
                         throw e;
                     }
                   },
