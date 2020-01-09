@@ -115,36 +115,36 @@ class ProviderSynchro with ChangeNotifier {
   Future<void> synchro() async {
     // r d
     // 1 ?
-    await deleteForSynchro();
-      if (_refSynced) {
-        // 1 1
-        if (_dataSynced)
-          log.i('Synchronisation globale déjà effectuée aujourd' 'hui!');
-        // 1 0
-        else {
-          log.i(
-              'Synchronisation des référentiels déjà effectuée le ${refsLastSyncDate.toString().substring(0, 10)}!');
-          _dataSynced = await synchroData();
-          log.i('Synchronisation globale effectuée');
-        }
-      }
-      // 0 ?
+    if (http.runtimeType != MockClient) await deleteForSynchro();
+    if (_refSynced) {
+      // 1 1
+      if (_dataSynced)
+        log.i('Synchronisation globale déjà effectuée aujourd' 'hui!');
+      // 1 0
       else {
-        // 0 1
-        if (_dataSynced) {
-          log.i(
-              'Synchronisation des données déjà effectuée le ${dataLastSyncDate.toString().substring(0, 10)}!');
-          _refSynced = await synchroReferentiel();
-          log.i('Synchronisation globale effectuée');
-        }
-        // 0 0
-        else {
-          log.i('Synchronisation lancée...');
-          _refSynced = await synchroReferentiel();
-          _dataSynced = await synchroData();
-          log.i('Synchronisation globale effectuée');
-        }
+        log.i(
+            'Synchronisation des référentiels déjà effectuée le ${refsLastSyncDate.toString().substring(0, 10)}!');
+        _dataSynced = await synchroData();
+        log.i('Synchronisation globale effectuée');
       }
+    }
+    // 0 ?
+    else {
+      // 0 1
+      if (_dataSynced) {
+        log.i(
+            'Synchronisation des données déjà effectuée le ${dataLastSyncDate.toString().substring(0, 10)}!');
+        _refSynced = await synchroReferentiel();
+        log.i('Synchronisation globale effectuée');
+      }
+      // 0 0
+      else {
+        log.i('Synchronisation lancée...');
+        _refSynced = await synchroReferentiel();
+        _dataSynced = await synchroData();
+        log.i('Synchronisation globale effectuée');
+      }
+    }
   }
 
   ///Synchronisation des données de l'utilisateur connecté
