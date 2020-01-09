@@ -5,6 +5,7 @@ import 'package:proto_madera_front/data/providers/provider_projet.dart';
 import 'package:proto_madera_front/data/providers/providers.dart'
     show MaderaNav, ProviderBdd;
 import 'package:proto_madera_front/theme.dart' as cTheme;
+import 'package:proto_madera_front/ui/pages/module_devis/overview/product_list.dart';
 import 'package:proto_madera_front/ui/widgets/common/madera_dialog.dart';
 import 'package:proto_madera_front/ui/widgets/custom_widgets.dart'
     show MaderaScaffold, MaderaTableCell;
@@ -39,7 +40,10 @@ class _QuoteOverviewState extends State<QuoteOverview> {
 
   @override
   Widget build(BuildContext context) {
+    //TODO wrappp datatable dans un builder ?
     //final args = ModalRoute.of(context).settings.arguments;
+    var providerProjet = Provider.of<ProviderProjet>(context);
+    var providerBdd = Provider.of<ProviderBdd>(context);
     return MaderaScaffold(
       passedContext: context,
       child: Consumer<MaderaNav>(
@@ -126,6 +130,124 @@ class _QuoteOverviewState extends State<QuoteOverview> {
           },
         ),
       ),
+      stackAdditions: <Widget>[
+        Padding(
+          padding: EdgeInsets.fromLTRB(
+              1200, MediaQuery.of(context).size.height / 6, 0, 0),
+          child: Column(
+            children: <Widget>[
+              Container(
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  border: Border.all(
+                      color: providerBdd.editProjetIndex != null
+                          ? cTheme.MaderaColors.maderaLightGreen
+                          : Colors.grey,
+                      width: 2),
+                  color: providerBdd.editProjetIndex != null
+                      ? cTheme.MaderaColors.maderaBlueGreen
+                      : Colors.grey,
+                ),
+                child: IconButton(
+                  onPressed: () {
+                    //TODO if(devisEtat <= 4 accepté)
+                    if (providerBdd.editProjetIndex != null) {
+                      //TODO load infos projet
+                      Provider.of<MaderaNav>(context)
+                          .redirectToPage(context, ProductList(), null);
+                    }
+                  },
+                  icon: Icon(
+                    Icons.edit,
+                    color: Colors.white,
+                  ),
+                ),
+              ),
+              SizedBox(height: 12),
+              Container(
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  border: Border.all(
+                      color: providerBdd.editProjetIndex != null
+                          ? cTheme.MaderaColors.maderaLightGreen
+                          : Colors.grey,
+                      width: 2),
+                  color: providerBdd.editProjetIndex != null
+                      ? cTheme.MaderaColors.maderaBlueGreen
+                      : Colors.grey,
+                ),
+                child: IconButton(
+                  onPressed: () {
+                    if (providerBdd.editProjetIndex != null) {
+                      String mailClient =
+                          providerBdd.projetWithClient.client.mail;
+                      Provider.of<MaderaNav>(context).showNothingYouCanDoPopup(
+                        context,
+                        Icons.send,
+                        'Envoi de mail',
+                        'Un mail a été envoyé à l\'adresse suivante : $mailClient',
+                        null,
+                      );
+                    }
+                  },
+                  icon: Icon(
+                    Icons.send,
+                    color: Colors.white,
+                  ),
+                ),
+              ),
+              SizedBox(height: 12),
+              Container(
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  border: Border.all(
+                      color: providerBdd.editProjetIndex != null
+                          ? cTheme.MaderaColors.maderaLightGreen
+                          : Colors.grey,
+                      width: 2),
+                  color: providerBdd.editProjetIndex != null
+                      ? cTheme.MaderaColors.maderaBlueGreen
+                      : Colors.grey,
+                ),
+                child: IconButton(
+                  onPressed: () {
+                    showPopup(
+                      context,
+                      Icons.delete,
+                      'Suppression du projet ${providerBdd.editProjetIndex}',
+                      Text('Voulez-vous vraiment supprimé ce projet ?'),
+                      Colors.red,
+                      [
+                        MaderaButton(
+                          key: Key('ok-button'),
+                          child: Text('Oui'),
+                          onPressed: () {
+                            //TODO appel providerSynchro pour delete
+                            //TODO remove de la liste si delete sur le serveur et mettre à jour la bdd locale !
+                            //providerBdd.listProjetWithClient
+                            Navigator.of(context).pop();
+                          },
+                        ),
+                        MaderaButton(
+                          key: Key('ko-button'),
+                          child: Text('Non'),
+                          onPressed: () {
+                            Navigator.of(context).pop();
+                          },
+                        ),
+                      ],
+                    );
+                  },
+                  icon: Icon(
+                    Icons.delete,
+                    color: Colors.white,
+                  ),
+                ),
+              )
+            ],
+          ),
+        ),
+      ],
     );
   }
 
@@ -158,9 +280,8 @@ List<DataRow> _createRows(BuildContext context, AsyncSnapshot snapshot) {
                 Provider.of<ProviderBdd>(context).loadProjetEdit(null);
               } else {
                 Provider.of<ProviderBdd>(context)
-                    .loadProjetEdit(projetWithClient.projet.refProjet);
+                    .loadProjetEdit(projetWithClient);
               }
-              //Provider.of<MaderaNav>(context).redirectToPage(context, PageDevis(${projetWithClient.projet.projetId));
             }
           },
           selected: Provider.of<ProviderBdd>(context).editProjetIndex ==
