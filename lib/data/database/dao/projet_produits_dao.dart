@@ -9,11 +9,17 @@ class ProjetProduitsDao extends DatabaseAccessor<MaderaDatabase>
     with _$ProjetProduitsDaoMixin {
   ProjetProduitsDao(MaderaDatabase db) : super(db);
 
+  String get queryProjetProduitOfProjetIsSynchro =>
+      "SELECT projet_produits.projet_id FROM projet_produits "
+      "LEFT JOIN projet ON projet.projet_id = projet_produits.projet_id "
+      "WHERE projet.is_synchro = 1 OR projet.projet_id IS NULL";
+
+  ///Récupére toute la liste des projetProduits
   Future insertAll(List<ProjetProduit> listProjetPoduit) async {
-    await delete(projetProduits).go();
-    await db.batch((b) => b.insertAll(projetProduits, listProjetPoduit));
+    await db.batch((b) => b.insertAll(projetProduits, listProjetPoduit, mode: InsertMode.insertOrReplace));
   }
 
+  ///Création d'un projetProduit
   Future createProjetProduit(int projetId, int produitId) async {
     await into(projetProduits).insert(
       ProjetProduitsCompanion(
@@ -21,5 +27,25 @@ class ProjetProduitsDao extends DatabaseAccessor<MaderaDatabase>
         produitId: Value(produitId),
       ),
     );
+  }
+
+  ///Supprime les occurrences de projetProduit
+  Future<int> deleteAll() async {
+    //Récupère la liste des produitModuleId qui doivent être supprimés (en fonction de is_synchro de projet)
+    //Récupére une liste de projetId puisque la table n'a pas d'attribut projetProduitsId
+    List<int> listProjetId = await customSelectQuery(
+            queryProjetProduitOfProjetIsSynchro,
+            readsFrom: {projetProduits}).get().then(
+          (rows) => rows
+              .map<int>(
+                (row) => row.readInt("projet_id"),
+              )
+              .toList(),
+        );
+    return await (delete(projetProduits)
+          ..where(
+            (pP) => pP.projetId.isIn(listProjetId),
+          ))
+        .go();
   }
 }

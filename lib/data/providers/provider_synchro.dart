@@ -115,35 +115,36 @@ class ProviderSynchro with ChangeNotifier {
   Future<void> synchro() async {
     // r d
     // 1 ?
-    if (_refSynced) {
-      // 1 1
-      if (_dataSynced)
-        log.i('Synchronisation globale déjà effectuée aujourd' 'hui!');
-      // 1 0
+    await deleteForSynchro();
+      if (_refSynced) {
+        // 1 1
+        if (_dataSynced)
+          log.i('Synchronisation globale déjà effectuée aujourd' 'hui!');
+        // 1 0
+        else {
+          log.i(
+              'Synchronisation des référentiels déjà effectuée le ${refsLastSyncDate.toString().substring(0, 10)}!');
+          _dataSynced = await synchroData();
+          log.i('Synchronisation globale effectuée');
+        }
+      }
+      // 0 ?
       else {
-        log.i(
-            'Synchronisation des référentiels déjà effectuée le ${refsLastSyncDate.toString().substring(0, 10)}!');
-        _dataSynced = await synchroData();
-        log.i('Synchronisation globale effectuée');
+        // 0 1
+        if (_dataSynced) {
+          log.i(
+              'Synchronisation des données déjà effectuée le ${dataLastSyncDate.toString().substring(0, 10)}!');
+          _refSynced = await synchroReferentiel();
+          log.i('Synchronisation globale effectuée');
+        }
+        // 0 0
+        else {
+          log.i('Synchronisation lancée...');
+          _refSynced = await synchroReferentiel();
+          _dataSynced = await synchroData();
+          log.i('Synchronisation globale effectuée');
+        }
       }
-    }
-    // 0 ?
-    else {
-      // 0 1
-      if (_dataSynced) {
-        log.i(
-            'Synchronisation des données déjà effectuée le ${dataLastSyncDate.toString().substring(0, 10)}!');
-        _refSynced = await synchroReferentiel();
-        log.i('Synchronisation globale effectuée');
-      }
-      // 0 0
-      else {
-        log.i('Synchronisation lancée...');
-        _refSynced = await synchroReferentiel();
-        _dataSynced = await synchroData();
-        log.i('Synchronisation globale effectuée');
-      }
-    }
   }
 
   ///Synchronisation des données de l'utilisateur connecté
@@ -230,7 +231,7 @@ class ProviderSynchro with ChangeNotifier {
     await clientAdresseDao.insertAll(listClientAdresse);
     await adresseDao.insertAll(listAdresse);
     await projetDao.insertAll(listProjet);
-    await produitDao.insertProduitClient(listProduit);
+    await produitDao.insertAll(listProduit);
     await produitModuleDao.insertAll(listProduitModule);
     await projetProduitsDao.insertAll(listProjetProduit);
   }
@@ -321,13 +322,30 @@ class ProviderSynchro with ChangeNotifier {
     await moduleComposantDao.insertAll(listModuleComposant);
     await devisEtatDao.insertAll(listDevisEtat);
     await composantGroupeDao.insertAll(listComposantGroupe);
-    await produitModuleDao.deleteAndInsertAll(listProduitModuleModele);
-    await produitDao.insertProduitModele(listProduitModele);
+    await produitModuleDao.insertAll(listProduitModuleModele);
+    await produitDao.insertAll(listProduitModele);
   }
 
-  //TODO effectuer la synchro avant ! et si serveur pas en ligne et ben pas delete !!!
-  //TODO faire une methode pour preparer la base à une synchro ! (delete OU UPDATE,...) IMPORTANT
+  //TODO regardez si projet is synchro
 
+  ///Méthode qui va purger la base de données sans effacer les projets non synchronisés
+  Future deleteForSynchro() async {
+    await composantDao.deleteAll();
+    await gammeDao.deleteAll();
+    await moduleDao.deleteAll();
+    await moduleComposantDao.deleteAll();
+    await devisEtatDao.deleteAll();
+    await composantGroupeDao.deleteAll();
+    await clientDao.deleteAll();
+    await clientAdresseDao.deleteAll();
+    await adresseDao.deleteAll();
+    await projetDao.deleteAll();
+    await produitDao.deleteAll();
+    await produitModuleDao.deleteAll();
+    await projetProduitsDao.deleteAll();
+  }
+
+  ///Appel serveur pour créer le projet
   Future createProjectOnServer(ProjetWithAllInfos projetWithAllInfos) async {
     log.i('Création du projet sur le serveur...');
     UtilisateurData utilisateurData;

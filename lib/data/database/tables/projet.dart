@@ -18,4 +18,6 @@ class Projet extends Table {
   IntColumn get clientId => integer()();
 
   IntColumn get devisEtatId => integer()();
+
+  BoolColumn get isSynchro => boolean()();
 }

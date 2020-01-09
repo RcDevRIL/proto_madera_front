@@ -421,6 +421,7 @@ class ProviderProjet with ChangeNotifier {
       devisEtatId: 2,
       clientId: client.id,
       prixTotal: 0.0,
+      isSynchro: false,
     );
     notifyListeners();
   }

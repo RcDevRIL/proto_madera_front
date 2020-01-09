@@ -9,9 +9,15 @@ class ClientAdresseDao extends DatabaseAccessor<MaderaDatabase>
     with _$ClientAdresseDaoMixin {
   ClientAdresseDao(MaderaDatabase db) : super(db);
 
+  ///Ajout de listClientAdresse / utilisée lors de la méthode de synchro
   Future insertAll(List<ClientAdresseData> listClientAdresse) async {
-    await delete(clientAdresse).go();
-    await db.batch((b) => b.insertAll(clientAdresse, listClientAdresse));
+    deleteAll();
+    await db.batch((b) => b.insertAll(clientAdresse, listClientAdresse, mode: InsertMode.insertOrReplace));
+  }
+
+  ///Supprime les occurences de clientAdresse
+  Future<int> deleteAll() async {
+    return await delete(clientAdresse).go();
   }
 
   Future<int> getClientAdresseId(int clientId) async {

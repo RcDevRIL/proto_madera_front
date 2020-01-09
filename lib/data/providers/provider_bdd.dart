@@ -44,6 +44,8 @@ class ProviderBdd with ChangeNotifier {
   List<String> listNatureModule;
   List<ModuleData> listModule;
 
+  String _editProjetIndex;
+
   ///
   ///Constructeur par défaut de notre classe d'interaction avec la bdd.
   ///
@@ -144,6 +146,14 @@ class ProviderBdd with ChangeNotifier {
   Future<List<ProjetWithClient>> initProjetData() {
     this.listProjetWithClient = projetDao.getAll();
     return this.listProjetWithClient;
+  }
+
+
+  String get editProjetIndex => _editProjetIndex;
+
+  void loadProjetEdit(String refProjet) {
+    _editProjetIndex = refProjet;
+    notifyListeners();
   }
 
   void initData() async {

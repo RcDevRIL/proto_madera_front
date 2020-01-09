@@ -249,8 +249,7 @@ class _ProductCreationState extends State<ProductCreation> {
                                 separatorBuilder: (c, i) => Divider(
                                   color: Colors.green,
                                 ),
-                              )
-                            : Container(),
+                              ),
                         Align(
                           alignment: Alignment.bottomRight,
                           child: MaderaButton(

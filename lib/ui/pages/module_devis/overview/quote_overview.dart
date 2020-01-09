@@ -1,11 +1,14 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:proto_madera_front/data/models/projet_with_client.dart';
+import 'package:proto_madera_front/data/providers/provider_projet.dart';
 import 'package:proto_madera_front/data/providers/providers.dart'
     show MaderaNav, ProviderBdd;
 import 'package:proto_madera_front/theme.dart' as cTheme;
+import 'package:proto_madera_front/ui/widgets/common/madera_dialog.dart';
 import 'package:proto_madera_front/ui/widgets/custom_widgets.dart'
     show MaderaScaffold, MaderaTableCell;
+import 'package:proto_madera_front/ui/widgets/madera_button.dart';
 import 'package:provider/provider.dart';
 
 ///
@@ -125,6 +128,22 @@ class _QuoteOverviewState extends State<QuoteOverview> {
       ),
     );
   }
+
+  void showPopup(BuildContext context, IconData icon, String title, Widget body,
+      Color color, List<Widget> actions) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return MaderaDialog(
+          titleAndIconColor: color,
+          title: title,
+          icon: icon,
+          body: body,
+          actions: actions,
+        );
+      },
+    );
+  }
 }
 
 List<DataRow> _createRows(BuildContext context, AsyncSnapshot snapshot) {
@@ -133,9 +152,19 @@ List<DataRow> _createRows(BuildContext context, AsyncSnapshot snapshot) {
         (ProjetWithClient projetWithClient) => DataRow(
           onSelectChanged: (bool selected) {
             if (selected) {
+              //TODO passer directement l'objet projetWithClient ?
+              if (Provider.of<ProviderBdd>(context).editProjetIndex ==
+                  projetWithClient.projet.refProjet) {
+                Provider.of<ProviderBdd>(context).loadProjetEdit(null);
+              } else {
+                Provider.of<ProviderBdd>(context)
+                    .loadProjetEdit(projetWithClient.projet.refProjet);
+              }
               //Provider.of<MaderaNav>(context).redirectToPage(context, PageDevis(${projetWithClient.projet.projetId));
             }
           },
+          selected: Provider.of<ProviderBdd>(context).editProjetIndex ==
+              projetWithClient.projet.refProjet,
           cells: <DataCell>[
             DataCell(
               MaderaTableCell(
