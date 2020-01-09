@@ -12,7 +12,7 @@ import 'package:proto_madera_front/data/models/models.dart'
 ///
 /// @author HELIOT David, CHEVALLIER Romain, LADOUCE Fabien
 ///
-/// @version 0.4-RELEASE
+/// @version 0.5-RELEASE
 class ProviderProjet with ChangeNotifier {
   /*
   * Variables pour la page QuoteCreation

@@ -3,7 +3,7 @@ import 'package:logger/logger.dart';
 import 'package:provider/provider.dart';
 
 import 'package:proto_madera_front/data/providers/providers.dart'
-    show MaderaNav, ProviderBdd, ProviderSynchro;
+    show MaderaNav, ProviderSynchro;
 import 'package:proto_madera_front/ui/pages/pages.dart'
     show AuthenticationPage, HomePage;
 import 'package:proto_madera_front/theme.dart' as cTheme;
@@ -12,7 +12,7 @@ import 'package:proto_madera_front/theme.dart' as cTheme;
 ///
 /// @author HELIOT David, CHEVALLIER Romain, LADOUCE Fabien
 ///
-/// @version 0.4-RELEASE
+/// @version 0.5-RELEASE
 class MyLinearProgressIndicator extends StatefulWidget {
   final Color backgroundColor;
 
@@ -88,6 +88,7 @@ class _MyLinearProgressIndicatorState extends State<MyLinearProgressIndicator>
         }
       });
     } catch (e) {
+      hasToken = false;
       log.e('getUser error (db=null?):\n$e');
     }
   }

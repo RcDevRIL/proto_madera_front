@@ -9,7 +9,7 @@ part 'madera_database.g.dart';
 ///
 /// @author HELIOT David, CHEVALLIER Romain, LADOUCE Fabien
 ///
-/// @version 0.4-RELEASE
+/// @version 0.5-RELEASE
 @UseMoor(tables: [
   Utilisateur,
   Composant,
@@ -89,7 +89,7 @@ class MaderaDatabase extends _$MaderaDatabase {
           m.deleteTable('produit');
           m.createTable(produit);
         }
-        if(from <= 14) {
+        if (from <= 14) {
           m.deleteTable('projet');
           m.createTable(projet);
         }

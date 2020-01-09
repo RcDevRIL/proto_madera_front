@@ -14,7 +14,7 @@ import 'package:proto_madera_front/data/models/projet_with_client.dart';
 ///
 /// @author HELIOT David, CHEVALLIER Romain, LADOUCE Fabien
 ///
-/// @version 0.4-RELEASE
+/// @version 0.5-RELEASE
 class ProviderBdd with ChangeNotifier {
   final log = Logger();
   static final MaderaDatabase db = new MaderaDatabase();
@@ -147,7 +147,6 @@ class ProviderBdd with ChangeNotifier {
     this.listProjetWithClient = projetDao.getAll();
     return this.listProjetWithClient;
   }
-
 
   String get editProjetIndex => _editProjetIndex;
 

@@ -3,7 +3,7 @@
 ///
 /// @authors HELIOT David, CHEVALLIER Romain, LADOUCE Fabien
 ///
-/// @version 0.4-RELEASE
+/// @version 0.5-RELEASE
 class MaderaUrl {
   const MaderaUrl();
 
