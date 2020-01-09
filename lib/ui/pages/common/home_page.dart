@@ -3,18 +3,18 @@ import 'package:logger/logger.dart';
 import 'package:provider/provider.dart';
 
 import 'package:proto_madera_front/data/providers/providers.dart'
-    show MaderaNav, ProviderSynchro;
+    show MaderaNav, ProviderProjet, ProviderSynchro;
 import 'package:proto_madera_front/ui/pages/pages.dart';
 import 'package:proto_madera_front/ui/widgets/custom_widgets.dart'
     show MaderaScaffold;
 import 'package:proto_madera_front/data/database/madera_database.dart';
 
 ///
-/// Page d'accueil de l'application
+/// Home page of our application
 ///
 /// @author HELIOT David, CHEVALLIER Romain, LADOUCE Fabien
 ///
-/// @version 0.4-RELEASE
+/// @version 0.5-RELEASE
 class HomePage extends StatelessWidget {
   static const routeName = '/home';
   final log = Logger();
@@ -45,7 +45,7 @@ class HomePage extends StatelessWidget {
                     width: 150.0,
                     child: RaisedButton(
                       onPressed: () {
-                        mN.redirectToPage(context, QuoteOverview());
+                        mN.redirectToPage(context, QuoteOverview(), null);
                       },
                       child: Text('Suivi de devis'),
                     ),
@@ -55,7 +55,8 @@ class HomePage extends StatelessWidget {
                     width: 150.0,
                     child: RaisedButton(
                       onPressed: () {
-                        mN.redirectToPage(context, QuoteCreation());
+                        Provider.of<ProviderProjet>(context).initAndHold();
+                        mN.redirectToPage(context, QuoteCreation(), null);
                       },
                       child: Text('Création de devis'),
                     ),
@@ -65,7 +66,7 @@ class HomePage extends StatelessWidget {
                     width: 150.0,
                     child: RaisedButton(
                       onPressed: () {
-                        mN.redirectToPage(context, SettingsPage());
+                        mN.redirectToPage(context, SettingsPage(), null);
                       },
                       child: Text('Paramètres'),
                     ),
@@ -107,7 +108,7 @@ class HomePage extends StatelessWidget {
                     width: 150.0,
                     child: RaisedButton(
                       onPressed: () {
-                        mN.redirectToPage(context, NotificationPage());
+                        mN.redirectToPage(context, NotificationPage(), null);
                       },
                       child: Text('Lien vers Notifications'),
                     ),

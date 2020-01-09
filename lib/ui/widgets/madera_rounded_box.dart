@@ -8,13 +8,31 @@ import 'package:proto_madera_front/theme.dart' as cTheme;
 ///
 /// @author HELIOT David, CHEVALLIER Romain, LADOUCE Fabien
 ///
-/// @version 0.4-RELEASE
+/// @version 0.5-RELEASE
 class MaderaRoundedBox extends StatefulWidget {
+  /// Creates a box with rounded corners.
+  ///
+  /// The [boxHeight], [child] and [edeInsetsPadding] arguments must not be null.
+  /// Additionally, the [boxWidth], [edgeInsetsPadding] and [color] can be used to better fit our expectations.
+
+  /// If non-null, requires this rounded box to have exactly this width.
   final double boxWidth;
+
+  /// Requires this rounded box to have exactly this height.
   final double boxHeight;
+
+  /// The widget below this widget in the tree.
+  ///
+  /// {@macro flutter.widgets.child}
   final Widget child;
+
+  /// The [child] is placed inside this padding.
   final EdgeInsetsGeometry edgeInsetsPadding;
+
+  /// Empty space to surround the [child].
   final EdgeInsetsGeometry edgeInsetsMargin;
+
+  /// The primary color to use for this box.
   final Color color;
 
   MaderaRoundedBox({
@@ -22,7 +40,7 @@ class MaderaRoundedBox extends StatefulWidget {
     this.boxWidth,
     @required this.boxHeight,
     @required this.edgeInsetsPadding,
-    this.edgeInsetsMargin,
+    this.edgeInsetsMargin = const EdgeInsets.all(4),
     this.color,
     @required this.child,
   }) : super(key: key);
@@ -48,9 +66,7 @@ class MaderaRoundedBoxState extends State<MaderaRoundedBox> {
       width: widget.boxWidth != null ? widget.boxWidth : null,
       height: widget.boxHeight,
       padding: widget.edgeInsetsPadding,
-      margin: widget.edgeInsetsMargin != null
-          ? widget.edgeInsetsMargin
-          : EdgeInsets.all(4),
+      margin: widget.edgeInsetsMargin,
       decoration: BoxDecoration(
           border: Border.all(color: cTheme.MaderaColors.boxBorder, width: 2.0),
           borderRadius: BorderRadius.circular(20.0),

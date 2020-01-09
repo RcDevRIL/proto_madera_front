@@ -1,19 +1,33 @@
 import 'package:flutter/material.dart';
 import 'package:proto_madera_front/theme.dart' as cTheme;
 
-///
-/// Custom widget pour une Card
+/// A custom widget consisting of a [Card], with rounded corners.
 ///
 /// @author HELIOT David, CHEVALLIER Romain, LADOUCE Fabien
 ///
-/// @version 0.4-RELEASE
+/// @version 0.5-RELEASE
 class MaderaCard extends StatefulWidget {
+  /// Creates a card with rounded corners
+  ///
+  /// The [header] and [child] arguments must not be null.
+  /// Additionally, [cardHeight] and [cardWidth] must have non-negative values.
+
+  /// Represents the header of this card.
+  ///
+  /// Most of the time, it's a [LabelledIcon] widget, but it can be anything else.
   final Widget header;
+
+  /// If non-null, requires this card to have exactly this height.
   final double cardHeight;
+
+  /// If non-null, requires this card to have exactly this width.
   final double cardWidth;
+
+  /// The widget below this widget in the tree.
+  ///
+  /// {@macro flutter.widgets.child}
   final Widget child;
 
-  //DateFormat('yyyy-MM-dd').format(DateTime.now()) // Va être généré automatiquement à l'avenir
   const MaderaCard({
     Key key,
     this.cardHeight,
@@ -60,8 +74,8 @@ class _MaderaCardState extends State<MaderaCard> {
           ),
           SizedBox(height: 6.0),
           Container(
-            width: widget.cardWidth != null ? widget.cardWidth : null,
-            height: widget.cardHeight != null ? widget.cardHeight : null,
+            width: widget.cardWidth,
+            height: widget.cardHeight,
             decoration: BoxDecoration(
               color: Theme.of(context).backgroundColor,
               borderRadius: BorderRadius.only(
@@ -76,13 +90,3 @@ class _MaderaCardState extends State<MaderaCard> {
     );
   }
 }
-/**
- * Ici() j'aurais pensé ecrire le nom du client 
- * e.g.: DUPONT
- * Une liste de tous les clients qui ont un nom contenant "DUPONT" apparaitrait
- * Et au clic sur une des proposition, l'ID du client s'insère dans cet input
- * 
- * Comme cela quand on accéderait aux devis d'un client spécifique, on renseignerait
- * 
- */
-//TODO Voir pour guider encore plus le commercial grâce aux données BDD

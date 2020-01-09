@@ -5,7 +5,7 @@
 ///
 /// @author HELIOT David, CHEVALLIER Romain, LADOUCE Fabien
 ///
-/// @version 0.4-RELEASE
+/// @version 0.5-RELEASE
 import 'package:flutter/material.dart';
 
 // Default Font Family
@@ -61,7 +61,8 @@ class MaderaTheme {
   }
 
   ///
-  /// Thème par défaut de nos boutons.
+  /// [ButtonThemeData] par défaut de notre application
+  ///
   /// Est appliqué sur tout les éléments [MaterialButton], [RaisedButton], [FlatButton], etc.
   static final ButtonThemeData maderaButtonTheme = ButtonThemeData(
     // textTheme: ButtonTextTheme.primary,
@@ -82,7 +83,7 @@ class MaderaTheme {
   );
 
   ///
-  /// Thème de notre AppBar
+  /// [AppBarTheme] par défaut de notre application
   ///
   static final AppBarTheme defaultAppBarTheme = AppBarTheme(
     brightness: Brightness.light,
@@ -94,7 +95,7 @@ class MaderaTheme {
   );
 
   ///
-  /// Thème par défaut des icones
+  /// [IconThemeData] par défaut de notre application
   ///
   static final IconThemeData defaultIconThemeData = IconThemeData(
     color: MaderaColors.iconsMainColor,
@@ -103,7 +104,7 @@ class MaderaTheme {
   );
 
   ///
-  /// Thème par défaut des textes
+  /// [TextTheme] par défaut de notre application
   /// Il permet de définir des styles pour tous les éléments de l'application.
   /// Il est également possible des les récupérer et les transformer au runtime avec la commande:
   /// Theme.of(context).textTheme.[nomDuParamètre].apply()/.copyWith()
@@ -181,11 +182,11 @@ class Dimens {
   static const buttonPaddingRight = 10.0;
   static const buttonPaddingBottom = 0.0;
   static const cardSizeSmall = 250.0;
-  static const cardSizeXSmall = 155.0;
+  static const cardSizeXSmall = 160.0;
   static const cardSizeMedium = 821.0;
   static const cardSizeLarge = 980.0;
   static const cardHeight = 45.0;
-  static const cardHeightMedium = 175.0;
+  static const cardHeightMedium = 185.0;
   static const cardHeightLarge = 450.0;
   static const boxWidth = 250.0;
   static const boxWidthMedium = 350.0;

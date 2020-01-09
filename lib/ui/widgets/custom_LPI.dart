@@ -4,19 +4,22 @@ import 'package:provider/provider.dart';
 
 import 'package:proto_madera_front/data/providers/providers.dart'
     show MaderaNav, ProviderSynchro;
-import 'package:proto_madera_front/ui/pages/pages.dart' show AuthenticationPage;
+import 'package:proto_madera_front/ui/pages/pages.dart'
+    show AuthenticationPage, HomePage;
 import 'package:proto_madera_front/theme.dart' as cTheme;
 
-///
-/// Widget personnalisé pour une barre de progression linéaire
+/// Custom widget representing a linear progressbar incidator
 ///
 /// @author HELIOT David, CHEVALLIER Romain, LADOUCE Fabien
 ///
-/// @version 0.4-RELEASE
+/// @version 0.5-RELEASE
 class MyLinearProgressIndicator extends StatefulWidget {
   final Color backgroundColor;
 
-  MyLinearProgressIndicator({this.backgroundColor, Key key}) : super(key: key);
+  MyLinearProgressIndicator({
+    this.backgroundColor = Colors.white,
+    Key key,
+  }) : super(key: key);
 
   @override
   _MyLinearProgressIndicatorState createState() =>
@@ -28,6 +31,7 @@ class _MyLinearProgressIndicatorState extends State<MyLinearProgressIndicator>
   AnimationController progressController;
   Animation<double> progressAnimation;
   final Color backgroundColor;
+  bool hasToken = false;
   final log = Logger();
 
   _MyLinearProgressIndicatorState(this.backgroundColor);
@@ -41,8 +45,11 @@ class _MyLinearProgressIndicatorState extends State<MyLinearProgressIndicator>
       ..addStatusListener((status) {
         log.d('$status');
         if (status == AnimationStatus.completed) {
-          Provider.of<MaderaNav>(context)
-              .redirectToPage(context, AuthenticationPage());
+          hasToken
+              ? Provider.of<MaderaNav>(context)
+                  .redirectToPage(context, HomePage(), null)
+              : Provider.of<MaderaNav>(context)
+                  .redirectToPage(context, AuthenticationPage(), null);
         }
         if (status == AnimationStatus.dismissed) {
           progressController.forward();
@@ -68,14 +75,20 @@ class _MyLinearProgressIndicatorState extends State<MyLinearProgressIndicator>
           .getUser()
           .then((lastUserData) {
         try {
-          lastUserData.token != null
-              ? Provider.of<ProviderSynchro>(context).synchro()
-              : log.e('Aucun token trouvé...');
+          if (lastUserData.token != null) {
+            Provider.of<ProviderSynchro>(context).synchro();
+            hasToken = true;
+          } else {
+            log.e('Aucun token trouvé...');
+            hasToken = false;
+          }
         } catch (e) {
+          hasToken = false;
           log.e('lastUserData error (token=null?):\n$e');
         }
       });
     } catch (e) {
+      hasToken = false;
       log.e('getUser error (db=null?):\n$e');
     }
   }

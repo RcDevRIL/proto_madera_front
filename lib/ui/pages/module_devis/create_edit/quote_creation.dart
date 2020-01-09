@@ -1,19 +1,20 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:logger/logger.dart';
+import 'package:proto_madera_front/data/database/madera_database.dart';
+import 'package:proto_madera_front/data/providers/providers.dart'
+    show MaderaNav, ProviderBdd, ProviderProjet;
+import 'package:proto_madera_front/theme.dart' as cTheme;
+import 'package:proto_madera_front/ui/pages/pages.dart' show ProductCreation;
+import 'package:proto_madera_front/ui/widgets/custom_widgets.dart';
 import 'package:provider/provider.dart';
 
-import 'package:proto_madera_front/data/providers/providers.dart'
-    show MaderaNav, ProviderProjet;
-import 'package:proto_madera_front/ui/pages/pages.dart' show Quote;
-import 'package:proto_madera_front/ui/widgets/custom_widgets.dart';
-import 'package:proto_madera_front/theme.dart' as cTheme;
-
 ///
-/// Page 'Outil de création de devis'
+/// Entry point for the quote creation module of our prototype
 ///
 /// @author HELIOT David, CHEVALLIER Romain, LADOUCE Fabien
 ///
-/// @version 0.4-RELEASE
+/// @version 0.5-RELEASE
 class QuoteCreation extends StatefulWidget {
   static const routeName = '/quote_create';
 
@@ -22,42 +23,31 @@ class QuoteCreation extends StatefulWidget {
 }
 
 class _QuoteCreationState extends State<QuoteCreation> {
-  static final _now = DateTime.now();
-  final String dateCreationProjet =
-      DateTime(_now.year, _now.month, _now.day).toString().substring(0, 10);
-  TextEditingController _descriptionTextController;
-  TextEditingController _clientDescriptionTextController;
-  TextEditingController _idProjectTextController;
   ScrollController _formScrollController;
-  bool canValidateForm;
 
   final log = Logger();
 
   @override
   void initState() {
     super.initState();
-    _descriptionTextController = TextEditingController();
-    _clientDescriptionTextController = TextEditingController();
-    _clientDescriptionTextController.text = 'ID: 2\tNom: Dupont';
-    _idProjectTextController = TextEditingController();
-    _idProjectTextController.text = '454';
     _formScrollController = ScrollController();
-    canValidateForm = false;
   }
 
   @override
   void dispose() {
-    _descriptionTextController?.dispose();
-    _clientDescriptionTextController?.dispose();
-    _idProjectTextController?.dispose();
     _formScrollController?.dispose();
     super.dispose();
   }
 
   @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    Provider.of<ProviderProjet>(context)
-        .init(); // Make sure providerProjet is empty$
+    var providerProjet = Provider.of<ProviderProjet>(context);
+    var providerBdd = Provider.of<ProviderBdd>(context);
     return MaderaScaffold(
       passedContext: context,
       child: Center(
@@ -65,10 +55,12 @@ class _QuoteCreationState extends State<QuoteCreation> {
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
-            Text('Informations générales',
-                style: cTheme.MaderaTextStyles.appBarTitle.copyWith(
-                  fontSize: 32.0,
-                )),
+            Text(
+              'Informations générales',
+              style: cTheme.MaderaTextStyles.appBarTitle.copyWith(
+                fontSize: 32.0,
+              ),
+            ),
             GradientFrame(
               child: ListView(
                 controller: _formScrollController,
@@ -79,7 +71,7 @@ class _QuoteCreationState extends State<QuoteCreation> {
                 shrinkWrap: true,
                 children: <Widget>[
                   Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    mainAxisAlignment: MainAxisAlignment.start,
                     children: <Widget>[
                       MaderaCard(
                         cardWidth: cTheme.Dimens.cardSizeXSmall,
@@ -97,47 +89,66 @@ class _QuoteCreationState extends State<QuoteCreation> {
                             ),
                           ),
                         ),
+                        child: Center(
+                          child: Text(providerProjet.dateNow),
+                        ),
+                      ),
+                      MaderaCard(
+                        cardWidth:
+                            MediaQuery.of(context).size.width / 2.4 - 168.0,
+                        cardHeight: cTheme.Dimens.cardHeight,
                         child: TextField(
-                          textAlign: TextAlign.center,
-                          readOnly: true,
-                          style: TextStyle(
-                            fontWeight: FontWeight.w500,
-                          ),
-                          maxLines: 1,
-                          controller: TextEditingController(
-                            text: dateCreationProjet,
-                          ),
-                          keyboardType: TextInputType.text,
-                          enabled: false,
+                          onChanged: (String newValue) {
+                            providerProjet.projetNom = newValue;
+                          },
+                          inputFormatters: [
+                            BlacklistingTextInputFormatter(
+                                RegExp('[^A-z 0-9\s\d][\\\^]*'))
+                          ],
                           decoration: InputDecoration(
-                            hintText: '2019-12-14',
+                            hintText: providerProjet.projetNom == null ||
+                                    providerProjet.projetNom.isEmpty
+                                ? null
+                                : providerProjet.projetNom,
                             border: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                color: Colors.black,
+                                width: 2.0,
+                                style: BorderStyle.solid,
+                              ),
                               borderRadius: BorderRadius.only(
-                                bottomRight: Radius.circular(20.0),
                                 bottomLeft: Radius.circular(20.0),
+                                bottomRight: Radius.circular(20.0),
                               ),
                             ),
                           ),
                         ),
-                      ),
-                      MaderaCard(
-                        cardWidth: cTheme.Dimens.cardSizeXSmall,
-                        cardHeight: cTheme.Dimens.cardHeight,
-                        child: TextField(
-                          textAlign: TextAlign.center,
-                          maxLines: 1,
-                          controller: _idProjectTextController,
-                          keyboardType: TextInputType.text,
-                          enabled: false,
-                          decoration: InputDecoration(
-                            hintText: '100000',
-                            border: OutlineInputBorder(
-                              borderRadius: BorderRadius.only(
-                                bottomRight: Radius.circular(20.0),
-                                bottomLeft: Radius.circular(20.0),
-                              ),
+                        header: LabelledIcon(
+                          icon: Icon(
+                            Icons.info,
+                            color: cTheme.MaderaColors.textHeaderColor,
+                          ),
+                          text: Text(
+                            'Nom du Projet',
+                            style: cTheme.MaderaTextStyles.appBarTitle.copyWith(
+                              fontSize: 15.0,
+                              fontWeight: FontWeight.w900,
                             ),
                           ),
+                        ),
+                      ),
+                      SizedBox(
+                        width: 150.0,
+                      ),
+                      MaderaCard(
+                        cardWidth: 250.0,
+                        cardHeight: cTheme.Dimens.cardHeight,
+                        child: Center(
+                          child: providerProjet.client != null
+                              ? Text(
+                                  '${providerProjet.dateNow.replaceAll('/', '')}_${providerProjet.client.id}')
+                              : Text(
+                                  '${providerProjet.dateNow.replaceAll('/', '')}'),
                         ),
                         header: LabelledIcon(
                           icon: Icon(
@@ -153,49 +164,6 @@ class _QuoteCreationState extends State<QuoteCreation> {
                           ),
                         ),
                       ),
-                      // MaderaCard(
-                      //   cardWidth: cTheme.Dimens.cardSizeMedium,
-                      //   cardHeight: cTheme.Dimens.cardHeight,
-                      //   child: TextField(
-                      //     maxLines: 1,
-                      //     controller: _clientDescriptionTextController,
-                      //     onChanged: (text) {
-                      //       setState(() {
-                      //         if (text.isNotEmpty) {
-                      //           Provider.of<ProviderProjet>(context)
-                      //               .setRefClient(text);
-                      //           canValidateForm = true;
-                      //         } else {
-                      //           canValidateForm = false;
-                      //         }
-                      //       });
-                      //     },
-                      //     keyboardType: TextInputType.text,
-                      //     enabled: true,
-                      //     decoration: InputDecoration(
-                      //       hintText: '-1',
-                      //       border: OutlineInputBorder(
-                      //         borderRadius: BorderRadius.only(
-                      //           bottomRight: Radius.circular(20.0),
-                      //           bottomLeft: Radius.circular(20.0),
-                      //         ),
-                      //       ),
-                      //     ),
-                      //   ),
-                      //   labelledIcon: LabelledIcon(
-                      //     icon: Icon(
-                      //       Icons.person,
-                      //       color: cTheme.MaderaColors.textHeaderColor,
-                      //     ),
-                      //     text: Text(
-                      //       'Références Client',
-                      //       style: cTheme.MaderaTextStyles.appBarTitle.copyWith(
-                      //         fontSize: 15.0,
-                      //         fontWeight: FontWeight.w900,
-                      //       ),
-                      //     ),
-                      //   ),
-                      // ),
                     ],
                   ),
                   Row(
@@ -215,8 +183,7 @@ class _QuoteCreationState extends State<QuoteCreation> {
                           ),
                         ),
                         child: ListView(
-                          padding: EdgeInsets.symmetric(
-                              horizontal: 4.0, vertical: 4.0),
+                          padding: EdgeInsets.fromLTRB(4.0, 4.0, 4.0, 0.0),
                           children: <Widget>[
                             Align(
                               alignment: Alignment.centerLeft,
@@ -235,20 +202,24 @@ class _QuoteCreationState extends State<QuoteCreation> {
                                 ),
                               ),
                             ),
-                            TextField(
-                              enabled: true,
-                              style: TextStyle(
-                                fontWeight: FontWeight.w500,
-                              ),
-                              maxLines: 1,
-                              keyboardType: TextInputType.text,
-                              decoration: InputDecoration(
-                                hintText: 'Ex: DUPONT Nicolas',
-                                border: OutlineInputBorder(
-                                  borderSide: BorderSide.none,
-                                ),
-                              ),
-                            ),
+                            providerProjet.client != null
+                                ? Container(
+                                    height: 50.0,
+                                    padding: const EdgeInsets.symmetric(
+                                      horizontal: 8.0,
+                                    ),
+                                    child: Align(
+                                      alignment: Alignment.centerLeft,
+                                      child: Text(
+                                        providerProjet.client.nom +
+                                            ' ' +
+                                            providerProjet.client.prenom,
+                                      ),
+                                    ),
+                                  )
+                                : Container(
+                                    height: 50.0,
+                                  ),
                             Align(
                               alignment: Alignment.centerLeft,
                               child: LabelledIcon(
@@ -266,28 +237,32 @@ class _QuoteCreationState extends State<QuoteCreation> {
                                 ),
                               ),
                             ),
-                            TextField(
-                              maxLines: 1,
-                              // onChanged: (text) {
-                              //   setState(() {
-                              //     if (text.isNotEmpty) {
-                              //       Provider.of<ProviderProjet>(context)
-                              //           .setRefClient(text);
-                              //       canValidateForm = true;
-                              //     } else {
-                              //       canValidateForm = false;
-                              //     }
-                              //   });
-                              // },
-                              keyboardType: TextInputType.text,
-                              enabled: true,
-                              decoration: InputDecoration(
-                                hintText: 'Rue complète, CP, ville',
-                                border: OutlineInputBorder(
-                                  borderSide: BorderSide.none,
-                                ),
-                              ),
-                            ),
+                            //TODO trouver une autre implémentation pour éviter le futurebuilder?
+                            providerProjet.client != null
+                                ? FutureBuilder(
+                                    future: providerBdd.buildClientAdresse(
+                                        providerProjet.client.id),
+                                    // initialData: 'NO ADRESS LOADED',
+                                    builder: (c, s) {
+                                      if (s.hasData) {
+                                        return Container(
+                                          height: 50.0,
+                                          padding: const EdgeInsets.symmetric(
+                                            horizontal: 8.0,
+                                          ),
+                                          child: Align(
+                                            alignment: Alignment.centerLeft,
+                                            child: Text(s.data),
+                                          ),
+                                        );
+                                      } else {
+                                        return CircularProgressIndicator();
+                                      }
+                                    },
+                                  )
+                                : Container(
+                                    height: 50.0,
+                                  ),
                           ],
                         ),
                       ),
@@ -305,8 +280,7 @@ class _QuoteCreationState extends State<QuoteCreation> {
                           ),
                         ),
                         child: ListView(
-                          padding: EdgeInsets.symmetric(
-                              horizontal: 4.0, vertical: 4.0),
+                          padding: EdgeInsets.fromLTRB(4.0, 4.0, 4.0, 0.0),
                           children: <Widget>[
                             Align(
                               alignment: Alignment.centerLeft,
@@ -325,28 +299,22 @@ class _QuoteCreationState extends State<QuoteCreation> {
                                 ),
                               ),
                             ),
-                            TextField(
-                              maxLines: 1,
-                              // onChanged: (text) {
-                              //   setState(() {
-                              //     if (text.isNotEmpty) {
-                              //       Provider.of<ProviderProjet>(context)
-                              //           .setRefClient(text);
-                              //       canValidateForm = true;
-                              //     } else {
-                              //       canValidateForm = false;
-                              //     }
-                              //   });
-                              // },
-                              keyboardType: TextInputType.phone,
-                              enabled: true,
-                              decoration: InputDecoration(
-                                hintText: 'Téléphone...',
-                                border: OutlineInputBorder(
-                                  borderSide: BorderSide.none,
-                                ),
-                              ),
-                            ),
+                            providerProjet.client != null
+                                ? Container(
+                                    height: 50.0,
+                                    padding: const EdgeInsets.symmetric(
+                                      horizontal: 8.0,
+                                    ),
+                                    child: Align(
+                                      alignment: Alignment.centerLeft,
+                                      child: Text(
+                                        providerProjet.client.numTel,
+                                      ),
+                                    ),
+                                  )
+                                : Container(
+                                    height: 50.0,
+                                  ),
                             Align(
                               alignment: Alignment.centerLeft,
                               child: LabelledIcon(
@@ -364,28 +332,22 @@ class _QuoteCreationState extends State<QuoteCreation> {
                                 ),
                               ),
                             ),
-                            TextField(
-                              maxLines: 1,
-                              // onChanged: (text) {
-                              //   setState(() {
-                              //     if (text.isNotEmpty) {
-                              //       Provider.of<ProviderProjet>(context)
-                              //           .setRefClient(text);
-                              //       canValidateForm = true;
-                              //     } else {
-                              //       canValidateForm = false;
-                              //     }
-                              //   });
-                              // },
-                              keyboardType: TextInputType.emailAddress,
-                              enabled: true,
-                              decoration: InputDecoration(
-                                hintText: 'Adresse mail...',
-                                border: OutlineInputBorder(
-                                  borderSide: BorderSide.none,
-                                ),
-                              ),
-                            ),
+                            providerProjet.client != null
+                                ? Container(
+                                    height: 50.0,
+                                    padding: const EdgeInsets.symmetric(
+                                      horizontal: 8.0,
+                                    ),
+                                    child: Align(
+                                      alignment: Alignment.centerLeft,
+                                      child: Text(
+                                        providerProjet.client.mail,
+                                      ),
+                                    ),
+                                  )
+                                : Container(
+                                    height: 50.0,
+                                  ),
                           ],
                         ),
                       ),
@@ -397,20 +359,16 @@ class _QuoteCreationState extends State<QuoteCreation> {
                       onTap: () => _formScrollController.jumpTo(
                           _formScrollController.position.maxScrollExtent),
                       maxLines: 25,
-                      controller: _descriptionTextController,
                       onChanged: (text) {
-                        if (text.isNotEmpty) {
-                          Provider.of<ProviderProjet>(context)
-                              .setDescription(text);
-                          canValidateForm = true;
-                        } else {
-                          canValidateForm = false;
-                        }
+                        providerProjet.description = text;
                       },
                       keyboardType: TextInputType.multiline,
                       enabled: true,
                       decoration: InputDecoration(
-                        hintText: 'Rentrez la description du projet ici',
+                        hintText: providerProjet.description == null ||
+                                providerProjet.description.isEmpty
+                            ? 'Rentrez la description du projet ici'
+                            : providerProjet.description,
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.only(
                             bottomRight: Radius.circular(20.0),
@@ -449,27 +407,24 @@ class _QuoteCreationState extends State<QuoteCreation> {
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
                   border: Border.all(
-                      color: canValidateForm
+                      color: providerProjet.isFilled('QuoteCreation')
                           ? cTheme.MaderaColors.maderaLightGreen
                           : Colors.grey,
                       width: 2),
-                  color: canValidateForm
+                  color: providerProjet.isFilled('QuoteCreation')
                       ? cTheme.MaderaColors.maderaBlueGreen
                       : Colors.grey,
                 ),
                 child: IconButton(
-                  onPressed: canValidateForm
+                  onPressed: providerProjet.isFilled('QuoteCreation')
                       ? () {
                           log.d('Saving form...');
-                          Provider.of<ProviderProjet>(context).saveQC(
-                              dateCreationProjet,
-                              _descriptionTextController.text,
-                              _idProjectTextController.text,
-                              _clientDescriptionTextController.text);
+                          providerProjet.initProjet();
+                          providerProjet.initProductCreationModel();
+                          providerProjet.logQC();
                           log.d('Done.');
-                          log.d('Quote Creation');
                           Provider.of<MaderaNav>(context)
-                              .redirectToPage(context, Quote());
+                              .redirectToPage(context, ProductCreation(), null);
                         }
                       : null,
                   icon: Icon(
@@ -492,7 +447,87 @@ class _QuoteCreationState extends State<QuoteCreation> {
                     color: Colors.white,
                   ),
                 ),
-              )
+              ),
+              SizedBox(height: 12),
+              Container(
+                decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    border: Border.all(
+                        color: cTheme.MaderaColors.maderaLightGreen, width: 2),
+                    color: cTheme.MaderaColors.maderaBlueGreen),
+                child: IconButton(
+                  onPressed: () {
+                    Provider.of<MaderaNav>(context).showPopup(
+                      context,
+                      Icons.person_add,
+                      'Sélection d\'un client',
+                      Padding(
+                        padding: const EdgeInsets.fromLTRB(
+                          10.0,
+                          0.0,
+                          10.0,
+                          0.0,
+                        ),
+                        child: DropdownButton<String>(
+                          isExpanded: true,
+                          hint: providerProjet.client != null
+                              ? Text(providerProjet.client.nom +
+                                  ' ' +
+                                  providerProjet.client.prenom)
+                              : Text('Sélectionnez un client...'),
+                          icon: Icon(Icons.arrow_drop_down,
+                              color: cTheme.MaderaColors.maderaLightGreen),
+                          iconSize: 35,
+                          elevation: 16,
+                          style: Theme.of(context)
+                              .textTheme
+                              .title
+                              .apply(fontSizeDelta: -8),
+                          underline: Container(
+                            height: 2,
+                            width: 100.0,
+                            color: Colors.transparent,
+                          ),
+                          onChanged: (String newValue) {
+                            providerBdd.listClient.forEach((client) => {
+                                  if (client.nom + ' ' + client.prenom ==
+                                      newValue)
+                                    {
+                                      providerProjet
+                                          .initClientWithClient(client),
+                                    }
+                                });
+                            Navigator.of(context).pop();
+                            didChangeDependencies();
+                          },
+                          items: providerBdd.listClient
+                              .map<DropdownMenuItem<String>>(
+                                  (ClientData client) =>
+                                      DropdownMenuItem<String>(
+                                        value: client.nom + ' ' + client.prenom,
+                                        child: Text(
+                                            client.nom + ' ' + client.prenom),
+                                      ))
+                              .toList(),
+                        ),
+                      ),
+                      [
+                        MaderaButton(
+                          key: Key('ok-button'),
+                          child: Text('Ok'),
+                          onPressed: () {
+                            Navigator.of(context).pop();
+                          },
+                        ),
+                      ],
+                    );
+                  },
+                  icon: Icon(
+                    Icons.person_add,
+                    color: Colors.white,
+                  ),
+                ),
+              ),
             ],
           ),
         ),

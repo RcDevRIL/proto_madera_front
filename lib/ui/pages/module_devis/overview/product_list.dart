@@ -1,20 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:logger/logger.dart';
+import 'package:proto_madera_front/data/database/madera_database.dart';
+import 'package:proto_madera_front/data/providers/provider_login.dart';
 import 'package:provider/provider.dart';
 
 import 'package:proto_madera_front/ui/widgets/custom_widgets.dart';
 import 'package:proto_madera_front/data/providers/providers.dart'
-    show MaderaNav;
+    show MaderaNav, ProviderBdd, ProviderProjet, ProviderSynchro;
 import 'package:proto_madera_front/ui/pages/pages.dart'
-    show QuoteOverview, Quote;
+    show HomePage, ProductCreation, QuoteOverview;
 import 'package:proto_madera_front/theme.dart' as cTheme;
 
 ///
-/// Page de "Edition de devis"
+/// List of products saved for current project
 ///
 /// @author HELIOT David, CHEVALLIER Romain, LADOUCE Fabien
 ///
-/// @version 0.4-RELEASE
+/// @version 0.5-RELEASE
 class ProductList extends StatefulWidget {
   static const routeName = '/quote';
 
@@ -38,9 +40,8 @@ class _ProductListState extends State<ProductList> {
 
   @override
   Widget build(BuildContext context) {
-    // Décommente la ligne en dessous
-    // final productList = Provider.of<ProviderProjet>(context).productList;
-    final productList = ['Produit n°1', 'Produit n°2'];
+    var providerProjet = Provider.of<ProviderProjet>(context);
+    var providerBdd = Provider.of<ProviderBdd>(context);
     return MaderaScaffold(
       passedContext: context,
       child: Center(
@@ -50,7 +51,7 @@ class _ProductListState extends State<ProductList> {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
             Text(
-              'Liste des produits', //TODO implémenter getProductsCount dans Provider Projet
+              'Liste des produits',
               style:
                   cTheme.MaderaTextStyles.appBarTitle.copyWith(fontSize: 32.0),
             ),
@@ -63,9 +64,9 @@ class _ProductListState extends State<ProductList> {
                       horizontal: MediaQuery.of(context).size.width / 7.3,
                       vertical: 10.0,
                     ),
-                    itemCount: productList.length,
-                    itemBuilder: (c, i) =>
-                        _createProductTile(i, productList[i]),
+                    itemCount: providerProjet.listProduitProjet.length,
+                    itemBuilder: (c, i) => _createProductTile(
+                        i, providerProjet.listProduitProjet[i].produit),
                     separatorBuilder: (c, i) => SizedBox(
                       height: 10.0,
                     ),
@@ -83,9 +84,12 @@ class _ProductListState extends State<ProductList> {
                       boxHeight: 50,
                       child: InkWell(
                         onTap: () {
-                          log.d("Adding a new product");
+                          log.d('Adding a new product');
+                          providerProjet.initProductCreationModel();
+                          providerProjet.editProductIndex = providerProjet
+                              .listProduitProjet.length; //on veut index max +1
                           Provider.of<MaderaNav>(context)
-                              .redirectToPage(context, Quote());
+                              .redirectToPage(context, ProductCreation(), null);
                         },
                         child: Align(
                           alignment: Alignment.centerRight,
@@ -97,11 +101,15 @@ class _ProductListState extends State<ProductList> {
                                     width: 2),
                                 color: Colors.grey),
                             child: IconButton(
-                              tooltip: "Supprimer produit",
+                              tooltip: 'Ajouter un produit',
                               onPressed: () {
-                                log.d("Adding a new product");
-                                Provider.of<MaderaNav>(context)
-                                    .redirectToPage(context, Quote());
+                                log.d('Adding a new product');
+                                providerProjet.initProductCreationModel();
+                                providerProjet.editProductIndex = providerProjet
+                                    .listProduitProjet
+                                    .length; //on veut index max +1
+                                Provider.of<MaderaNav>(context).redirectToPage(
+                                    context, ProductCreation(), null);
                               },
                               icon: Icon(
                                 Icons.add,
@@ -129,15 +137,35 @@ class _ProductListState extends State<ProductList> {
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
                   border: Border.all(
-                      color: cTheme.MaderaColors.maderaLightGreen, width: 2),
+                    color: cTheme.MaderaColors.maderaLightGreen,
+                    width: 2,
+                  ),
                   color: cTheme.MaderaColors.maderaBlueGreen,
                 ),
                 child: IconButton(
-                  tooltip: "Valider produit",
-                  onPressed: () {
-                    log.d("Quote Overview");
+                  tooltip: 'Valider Projet',
+                  onPressed: () async {
+                    log.d('Create projetWithAllInfos');
+                    providerProjet.initProjetWithAllInfos();
+                    if (await Provider.of<ProviderLogin>(context).ping()) {
+                      log.d('Appel serveur réussi.');
+                      log.d('Synchronisation du projet avec le serveur...');
+                      await Provider.of<ProviderSynchro>(context)
+                          .createProjectOnServer(
+                              providerProjet.projetWithAllInfos);
+                      if (await Provider.of<ProviderSynchro>(context)
+                          .synchroData()) {
+                        log.i('New project loaded from backend server');
+                        providerProjet.validate(true);
+                      } else
+                        log.e('Error when trying to synchro user data');
+                    } else {
+                      log.d('Application offline, register in bdd local');
+                      providerBdd.createAll(providerProjet.projetWithAllInfos);
+                      providerProjet.validate(true);
+                    }
                     Provider.of<MaderaNav>(context)
-                        .redirectToPage(context, QuoteOverview());
+                        .redirectToPage(context, QuoteOverview(), null);
                   },
                   icon: Icon(
                     Icons.check,
@@ -148,13 +176,24 @@ class _ProductListState extends State<ProductList> {
               SizedBox(height: 12),
               Container(
                 decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    border: Border.all(
-                        color: cTheme.MaderaColors.maderaLightGreen, width: 2),
-                    color: cTheme.MaderaColors.maderaBlueGreen),
+                  shape: BoxShape.circle,
+                  border: Border.all(
+                    color: cTheme.MaderaColors.maderaLightGreen,
+                    width: 2,
+                  ),
+                  color: cTheme.MaderaColors.maderaBlueGreen,
+                ),
                 child: IconButton(
-                  tooltip: "Supprimer produit",
-                  onPressed: () {},
+                  tooltip: 'Abandonner le projet en cours',
+                  onPressed: () {
+                    Provider.of<MaderaNav>(context).showNothingYouCanDoPopup(
+                        context,
+                        Icons.warning,
+                        'Abandon du projet',
+                        'Le projet en cours de création va être supprimé.',
+                        HomePage());
+                    providerProjet.validate(false);
+                  },
                   icon: Icon(
                     Icons.delete,
                     color: Colors.white,
@@ -168,7 +207,7 @@ class _ProductListState extends State<ProductList> {
     );
   }
 
-  Widget _createProductTile(int productID, String product) {
+  Widget _createProductTile(int productIndex, ProduitData product) {
     return MaderaRoundedBox(
       edgeInsetsPadding: EdgeInsets.symmetric(horizontal: 8.0),
       boxHeight: 50,
@@ -177,12 +216,13 @@ class _ProductListState extends State<ProductList> {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.start,
           children: <Widget>[
-            Text('$productID | $product'),
+            Text(
+                '${productIndex + 1} | ID:${product.produitId} - ${product.produitNom}'),
             IconButton(
               icon: Icon(
                 Icons.mode_edit,
                 color: cTheme.MaderaColors.maderaBlueGreen,
-                semanticLabel: 'Bouton d' 'édition',
+                semanticLabel: 'Bouton d\'édition',
               ),
               alignment: Alignment.center,
               color: Colors.transparent,
@@ -190,9 +230,20 @@ class _ProductListState extends State<ProductList> {
               iconSize: 24.0,
               tooltip: 'Editer produit',
               onPressed: () {
-                log.d("Modifying product...");
+                log.d('Modifying product...');
+                Provider.of<ProviderProjet>(context)
+                    .loadProductCreationModel(productIndex);
+                // Je set la gamme ici car besoin de récupérer tout le GammeData
+                Provider.of<ProviderProjet>(context).gamme =
+                    Provider.of<ProviderBdd>(context).listGammes.firstWhere(
+                        (gammeData) =>
+                            gammeData.gammeId ==
+                            Provider.of<ProviderProjet>(context)
+                                .listProduitProjet[productIndex]
+                                .produit
+                                .gammesId);
                 Provider.of<MaderaNav>(context)
-                    .redirectToPage(context, Quote());
+                    .redirectToPage(context, ProductCreation(), null);
               },
             ),
             IconButton(
@@ -207,15 +258,14 @@ class _ProductListState extends State<ProductList> {
               iconSize: 24.0,
               tooltip: 'Supprimer produit',
               onPressed: () {
-                log.d("Deleting product...");
-                //TODO Provider.of<ProviderProjet>(context).deleteProduct(productID);
+                log.d('Deleting product...');
+                Provider.of<ProviderProjet>(context)
+                    .deleteProductCreationModel(productIndex);
               },
             ),
           ],
         ),
-      ), // On considère que l'id est l'index dans la liste des produits
-      // mais ça changera, on prendra l'id en BDD
-    ); // supp cette ligne, et décommente celle en dessous
-    // title: Text(productList[i]),;
+      ),
+    );
   }
 }

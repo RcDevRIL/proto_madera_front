@@ -7,12 +7,11 @@ import 'package:proto_madera_front/ui/widgets/custom_widgets.dart'
     show ExitButton;
 import 'package:proto_madera_front/ui/pages/pages.dart' show HomePage;
 
-///
-/// Widget personnalisé pour une "AppBar" personnalisée
+/// Custom widget representing a customized [AppBar]
 ///
 /// @author HELIOT David, CHEVALLIER Romain, LADOUCE Fabien
 ///
-/// @version 0.4-RELEASE
+/// @version 0.5-RELEASE
 class AppBarMadera extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -35,13 +34,14 @@ class AppBarMadera extends StatelessWidget {
                 ? FlatButton(
                     padding: EdgeInsets.all(0.0), //override theme
                     shape: Border.all(style: BorderStyle.none), //override theme
-                    onPressed: () => mN.redirectToPage(context, HomePage()),
+                    onPressed: () =>
+                        mN.redirectToPage(context, HomePage(), null),
                     child: Image(
-                      image: AssetImage("assets/img/logo-madera.png"),
+                      image: AssetImage('assets/img/logo-madera.png'),
                     ),
                   )
                 : Image(
-                    image: AssetImage("assets/img/logo-madera.png"),
+                    image: AssetImage('assets/img/logo-madera.png'),
                   ),
           ],
         ),

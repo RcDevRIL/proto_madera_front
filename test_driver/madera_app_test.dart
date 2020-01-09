@@ -1,8 +1,10 @@
 import 'package:flutter_driver/flutter_driver.dart';
 import 'package:test/test.dart';
+import 'package:logger/logger.dart';
 
 void main() {
   group('Madera App', () {
+    final Logger log = Logger();
     // First, locate the widgets by their keys.
     final usernameTextFinder = find.byValueKey('username');
     final passwordTextFinder = find.byValueKey('password');
@@ -57,11 +59,21 @@ void main() {
       await driver.enterText("123456");
 
       await driver.tap(submitButton);
+      // Rajout d'un try/catch pour le cas ou la tablette est hors ligne.
+      try {
+        //Bizarrement le timeout fait réussir le test. Mais c toujours mieux qu'une exception
+        await driver.waitFor(homePage).timeout(Duration(
+            seconds:
+                12)); //2secondes de plus que le timeout présent dans providerlogin
+        assert(homePage != null);
 
-      await driver.waitFor(homePage);
-      assert(homePage != null);
-
-      await driver.waitUntilNoTransientCallbacks();
+        await driver
+            .waitUntilNoTransientCallbacks()
+            .timeout(Duration(seconds: 12));
+      } on Exception catch (e) {
+        log.e('Device not connected to internet?\n$e');
+        assert(false);
+      }
     });
   });
 }

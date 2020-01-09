@@ -7,11 +7,14 @@ import 'package:proto_madera_front/theme.dart' as cTheme;
 ///
 /// @author HELIOT David, CHEVALLIER Romain, LADOUCE Fabien
 ///
-/// @version 0.4-RELEASE
+/// @version 0.5-RELEASE
 class GradientFrame extends StatefulWidget {
   final Widget child;
 
-  GradientFrame({Key key, @required this.child}) : super(key: key);
+  GradientFrame({
+    Key key,
+    @required this.child,
+  }) : super(key: key);
 
   @override
   _GradientFrameState createState() => _GradientFrameState();

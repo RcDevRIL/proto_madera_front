@@ -11,14 +11,15 @@ import 'package:proto_madera_front/data/database/madera_database.dart';
 import 'package:proto_madera_front/data/models/http_status.dart';
 
 ///
-/// Provider permettant de gérer la connexion au backend hébergé
+/// Provider to handle backend connection
 ///
 /// @author HELIOT David, CHEVALLIER Romain, LADOUCE Fabien
 ///
-/// @version 0.4-RELEASE
+/// @version 0.5-RELEASE
 class ProviderLogin with ChangeNotifier {
-  Client http = new Client();
   final log = Logger();
+  final int timeOut = 10;
+  Client http = new Client();
   HttpStatus status = HttpStatus.OFFLINE;
   MaderaDatabase db;
   UtilisateurDao utilisateurDao;
@@ -37,13 +38,15 @@ class ProviderLogin with ChangeNotifier {
     var digest = sha256.convert(bytes);
     var response;
     try {
-      response = await http.post(
-        MaderaUrl.urlAuthentification,
-        headers: {'Content-type': 'application/json'},
-        body: jsonEncode({'login': login, 'password': digest.toString()}),
-      );
+      response = await http
+          .post(
+            MaderaUrl.urlAuthentification,
+            headers: {'Content-type': 'application/json'},
+            body: jsonEncode({'login': login, 'password': digest.toString()}),
+          )
+          .timeout(Duration(seconds: timeOut));
     } catch (e) {
-      log.e("Error when trying to connect:\n" + e.toString());
+      log.e('Error when trying to connect:\n' + e.toString());
       this.status = HttpStatus.OFFLINE;
       return false;
     }
@@ -70,20 +73,30 @@ class ProviderLogin with ChangeNotifier {
     }
   }
 
-  // Méthode pour vérifier si le serveur est joignable, vérification à effectuer
-  // avant chaque méthode faisant des appels serveurs, sauf si le status est déjà offline
+  /// Méthode pour vérifier si le serveur est joignable, vérification à effectuer
+  /// avant chaque méthode faisant des appels serveurs, sauf si le status est déjà offline
   Future<bool> ping() async {
+    var response;
     try {
-      var response = await http.get(MaderaUrl.baseUrl);
+      response =
+          await http.get(MaderaUrl.baseUrl).timeout(Duration(seconds: timeOut));
+    } catch (e) {
+      log.e('Error when trying to ping:\n' + e.toString());
+      this.status = HttpStatus.OFFLINE;
+      return false;
+    }
+    if (response != null) {
       if (response.statusCode == 200) {
         this.status = HttpStatus.ONLINE;
         return true;
+      } else {
+        this.status = HttpStatus.OFFLINE;
+        return false;
       }
-    } catch (exception) {
+    } else {
       this.status = HttpStatus.OFFLINE;
-      throw new Exception('Connection');
+      return false;
     }
-    return false;
   }
 
   Future<bool> logout() async {
@@ -96,16 +109,18 @@ class ProviderLogin with ChangeNotifier {
     }
     var response;
     try {
-      response = await http.post(
-        MaderaUrl.urlDeconnection,
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': 'Bearer ${utilisateurData.token}'
-        },
-        body: utilisateurData.login,
-      );
+      response = await http
+          .post(
+            MaderaUrl.urlDeconnection,
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': 'Bearer ${utilisateurData.token}'
+            },
+            body: utilisateurData.login,
+          )
+          .timeout(Duration(seconds: timeOut));
     } catch (exception) {
-      log.e("Error when tryiing to deconnect:\n" + exception.toString());
+      log.e('Error when tryiing to deconnect:\n' + exception.toString());
     }
     if (response?.statusCode == 200) {
       //Supprime l'utilisateur (token et login) localement

@@ -4,19 +4,18 @@ import 'package:proto_madera_front/ui/pages/user/profile_page.dart';
 import 'package:provider/provider.dart';
 
 import 'package:proto_madera_front/data/providers/providers.dart'
-    show MaderaNav, ProviderLogin;
+    show MaderaNav, ProviderLogin, ProviderProjet;
 import 'package:proto_madera_front/ui/widgets/custom_widgets.dart'
     show CollapsingListTile;
 import 'package:proto_madera_front/ui/pages/pages.dart';
 import 'package:proto_madera_front/data/models/navigation_model.dart';
 import 'package:proto_madera_front/theme.dart' as cTheme;
 
-///
-/// Widget personnalisé pour une barre de navigation extensible
+/// Custom widget representing an extensible navigation bar
 ///
 /// @author HELIOT David, CHEVALLIER Romain, LADOUCE Fabien
 ///
-/// @version 0.4-RELEASE
+/// @version 0.5-RELEASE
 class CustomDrawer extends StatefulWidget {
   @override
   _CustomDrawerState createState() => _CustomDrawerState();
@@ -65,8 +64,8 @@ class _CustomDrawerState extends State<CustomDrawer>
                 CollapsingListTile(
                   isSelected: Provider.of<MaderaNav>(context).pageIndex == 5,
                   onTap: () => Provider.of<MaderaNav>(context)
-                      .redirectToPage(context, UserProfilePage()),
-                  title: "Test Name",
+                      .redirectToPage(context, UserProfilePage(), null),
+                  title: 'Test Name',
                   icon: Icons.person,
                   animationController: _animationController,
                 ),
@@ -108,7 +107,10 @@ class _CustomDrawerState extends State<CustomDrawer>
                       return Consumer<MaderaNav>(
                         builder: (context, mN, child) => CollapsingListTile(
                           onTap: () {
-                            mN.redirectToPage(context, navigationTarget);
+                            if (navigationTarget.runtimeType == QuoteCreation)
+                              Provider.of<ProviderProjet>(context)
+                                  .initAndHold();
+                            mN.redirectToPage(context, navigationTarget, null);
 
                             setState(() {
                               currentSelectedItem = i;
@@ -128,8 +130,8 @@ class _CustomDrawerState extends State<CustomDrawer>
                   onTap: !isCollapsed
                       ? () {
                           Provider.of<ProviderLogin>(context).logout();
-                          Provider.of<MaderaNav>(context)
-                              .redirectToPage(context, AuthenticationPage());
+                          Provider.of<MaderaNav>(context).redirectToPage(
+                              context, AuthenticationPage(), null);
                         }
                       : null,
                   animationController: _animationController,

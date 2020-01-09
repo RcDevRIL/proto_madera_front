@@ -5,11 +5,11 @@ import 'package:proto_madera_front/data/database/tables.dart';
 part 'madera_database.g.dart';
 
 ///
-/// Class représentant notre base de donnée.
+/// Class representing our database.
 ///
 /// @author HELIOT David, CHEVALLIER Romain, LADOUCE Fabien
 ///
-/// @version 0.4-RELEASE
+/// @version 0.5-RELEASE
 @UseMoor(tables: [
   Utilisateur,
   Composant,
@@ -21,7 +21,10 @@ part 'madera_database.g.dart';
   Adresse,
   ClientAdresse,
   Projet,
-  ProjetModule
+  ProduitModule,
+  Produit,
+  ProjetProduits,
+  ComposantGroupe,
 ])
 class MaderaDatabase extends _$MaderaDatabase {
   MaderaDatabase()
@@ -32,7 +35,7 @@ class MaderaDatabase extends _$MaderaDatabase {
         );
   //Si modification du schéma alors le schemaVersion prend +1
   @override
-  int get schemaVersion => 6;
+  int get schemaVersion => 14;
 
   @override
   MigrationStrategy get migration => MigrationStrategy(onCreate: (Migrator m) {
@@ -57,7 +60,38 @@ class MaderaDatabase extends _$MaderaDatabase {
           m.createTable(clientAdresse);
           m.createTable(adresse);
           m.createTable(projet);
-          m.createTable(projetModule);
+          m.createTable(produitModule);
+        }
+        if (from <= 7) {
+          m.deleteTable('projetModule');
+          m.deleteTable('projet');
+          m.deleteTable('module');
+          m.createTable(produitModule);
+          m.createTable(projetProduits);
+          m.createTable(produit);
+          m.createTable(composantGroupe);
+          m.createTable(projet);
+          m.createTable(module);
+        }
+        if (from <= 8) {
+          m.deleteTable('projet');
+          m.createTable(projet);
+        }
+        if (from <= 10) {
+          m.deleteTable('produit');
+          m.createTable(produit);
+        }
+        if (from <= 11) {
+          m.deleteTable('projet');
+          m.createTable(projet);
+        }
+        if (from <= 12) {
+          m.deleteTable('produit');
+          m.createTable(produit);
+        }
+        if (from <= 14) {
+          m.deleteTable('projet');
+          m.createTable(projet);
         }
       });
 }

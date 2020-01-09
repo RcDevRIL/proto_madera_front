@@ -11,12 +11,13 @@ class Projet extends Table {
 
   TextColumn get refProjet => text().withLength(min: 0, max: 45)();
 
-  //TODO Marche pas (probleme de serialization, je regarderais demain
   DateTimeColumn get dateProjet => dateTime()();
 
-  RealColumn get prix => real()();
+  RealColumn get prixTotal => real().nullable()();
 
   IntColumn get clientId => integer()();
 
   IntColumn get devisEtatId => integer()();
+
+  BoolColumn get isSynchro => boolean()();
 }

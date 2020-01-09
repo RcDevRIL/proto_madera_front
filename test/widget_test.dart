@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:http/http.dart';
 import 'package:http/testing.dart';
+import 'package:proto_madera_front/data/database/madera_database.dart';
 import 'package:provider/provider.dart';
 
 import 'package:proto_madera_front/data/providers/providers.dart';
@@ -14,13 +15,13 @@ import 'package:proto_madera_front/ui/pages/pages.dart';
 ///
 /// @author HELIOT David, CHEVALLIER Romain, LADOUCE Fabien
 ///
-/// @version 0.4-RELEASE
+/// @version 0.5-RELEASE
 void main() {
   final ProviderBdd providerBdd = ProviderBdd();
 
   group('General Unit Tests', () {
     testWidgets(
-      'first test',
+      'init ProviderNavigation on HomePage test',
       (WidgetTester tester) async {
         final MaderaNav providerNavigation = MaderaNav();
         Widget testWidget = MediaQuery(
@@ -36,49 +37,53 @@ void main() {
         );
         // Build our app and trigger a frame.
         await tester.pumpWidget(testWidget);
-        // Simplest test, useless for now, just to make build pass on codemagic.
-        expect(find.text("default"), findsWidgets);
+        expect(find.text("default"),
+            findsWidgets); // Comme on a directement lancé la page d'accueil,
+        // pas d'appel à redirectToPage -> pas d'appel à l'update des properties de navigation -> valeurs à default
       },
     );
     test(
       'init providerProjet test',
       () {
         ProviderProjet providerProjet = ProviderProjet();
-        var clientId = 1;
-        providerProjet.init(); //initialise les variables du provider
-        expect(providerProjet.refProjet.endsWith('_MMP$clientId'),
-            true); //valeur temporaire d'initialisation
+        providerProjet.initAndHold();
+        expect(providerProjet.projetNom, '');
+        ClientData testClient = ClientData(
+          id: 4,
+          mail: 'test@user.com',
+          nom: 'testuser',
+          numTel: '00000000',
+          prenom: 'test',
+        );
+        expect(providerProjet.initProjet(), false); //false car pas de client
         providerProjet
-            .setDescription('desc'); //ajout d'une description au projet
-        expect(providerProjet.description.isNotEmpty,
-            true); //description n'est plus vide
-        providerProjet.productModules
-            .addAll({'test': 'test'}); //ajout d'un module dans la liste
-        providerProjet.setModeleListFromGammeID(
-            1); //Changement de la liste des modèles à partir de la gamme
-        expect(providerProjet.productModules.isEmpty,
-            true); // la liste des modules a été vidée
+            .initClientWithClient(testClient); //ajout d'un client de test
+        expect(providerProjet.initProjet(), true);
       },
     );
     test(
       'Update route state',
       () async {
-        final MaderaNav providerNavigation = MaderaNav();
+        final MaderaNav providerNavigation =
+            MaderaNav(); // initialisation du provider
         int index = providerNavigation.pageIndex;
         String title = providerNavigation.pageTitle;
-        expect(index, -1);
-        expect(title, 'default');
-        providerNavigation.updateCurrent(AuthenticationPage);
+        expect(index, -1); // variable si null renvoie -1
+        expect(title, 'default'); // variable si null renvoie 'default'
+        providerNavigation.updateCurrent(
+            AuthenticationPage); // change les propriétés de navigation
         index = providerNavigation.pageIndex;
         title = providerNavigation.pageTitle;
         expect(-1, index);
         expect("Bienvenue sur l'application métier MADERA !", title);
-        providerNavigation.updateCurrent(HomePage);
+        providerNavigation
+            .updateCurrent(HomePage); // test d'une autre page existante
         index = providerNavigation.pageIndex;
         title = providerNavigation.pageTitle;
         expect(0, index);
         expect("Page d'accueil", title);
-        providerNavigation.updateCurrent(ChangeNotifier);
+        providerNavigation.updateCurrent(
+            ChangeNotifier); // test avec un mauvais type d'argument -> error et set les propriétés aux valeurs par défaut
         index = providerNavigation.pageIndex;
         title = providerNavigation.pageTitle;
         expect(-1, index);
@@ -87,17 +92,18 @@ void main() {
     );
     test('last sync date test', () {
       final ProviderSynchro providerSynchro = ProviderSynchro(
-        db: providerBdd.db,
+        db: ProviderBdd.db,
         daosSynchroList: providerBdd.daosSynchroList,
       );
       var date = DateTime.now();
 
-      expect(date.isAfter(providerSynchro.refsLastSyncDate), true);
+      expect(date.isAfter(providerSynchro.refsLastSyncDate),
+          true); // la synchronisation n'a pas eu lieue
     });
     testWidgets(
       'ping test',
       (WidgetTester tester) async {
-        final ProviderLogin providerLogin = ProviderLogin(db: providerBdd.db)
+        final ProviderLogin providerLogin = ProviderLogin(db: ProviderBdd.db)
           ..http = MockClient((request) async {
             return Response('', 200);
           });
@@ -122,7 +128,7 @@ void main() {
     testWidgets(
       'connection test',
       (tester) async {
-        final ProviderLogin providerLogin = ProviderLogin(db: providerBdd.db)
+        final ProviderLogin providerLogin = ProviderLogin(db: ProviderBdd.db)
           ..http = MockClient((request) async {
             //On set le contenu du body et le statusCode attendu, dans notre cas le token de connection
             return Response(
@@ -154,7 +160,7 @@ void main() {
       },
     );
     testWidgets('logout test', (tester) async {
-      final ProviderLogin providerLogin = ProviderLogin(db: providerBdd.db)
+      final ProviderLogin providerLogin = ProviderLogin(db: ProviderBdd.db)
         ..http = MockClient((request) async {
           return Response('', 200);
         });
@@ -179,7 +185,7 @@ void main() {
     testWidgets('synchro globale test', (tester) async {
       final MaderaNav providerNavigation = MaderaNav();
       final ProviderSynchro providerSynchro = ProviderSynchro(
-        db: providerBdd.db,
+        db: ProviderBdd.db,
         daosSynchroList: providerBdd.daosSynchroList,
       )..http = MockClient((request) async {
           //On set le contenu du body et le statusCode attendu, dans notre cas le token de connection
@@ -201,14 +207,14 @@ void main() {
       await tester.pumpWidget(testWidget);
       DateTime now = DateTime.now();
       await providerSynchro.synchro();
-      expect(providerSynchro.refsLastSyncDate.isBefore(now),
+      expect(providerSynchro.refsLastSyncDate.isAfter(now),
           true); //isBefore parce qu'on compare a now() (yyyy-MM-dd HH:mm:SS), alors que les dates sont stockées sous la forme 'yyyy-MM-dd 00:00:00'
 
-      expect(providerSynchro.dataLastSyncDate.isBefore(now), true);
+      expect(providerSynchro.dataLastSyncDate.isAfter(now), true);
       await providerSynchro
           .synchro(); // checker les logs (expect: 'Synchronisations déjà effectuées!') éventuellement utiliser package test_process pour tester la valeurs des logs?
-      expect(providerSynchro.refsLastSyncDate.isBefore(now), true);
-      expect(providerSynchro.dataLastSyncDate.isBefore(now), true);
+      expect(providerSynchro.refsLastSyncDate.isAfter(now), true);
+      expect(providerSynchro.dataLastSyncDate.isAfter(now), true);
     });
   });
 }

@@ -1,14 +1,25 @@
 import 'package:flutter/material.dart';
 import 'package:logger/logger.dart';
 
+/// A custom widget representing a button.
 ///
-/// Widget personnalisé pour un bouton
+/// A [MaderaButton] is based on a [RaisedButton] widget.
 ///
 /// @author HELIOT David, CHEVALLIER Romain, LADOUCE Fabien
 ///
-/// @version 0.4-RELEASE
+/// @version 0.5-RELEASE
 class MaderaButton extends StatelessWidget {
+  /// Creates a custom [RaisedButton].
+  ///
+  /// The [child] argument must not be null.
+  /// If the [onPressed] callback is null, then the button will be disabled by default.
+
+  /// The callback that is called when the button is pressed.
   final Function onPressed;
+
+  /// The button's label.
+  ///
+  /// Often a [Text] widget.
   final Widget child;
   final Logger log = Logger();
 
