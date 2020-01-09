@@ -19,6 +19,10 @@ class ProviderProjet with ChangeNotifier {
   String _produitNom;
   String _projetNom;
   String _projetDesc;
+  String _moduleNom;
+  String _moduleSection;
+  String _moduleSection2;
+  String _moduleAngle;
   GammeData _produitGamme;
   ProduitData _produitModele;
   QuoteCreationModel _quoteCreationValues;
@@ -121,6 +125,37 @@ class ProviderProjet with ChangeNotifier {
 
   int get editModuleIndex => _editModuleIndex;
 
+  set moduleAngle(String angle) {
+    (angle.contains(RegExp('[eE]ntrant')) ||
+            angle.contains(RegExp('[sS]ortant')))
+        ? _moduleAngle = angle
+        : _moduleAngle = '';
+    notifyListeners();
+  }
+
+  String get moduleAngle => _moduleAngle;
+
+  set moduleNom(String nom) {
+    _moduleNom = nom;
+    notifyListeners();
+  }
+
+  String get moduleNom => _moduleNom;
+
+  set moduleSection(String section) {
+    _moduleSection = section;
+    notifyListeners();
+  }
+
+  String get moduleSection => _moduleSection;
+
+  set moduleSection2(String section) {
+    _moduleSection2 = section;
+    notifyListeners();
+  }
+
+  String get moduleSection2 => _moduleSection2;
+
   set editProductIndex(int index) {
     _editProductIndex = index;
     notifyListeners();
@@ -184,33 +219,61 @@ class ProviderProjet with ChangeNotifier {
 
   String get model => _quoteValues.modeleChoisi;
 
-  void loadModuleInfos(int index) {
-    moduleAdd = _listProduitModuleProjet.elementAt(index);
+  void initModuleInfos() {
+    _moduleAngle = '';
+    _moduleSection = '';
+    _moduleSection2 = '';
+    _moduleNom = '';
   }
 
-  void updateModuleInfos(
-      String nomModule, String angle, String longueur1, String longueur2) {
+  void loadModuleInfos(int index) {
+    moduleAdd = _listProduitModuleProjet.elementAt(index);
+    _moduleNom = moduleAdd.produitModuleNom;
+    _moduleAngle = moduleAdd.produitModuleAngle;
+    if (_moduleAngle.contains(RegExp('[eE]ntrant')) ||
+        _moduleAngle.contains(RegExp('[sS]ortant'))) {
+      _moduleSection = moduleAdd.produitModuleSectionLongueur
+          .trim()
+          .split('[')[1]
+          .split(':')[1]
+          .split('}')[0];
+      _moduleSection2 = moduleAdd.produitModuleSectionLongueur
+          .trim()
+          .split('[')[1]
+          .split(':')[2]
+          .split('}')[0];
+    } else {
+      _moduleSection = _moduleSection = moduleAdd.produitModuleSectionLongueur
+          .trim()
+          .split('[')[1]
+          .split(':')[1]
+          .split('}')[0];
+      _moduleSection2 = '';
+    }
+  }
+
+  void updateModuleInfos() {
     if (editModuleIndex != _listProduitModuleProjet.length) {
       //Edition
       if (moduleAdd.moduleId != null) {
         Map<String, Object> sections;
-        if (angle == 'Entrant' || angle == 'Sortant') {
+        if (_moduleAngle.isNotEmpty) {
           sections = {
             'sections': [
-              {'longueur': int.parse(longueur1)},
-              {'longueur': int.parse(longueur2)}
+              {'longueur': int.parse(_moduleSection)},
+              {'longueur': int.parse(_moduleSection2)}
             ]
           };
         } else {
           sections = {
             'sections': [
-              {'longueur': int.parse(longueur1)}
+              {'longueur': int.parse(_moduleSection)}
             ]
           };
         }
         moduleAdd = moduleAdd.copyWith(
-          produitModuleNom: nomModule,
-          produitModuleAngle: angle,
+          produitModuleNom: _moduleNom,
+          produitModuleAngle: _moduleAngle,
           produitModuleSectionLongueur: sections.toString(),
         );
       } else
@@ -219,17 +282,17 @@ class ProviderProjet with ChangeNotifier {
       //Création
       if (moduleChoice != null) {
         Map<String, Object> sections;
-        if (angle == 'Entrant' || angle == 'Sortant') {
+        if (_moduleAngle.isNotEmpty) {
           sections = {
             'sections': [
-              {'longueur': int.parse(longueur1)},
-              {'longueur': int.parse(longueur2)}
+              {'longueur': int.parse(_moduleSection)},
+              {'longueur': int.parse(_moduleSection2)}
             ]
           };
         } else {
           sections = {
             'sections': [
-              {'longueur': int.parse(longueur1)}
+              {'longueur': int.parse(_moduleSection)}
             ]
           };
         }
@@ -237,9 +300,9 @@ class ProviderProjet with ChangeNotifier {
         moduleAdd = new ProduitModuleData(
           projetModuleId: -1,
           produitId: -1,
-          produitModuleNom: nomModule,
+          produitModuleNom: _moduleNom,
           moduleId: moduleChoice.moduleId,
-          produitModuleAngle: angle,
+          produitModuleAngle: _moduleAngle,
           produitModuleSectionLongueur: sections.toString(),
         );
         print(moduleAdd);
@@ -275,7 +338,16 @@ class ProviderProjet with ChangeNotifier {
             _listProduitModuleProjet.length != 0);
         break;
       case 'AddModule':
-        return (true);
+        {
+          if (_editModuleIndex == _listProduitModuleProjet.length)
+            return moduleChoice != null &&
+                (_moduleNom.isNotEmpty &&
+                    _moduleSection.isNotEmpty &&
+                    !(_moduleAngle.isNotEmpty ^ _moduleSection2.isNotEmpty));
+          return (_moduleNom.isNotEmpty &&
+              _moduleSection.isNotEmpty &&
+              !(_moduleAngle.isNotEmpty ^ _moduleSection2.isNotEmpty));
+        }
         break;
       default:
         return false;
@@ -314,14 +386,16 @@ class ProviderProjet with ChangeNotifier {
           'ERROR in resetListProduitModuleProjet()! First time calling it for this product ? If so, ignore.');
   }
 
-  void setFinitions(String choice) {
-    _quoteValues.listeModule.values
-        .elementAt(editModuleIndex)
-        .addAll({'finitions': choice});
-  }
+  void setFinitions(String choice) {}
 
-  void addModuleToListProduitModuleProjet() {
-    _listProduitModuleProjet.add(moduleAdd);
+  void updateListProduitModuleProjet() {
+    if (_editModuleIndex == _listProduitModuleProjet.length)
+      _listProduitModuleProjet.add(moduleAdd);
+    else {
+      //update du module
+      _listProduitModuleProjet.removeAt(_editModuleIndex);
+      _listProduitModuleProjet.insert(_editModuleIndex, moduleAdd);
+    }
     notifyListeners();
   }
 

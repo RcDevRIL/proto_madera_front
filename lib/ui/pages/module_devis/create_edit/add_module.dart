@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:logger/logger.dart';
 import 'package:proto_madera_front/data/database/madera_database.dart';
 import 'package:proto_madera_front/data/providers/provider_bdd.dart';
@@ -28,10 +29,9 @@ class _AddModuleState extends State<AddModule> {
   String dropdownValueModule;
   String dropdownValueNature;
   String dropdownValueAngle;
-  TextEditingController _nameTextController;
-  TextEditingController _sizeTextController;
-  TextEditingController _size2TextController;
+  ScrollController _formScrollController;
   bool isEditing;
+  bool canValidateForm;
 
   //added to prepare for scaling
   @override
@@ -39,17 +39,13 @@ class _AddModuleState extends State<AddModule> {
     super.initState();
     dropdownValueModule = 'Sélectionnez un module';
     dropdownValueNature = 'Sélectionnez une nature de module...';
-    _nameTextController = TextEditingController();
-    _sizeTextController = TextEditingController();
-    _size2TextController = TextEditingController();
+    _formScrollController = ScrollController();
   }
 
   //added to prepare for scaling
   @override
   void dispose() {
-    _nameTextController?.dispose();
-    _size2TextController?.dispose();
-    _sizeTextController?.dispose();
+    _formScrollController?.dispose();
     super.dispose();
   }
 
@@ -61,7 +57,6 @@ class _AddModuleState extends State<AddModule> {
             (providerProjet.produitModules.length != 0))
         ? isEditing = true
         : isEditing = false;
-
     return MaderaScaffold(
       passedContext: context,
       child: Center(
@@ -69,151 +64,187 @@ class _AddModuleState extends State<AddModule> {
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
-            Text(isEditing ? 'Modifier un module' : 'Ajouter un module',
+            Text(
+                isEditing
+                    ? 'Modification du module n°${providerProjet.editModuleIndex + 1}'
+                    : 'Ajouter un module',
                 style: cTheme.MaderaTextStyles.appBarTitle
                     .copyWith(fontSize: 32.0)),
             GradientFrame(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: <Widget>[
-                  isEditing ? Container() : _createDropDowns(providerBdd),
-                  MaderaCard(
-                    cardWidth: 450.0,
-                    cardHeight: cTheme.Dimens.cardHeight,
-                    child: TextField(
-                      maxLines: 1,
-                      keyboardType: TextInputType.text,
-                      controller: _nameTextController,
-                      enabled: true,
-                      decoration: InputDecoration(
-                        hintText: isEditing
-                            ? providerProjet.produitModules
-                                .elementAt(providerProjet.editModuleIndex)
-                                .produitModuleNom
-                            : 'Nom du module...',
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.only(
-                            bottomRight: Radius.circular(20.0),
-                            bottomLeft: Radius.circular(20.0),
-                          ),
-                        ),
-                      ),
-                    ),
-                    header: LabelledIcon(
-                      icon: Icon(
-                        Icons.text_fields,
-                        color: cTheme.MaderaColors.textHeaderColor,
-                      ),
-                      text: Text(
-                        'Nom du module',
-                        style: cTheme.MaderaTextStyles.appBarTitle.copyWith(
-                          fontSize: 13.0,
-                          fontWeight: FontWeight.w600,
-                        ),
-                      ),
-                    ),
-                  ),
-                  SizedBox(
-                    height: 20.0,
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: <Widget>[
-                      MaderaCard(
-                        cardHeight: cTheme.Dimens.cardHeight,
-                        cardWidth: 280.0,
-                        header: LabelledIcon(
-                          icon: Icon(Icons.signal_cellular_null),
-                          text: Text('Section (en centimètres)'),
-                        ),
-                        child: TextField(
-                          maxLines: 1,
-                          keyboardType: TextInputType.number,
-                          enabled: true,
-                          controller: _sizeTextController,
-                          decoration: InputDecoration(
-                            hintText: isEditing
-                                ? providerProjet.produitModules
-                                    .elementAt(providerProjet.editModuleIndex)
-                                    .produitModuleSectionLongueur
-                                : 'Section...',
-                            border: OutlineInputBorder(
-                                borderRadius: BorderRadius.only(
+              child: SingleChildScrollView(
+                controller: _formScrollController,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: <Widget>[
+                    isEditing ? Container() : _createDropDowns(providerBdd),
+                    MaderaCard(
+                      cardWidth: 450.0,
+                      cardHeight: cTheme.Dimens.cardHeight,
+                      child: TextField(
+                        maxLines: 1,
+                        keyboardType: TextInputType.text,
+                        inputFormatters: [
+                          BlacklistingTextInputFormatter(
+                              RegExp('[^A-z 0-9\s\d][\\\^]*'))
+                        ],
+                        onChanged: (newValue) =>
+                            providerProjet.moduleNom = newValue,
+                        enabled: true,
+                        decoration: InputDecoration(
+                          hintText: isEditing
+                              ? providerProjet.moduleNom
+                              : 'Nom du module...',
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.only(
                               bottomRight: Radius.circular(20.0),
                               bottomLeft: Radius.circular(20.0),
-                            )),
-                          ),
-                        ),
-                      ),
-                      MaderaCard(
-                        cardHeight: cTheme.Dimens.cardHeight,
-                        cardWidth: 280.0,
-                        header: LabelledIcon(
-                          icon: Icon(Icons.signal_cellular_null),
-                          text: Text('Section (en centimètres)'),
-                        ),
-                        child: Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: DropdownButton<String>(
-                            isExpanded: true,
-                            value: dropdownValueAngle,
-                            hint: !isEditing
-                                ? Text('Sélectionnez un type d\'angle...')
-                                : Text(providerProjet.produitModules
-                                    .elementAt(providerProjet.editModuleIndex)
-                                    .produitModuleAngle),
-                            icon: Icon(Icons.arrow_drop_down,
-                                color: cTheme.MaderaColors.maderaLightGreen),
-                            iconSize: 20,
-                            elevation: 16,
-                            style: TextStyle(
-                                color: cTheme.MaderaColors.textHeaderColor),
-                            underline: Container(
-                              color: Colors.transparent,
                             ),
-                            items: ['Entrant', 'Sortant']
-                                .map<DropdownMenuItem<String>>(
-                                    (String natureAngle) =>
-                                        DropdownMenuItem<String>(
-                                          value: natureAngle,
-                                          child: Text(natureAngle),
-                                        ))
-                                .toList(),
-                            onChanged: (String newValue) {
-                              setState(() => dropdownValueAngle = newValue);
-                            },
                           ),
                         ),
                       ),
-                      MaderaCard(
-                        cardHeight: cTheme.Dimens.cardHeight,
-                        cardWidth: 280.0,
-                        header: LabelledIcon(
-                          icon: Icon(Icons.signal_cellular_null),
-                          text: Text('Section (en centimètres)'),
+                      header: LabelledIcon(
+                        icon: Icon(
+                          Icons.text_fields,
+                          color: cTheme.MaderaColors.textHeaderColor,
                         ),
-                        child: TextField(
-                          controller: _size2TextController,
-                          maxLines: 1,
-                          keyboardType: TextInputType.number,
-                          enabled: true,
-                          decoration: InputDecoration(
-                            hintText: isEditing
-                                ? providerProjet.produitModules
-                                    .elementAt(providerProjet.editModuleIndex)
-                                    .produitModuleSectionLongueur
-                                : 'Section...',
-                            border: OutlineInputBorder(
-                                borderRadius: BorderRadius.only(
-                              bottomRight: Radius.circular(20.0),
-                              bottomLeft: Radius.circular(20.0),
-                            )),
+                        text: Text(
+                          'Nom du module',
+                          style: cTheme.MaderaTextStyles.appBarTitle.copyWith(
+                            fontSize: 13.0,
+                            fontWeight: FontWeight.w600,
                           ),
                         ),
                       ),
-                    ],
-                  ),
-                ],
+                    ),
+                    SizedBox(
+                      height: 20.0,
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: <Widget>[
+                        MaderaCard(
+                          cardHeight: cTheme.Dimens.cardHeight,
+                          cardWidth: 280.0,
+                          header: LabelledIcon(
+                            icon: Icon(Icons.straighten),
+                            text: Text('Section (en centimètres)'),
+                          ),
+                          child: TextField(
+                            maxLines: 1,
+                            keyboardType: TextInputType.number,
+                            inputFormatters: [
+                              BlacklistingTextInputFormatter(
+                                RegExp('[^0-9]'),
+                              ),
+                              //WhitelistingTextInputFormatter(r'[0-9]*',),
+                            ],
+                            onTap: !isEditing
+                                ? () => _formScrollController.jumpTo(
+                                    _formScrollController
+                                        .position.maxScrollExtent)
+                                : null,
+                            enabled: true,
+                            onChanged: (newValue) =>
+                                providerProjet.moduleSection = newValue,
+                            decoration: InputDecoration(
+                              hintText: isEditing
+                                  ? providerProjet.moduleSection
+                                  : 'Section...',
+                              border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.only(
+                                bottomRight: Radius.circular(20.0),
+                                bottomLeft: Radius.circular(20.0),
+                              )),
+                            ),
+                          ),
+                        ),
+                        MaderaCard(
+                          cardHeight: cTheme.Dimens.cardHeight,
+                          cardWidth: 280.0,
+                          header: LabelledIcon(
+                            icon: Icon(Icons.signal_cellular_null),
+                            text: Text('Angle (Entrant ou Sortant)'),
+                          ),
+                          child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: DropdownButton<String>(
+                              isExpanded: true,
+                              value: dropdownValueAngle,
+                              hint: !isEditing
+                                  ? Text('Sélectionnez un type d\'angle...')
+                                  : Text(providerProjet.moduleAngle.isNotEmpty
+                                      ? providerProjet.moduleAngle
+                                      : 'Sélectionnez un type d\'angle...'),
+                              icon: Icon(Icons.arrow_drop_down,
+                                  color: cTheme.MaderaColors.maderaLightGreen),
+                              iconSize: 20,
+                              elevation: 16,
+                              style: TextStyle(
+                                  color: cTheme.MaderaColors.textHeaderColor),
+                              underline: Container(
+                                color: Colors.transparent,
+                              ),
+                              items: ['Entrant', 'Sortant']
+                                  .map<DropdownMenuItem<String>>(
+                                      (String natureAngle) =>
+                                          DropdownMenuItem<String>(
+                                            value: natureAngle,
+                                            child: Text(natureAngle),
+                                          ))
+                                  .toList(),
+                              onChanged: (String newValue) {
+                                providerProjet.moduleAngle = newValue;
+                                setState(() => dropdownValueAngle = newValue);
+                              },
+                            ),
+                          ),
+                        ),
+                        dropdownValueAngle != null ||
+                                (isEditing &&
+                                    (providerProjet.moduleAdd.produitModuleAngle
+                                            .contains('Entrant') ||
+                                        providerProjet
+                                            .moduleAdd.produitModuleAngle
+                                            .contains('Sortant')))
+                            ? MaderaCard(
+                                cardHeight: cTheme.Dimens.cardHeight,
+                                cardWidth: 280.0,
+                                header: LabelledIcon(
+                                  icon: Icon(Icons.straighten),
+                                  text: Text('Section (en centimètres)'),
+                                ),
+                                child: TextField(
+                                  onChanged: (newValue) =>
+                                      providerProjet.moduleSection2 = newValue,
+                                  maxLines: 1,
+                                  keyboardType: TextInputType.number,
+                                  inputFormatters: [
+                                    BlacklistingTextInputFormatter(
+                                      RegExp('[^0-9]'),
+                                    ),
+                                    //WhitelistingTextInputFormatter(r'[0-9]*',),
+                                  ],
+                                  enabled: true,
+                                  decoration: InputDecoration(
+                                    hintText: isEditing
+                                        ? providerProjet.moduleSection2
+                                        : 'Section...',
+                                    border: OutlineInputBorder(
+                                        borderRadius: BorderRadius.only(
+                                      bottomRight: Radius.circular(20.0),
+                                      bottomLeft: Radius.circular(20.0),
+                                    )),
+                                  ),
+                                ),
+                              )
+                            : Container(),
+                      ],
+                    ),
+                    SizedBox(
+                      height: 500.0,
+                    ),
+                  ],
+                ),
               ),
             ),
           ],
@@ -241,12 +272,7 @@ class _AddModuleState extends State<AddModule> {
                   onPressed: providerProjet.isFilled('AddModule')
                       ? () {
                           log.d('Validating Module...');
-                          //TODO bloquer le champ de size2 si l'angle n'est pas renseigné !
-                          providerProjet.updateModuleInfos(
-                              _nameTextController.text,
-                              dropdownValueAngle,
-                              _sizeTextController.text,
-                              _size2TextController.text ??= '');
+                          providerProjet.updateModuleInfos();
                           Provider.of<MaderaNav>(context)
                               .redirectToPage(context, Finishings(), null);
                         }
@@ -270,10 +296,20 @@ class _AddModuleState extends State<AddModule> {
                 child: IconButton(
                   onPressed: () {
                     log.d('Canceling Module...');
-                    providerProjet.produitModules
-                        .removeAt(providerProjet.editModuleIndex);
-                    Provider.of<MaderaNav>(context)
-                        .redirectToPage(context, ProductCreation(), null);
+                    try {
+                      providerProjet.produitModules
+                          .removeAt(providerProjet.editModuleIndex);
+                      Provider.of<MaderaNav>(context)
+                          .redirectToPage(context, ProductCreation(), null);
+                    } catch (e) {
+                      log.e('Error when trying to cancel module:\n$e');
+                      if (e.runtimeType == RangeError)
+                        Provider.of<MaderaNav>(
+                                context) // Si c'est RangeError a priori c parce qu'on essai de supprimer un module qui n'existe pas dans la liste encore, alors on annule simplement et redirige vers productcreation. Si c'est une autre erreur, le bouton ne fonctionnera pas
+                            .redirectToPage(context, ProductCreation(), null);
+                      else
+                        throw e;
+                    }
                   },
                   icon: Icon(
                     Icons.delete,
@@ -309,7 +345,6 @@ class _AddModuleState extends State<AddModule> {
               color: Colors.transparent,
             ),
             onChanged: (String newValue) {
-              // providerProjet.updateModuleNature(newValue);
               providerBdd.initModules(
                   newValue); //Alimente le dropdown suivant avec une liste de modules préfaits de la nature $newValue
               setState(() {
@@ -361,11 +396,13 @@ class _AddModuleState extends State<AddModule> {
               providerBdd.listModule.forEach((module) {
                 if (module.nom == newValue) {
                   Provider.of<ProviderProjet>(context).moduleChoice = module;
+                  Provider.of<ProviderProjet>(context).moduleNom = module.nom;
                 }
               });
               setState(() {
                 dropdownValueModule = newValue;
-                _nameTextController.text = newValue + ' - ';
+                Provider.of<ProviderProjet>(context).moduleNom =
+                    newValue + '- ';
               });
             },
           ),

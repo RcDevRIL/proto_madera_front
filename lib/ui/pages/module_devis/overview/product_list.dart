@@ -153,13 +153,17 @@ class _ProductListState extends State<ProductList> {
                       await Provider.of<ProviderSynchro>(context)
                           .createProjectOnServer(
                               providerProjet.projetWithAllInfos);
-                      await Provider.of<ProviderSynchro>(context).synchroData()
-                    ? log.i('New project loaded from backend server') : log.e('Error when trying to synchro user data');
+                      if (await Provider.of<ProviderSynchro>(context)
+                          .synchroData()) {
+                        log.i('New project loaded from backend server');
+                        providerProjet.validate(true);
+                      } else
+                        log.e('Error when trying to synchro user data');
                     } else {
                       log.d('Application offline, register in bdd local');
                       providerBdd.createAll(providerProjet.projetWithAllInfos);
+                      providerProjet.validate(true);
                     }
-                    providerProjet.validate(true);
                     Provider.of<MaderaNav>(context)
                         .redirectToPage(context, QuoteOverview(), null);
                   },
@@ -186,7 +190,8 @@ class _ProductListState extends State<ProductList> {
                         context,
                         Icons.warning,
                         'Abandon du projet',
-                        'Le projet en cours de création va être supprimé.', HomePage());
+                        'Le projet en cours de création va être supprimé.',
+                        HomePage());
                     providerProjet.validate(false);
                   },
                   icon: Icon(

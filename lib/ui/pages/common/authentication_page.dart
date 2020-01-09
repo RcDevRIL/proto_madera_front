@@ -252,9 +252,9 @@ class _AuthenticationPageState extends State<AuthenticationPage> {
           } else
             log.i('Synchronisation des référentiels déjà effectuée!');
           Provider.of<ProviderBdd>(context).initProjetData();
+          Provider.of<ProviderBdd>(context).initData();
           Provider.of<MaderaNav>(context)
               .redirectToPage(context, HomePage(), null);
-          Provider.of<ProviderBdd>(context).initData();
         }
         break;
       case HttpStatus.OFFLINE:
@@ -263,7 +263,8 @@ class _AuthenticationPageState extends State<AuthenticationPage> {
             context,
             Icons.warning,
             'Erreur réseau',
-            'Le serveur n\'est pas joignable.',null,
+            'Le serveur n\'est pas joignable.',
+            null,
           );
         }
         break;
@@ -273,7 +274,8 @@ class _AuthenticationPageState extends State<AuthenticationPage> {
             context,
             Icons.warning,
             'Erreur d\'authentification',
-            'Le login et / ou le mot de passe sont incorrects',null,
+            'Le login et / ou le mot de passe sont incorrects',
+            null,
           );
         }
         break;
@@ -283,7 +285,8 @@ class _AuthenticationPageState extends State<AuthenticationPage> {
             context,
             Icons.warning,
             'Autorisation requise',
-            'Les identifiants sont incorrects',null,
+            'Les identifiants sont incorrects',
+            null,
           );
         }
         break;
@@ -293,7 +296,8 @@ class _AuthenticationPageState extends State<AuthenticationPage> {
             context,
             Icons.warning,
             'Default',
-            'Oups! Ceci ne devrait pas arriver...',null,
+            'Oups! Ceci ne devrait pas arriver...',
+            null,
           );
         }
         break;
@@ -306,7 +310,8 @@ class _AuthenticationPageState extends State<AuthenticationPage> {
       Icons.warning,
       'Erreur de synchronisation',
       'Erreur lors de l'
-          'appel à la méthode $synchroTried().',null,
+          'appel à la méthode $synchroTried().',
+      null,
     );
   }
 }

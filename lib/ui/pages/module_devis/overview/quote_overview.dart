@@ -73,8 +73,7 @@ class _QuoteOverviewState extends State<QuoteOverview> {
                       DataColumn(
                         label: MaderaTableCell(
                           textCell: 'Date de création',
-                          backgroundColor:
-                              cTheme.MaderaColors.appBarMainColor,
+                          backgroundColor: cTheme.MaderaColors.appBarMainColor,
                           cellFontSize: 20,
                           height: 100,
                           width: 250,
@@ -83,8 +82,7 @@ class _QuoteOverviewState extends State<QuoteOverview> {
                       DataColumn(
                         label: MaderaTableCell(
                           textCell: 'Ref.client',
-                          backgroundColor:
-                              cTheme.MaderaColors.appBarMainColor,
+                          backgroundColor: cTheme.MaderaColors.appBarMainColor,
                           cellFontSize: 20,
                           height: 100,
                           width: 250,
@@ -93,8 +91,7 @@ class _QuoteOverviewState extends State<QuoteOverview> {
                       DataColumn(
                         label: MaderaTableCell(
                           textCell: 'Ref. projet',
-                          backgroundColor:
-                              cTheme.MaderaColors.appBarMainColor,
+                          backgroundColor: cTheme.MaderaColors.appBarMainColor,
                           cellFontSize: 20,
                           height: 100,
                           width: 250,
@@ -103,8 +100,7 @@ class _QuoteOverviewState extends State<QuoteOverview> {
                       DataColumn(
                         label: MaderaTableCell(
                           textCell: 'Nom du projet',
-                          backgroundColor:
-                              cTheme.MaderaColors.appBarMainColor,
+                          backgroundColor: cTheme.MaderaColors.appBarMainColor,
                           cellFontSize: 20,
                           height: 100,
                           width: 250,

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:logger/logger.dart';
 import 'package:proto_madera_front/data/database/madera_database.dart';
 import 'package:proto_madera_front/data/providers/providers.dart'
@@ -100,6 +101,10 @@ class _QuoteCreationState extends State<QuoteCreation> {
                           onChanged: (String newValue) {
                             providerProjet.setProjetNom(newValue);
                           },
+                          inputFormatters: [
+                            BlacklistingTextInputFormatter(
+                                RegExp('[^A-z 0-9\s\d][\\\^]*'))
+                          ],
                           decoration: InputDecoration(
                             hintText: providerProjet.projetNom == null ||
                                     providerProjet.projetNom.isEmpty

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:logger/logger.dart';
 import 'package:proto_madera_front/data/database/madera_database.dart';
 import 'package:proto_madera_front/data/providers/provider_bdd.dart';
@@ -77,6 +78,10 @@ class _ProductCreationState extends State<ProductCreation> {
                     child: TextField(
                       maxLines: 1,
                       keyboardType: TextInputType.text,
+                      inputFormatters: [
+                        BlacklistingTextInputFormatter(
+                            RegExp('[^A-z 0-9\s\d][\\\^]*'))
+                      ],
                       enabled: true,
                       onChanged: (String newValue) {
                         providerProjet.setProduitNom(newValue);
@@ -255,6 +260,7 @@ class _ProductCreationState extends State<ProductCreation> {
                                     providerProjet.editModuleIndex =
                                         providerProjet.produitModules
                                             .length; //on veut indexmax+1
+                                    providerProjet.initModuleInfos();
                                     Provider.of<MaderaNav>(context)
                                         .redirectToPage(
                                             context, AddModule(), null);

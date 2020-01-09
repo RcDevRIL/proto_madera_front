@@ -16,9 +16,11 @@ class ClientAdresseDao extends DatabaseAccessor<MaderaDatabase>
 
   Future<int> getClientAdresseId(int clientId) async {
     int adresseId;
-    await (select(clientAdresse)..where((cA) => cA.clientId.equals(clientId)))
-        .getSingle()
-        .then((cAD) => adresseId = cAD.adresseId);
+    await (select(clientAdresse)..where((cA) => (cA.clientId.equals(clientId))))
+        .get()
+        .then((listcAD) => listcAD.forEach((cAD) {
+              if (cAD.adresseFacturation == true) adresseId = cAD.adresseId;
+            }));
     return adresseId;
   }
 }

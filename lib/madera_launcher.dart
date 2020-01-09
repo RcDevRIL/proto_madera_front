@@ -34,16 +34,16 @@ class MaderaApp extends StatelessWidget {
             create: (c) => providerBdd,
           ),
           ChangeNotifierProxyProvider<ProviderBdd, ProviderLogin>(
-            create: (c) => ProviderLogin(db: providerBdd.db),
-            update: (c, bdd, login) => ProviderLogin(db: bdd.db),
+            create: (c) => ProviderLogin(db: ProviderBdd.db),
+            update: (c, bdd, login) => ProviderLogin(db: ProviderBdd.db),
           ),
           ChangeNotifierProxyProvider<ProviderBdd, ProviderSynchro>(
             create: (c) => ProviderSynchro(
-              db: providerBdd.db,
+              db: ProviderBdd.db,
               daosSynchroList: providerBdd.daosSynchroList,
             ),
             update: (c, bdd, login) => ProviderSynchro(
-              db: bdd.db,
+              db: ProviderBdd.db,
               daosSynchroList: bdd.daosSynchroList,
             ),
           ),

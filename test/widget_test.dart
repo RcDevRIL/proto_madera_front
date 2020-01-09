@@ -78,7 +78,7 @@ void main() {
     );
     test('last sync date test', () {
       final ProviderSynchro providerSynchro = ProviderSynchro(
-        db: providerBdd.db,
+        db: ProviderBdd.db,
         daosSynchroList: providerBdd.daosSynchroList,
       );
       var date = DateTime.now();
@@ -89,7 +89,7 @@ void main() {
     testWidgets(
       'ping test',
       (WidgetTester tester) async {
-        final ProviderLogin providerLogin = ProviderLogin(db: providerBdd.db)
+        final ProviderLogin providerLogin = ProviderLogin(db: ProviderBdd.db)
           ..http = MockClient((request) async {
             return Response('', 200);
           });
@@ -114,7 +114,7 @@ void main() {
     testWidgets(
       'connection test',
       (tester) async {
-        final ProviderLogin providerLogin = ProviderLogin(db: providerBdd.db)
+        final ProviderLogin providerLogin = ProviderLogin(db: ProviderBdd.db)
           ..http = MockClient((request) async {
             //On set le contenu du body et le statusCode attendu, dans notre cas le token de connection
             return Response(
@@ -146,7 +146,7 @@ void main() {
       },
     );
     testWidgets('logout test', (tester) async {
-      final ProviderLogin providerLogin = ProviderLogin(db: providerBdd.db)
+      final ProviderLogin providerLogin = ProviderLogin(db: ProviderBdd.db)
         ..http = MockClient((request) async {
           return Response('', 200);
         });
@@ -171,7 +171,7 @@ void main() {
     testWidgets('synchro globale test', (tester) async {
       final MaderaNav providerNavigation = MaderaNav();
       final ProviderSynchro providerSynchro = ProviderSynchro(
-        db: providerBdd.db,
+        db: ProviderBdd.db,
         daosSynchroList: providerBdd.daosSynchroList,
       )..http = MockClient((request) async {
           //On set le contenu du body et le statusCode attendu, dans notre cas le token de connection

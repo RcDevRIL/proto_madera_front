@@ -10,7 +10,7 @@ class ProduitWithModule {
   );
 
   Map<String, dynamic> toJson() => {
-    'produit': produit,
-    'listModules': listProduitModule,
-  };
+        'produit': produit,
+        'listModules': listProduitModule,
+      };
 }

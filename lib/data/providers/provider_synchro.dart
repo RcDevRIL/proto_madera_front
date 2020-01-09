@@ -178,8 +178,7 @@ class ProviderSynchro with ChangeNotifier {
         if (http.runtimeType !=
             MockClient) //pour faire passer les test unitaires (le fait d'avoir cette méthode extraite est un début pour la séparation des logiques et le mode hors ligne ;))
           await _insertUserData(response.body);
-        _dataLastSyncDate = DateTime(
-            DateTime.now().year, DateTime.now().month, DateTime.now().day);
+        _dataLastSyncDate = DateTime.now();
         _dataSynced = true;
         log.i('Done.');
         return true;
@@ -265,8 +264,7 @@ class ProviderSynchro with ChangeNotifier {
         if (http.runtimeType !=
             MockClient) //pour faire passer les test unitaires (le fait d'avoir cette méthode extraite est un début pour la séparation des logiques et le mode hors ligne ;))
           await _insertReferentiel(response.body);
-        _refLastSyncDate = DateTime(
-            DateTime.now().year, DateTime.now().month, DateTime.now().day);
+        _refLastSyncDate = DateTime.now();
         _refSynced = true;
         log.i('Done.');
         return true;

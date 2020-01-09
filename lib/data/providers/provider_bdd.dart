@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:logger/logger.dart';
 import 'package:moor_flutter/moor_flutter.dart';
 import 'package:proto_madera_front/data/database/dao/database_dao.dart';
 import 'package:proto_madera_front/data/database/daos.dart';
@@ -15,7 +16,8 @@ import 'package:proto_madera_front/data/models/projet_with_client.dart';
 ///
 /// @version 0.4-RELEASE
 class ProviderBdd with ChangeNotifier {
-  MaderaDatabase db = new MaderaDatabase();
+  final log = Logger();
+  static final MaderaDatabase db = new MaderaDatabase();
   UtilisateurDao utilisateurDao;
   ComposantDao composantDao;
   GammeDao gammeDao;
@@ -174,8 +176,14 @@ class ProviderBdd with ChangeNotifier {
     listGammes = await gammeDao.getAllGammes();
   }
 
-  Future initModules(String natureModule) async {
-    listModule = await moduleDao.getAllModules(natureModule);
+  Future<bool> initModules(String natureModule) async {
+    try {
+      listModule = await moduleDao.getAllModules(natureModule);
+    } catch (e) {
+      log.e('$e');
+      return false;
+    }
+    return true;
   }
 
   Future initListProduitModule(int produitModeleId) async {

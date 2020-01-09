@@ -32,7 +32,7 @@ class _FinishingsState extends State<Finishings> {
   void initState() {
     super.initState();
     finitionInterieure = 'Finition 1';
-    finitionExterieure = '';
+    finitionExterieure = 'Finition 2';
   }
 
   @override
@@ -203,7 +203,7 @@ class _FinishingsState extends State<Finishings> {
                   onPressed: () {
                     log.d('Adding Finishings...');
                     //TODO Changer les composants de finitions du module
-                    providerProjet.addModuleToListProduitModuleProjet();
+                    providerProjet.updateListProduitModuleProjet();
                     Provider.of<MaderaNav>(context)
                         .redirectToPage(context, ProductCreation(), null);
                   },
