@@ -50,7 +50,6 @@ class _MaderaTableRow extends State<MaderaTableCell> {
 
   @override
   Widget build(BuildContext context) {
-    log.d(widget.textCell);
     return Container(
       height: widget.height,
       width: widget.width,

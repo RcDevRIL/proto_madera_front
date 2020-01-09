@@ -12,9 +12,9 @@ class ExitButton extends StatelessWidget {
     return IconButton(
       onPressed: () => SystemChannels.platform.invokeMethod(
           'SystemNavigator.pop'), //Ajouter un dialog :) Dialog()      showDialog()
-      tooltip: "Fermer l'application",
+      tooltip: 'Fermer l\'application',
       icon: ImageIcon(
-        AssetImage("assets/img/icons/off.png"),
+        AssetImage('assets/img/icons/off.png'),
         semanticLabel: 'Shut down app',
         size: 32.0, //bizarrement n'est pas affecté par defaultIconTheme???
       ),

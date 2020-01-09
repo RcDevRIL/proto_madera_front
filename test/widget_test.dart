@@ -78,7 +78,7 @@ void main() {
     );
     test('last sync date test', () {
       final ProviderSynchro providerSynchro = ProviderSynchro(
-        db: providerBdd.db,
+        db: ProviderBdd.db,
         daosSynchroList: providerBdd.daosSynchroList,
       );
       var date = DateTime.now();
@@ -89,7 +89,7 @@ void main() {
     testWidgets(
       'ping test',
       (WidgetTester tester) async {
-        final ProviderLogin providerLogin = ProviderLogin(db: providerBdd.db)
+        final ProviderLogin providerLogin = ProviderLogin(db: ProviderBdd.db)
           ..http = MockClient((request) async {
             return Response('', 200);
           });
@@ -114,7 +114,7 @@ void main() {
     testWidgets(
       'connection test',
       (tester) async {
-        final ProviderLogin providerLogin = ProviderLogin(db: providerBdd.db)
+        final ProviderLogin providerLogin = ProviderLogin(db: ProviderBdd.db)
           ..http = MockClient((request) async {
             //On set le contenu du body et le statusCode attendu, dans notre cas le token de connection
             return Response(
@@ -146,7 +146,7 @@ void main() {
       },
     );
     testWidgets('logout test', (tester) async {
-      final ProviderLogin providerLogin = ProviderLogin(db: providerBdd.db)
+      final ProviderLogin providerLogin = ProviderLogin(db: ProviderBdd.db)
         ..http = MockClient((request) async {
           return Response('', 200);
         });
@@ -171,7 +171,7 @@ void main() {
     testWidgets('synchro globale test', (tester) async {
       final MaderaNav providerNavigation = MaderaNav();
       final ProviderSynchro providerSynchro = ProviderSynchro(
-        db: providerBdd.db,
+        db: ProviderBdd.db,
         daosSynchroList: providerBdd.daosSynchroList,
       )..http = MockClient((request) async {
           //On set le contenu du body et le statusCode attendu, dans notre cas le token de connection
@@ -193,14 +193,14 @@ void main() {
       await tester.pumpWidget(testWidget);
       DateTime now = DateTime.now();
       await providerSynchro.synchro();
-      expect(providerSynchro.refsLastSyncDate.isBefore(now),
+      expect(providerSynchro.refsLastSyncDate.isAfter(now),
           true); //isBefore parce qu'on compare a now() (yyyy-MM-dd HH:mm:SS), alors que les dates sont stockées sous la forme 'yyyy-MM-dd 00:00:00'
 
-      expect(providerSynchro.dataLastSyncDate.isBefore(now), true);
+      expect(providerSynchro.dataLastSyncDate.isAfter(now), true);
       await providerSynchro
           .synchro(); // checker les logs (expect: 'Synchronisations déjà effectuées!') éventuellement utiliser package test_process pour tester la valeurs des logs?
-      expect(providerSynchro.refsLastSyncDate.isBefore(now), true);
-      expect(providerSynchro.dataLastSyncDate.isBefore(now), true);
+      expect(providerSynchro.refsLastSyncDate.isAfter(now), true);
+      expect(providerSynchro.dataLastSyncDate.isAfter(now), true);
     });
   });
 }

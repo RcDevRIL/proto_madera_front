@@ -1,8 +1,11 @@
+import 'dart:core';
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:logger/logger.dart';
-import 'package:moor_flutter/moor_flutter.dart';
-import 'package:proto_madera_front/data/database/daos.dart';
 import 'package:proto_madera_front/data/database/madera_database.dart';
+import 'package:proto_madera_front/data/models/produit_with_module.dart';
+import 'package:proto_madera_front/data/models/projet_with_all_infos.dart';
 import 'package:proto_madera_front/data/models/quote_creation_model.dart';
 import 'package:proto_madera_front/data/models/quote_model.dart';
 
@@ -13,52 +16,40 @@ import 'package:proto_madera_front/data/models/quote_model.dart';
 ///
 /// @version 0.4-RELEASE
 class ProviderProjet with ChangeNotifier {
+  String _produitNom;
+  String _projetNom;
+  String _projetDesc;
+  String _moduleNom;
+  String _moduleSection;
+  String _moduleSection2;
+  String _moduleAngle;
+  GammeData _produitGamme;
+  ProduitData _produitModele;
   QuoteCreationModel _quoteCreationValues;
   QuoteModel _quoteValues;
   int _editModuleIndex;
   int _editProductIndex;
-  List<QuoteModel> productList;
+  List<ProjetData> productList;
   bool canInit = true;
 
-  MaderaDatabase db;
-  GammeDao gammeDao;
-  ProduitDao produitDao;
-  ProduitModuleDao produitModuleDao;
-  ModuleDao moduleDao;
-  List<DatabaseAccessor<MaderaDatabase>> daosSynchroList;
+  ProjetWithAllInfos projetWithAllInfos;
+  ProjetData projet;
+  List<ProduitWithModule> listProduitProjet;
+  ClientData client;
 
-  //Données ref
-  List<GammeData> listGammes;
-  List<ProduitData> listProduitModele;
-  List<ProduitModuleData> listProduitModule;
-  List<ModuleData> listModule;
+  static final DateTime _dateProjet = DateTime.now();
+  static final String _dateNow = _dateProjet.year.toString() +
+      '/' +
+      _dateProjet.month.toString() +
+      '/' +
+      _dateProjet.day.toString();
+
+  List<ProduitModuleData> _listProduitModuleProjet;
+  ModuleData moduleChoice;
+  ProduitWithModule produitWithModule;
+  ProduitModuleData moduleAdd;
 
   final Logger log = Logger();
-  final String _now =
-      DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day)
-          .toString()
-          .substring(0, 10);
-
-  ProviderProjet({@required this.db, @required this.daosSynchroList}) {
-    for (DatabaseAccessor<MaderaDatabase> dao in daosSynchroList) {
-      switch (dao.runtimeType) {
-        case GammeDao:
-          gammeDao = dao;
-          break;
-        case ModuleDao:
-          moduleDao = dao;
-          break;
-        case ProduitModuleDao:
-          produitModuleDao = dao;
-          break;
-        case ProduitDao:
-          produitDao = dao;
-          break;
-        default:
-          log.e("ERROR, NO DAO ASSIGNED TO THIS VALUE: ${dao.runtimeType}");
-      }
-    }
-  }
 
   void initAndHold() {
     //TODO Appeler cette méthode à chaque fois qu'on fait une redirection vers QuoteCreation
@@ -71,88 +62,58 @@ class ProviderProjet with ChangeNotifier {
   void validate(bool saveIt) {
     if (saveIt) {
       log.i('Saving project with following values...');
-      log.i(_quoteCreationValues);
-      productList.forEach((quoteModel) => log.i(quoteModel));
-      //TODO save en bdd?, a faire coté ui je pense pour pouvoir utiliser provider.of(context)
+      logQC();
+      logQ();
       canInit = true;
     } else
       canInit = true;
   }
 
   void init() {
-    var clientId = 123;
     log.i('init called');
-    //Initialisation des données
-    initData();
     canInit = false;
-    // Initialisation des champs à null en respectant les conditions des constructeurs
-    _quoteCreationValues = QuoteCreationModel(
-      client: {
-        'clientId': '$clientId',
-        'name': '',
-        'adresse': '',
-        'tel': '',
-        'mail': ''
-      },
-      dateDeCreation: _now,
-      descriptionProjet: '',
-      refProjet: _now +
-          '_MMP$clientId', //à voir comment on construit nos ref de projet? j'ai mis yyyyMMdd_MMP123, MMP pour 'MaisonModulaireProjet', 123 pour l'ID client
-    );
+    _editModuleIndex = 0;
+    _editProductIndex = 0;
+    _listProduitModuleProjet = new List();
+    listProduitProjet = new List();
     productList = [];
-    initProductCreationModel();
-  }
-
-  void deleteProductCreationModel(int productID) {
-    productList.removeAt(productID);
+    client = null;
+    _produitGamme = null;
+    _produitModele = null;
+    _projetNom = '';
+    _projetDesc = '';
+    _produitNom = '';
     notifyListeners();
   }
 
-  void loadProductCreationModel(int index) {
-    _quoteValues = productList[index];
-    _editProductIndex = index;
+  void deleteProductCreationModel(int productID) {
+    listProduitProjet.removeAt(productID);
+    notifyListeners();
+  }
+
+  void loadProductCreationModel(int productIndex) {
+    _editModuleIndex = 0;
+    _editProductIndex = productIndex;
+    _produitModele = null;
+    _produitNom = listProduitProjet[_editProductIndex].produit.produitNom;
+    _listProduitModuleProjet =
+        listProduitProjet[_editProductIndex].listProduitModule;
     notifyListeners();
   }
 
   void initProductCreationModel() {
-    _quoteValues = QuoteModel(
-        gamme: 'Premium',
-        nomDeProduit: null,
-        listeModele: {
-          'Modèle Premium 1': 11,
-          'Modèle Premium 2': 12,
-          'Modèle Premium 3': 13,
-        },
-        listeModule: Map<String, dynamic>(),
-        modeleChoisi: null);
-    productList.add(_quoteValues);
-    _editProductIndex = productList.indexOf(_quoteValues);
+    _editModuleIndex = 0;
+    _editProductIndex = 0;
+    _produitGamme = null;
+    _produitModele = null;
+    _produitNom = '';
+    _listProduitModuleProjet = List();
     notifyListeners();
-  }
-
-  void initData() async {
-    await initGammes();
-    await initModules();
-    notifyListeners();
-  }
-
-  void initGammes() async {
-    listGammes = await gammeDao.getAllGammes();
-  }
-
-  void initModules() async {
-    listModule = await moduleDao.getAllModules();
   }
 
   @override
   void dispose() {
     super.dispose();
-  }
-
-  void flush() {
-    //TODO Enregistrer la configuration actuelle du devis en BDD
-    canInit = true;
-    initAndHold();
   }
 
   QuoteModel get quoteValues => _quoteValues;
@@ -164,6 +125,42 @@ class ProviderProjet with ChangeNotifier {
 
   int get editModuleIndex => _editModuleIndex;
 
+  set moduleAngle(String angle) {
+    (angle.contains(RegExp('[eE]ntrant')) ||
+            angle.contains(RegExp('[sS]ortant')))
+        ? _moduleAngle = angle
+        : _moduleAngle = '';
+    notifyListeners();
+  }
+
+  String get moduleAngle => _moduleAngle;
+
+  set moduleNom(String nom) {
+    _moduleNom = nom;
+    notifyListeners();
+  }
+
+  String get moduleNom => _moduleNom;
+
+  set moduleSection(String section) {
+    _moduleSection = section;
+    notifyListeners();
+  }
+
+  String get moduleSection => _moduleSection;
+
+  set moduleSection2(String section) {
+    _moduleSection2 = section;
+    notifyListeners();
+  }
+
+  String get moduleSection2 => _moduleSection2;
+
+  set editProductIndex(int index) {
+    _editProductIndex = index;
+    notifyListeners();
+  }
+
   int get editProductIndex => _editProductIndex;
 
   set dateCreation(String newDate) {
@@ -171,7 +168,7 @@ class ProviderProjet with ChangeNotifier {
     notifyListeners();
   }
 
-  String get dateCreation => _quoteCreationValues.dateDeCreation.toString();
+  String get dateNow => _dateNow;
 
   set refProjet(String refProjet) {
     _quoteCreationValues.refProjet = refProjet;
@@ -181,63 +178,39 @@ class ProviderProjet with ChangeNotifier {
   String get refProjet => _quoteCreationValues.refProjet;
 
   void setDescription(String desc) {
-    _quoteCreationValues.descriptionProjet = desc;
+    _projetDesc = desc;
     notifyListeners();
   }
 
-  String get description => _quoteCreationValues.descriptionProjet;
+  String get description => _projetDesc;
 
-  set client(Map<String, String> newClient) {
-    _quoteCreationValues.client = newClient;
-  }
-
-  Map<String, String> get client => _quoteCreationValues.client;
-
-  set clientName(String clientName) {
-    _quoteCreationValues.client
-        .update('name', (old) => clientName, ifAbsent: () => clientName);
+  void setProjetNom(String nom) {
+    _projetNom = nom;
     notifyListeners();
   }
 
-  String get clientName => _quoteCreationValues.client['name'];
+  String get projetNom => _projetNom;
 
-  set clientAdress(String clientAdress) {
-    _quoteCreationValues.client
-        .update('adresse', (old) => clientAdress, ifAbsent: () => clientAdress);
+  void setProduitNom(String nom) {
+    _produitNom = nom;
     notifyListeners();
   }
 
-  String get clientAdress => _quoteCreationValues.client['adresse'];
+  String get produitNom => _produitNom;
 
-  set clientTel(String clientTel) {
-    _quoteCreationValues.client
-        .update('tel', (old) => clientTel, ifAbsent: () => clientTel);
+  set gamme(GammeData gammeChoisie) {
+    _produitGamme = gammeChoisie;
     notifyListeners();
   }
 
-  String get clientTel => _quoteCreationValues.client['tel'];
+  GammeData get gamme => _produitGamme;
 
-  set clientMail(String clientMail) {
-    _quoteCreationValues.client
-        .update('mail', (old) => clientMail, ifAbsent: () => clientMail);
+  void setModele(ProduitData modeleChoisi) {
+    _produitModele = modeleChoisi;
     notifyListeners();
   }
 
-  String get clientMail => _quoteCreationValues.client['mail'];
-
-  void setNomDeProduit(String nomDeProduit) {
-    _quoteValues.nomDeProduit = nomDeProduit;
-    notifyListeners();
-  }
-
-  String get nomDeProduit => _quoteValues.nomDeProduit;
-
-  void setGamme(String nomGamme) {
-    _quoteValues.gamme = nomGamme;
-    notifyListeners();
-  }
-
-  String get gamme => _quoteValues.gamme;
+  ProduitData get modelProduit => _produitModele;
 
   void setModel(String nomModel) {
     _quoteValues.modeleChoisi = nomModel;
@@ -246,51 +219,135 @@ class ProviderProjet with ChangeNotifier {
 
   String get model => _quoteValues.modeleChoisi;
 
-  void updateModuleInfos(Map<String, dynamic> moduleSpec) {
-    _quoteValues.listeModule.remove(
-        _quoteValues.listeModule.entries.elementAt(editModuleIndex).key);
-    _quoteValues.listeModule.addAll({'${moduleSpec['name']}': moduleSpec});
+  void initModuleInfos() {
+    _moduleAngle = '';
+    _moduleSection = '';
+    _moduleSection2 = '';
+    _moduleNom = '';
   }
 
-  Map<String, dynamic> get productModules => _quoteValues.listeModule;
-
-  Map<String, dynamic> get modeleList => _quoteValues.listeModele;
-
-  void initListProduitModule(int produitModeleId) async {
-    listProduitModule =
-        await produitModuleDao.getProduitModuleByProduitId(produitModeleId);
-    notifyListeners();
+  void loadModuleInfos(int index) {
+    moduleAdd = _listProduitModuleProjet.elementAt(index);
+    _moduleNom = moduleAdd.produitModuleNom;
+    _moduleAngle = moduleAdd.produitModuleAngle;
+    if (_moduleAngle.contains(RegExp('[eE]ntrant')) ||
+        _moduleAngle.contains(RegExp('[sS]ortant'))) {
+      _moduleSection = moduleAdd.produitModuleSectionLongueur
+          .trim()
+          .split('[')[1]
+          .split(':')[1]
+          .split('}')[0];
+      _moduleSection2 = moduleAdd.produitModuleSectionLongueur
+          .trim()
+          .split('[')[1]
+          .split(':')[2]
+          .split('}')[0];
+    } else {
+      _moduleSection = _moduleSection = moduleAdd.produitModuleSectionLongueur
+          .trim()
+          .split('[')[1]
+          .split(':')[1]
+          .split('}')[0];
+      _moduleSection2 = '';
+    }
   }
 
-  void initListProduitModele(int gammeID) async {
-    listProduitModele = await produitDao.getProduitModeleByGammeId(gammeID);
-    notifyListeners();
+  void updateModuleInfos() {
+    if (editModuleIndex != _listProduitModuleProjet.length) {
+      //Edition
+      if (moduleAdd.moduleId != null) {
+        Map<String, Object> sections;
+        if (_moduleAngle.isNotEmpty) {
+          sections = {
+            'sections': [
+              {'longueur': int.parse(_moduleSection)},
+              {'longueur': int.parse(_moduleSection2)}
+            ]
+          };
+        } else {
+          sections = {
+            'sections': [
+              {'longueur': int.parse(_moduleSection)}
+            ]
+          };
+        }
+        moduleAdd = moduleAdd.copyWith(
+          produitModuleNom: _moduleNom,
+          produitModuleAngle: _moduleAngle,
+          produitModuleSectionLongueur: sections.toString(),
+        );
+      } else
+        log.e('ERROR NO MODEL??? WTF IS HAPPENING!!');
+    } else {
+      //Création
+      if (moduleChoice != null) {
+        Map<String, Object> sections;
+        if (_moduleAngle.isNotEmpty) {
+          sections = {
+            'sections': [
+              {'longueur': int.parse(_moduleSection)},
+              {'longueur': int.parse(_moduleSection2)}
+            ]
+          };
+        } else {
+          sections = {
+            'sections': [
+              {'longueur': int.parse(_moduleSection)}
+            ]
+          };
+        }
+        //La valeur -1 signifie qu'il n'est pas enregistrée en bdd
+        moduleAdd = new ProduitModuleData(
+          projetModuleId: -1,
+          produitId: -1,
+          produitModuleNom: _moduleNom,
+          moduleId: moduleChoice.moduleId,
+          produitModuleAngle: _moduleAngle,
+          produitModuleSectionLongueur: sections.toString(),
+        );
+        print(moduleAdd);
+      } else
+        log.e('Please select a model');
+    }
   }
+
+  List<ProduitModuleData> get produitModules => _listProduitModuleProjet;
 
   void logQC() {
-    log.i('QuoteCreation values:\n$_quoteCreationValues');
+    projet != null
+        ? log.i('QuoteCreation values:\n$projet')
+        : log.e('Please create the project...');
   }
 
   void logQ() {
-    log.i('Quote values:\n${_quoteValues.toString()}');
+    _listProduitModuleProjet != null
+        ? _listProduitModuleProjet.forEach((p) => log.i(p))
+        : log.e('ERROR: No product List created.');
   }
 
   bool isFilled(String pageName) {
     switch (pageName) {
       case 'QuoteCreation':
-        return (clientAdress.isNotEmpty &&
-            clientName.isNotEmpty &&
-            clientTel.isNotEmpty &&
-            clientMail.isNotEmpty &&
-            description.isNotEmpty);
+        return (client != null &&
+            _projetNom.isNotEmpty &&
+            _projetDesc.isNotEmpty);
         break;
       case 'ProductCreation':
-        return (nomDeProduit != null);
+        return (_produitNom.isNotEmpty &&
+            gamme != null &&
+            _listProduitModuleProjet.length != 0);
         break;
       case 'AddModule':
-        return (productModules.values
-            .elementAt(editModuleIndex)['nature']
-            .isNotEmpty);
+        {
+          if (_editModuleIndex == _listProduitModuleProjet.length)
+            return moduleChoice != null &&
+                (_moduleNom.isNotEmpty &&
+                    _moduleSection.isNotEmpty &&
+                    !(_moduleAngle.isNotEmpty ^ _moduleSection2.isNotEmpty));
+          return (_moduleNom.isNotEmpty &&
+              _moduleSection.isNotEmpty &&
+              !(_moduleAngle.isNotEmpty ^ _moduleSection2.isNotEmpty));
+        }
         break;
       default:
         return false;
@@ -299,13 +356,100 @@ class ProviderProjet with ChangeNotifier {
   }
 
   void updateModuleNature(String newValue) {
-    productModules.values.elementAt(editModuleIndex)['nature'] = newValue;
+    _quoteValues.listeModule.values.elementAt(editModuleIndex)['nature'] =
+        newValue;
     notifyListeners();
   }
 
-  void setFinitions(String choice) {
-    productModules.values
-        .elementAt(editModuleIndex)
-        .addAll({'finitions': choice});
+  ///Ajoute les produitsModules chargés a la liste des produitsModules du projet
+  void initListProduitModuleProjet(List<ProduitModuleData> listProduitModule) {
+    if (listProduitModule != null) {
+      listProduitModule.forEach(
+        (produitModule) => {
+          _listProduitModuleProjet.add(produitModule),
+        },
+      );
+      notifyListeners();
+    } else
+      log.e('Error in initListProduitModuleProjet()!');
+  }
+
+  ///Supprime les produitsModules du modèle de produit tout en gardant ceux ajoutés par l'utilisateur
+  void resetListProduitModuleProjet(List<ProduitModuleData> listProduitModule) {
+    if (listProduitModule != null && _listProduitModuleProjet != null) {
+      listProduitModule.forEach(
+          (produitModule) => _listProduitModuleProjet.remove(produitModule));
+      _produitModele = null;
+      notifyListeners();
+    } else
+      log.e(
+          'ERROR in resetListProduitModuleProjet()! First time calling it for this product ? If so, ignore.');
+  }
+
+  void setFinitions(String choice) {}
+
+  void updateListProduitModuleProjet() {
+    if (_editModuleIndex == _listProduitModuleProjet.length)
+      _listProduitModuleProjet.add(moduleAdd);
+    else {
+      //update du module
+      _listProduitModuleProjet.removeAt(_editModuleIndex);
+      _listProduitModuleProjet.insert(_editModuleIndex, moduleAdd);
+    }
+    notifyListeners();
+  }
+
+  void initClientWithClient(ClientData client) {
+    this.client = client;
+    notifyListeners();
+  }
+
+  void initProjet() {
+    //TODO ajouter un champ description en bdd ?
+    var r = Random();
+    int test = r.nextInt(
+        539985); // valeur borne haute choisie au hasard, 2 chiffres par contributeurs
+    projet = new ProjetData(
+      projetId: -1,
+      nomProjet: projetNom,
+      refProjet: _dateNow.replaceAll('/', '') +
+          '_' +
+          client.id.toString() +
+          '_' +
+          test.toString(),
+      dateProjet: _dateProjet,
+      devisEtatId: 2,
+      clientId: client.id,
+      prixTotal: 0.0,
+      isSynchro: false,
+    );
+    notifyListeners();
+  }
+
+  void initProduitWithModule() {
+    produitWithModule = ProduitWithModule(
+        ProduitData(
+            produitId: -1,
+            produitNom: produitNom,
+            gammesId: _produitGamme.gammeId,
+            prixProduit: 0.0,
+            modele: false),
+        _listProduitModuleProjet);
+    notifyListeners();
+  }
+
+  void initProjetWithAllInfos() {
+    projetWithAllInfos = ProjetWithAllInfos(projet, listProduitProjet);
+    notifyListeners();
+  }
+
+  void updateListProduitProjet() {
+    if (_editProductIndex != listProduitProjet.length) {
+      listProduitProjet.removeAt(_editProductIndex);
+      listProduitProjet.insert(_editProductIndex, produitWithModule);
+    } else {
+      listProduitProjet.add(produitWithModule);
+    }
+    notifyListeners();
   }
 }

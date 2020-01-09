@@ -65,7 +65,7 @@ class _CustomDrawerState extends State<CustomDrawer>
                   isSelected: Provider.of<MaderaNav>(context).pageIndex == 5,
                   onTap: () => Provider.of<MaderaNav>(context)
                       .redirectToPage(context, UserProfilePage(), null),
-                  title: "Test Name",
+                  title: 'Test Name',
                   icon: Icons.person,
                   animationController: _animationController,
                 ),

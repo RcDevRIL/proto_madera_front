@@ -31,7 +31,7 @@ class _AuthenticationPageState extends State<AuthenticationPage> {
   final log = Logger();
 
   ///
-  /// Prevents the use of the "back" button
+  /// Prevents the use of the 'back' button
   ///
   Future<bool> _onWillPopScope() async {
     return false;
@@ -74,7 +74,7 @@ class _AuthenticationPageState extends State<AuthenticationPage> {
                             Color.fromRGBO(255, 255, 255, 0.5),
                             BlendMode.modulate),
                         fit: BoxFit.fitWidth,
-                        image: AssetImage("assets/img/madera.JPG")),
+                        image: AssetImage('assets/img/madera.JPG')),
                   ),
                 ),
                 Center(
@@ -107,7 +107,7 @@ class _AuthenticationPageState extends State<AuthenticationPage> {
         color: Color.fromRGBO(39, 72, 0, 1.0),
       ),
       text: Text(
-        "Identifiant",
+        'Identifiant',
         style: TextStyle(
           fontSize: 24,
           color: Color.fromRGBO(39, 72, 0, 1.0),
@@ -138,8 +138,8 @@ class _AuthenticationPageState extends State<AuthenticationPage> {
                         color: Colors.red,
                       ),
                   border: OutlineInputBorder(),
-                  hintText: "Enter login",
-                  labelText: "Login",
+                  hintText: 'Enter login',
+                  labelText: 'Login',
                   errorText: snapshot.error,
                 ),
               ),
@@ -158,7 +158,7 @@ class _AuthenticationPageState extends State<AuthenticationPage> {
           color: Color.fromRGBO(39, 72, 0, 1.0),
         ),
         text: Text(
-          "Mot de passe",
+          'Mot de passe',
           style: TextStyle(
             fontSize: 24,
             color: Color.fromRGBO(39, 72, 0, 1.0),
@@ -192,8 +192,8 @@ class _AuthenticationPageState extends State<AuthenticationPage> {
                       ),
                   focusColor: Colors.white,
                   border: OutlineInputBorder(),
-                  hintText: "Enter password",
-                  labelText: "Password",
+                  hintText: 'Enter password',
+                  labelText: 'Password',
                   errorText: snapshot.error,
                 ),
               ),
@@ -252,9 +252,9 @@ class _AuthenticationPageState extends State<AuthenticationPage> {
           } else
             log.i('Synchronisation des référentiels déjà effectuée!');
           Provider.of<ProviderBdd>(context).initProjetData();
+          Provider.of<ProviderBdd>(context).initData();
           Provider.of<MaderaNav>(context)
               .redirectToPage(context, HomePage(), null);
-          //TODO Ajouter initData()
         }
         break;
       case HttpStatus.OFFLINE:
@@ -263,7 +263,8 @@ class _AuthenticationPageState extends State<AuthenticationPage> {
             context,
             Icons.warning,
             'Erreur réseau',
-            "Le serveur n'est pas joignable.",
+            'Le serveur n\'est pas joignable.',
+            null,
           );
         }
         break;
@@ -272,8 +273,9 @@ class _AuthenticationPageState extends State<AuthenticationPage> {
           Provider.of<MaderaNav>(context).showNothingYouCanDoPopup(
             context,
             Icons.warning,
-            "Erreur d'authentification",
+            'Erreur d\'authentification',
             'Le login et / ou le mot de passe sont incorrects',
+            null,
           );
         }
         break;
@@ -284,6 +286,7 @@ class _AuthenticationPageState extends State<AuthenticationPage> {
             Icons.warning,
             'Autorisation requise',
             'Les identifiants sont incorrects',
+            null,
           );
         }
         break;
@@ -294,6 +297,7 @@ class _AuthenticationPageState extends State<AuthenticationPage> {
             Icons.warning,
             'Default',
             'Oups! Ceci ne devrait pas arriver...',
+            null,
           );
         }
         break;
@@ -307,6 +311,7 @@ class _AuthenticationPageState extends State<AuthenticationPage> {
       'Erreur de synchronisation',
       'Erreur lors de l'
           'appel à la méthode $synchroTried().',
+      null,
     );
   }
 }

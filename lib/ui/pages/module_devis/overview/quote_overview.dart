@@ -1,11 +1,14 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:proto_madera_front/data/models/projet_with_client.dart';
+import 'package:proto_madera_front/data/providers/provider_projet.dart';
 import 'package:proto_madera_front/data/providers/providers.dart'
     show MaderaNav, ProviderBdd;
 import 'package:proto_madera_front/theme.dart' as cTheme;
+import 'package:proto_madera_front/ui/widgets/common/madera_dialog.dart';
 import 'package:proto_madera_front/ui/widgets/custom_widgets.dart'
     show MaderaScaffold, MaderaTableCell;
+import 'package:proto_madera_front/ui/widgets/madera_button.dart';
 import 'package:provider/provider.dart';
 
 ///
@@ -22,13 +25,6 @@ class QuoteOverview extends StatefulWidget {
 }
 
 class _QuoteOverviewState extends State<QuoteOverview> {
-  ///
-  /// Prevents the use of the "back" button
-  ///
-  Future<bool> _onWillPopScope() async {
-    return false;
-  }
-
   //added to prepare for scaling
   @override
   void initState() {
@@ -44,101 +40,108 @@ class _QuoteOverviewState extends State<QuoteOverview> {
   @override
   Widget build(BuildContext context) {
     //final args = ModalRoute.of(context).settings.arguments;
-    return WillPopScope(
-      onWillPop: _onWillPopScope,
-      child: SafeArea(
-        child: MaderaScaffold(
-          passedContext: context,
-          child: Consumer<MaderaNav>(
-            builder: (_, mN, c) => FutureBuilder(
-              future: Provider.of<ProviderBdd>(context).initProjetData(),
-              builder: (context, snapshot) {
-                if (snapshot.hasError) {
-                  return Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: <Widget>[
-                      Text('Problème lors de la récupération des données'),
-                      Icon(
-                        Icons.error_outline,
-                        color: Colors.red,
-                        size: 60,
+    return MaderaScaffold(
+      passedContext: context,
+      child: Consumer<MaderaNav>(
+        builder: (_, mN, c) => FutureBuilder(
+          future: Provider.of<ProviderBdd>(context).initProjetData(),
+          builder: (context, snapshot) {
+            if (snapshot.hasError) {
+              return Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: <Widget>[
+                  Text('Problème lors de la récupération des données'),
+                  Icon(
+                    Icons.error_outline,
+                    color: Colors.red,
+                    size: 60,
+                  ),
+                ],
+              );
+            } else if (snapshot.hasData) {
+              return SingleChildScrollView(
+                scrollDirection: Axis.vertical,
+                child: Container(
+                  decoration: BoxDecoration(
+                    border: Border.all(color: Colors.black),
+                  ),
+                  width: 2500,
+                  height: 665,
+                  child: DataTable(
+                    columnSpacing: 0,
+                    headingRowHeight: 100,
+                    dataRowHeight: 100,
+                    columns: [
+                      DataColumn(
+                        label: MaderaTableCell(
+                          textCell: 'Date de création',
+                          backgroundColor: cTheme.MaderaColors.appBarMainColor,
+                          cellFontSize: 20,
+                          height: 100,
+                          width: 250,
+                        ),
+                      ),
+                      DataColumn(
+                        label: MaderaTableCell(
+                          textCell: 'Ref.client',
+                          backgroundColor: cTheme.MaderaColors.appBarMainColor,
+                          cellFontSize: 20,
+                          height: 100,
+                          width: 250,
+                        ),
+                      ),
+                      DataColumn(
+                        label: MaderaTableCell(
+                          textCell: 'Ref. projet',
+                          backgroundColor: cTheme.MaderaColors.appBarMainColor,
+                          cellFontSize: 20,
+                          height: 100,
+                          width: 250,
+                        ),
+                      ),
+                      DataColumn(
+                        label: MaderaTableCell(
+                          textCell: 'Nom du projet',
+                          backgroundColor: cTheme.MaderaColors.appBarMainColor,
+                          cellFontSize: 20,
+                          height: 100,
+                          width: 250,
+                        ),
                       ),
                     ],
-                  );
-                } else if (snapshot.hasData) {
-                  return SingleChildScrollView(
-                    scrollDirection: Axis.vertical,
-                    child: Container(
-                      decoration: BoxDecoration(
-                        border: Border.all(color: Colors.black),
-                      ),
-                      width: 2500,
-                      height: 665,
-                      child: DataTable(
-                        columnSpacing: 0,
-                        headingRowHeight: 100,
-                        dataRowHeight: 100,
-                        columns: [
-                          DataColumn(
-                            label: MaderaTableCell(
-                              textCell: 'Date de création',
-                              backgroundColor:
-                                  cTheme.MaderaColors.appBarMainColor,
-                              cellFontSize: 20,
-                              height: 100,
-                              width: 250,
-                            ),
-                          ),
-                          DataColumn(
-                            label: MaderaTableCell(
-                              textCell: 'Ref.client',
-                              backgroundColor:
-                                  cTheme.MaderaColors.appBarMainColor,
-                              cellFontSize: 20,
-                              height: 100,
-                              width: 250,
-                            ),
-                          ),
-                          DataColumn(
-                            label: MaderaTableCell(
-                              textCell: 'Ref. projet',
-                              backgroundColor:
-                                  cTheme.MaderaColors.appBarMainColor,
-                              cellFontSize: 20,
-                              height: 100,
-                              width: 250,
-                            ),
-                          ),
-                          DataColumn(
-                            label: MaderaTableCell(
-                              textCell: 'Nom du projet',
-                              backgroundColor:
-                                  cTheme.MaderaColors.appBarMainColor,
-                              cellFontSize: 20,
-                              height: 100,
-                              width: 250,
-                            ),
-                          ),
-                        ],
-                        rows: _createRows(context, snapshot),
-                      ),
-                    ),
-                  );
-                } else {
-                  return Center(
-                    child: SizedBox(
-                      child: CircularProgressIndicator(),
-                      width: 60,
-                      height: 60,
-                    ),
-                  );
-                }
-              },
-            ),
-          ),
+                    rows: _createRows(context, snapshot),
+                  ),
+                ),
+              );
+            } else {
+              return Center(
+                child: SizedBox(
+                  child: CircularProgressIndicator(),
+                  width: 60,
+                  height: 60,
+                ),
+              );
+            }
+          },
         ),
       ),
+    );
+  }
+
+  void showPopup(BuildContext context, IconData icon, String title, Widget body,
+      Color color, List<Widget> actions) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return MaderaDialog(
+          titleAndIconColor: color,
+          title: title,
+          icon: icon,
+          body: body,
+          actions: actions,
+        );
+      },
     );
   }
 }
@@ -149,9 +152,19 @@ List<DataRow> _createRows(BuildContext context, AsyncSnapshot snapshot) {
         (ProjetWithClient projetWithClient) => DataRow(
           onSelectChanged: (bool selected) {
             if (selected) {
+              //TODO passer directement l'objet projetWithClient ?
+              if (Provider.of<ProviderBdd>(context).editProjetIndex ==
+                  projetWithClient.projet.refProjet) {
+                Provider.of<ProviderBdd>(context).loadProjetEdit(null);
+              } else {
+                Provider.of<ProviderBdd>(context)
+                    .loadProjetEdit(projetWithClient.projet.refProjet);
+              }
               //Provider.of<MaderaNav>(context).redirectToPage(context, PageDevis(${projetWithClient.projet.projetId));
             }
           },
+          selected: Provider.of<ProviderBdd>(context).editProjetIndex ==
+              projetWithClient.projet.refProjet,
           cells: <DataCell>[
             DataCell(
               MaderaTableCell(

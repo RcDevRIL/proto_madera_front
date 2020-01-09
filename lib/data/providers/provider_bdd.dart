@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:logger/logger.dart';
 import 'package:moor_flutter/moor_flutter.dart';
 import 'package:proto_madera_front/data/database/dao/database_dao.dart';
 import 'package:proto_madera_front/data/database/daos.dart';
 import 'package:proto_madera_front/data/database/madera_database.dart';
-import 'package:proto_madera_front/data/models/produit_with_module.dart';
+import 'package:proto_madera_front/data/models/projet_with_all_infos.dart';
 import 'package:proto_madera_front/data/models/projet_with_client.dart';
-import 'package:proto_madera_front/data/models/quote_creation_model.dart';
-import 'package:proto_madera_front/data/models/quote_model.dart';
 
 ///
 /// Provider to handle database interactions
@@ -17,7 +16,8 @@ import 'package:proto_madera_front/data/models/quote_model.dart';
 ///
 /// @version 0.4-RELEASE
 class ProviderBdd with ChangeNotifier {
-  MaderaDatabase db = new MaderaDatabase();
+  final log = Logger();
+  static final MaderaDatabase db = new MaderaDatabase();
   UtilisateurDao utilisateurDao;
   ComposantDao composantDao;
   GammeDao gammeDao;
@@ -33,9 +33,18 @@ class ProviderBdd with ChangeNotifier {
   ComposantGroupeDao composantGroupeDao;
   ProjetProduitsDao projetProduitsDao;
   List<DatabaseAccessor<MaderaDatabase>> daosSynchroList;
-  List<DatabaseAccessor<MaderaDatabase>> daosProjetList;
 
   Future<List<ProjetWithClient>> listProjetWithClient;
+
+  //Données ref / locale
+  List<ClientData> listClient;
+  List<GammeData> listGammes;
+  List<ProduitData> listProduitModele;
+  List<ProduitModuleData> listProduitModule;
+  List<String> listNatureModule;
+  List<ModuleData> listModule;
+
+  String _editProjetIndex;
 
   ///
   ///Constructeur par défaut de notre classe d'interaction avec la bdd.
@@ -72,12 +81,6 @@ class ProviderBdd with ChangeNotifier {
       composantGroupeDao,
       projetProduitsDao
     ];
-    daosProjetList = <DatabaseAccessor<MaderaDatabase>>[
-      gammeDao,
-      moduleDao,
-      produitModuleDao,
-      produitDao
-    ];
   }
 
   void drop() {
@@ -90,70 +93,31 @@ class ProviderBdd with ChangeNotifier {
     super.dispose();
   }
 
-  //TODO a voir mais risque d'avoir un problème sur tous les constructeurs ! peut être créer des models ?
 //TODO ajouter un boolean synchro et l'init a false, il se passe que lorsqu'il est renseigné côté serveur
   ///Méthode pour créer le projet ainsi que ses produits (infos relatives aux produits, produitModule..)
-  void createAll(
-      QuoteCreationModel quoteCreationModel, QuoteModel quoteModel) async {
-    //TODO a tester, ça renvoyer un id genere
-    //TODO refProjet = nomProjet ?
-    //TODO refProjet est générer nan ?
-
-    //Mapping
-    ProjetCompanion projetCompanion = new ProjetCompanion(
-      nomProjet: Value('Test'),
-      refProjet: Value(quoteCreationModel.refProjet),
-      clientId: Value(
-        int.parse(quoteCreationModel.client['clientId']),
-      ),
-      //TODO formatter la date peut-être ?
-      dateProjet: Value(DateTime.parse(quoteCreationModel.dateDeCreation)),
-    );
-
-    ProduitCompanion produitCompanion = new ProduitCompanion(
-      produitNom: Value(quoteModel.nomDeProduit),
-      gammesId: Value(
-        int.parse(quoteModel.gamme),
-      ),
-    );
-
-    List<ProduitModuleCompanion> listProduitModule = new List();
-    //TODO check les noms des infos
-    quoteModel.listeModule.forEach((key, value) => {
-          listProduitModule.add(
-            new ProduitModuleCompanion(
-              produitModuleNom: Value(value['name']),
-              moduleId: Value(value['moduleId']),
-              produitModuleAngle: Value(value['angle']),
-              produitModuleSectionLongueur: Value(value['section']),
-            ),
-          ),
-        });
-
-    //List<ProduitWithModule> listProduitWithModule = new List();
-    /*ProduitWithModule produitWithModule = new ProduitWithModule(produitCompanion, listProduitModule);
-    int projetId = await createProject(projetCompanion);
-    print(projetId);
+  void createAll(ProjetWithAllInfos projetWithAllInfos) async {
+    int projetId = await createProject(projetWithAllInfos.projet);
     //Si le projet a été créé alors on continue
     if (projetId != 0) {
       var produitId;
-      listProduitWithModule.forEach((produitWithModule) async => {
-            //TODO a tester, ça renvoyer un id genere
-            produitId = await createProduit(produitWithModule.produit),
-            //Si la somme de isProduitCreated est égal à la longueur des éléments dans listProduit, alors on continue
-            if (produitId != 0)
-              {
-                createProjetProduit(projetId, produitId),
-                createProduitModule(
-                    produitId, produitWithModule.listProduitModule),
-              }
-          });
-    }*/
+      projetWithAllInfos.listProduitWithModule.forEach(
+        (produitWithModule) async => {
+          produitId = await createProduit(produitWithModule.produit),
+          //Si la somme de isProduitCreated est égal à la longueur des éléments dans listProduit, alors on continue
+          if (produitId != 0)
+            {
+              createProjetProduit(projetId, produitId),
+              createProduitModule(
+                  produitId, produitWithModule.listProduitModule),
+            }
+        },
+      );
+    }
   }
 
   ///Appel du dao pour la création d'un projet
-  Future<int> createProject(ProjetCompanion projetCompanion) async {
-    int isCreated = await projetDao.createProject(projetCompanion);
+  Future<int> createProject(ProjetData projet) async {
+    int isCreated = await projetDao.createProject(projet);
     return isCreated;
   }
 
@@ -182,5 +146,68 @@ class ProviderBdd with ChangeNotifier {
   Future<List<ProjetWithClient>> initProjetData() {
     this.listProjetWithClient = projetDao.getAll();
     return this.listProjetWithClient;
+  }
+
+
+  String get editProjetIndex => _editProjetIndex;
+
+  void loadProjetEdit(String refProjet) {
+    _editProjetIndex = refProjet;
+    notifyListeners();
+  }
+
+  void initData() async {
+    await initGammes();
+    await initListNatureModule();
+    await initClient();
+    notifyListeners();
+  }
+
+  Future initClient() async {
+    listClient = await clientDao.getAllClient();
+  }
+
+  Future<String> buildClientAdresse(int clientId) async {
+    StringBuffer sbuf = StringBuffer();
+    int clientAdresseId = await clientAdresseDao.getClientAdresseId(clientId);
+    AdresseData clientAdresseData =
+        await adresseDao.getAdresse(clientAdresseId);
+    sbuf.write(clientAdresseData.numero);
+    sbuf.write(', ');
+    sbuf.write(clientAdresseData.rue);
+    sbuf.write(' ');
+    sbuf.write(clientAdresseData.codePostale);
+    sbuf.write(' ');
+    sbuf.write(clientAdresseData.ville);
+    return sbuf.toString();
+  }
+
+  Future initGammes() async {
+    listGammes = await gammeDao.getAllGammes();
+  }
+
+  Future<bool> initModules(String natureModule) async {
+    try {
+      listModule = await moduleDao.getAllModules(natureModule);
+    } catch (e) {
+      log.e('$e');
+      return false;
+    }
+    return true;
+  }
+
+  Future initListProduitModule(int produitModeleId) async {
+    listProduitModule =
+        await produitModuleDao.getProduitModuleByProduitId(produitModeleId);
+    notifyListeners();
+  }
+
+  Future initListProduitModele(int gammeID) async {
+    listProduitModele = await produitDao.getProduitModeleByGammeId(gammeID);
+    notifyListeners();
+  }
+
+  Future initListNatureModule() async {
+    listNatureModule = await moduleDao.getNatureModule();
   }
 }

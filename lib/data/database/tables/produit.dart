@@ -11,7 +11,7 @@ class Produit extends Table {
 
   IntColumn get gammesId => integer()();
 
-  RealColumn get prixProduit => real()();
+  RealColumn get prixProduit => real().nullable()();
 
   BoolColumn get modele => boolean()();
 

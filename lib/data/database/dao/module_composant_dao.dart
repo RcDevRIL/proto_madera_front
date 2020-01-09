@@ -9,8 +9,32 @@ class ModuleComposantDao extends DatabaseAccessor<MaderaDatabase>
     with _$ModuleComposantDaoMixin {
   ModuleComposantDao(MaderaDatabase db) : super(db);
 
+  String get querySelectModuleComposantOfProjetSynchro =>
+      "SELECT module_composant.module_id FROM module_composant "
+      "LEFT JOIN produit_module ON produit_module.module_id = module_composant.module_id "
+      "LEFT JOIN projet_produits ON projet_produits.produit_id = produit_module.produit_id "
+      "LEFT JOIN projet ON projet.projet_id = projet_produits.projet_id "
+      "WHERE projet.is_synchro = 1 OR projet.projet_id IS NULL";
+
   Future insertAll(List<ModuleComposantData> listModuleComposant) async {
-    await delete(moduleComposant).go();
-    await db.batch((b) => b.insertAll(moduleComposant, listModuleComposant));
+    await db.batch((b) => b.insertAll(moduleComposant, listModuleComposant, mode: InsertMode.insertOrReplace));
+  }
+
+  ///Supprime les occurences de moduleComposant
+  Future<int> deleteAll() async {
+    //Récupère la liste des moduleComposant qui doivent être supprimés (en fonction de is_synchro de projet)
+    //C'est une liste de moduleId, puisqu'il n'y pas de champ moduleComposantId
+    List<int> listModuleId = await customSelectQuery(
+            querySelectModuleComposantOfProjetSynchro,
+            readsFrom: {moduleComposant}).get().then(
+          (rows) => rows
+              .map<int>(
+                (row) => row.readInt("module_id"),
+              )
+              .toList(),
+        );
+    return await (delete(moduleComposant)
+          ..where((mc) => mc.moduleId.isIn(listModuleId)))
+        .go();
   }
 }

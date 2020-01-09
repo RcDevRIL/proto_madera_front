@@ -1,6 +1,6 @@
 import 'dart:async';
 
-const String _kRule = r"^[a-z]+$";
+const String _kRule = r'^[a-z]+$';
 
 ///
 /// Class to handle validation of a text input

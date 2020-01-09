@@ -35,7 +35,7 @@ class MaderaDatabase extends _$MaderaDatabase {
         );
   //Si modification du schéma alors le schemaVersion prend +1
   @override
-  int get schemaVersion => 10;
+  int get schemaVersion => 14;
 
   @override
   MigrationStrategy get migration => MigrationStrategy(onCreate: (Migrator m) {
@@ -77,9 +77,21 @@ class MaderaDatabase extends _$MaderaDatabase {
           m.deleteTable('projet');
           m.createTable(projet);
         }
-        if(from <= 10) {
+        if (from <= 10) {
           m.deleteTable('produit');
           m.createTable(produit);
+        }
+        if (from <= 11) {
+          m.deleteTable('projet');
+          m.createTable(projet);
+        }
+        if (from <= 12) {
+          m.deleteTable('produit');
+          m.createTable(produit);
+        }
+        if(from <= 14) {
+          m.deleteTable('projet');
+          m.createTable(projet);
         }
       });
 }

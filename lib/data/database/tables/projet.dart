@@ -13,9 +13,11 @@ class Projet extends Table {
 
   DateTimeColumn get dateProjet => dateTime()();
 
-  RealColumn get prixTotal => real()();
+  RealColumn get prixTotal => real().nullable()();
 
   IntColumn get clientId => integer()();
 
   IntColumn get devisEtatId => integer()();
+
+  BoolColumn get isSynchro => boolean()();
 }

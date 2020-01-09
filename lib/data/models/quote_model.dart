@@ -13,7 +13,7 @@ class QuoteModel {
       @required this.listeModele,
       @required this.modeleChoisi,
       @required this.listeModule})
-      : assert(gamme.isNotEmpty && listeModele.length != 0);
+      : assert(listeModele.length != 0);
 
   @override
   int get hashCode =>
