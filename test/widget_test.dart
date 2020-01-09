@@ -59,6 +59,32 @@ void main() {
         providerProjet
             .initClientWithClient(testClient); //ajout d'un client de test
         expect(providerProjet.initProjet(), true);
+
+        providerProjet.initProductCreationModel();
+        expect(providerProjet.produitModules.length,
+            0); // 0 car initialisation de la liste des produits
+
+        expect(providerProjet.produitNom.isEmpty, true); // Nom produit vide
+        providerProjet.produitNom = "Maison modulaire standard";
+        expect(providerProjet.produitNom.isNotEmpty,
+            true); // Nom produit mis à jour
+
+        expect(providerProjet.initListProduitModuleProjet(null), false);
+        List<ProduitModuleData> listProduitModule = [
+          ProduitModuleData(
+            projetModuleId: 1,
+            moduleId: 1,
+            produitModuleNom: "Mur standard 1",
+            produitModuleAngle: "Angle Sortant",
+            produitModuleSectionLongueur: "{\"section\": {\"longueur\": 350}}",
+          )
+        ];
+        expect(providerProjet.initListProduitModuleProjet(listProduitModule),
+            true);
+
+        // providerProjet.initProduitWithModule(); // gammeid called on null
+        // providerProjet.updateListProduitProjet();
+        // expect(providerProjet.listProduitProjet.length > 0, true);
       },
     );
     test(
