@@ -82,9 +82,34 @@ void main() {
         expect(providerProjet.initListProduitModuleProjet(listProduitModule),
             true);
 
-        // providerProjet.initProduitWithModule(); // gammeid called on null
-        // providerProjet.updateListProduitProjet();
-        // expect(providerProjet.listProduitProjet.length > 0, true);
+        providerProjet.initModuleInfos();
+        expect(providerProjet.moduleNom.isEmpty, true);
+        GammeData gamme = GammeData(gammeId: 1, libelleGammes: "Standard");
+        providerProjet.gamme = gamme;
+        providerProjet.initProduitWithModule();
+        providerProjet.updateListProduitProjet();
+        expect(providerProjet.listProduitProjet.length > 0, true);
+
+        expect(providerProjet.projetWithAllInfos == null, true);
+        providerProjet.initProjetWithAllInfos();
+        expect(providerProjet.projetWithAllInfos != null, true);
+
+        providerProjet.initAndHold();
+        expect(providerProjet.gamme, gamme);
+
+        providerProjet.validate(true);
+        providerProjet.initAndHold();
+        expect(providerProjet.gamme, null);
+
+        expect(providerProjet.isFilled(''), false);
+        expect(providerProjet.isFilled('QuoteCreation'), false);
+
+        providerProjet.initClientWithClient(testClient);
+        providerProjet.initProjet();
+        providerProjet.produitNom = "Maison modulaire standard";
+        providerProjet.gamme = gamme;
+        providerProjet.initListProduitModuleProjet(listProduitModule);
+        expect(providerProjet.isFilled('ProductCreation'), true);
       },
     );
     test(
