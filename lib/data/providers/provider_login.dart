@@ -102,7 +102,7 @@ class ProviderLogin with ChangeNotifier {
   Future<bool> logout() async {
     var utilisateurData;
     if (http.runtimeType != MockClient) {
-      utilisateurData = await utilisateurDao.getUser();
+      utilisateurData = await utilisateurDao.getLastUser();
     } else {
       utilisateurData = UtilisateurData(
           login: 'toto', token: '43er-ere3-yr543', utilisateurId: 1);

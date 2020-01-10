@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:proto_madera_front/ui/pages/common/decision_page.dart';
 import 'package:provider/provider.dart';
 
 import 'package:proto_madera_front/data/providers/providers.dart';
@@ -55,6 +56,7 @@ class MaderaApp extends StatelessWidget {
           initialRoute: InitializationPage.routeName,
           routes: {
             InitializationPage.routeName: (context) => InitializationPage(),
+            DecisionPage.routeName: (context) => DecisionPage(),
             SettingsPage.routeName: (context) => SettingsPage(),
             HomePage.routeName: (context) => HomePage(),
             ProductCreation.routeName: (context) => ProductCreation(),

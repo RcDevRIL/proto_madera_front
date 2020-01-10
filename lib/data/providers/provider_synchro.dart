@@ -158,7 +158,7 @@ class ProviderSynchro with ChangeNotifier {
     } else {
       UtilisateurData utilisateurData;
       if (http.runtimeType != MockClient)
-        utilisateurData = await utilisateurDao.getUser();
+        utilisateurData = await utilisateurDao.getLastUser();
       else
         utilisateurData = UtilisateurData(
             utilisateurId: 4, login: 'testuser', token: 'fesfk-feksnf-fesf');
@@ -247,7 +247,7 @@ class ProviderSynchro with ChangeNotifier {
     } else {
       UtilisateurData utilisateurData;
       if (http.runtimeType != MockClient)
-        utilisateurData = await utilisateurDao.getUser();
+        utilisateurData = await utilisateurDao.getLastUser();
       else
         utilisateurData = UtilisateurData(
             utilisateurId: 4, login: 'testuser', token: 'fesfk-feksnf-fesf');
@@ -350,7 +350,7 @@ class ProviderSynchro with ChangeNotifier {
     log.i('Création du projet sur le serveur...');
     UtilisateurData utilisateurData;
     if (http.runtimeType != MockClient)
-      utilisateurData = await utilisateurDao.getUser();
+      utilisateurData = await utilisateurDao.getLastUser();
     else
       utilisateurData = UtilisateurData(
           utilisateurId: 4, login: 'testuser', token: 'fesfk-feksnf-fesf');

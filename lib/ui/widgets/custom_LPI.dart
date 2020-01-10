@@ -3,9 +3,8 @@ import 'package:logger/logger.dart';
 import 'package:provider/provider.dart';
 
 import 'package:proto_madera_front/data/providers/providers.dart'
-    show MaderaNav, ProviderSynchro;
-import 'package:proto_madera_front/ui/pages/pages.dart'
-    show AuthenticationPage, HomePage;
+    show MaderaNav;
+import 'package:proto_madera_front/ui/pages/pages.dart' show DecisionPage;
 import 'package:proto_madera_front/theme.dart' as cTheme;
 
 /// Custom widget representing a linear progressbar incidator
@@ -31,8 +30,6 @@ class _MyLinearProgressIndicatorState extends State<MyLinearProgressIndicator>
   AnimationController progressController;
   Animation<double> progressAnimation;
   final Color backgroundColor;
-  bool hasToken = false;
-  final log = Logger();
 
   _MyLinearProgressIndicatorState(this.backgroundColor);
 
@@ -43,13 +40,9 @@ class _MyLinearProgressIndicatorState extends State<MyLinearProgressIndicator>
         duration: const Duration(milliseconds: 2000), vsync: this);
     progressAnimation = Tween(begin: 0.0, end: 1.0).animate(progressController)
       ..addStatusListener((status) {
-        log.d('$status');
         if (status == AnimationStatus.completed) {
-          hasToken
-              ? Provider.of<MaderaNav>(context)
-                  .redirectToPage(context, HomePage(), null)
-              : Provider.of<MaderaNav>(context)
-                  .redirectToPage(context, AuthenticationPage(), null);
+          Provider.of<MaderaNav>(context)
+              .redirectToPage(context, DecisionPage(), null);
         }
         if (status == AnimationStatus.dismissed) {
           progressController.forward();
@@ -66,30 +59,6 @@ class _MyLinearProgressIndicatorState extends State<MyLinearProgressIndicator>
   @override
   void didUpdateWidget(Widget oldW) {
     super.didUpdateWidget(oldW);
-    /* Utilisation de didUpdateWidget pour faire la synchro au moment du progrès de la barre chargement 
-    Si le dernier utilisateur enregistré n'a pas de token, on ne fait pas la synchro et on log une erreur.
-    */
-    try {
-      Provider.of<ProviderSynchro>(context)
-          .utilisateurDao
-          .getUser()
-          .then((lastUserData) {
-        try {
-          if (lastUserData.token != null) {
-            Provider.of<ProviderSynchro>(context).synchro();
-            hasToken = true;
-          } else {
-            log.e('Aucun token trouvé...');
-            hasToken = false;
-          }
-        } catch (e) {
-          hasToken = false;
-          log.e('lastUserData error (token=null?):\n$e');
-        }
-      });
-    } catch (e) {
-      log.e('getUser error (db=null?):\n$e');
-    }
   }
 
   @override

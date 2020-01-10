@@ -1,3 +1,4 @@
+import 'package:logger/logger.dart';
 import 'package:moor_flutter/moor_flutter.dart';
 import 'package:proto_madera_front/data/database/madera_database.dart';
 import 'package:proto_madera_front/data/database/tables/utilisateur.dart';
@@ -15,8 +16,16 @@ class UtilisateurDao extends DatabaseAccessor<MaderaDatabase>
     await db.batch((b) => b.insert(utilisateur, entry));
   }
 
-  Future<UtilisateurData> getUser() async {
-    return await (select(utilisateur)).getSingle();
+  Future<List<UtilisateurData>> getUserList() async {
+    return await (select(utilisateur)).get();
+  }
+
+  Future<UtilisateurData> getLastUser() async {
+    return await ((select(utilisateur))
+          ..where(
+            (u) => isNotNull(u.token),
+          ))
+        .getSingle();
   }
 
   //Supprime le contenu de utilisateur
