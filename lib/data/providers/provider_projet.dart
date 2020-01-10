@@ -276,15 +276,15 @@ class ProviderProjet with ChangeNotifier {
         Map<String, Object> sections;
         if (_moduleAngle.isNotEmpty) {
           sections = {
-            'sections': [
-              {'longueur': int.parse(_moduleSection)},
-              {'longueur': int.parse(_moduleSection2)}
+            '\"sections\"': [
+              {'\"longueur\"': int.parse(_moduleSection)},
+              {'\"longueur\"': int.parse(_moduleSection2)}
             ]
           };
         } else {
           sections = {
-            'sections': [
-              {'longueur': int.parse(_moduleSection)}
+            '\"sections\"': [
+              {'\"longueur\"': int.parse(_moduleSection)}
             ]
           };
         }
@@ -301,15 +301,15 @@ class ProviderProjet with ChangeNotifier {
         Map<String, Object> sections;
         if (_moduleAngle.isNotEmpty) {
           sections = {
-            'sections': [
-              {'longueur': int.parse(_moduleSection)},
-              {'longueur': int.parse(_moduleSection2)}
+            '\"sections\"': [
+              {'\"longueur\"': int.parse(_moduleSection)},
+              {'\"longueur\"': int.parse(_moduleSection2)}
             ]
           };
         } else {
           sections = {
-            'sections': [
-              {'longueur': int.parse(_moduleSection)}
+            '\"sections\"': [
+              {'\"longueur\"': int.parse(_moduleSection)}
             ]
           };
         }
