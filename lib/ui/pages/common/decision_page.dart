@@ -16,8 +16,7 @@ class DecisionPage extends StatefulWidget {
 }
 
 class _DecisionPageState extends State<DecisionPage> {
-  bool hasToken;
-  var redirectTo;
+
   final log = Logger();
 
   @override
@@ -28,7 +27,8 @@ class _DecisionPageState extends State<DecisionPage> {
         if (s.hasError) {
           return FailureIcon();
         } else if (s.hasData) {
-          return SuccessIcon();
+          if(s.data==true) return SuccessIcon();
+          else return FailureIcon();
         } else {
           return PendingAction();
         }
@@ -37,6 +37,8 @@ class _DecisionPageState extends State<DecisionPage> {
   }
 
   Future<bool> _redirectUser(BuildContext context) async {
+    bool hasToken;
+    var redirectTo;
     try {
       UtilisateurData lastUserData = await Provider.of<ProviderSynchro>(context)
           .utilisateurDao
