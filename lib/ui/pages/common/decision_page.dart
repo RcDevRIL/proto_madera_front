@@ -3,7 +3,7 @@ import 'package:logger/logger.dart';
 import 'package:provider/provider.dart';
 import 'package:proto_madera_front/data/database/madera_database.dart';
 import 'package:proto_madera_front/data/providers/providers.dart'
-    show MaderaNav, ProviderSynchro;
+    show MaderaNav, ProviderBdd, ProviderSynchro;
 import 'package:proto_madera_front/ui/pages/pages.dart'
     show AuthenticationPage, HomePage;
 import 'package:proto_madera_front/ui/widgets/custom_widgets.dart'
@@ -46,6 +46,8 @@ class _DecisionPageState extends State<DecisionPage> {
       try {
         if (lastUserData.token != null) {
           await Provider.of<ProviderSynchro>(context).synchro();
+          await Provider.of<ProviderBdd>(context).initProjetData();
+          Provider.of<ProviderBdd>(context).initData();
           redirectTo = HomePage();
           hasToken = true;
         } else {
