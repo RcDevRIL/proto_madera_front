@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:logger/logger.dart';
 import 'package:proto_madera_front/data/models/projet_with_client.dart';
 import 'package:proto_madera_front/data/providers/provider_projet.dart';
 import 'package:proto_madera_front/data/providers/providers.dart'
@@ -25,6 +26,7 @@ class QuoteOverview extends StatefulWidget {
 }
 
 class _QuoteOverviewState extends State<QuoteOverview> {
+  final log = Logger();
   //added to prepare for scaling
   @override
   void initState() {
@@ -136,16 +138,16 @@ class _QuoteOverviewState extends State<QuoteOverview> {
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
                   border: Border.all(
-                      color: providerBdd.editProjetIndex != null
+                      color: providerBdd.editProjetID != null
                           ? cTheme.MaderaColors.maderaLightGreen
                           : Colors.grey,
                       width: 2),
-                  color: providerBdd.editProjetIndex != null
+                  color: providerBdd.editProjetID != null
                       ? cTheme.MaderaColors.maderaBlueGreen
                       : Colors.grey,
                 ),
                 child: IconButton(
-                  onPressed: providerBdd.editProjetIndex != null
+                  onPressed: providerBdd.editProjetID != null
                       ? () {
                           if (true /*TODO devisEtat <= 4 (accepté)*/) {
                             //TODO load infos projet
@@ -166,16 +168,16 @@ class _QuoteOverviewState extends State<QuoteOverview> {
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
                   border: Border.all(
-                      color: providerBdd.editProjetIndex != null
+                      color: providerBdd.editProjetID != null
                           ? cTheme.MaderaColors.maderaLightGreen
                           : Colors.grey,
                       width: 2),
-                  color: providerBdd.editProjetIndex != null
+                  color: providerBdd.editProjetID != null
                       ? cTheme.MaderaColors.maderaBlueGreen
                       : Colors.grey,
                 ),
                 child: IconButton(
-                  onPressed: providerBdd.editProjetIndex != null
+                  onPressed: providerBdd.editProjetID != null
                       ? () {
                           Provider.of<MaderaNav>(context)
                               .showNothingYouCanDoPopup(
@@ -198,11 +200,11 @@ class _QuoteOverviewState extends State<QuoteOverview> {
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
                   border: Border.all(
-                      color: providerBdd.editProjetIndex != null
+                      color: providerBdd.editProjetID != null
                           ? cTheme.MaderaColors.maderaLightGreen
                           : Colors.grey,
                       width: 2),
-                  color: providerBdd.editProjetIndex != null
+                  color: providerBdd.editProjetID != null
                       ? cTheme.MaderaColors.maderaBlueGreen
                       : Colors.grey,
                 ),
@@ -211,7 +213,7 @@ class _QuoteOverviewState extends State<QuoteOverview> {
                     Provider.of<MaderaNav>(context).showPopup(
                       context,
                       Icons.warning,
-                      'Suppression du projet ${providerBdd.editProjetIndex}',
+                      'Suppression du projet ${providerBdd.editProjetID}',
                       Text('Voulez-vous vraiment supprimé ce projet ?'),
                       [
                         MaderaButton(
@@ -249,23 +251,25 @@ class _QuoteOverviewState extends State<QuoteOverview> {
 }
 
 List<DataRow> _createRows(BuildContext context, AsyncSnapshot snapshot) {
+  var providerBdd = Provider.of<ProviderBdd>(context);
   return snapshot.data
       .map<DataRow>(
         (ProjetWithClient projetWithClient) => DataRow(
           onSelectChanged: (bool selected) {
             if (selected) {
               //TODO passer directement l'objet projetWithClient ?
-              if (Provider.of<ProviderBdd>(context).editProjetIndex ==
-                  projetWithClient.projet.refProjet) {
-                Provider.of<ProviderBdd>(context).loadProjetWithClient(null);
+              if (providerBdd.editProjetID ==
+                  projetWithClient.projet.projetId) {
+                providerBdd.clearProjetWithClient();
               } else {
-                Provider.of<ProviderBdd>(context)
-                    .loadProjetWithClient(projetWithClient);
+                providerBdd.loadProjetWithClient(projetWithClient);
               }
+            } else {
+              providerBdd.clearProjetWithClient();
             }
           },
-          selected: Provider.of<ProviderBdd>(context).editProjetIndex ==
-              projetWithClient.projet.refProjet,
+          selected:
+              providerBdd.editProjetID == projetWithClient.projet.projetId,
           cells: <DataCell>[
             DataCell(
               MaderaTableCell(

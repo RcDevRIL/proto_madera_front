@@ -44,7 +44,7 @@ class ProviderBdd with ChangeNotifier {
   List<String> listNatureModule;
   List<ModuleData> listModule;
 
-  String _editProjetIndex;
+  int _editProjetID;
   ProjetWithClient projetWithClient;
 
   ///
@@ -149,11 +149,17 @@ class ProviderBdd with ChangeNotifier {
     return this.listProjetWithClient;
   }
 
-  String get editProjetIndex => _editProjetIndex;
+  int get editProjetID => _editProjetID;
 
   void loadProjetWithClient(ProjetWithClient projetWithClient) {
     this.projetWithClient = projetWithClient;
-    _editProjetIndex = projetWithClient.projet.refProjet;
+    _editProjetID = projetWithClient.projet.projetId;
+    notifyListeners();
+  }
+
+  void clearProjetWithClient() {
+    this.projetWithClient = null;
+    _editProjetID = null;
     notifyListeners();
   }
 
