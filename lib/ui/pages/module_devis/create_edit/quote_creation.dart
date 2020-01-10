@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:logger/logger.dart';
 import 'package:proto_madera_front/data/database/madera_database.dart';
+import 'package:proto_madera_front/data/providers/provider_size.dart';
 import 'package:proto_madera_front/data/providers/providers.dart'
     show MaderaNav, ProviderBdd, ProviderProjet;
 import 'package:proto_madera_front/theme.dart' as cTheme;
@@ -48,6 +49,7 @@ class _QuoteCreationState extends State<QuoteCreation> {
   Widget build(BuildContext context) {
     var providerProjet = Provider.of<ProviderProjet>(context);
     var providerBdd = Provider.of<ProviderBdd>(context);
+    var providerSize = Provider.of<ProviderSize>(context);
     return MaderaScaffold(
       passedContext: context,
       child: Center(
@@ -71,10 +73,11 @@ class _QuoteCreationState extends State<QuoteCreation> {
                 shrinkWrap: true,
                 children: <Widget>[
                   Row(
+                    mainAxisSize: MainAxisSize.min,
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: <Widget>[
                       MaderaCard(
-                        cardWidth: cTheme.Dimens.cardSizeXSmall,
+                        cardWidth: providerSize.mediaWidth / 5,
                         cardHeight: cTheme.Dimens.cardHeight,
                         header: LabelledIcon(
                           icon: Icon(
@@ -94,8 +97,7 @@ class _QuoteCreationState extends State<QuoteCreation> {
                         ),
                       ),
                       MaderaCard(
-                        cardWidth:
-                            MediaQuery.of(context).size.width / 2.4 - 168.0,
+                        cardWidth: providerSize.mediaWidth / 5,
                         cardHeight: cTheme.Dimens.cardHeight,
                         child: TextField(
                           onChanged: (String newValue) {
@@ -138,10 +140,10 @@ class _QuoteCreationState extends State<QuoteCreation> {
                         ),
                       ),
                       SizedBox(
-                        width: 150.0,
+                        width: providerSize.mediaWidth / 5,
                       ),
                       MaderaCard(
-                        cardWidth: 250.0,
+                        cardWidth: providerSize.mediaWidth / 5,
                         cardHeight: cTheme.Dimens.cardHeight,
                         child: Center(
                           child: providerProjet.client != null
@@ -170,7 +172,7 @@ class _QuoteCreationState extends State<QuoteCreation> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: <Widget>[
                       MaderaCard(
-                        cardWidth: MediaQuery.of(context).size.width / 2.4,
+                        cardWidth: MediaQuery.of(context).size.width / 3,
                         cardHeight: cTheme.Dimens.cardHeightMedium,
                         header: Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 26.0),
@@ -400,7 +402,7 @@ class _QuoteCreationState extends State<QuoteCreation> {
       stackAdditions: <Widget>[
         Padding(
           padding: EdgeInsets.fromLTRB(
-              1200, MediaQuery.of(context).size.height / 6, 0, 0),
+              providerSize.mediaWidth * 0.94 ,providerSize.mediaHeight / 6, 0, 0),
           child: Column(
             children: <Widget>[
               Container(

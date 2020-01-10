@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:logger/logger.dart';
+import 'package:proto_madera_front/data/providers/provider_size.dart';
 import 'package:provider/provider.dart';
 import 'package:proto_madera_front/data/database/madera_database.dart';
 import 'package:proto_madera_front/data/providers/providers.dart'
@@ -16,19 +17,21 @@ class DecisionPage extends StatefulWidget {
 }
 
 class _DecisionPageState extends State<DecisionPage> {
-
   final log = Logger();
 
   @override
   Widget build(BuildContext context) {
+    Provider.of<ProviderSize>(context).setConfigurationSize(context);
     return FutureBuilder(
       future: _redirectUser(context),
       builder: (context, s) {
         if (s.hasError) {
           return FailureIcon();
         } else if (s.hasData) {
-          if(s.data==true) return SuccessIcon();
-          else return FailureIcon();
+          if (s.data == true)
+            return SuccessIcon();
+          else
+            return FailureIcon();
         } else {
           return PendingAction();
         }

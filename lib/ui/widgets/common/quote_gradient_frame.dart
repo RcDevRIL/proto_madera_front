@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:proto_madera_front/data/providers/provider_size.dart';
 
 import 'package:proto_madera_front/theme.dart' as cTheme;
+import 'package:provider/provider.dart';
 
 ///
 /// Custom widget that holds a container with a linear gradient
@@ -24,12 +26,12 @@ class _GradientFrameState extends State<GradientFrame> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: MediaQuery.of(context).size.width / 1.25,
-      height: MediaQuery.of(context).size.height / 1.3,
+      width: Provider.of<ProviderSize>(context).gradientFrameWidth,
+      height: Provider.of<ProviderSize>(context).mediaHeight / 1.3,
       constraints: BoxConstraints.tightForFinite(
         // Pas sur que ce soit utile...
-        width: MediaQuery.of(context).size.width / 1.25,
-        height: MediaQuery.of(context).size.height / 1.3,
+        width: Provider.of<ProviderSize>(context).gradientFrameWidth,
+        height: Provider.of<ProviderSize>(context).mediaHeight / 1.3,
       ),
       decoration: BoxDecoration(
           boxShadow: [

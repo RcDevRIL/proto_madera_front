@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:logger/logger.dart';
 import 'package:proto_madera_front/data/models/projet_with_client.dart';
 import 'package:proto_madera_front/data/providers/provider_projet.dart';
+import 'package:proto_madera_front/data/providers/provider_size.dart';
 import 'package:proto_madera_front/data/providers/providers.dart'
     show MaderaNav, ProviderBdd;
 import 'package:proto_madera_front/theme.dart' as cTheme;
@@ -69,7 +70,7 @@ class _QuoteOverviewState extends State<QuoteOverview> {
                 decoration: BoxDecoration(
                   border: Border.all(color: Colors.black),
                 ),
-                width: 2500,
+                width: Provider.of<ProviderSize>(context).tableOverviewWidth,
                 height: 665,
                 child: DataTable(
                   columnSpacing: 0,
@@ -82,7 +83,7 @@ class _QuoteOverviewState extends State<QuoteOverview> {
                         backgroundColor: cTheme.MaderaColors.appBarMainColor,
                         cellFontSize: 20,
                         height: 100,
-                        width: 250,
+                        width: Provider.of<ProviderSize>(context).tableOverviewWidth / 100 * 20,
                       ),
                     ),
                     DataColumn(
@@ -91,7 +92,7 @@ class _QuoteOverviewState extends State<QuoteOverview> {
                         backgroundColor: cTheme.MaderaColors.appBarMainColor,
                         cellFontSize: 20,
                         height: 100,
-                        width: 250,
+                        width: Provider.of<ProviderSize>(context).tableOverviewWidth / 100 * 20,
                       ),
                     ),
                     DataColumn(
@@ -100,7 +101,7 @@ class _QuoteOverviewState extends State<QuoteOverview> {
                         backgroundColor: cTheme.MaderaColors.appBarMainColor,
                         cellFontSize: 20,
                         height: 100,
-                        width: 250,
+                        width: Provider.of<ProviderSize>(context).tableOverviewWidth / 100 * 20,
                       ),
                     ),
                     DataColumn(
@@ -109,7 +110,7 @@ class _QuoteOverviewState extends State<QuoteOverview> {
                         backgroundColor: cTheme.MaderaColors.appBarMainColor,
                         cellFontSize: 20,
                         height: 100,
-                        width: 250,
+                        width: Provider.of<ProviderSize>(context).tableOverviewWidth / 100 * 20,
                       ),
                     ),
                   ],

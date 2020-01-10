@@ -7,6 +7,8 @@ import 'package:proto_madera_front/data/providers/providers.dart';
 import 'package:proto_madera_front/ui/pages/pages.dart';
 import 'package:proto_madera_front/theme.dart' as cTheme;
 
+import 'data/providers/provider_size.dart';
+
 ///
 /// Root of the application.
 /// - Providers Configuration
@@ -25,6 +27,9 @@ class MaderaApp extends StatelessWidget {
     //J'ai essayé d'enlever cette variable mais erreur sur les proxyProvider car j'essayais d'utiliser Provider.of(context)
     return MultiProvider(
         providers: [
+          ChangeNotifierProvider<ProviderSize>(
+            create: (c) => ProviderSize(),
+          ),
           ChangeNotifierProvider<MaderaNav>(
             create: (c) => MaderaNav(),
           ),
