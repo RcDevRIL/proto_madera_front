@@ -149,10 +149,9 @@ class ProviderBdd with ChangeNotifier {
     return this.listProjetWithClient;
   }
 
-
   String get editProjetIndex => _editProjetIndex;
 
-  void loadProjetEdit(ProjetWithClient projetWithClient) {
+  void loadProjetWithClient(ProjetWithClient projetWithClient) {
     this.projetWithClient = projetWithClient;
     _editProjetIndex = projetWithClient.projet.refProjet;
     notifyListeners();
@@ -214,7 +213,5 @@ class ProviderBdd with ChangeNotifier {
   }
 
   ///Méthode appelée lors de l'édition
-  Future loadProjetWithAllInfos() async {
-
-  }
+  Future loadProjetWithAllInfos() async {}
 }

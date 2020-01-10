@@ -6,7 +6,6 @@ import 'package:proto_madera_front/data/providers/providers.dart'
     show MaderaNav, ProviderBdd;
 import 'package:proto_madera_front/theme.dart' as cTheme;
 import 'package:proto_madera_front/ui/pages/module_devis/overview/product_list.dart';
-import 'package:proto_madera_front/ui/widgets/common/madera_dialog.dart';
 import 'package:proto_madera_front/ui/widgets/custom_widgets.dart'
     show MaderaScaffold, MaderaTableCell;
 import 'package:proto_madera_front/ui/widgets/madera_button.dart';
@@ -40,95 +39,92 @@ class _QuoteOverviewState extends State<QuoteOverview> {
 
   @override
   Widget build(BuildContext context) {
-    //TODO wrappp datatable dans un builder ?
     //final args = ModalRoute.of(context).settings.arguments;
     var providerProjet = Provider.of<ProviderProjet>(context);
     var providerBdd = Provider.of<ProviderBdd>(context);
     return MaderaScaffold(
       passedContext: context,
-      child: Consumer<MaderaNav>(
-        builder: (_, mN, c) => FutureBuilder(
-          future: Provider.of<ProviderBdd>(context).initProjetData(),
-          builder: (context, snapshot) {
-            if (snapshot.hasError) {
-              return Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: <Widget>[
-                  Text('Problème lors de la récupération des données'),
-                  Icon(
-                    Icons.error_outline,
-                    color: Colors.red,
-                    size: 60,
-                  ),
-                ],
-              );
-            } else if (snapshot.hasData) {
-              return SingleChildScrollView(
-                scrollDirection: Axis.vertical,
-                child: Container(
-                  decoration: BoxDecoration(
-                    border: Border.all(color: Colors.black),
-                  ),
-                  width: 2500,
-                  height: 665,
-                  child: DataTable(
-                    columnSpacing: 0,
-                    headingRowHeight: 100,
-                    dataRowHeight: 100,
-                    columns: [
-                      DataColumn(
-                        label: MaderaTableCell(
-                          textCell: 'Date de création',
-                          backgroundColor: cTheme.MaderaColors.appBarMainColor,
-                          cellFontSize: 20,
-                          height: 100,
-                          width: 250,
-                        ),
-                      ),
-                      DataColumn(
-                        label: MaderaTableCell(
-                          textCell: 'Ref.client',
-                          backgroundColor: cTheme.MaderaColors.appBarMainColor,
-                          cellFontSize: 20,
-                          height: 100,
-                          width: 250,
-                        ),
-                      ),
-                      DataColumn(
-                        label: MaderaTableCell(
-                          textCell: 'Ref. projet',
-                          backgroundColor: cTheme.MaderaColors.appBarMainColor,
-                          cellFontSize: 20,
-                          height: 100,
-                          width: 250,
-                        ),
-                      ),
-                      DataColumn(
-                        label: MaderaTableCell(
-                          textCell: 'Nom du projet',
-                          backgroundColor: cTheme.MaderaColors.appBarMainColor,
-                          cellFontSize: 20,
-                          height: 100,
-                          width: 250,
-                        ),
-                      ),
-                    ],
-                    rows: _createRows(context, snapshot),
-                  ),
+      child: FutureBuilder(
+        future: providerBdd.initProjetData(),
+        builder: (context, snapshot) {
+          if (snapshot.hasError) {
+            return Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: <Widget>[
+                Text('Problème lors de la récupération des données'),
+                Icon(
+                  Icons.error_outline,
+                  color: Colors.red,
+                  size: 60,
                 ),
-              );
-            } else {
-              return Center(
-                child: SizedBox(
-                  child: CircularProgressIndicator(),
-                  width: 60,
-                  height: 60,
+              ],
+            );
+          } else if (snapshot.hasData) {
+            return SingleChildScrollView(
+              scrollDirection: Axis.vertical,
+              child: Container(
+                decoration: BoxDecoration(
+                  border: Border.all(color: Colors.black),
                 ),
-              );
-            }
-          },
-        ),
+                width: 2500,
+                height: 665,
+                child: DataTable(
+                  columnSpacing: 0,
+                  headingRowHeight: 100,
+                  dataRowHeight: 100,
+                  columns: [
+                    DataColumn(
+                      label: MaderaTableCell(
+                        textCell: 'Date de création',
+                        backgroundColor: cTheme.MaderaColors.appBarMainColor,
+                        cellFontSize: 20,
+                        height: 100,
+                        width: 250,
+                      ),
+                    ),
+                    DataColumn(
+                      label: MaderaTableCell(
+                        textCell: 'Ref.client',
+                        backgroundColor: cTheme.MaderaColors.appBarMainColor,
+                        cellFontSize: 20,
+                        height: 100,
+                        width: 250,
+                      ),
+                    ),
+                    DataColumn(
+                      label: MaderaTableCell(
+                        textCell: 'Ref. projet',
+                        backgroundColor: cTheme.MaderaColors.appBarMainColor,
+                        cellFontSize: 20,
+                        height: 100,
+                        width: 250,
+                      ),
+                    ),
+                    DataColumn(
+                      label: MaderaTableCell(
+                        textCell: 'Nom du projet',
+                        backgroundColor: cTheme.MaderaColors.appBarMainColor,
+                        cellFontSize: 20,
+                        height: 100,
+                        width: 250,
+                      ),
+                    ),
+                  ],
+                  rows: _createRows(context, snapshot),
+                ),
+              ),
+            );
+          } else {
+            return Center(
+              child: SizedBox(
+                child: CircularProgressIndicator(),
+                width: 60,
+                height: 60,
+              ),
+            );
+          }
+        },
       ),
       stackAdditions: <Widget>[
         Padding(
@@ -149,14 +145,16 @@ class _QuoteOverviewState extends State<QuoteOverview> {
                       : Colors.grey,
                 ),
                 child: IconButton(
-                  onPressed: () {
-                    //TODO if(devisEtat <= 4 accepté)
-                    if (providerBdd.editProjetIndex != null) {
-                      //TODO load infos projet
-                      Provider.of<MaderaNav>(context)
-                          .redirectToPage(context, ProductList(), null);
-                    }
-                  },
+                  onPressed: providerBdd.editProjetIndex != null
+                      ? () {
+                          if (true /*TODO devisEtat <= 4 (accepté)*/) {
+                            //TODO load infos projet
+                            providerProjet.initAndHold();
+                            Provider.of<MaderaNav>(context)
+                                .redirectToPage(context, ProductList(), null);
+                          }
+                        }
+                      : null,
                   icon: Icon(
                     Icons.edit,
                     color: Colors.white,
@@ -177,19 +175,18 @@ class _QuoteOverviewState extends State<QuoteOverview> {
                       : Colors.grey,
                 ),
                 child: IconButton(
-                  onPressed: () {
-                    if (providerBdd.editProjetIndex != null) {
-                      String mailClient =
-                          providerBdd.projetWithClient.client.mail;
-                      Provider.of<MaderaNav>(context).showNothingYouCanDoPopup(
-                        context,
-                        Icons.send,
-                        'Envoi de mail',
-                        'Un mail a été envoyé à l\'adresse suivante : $mailClient',
-                        null,
-                      );
-                    }
-                  },
+                  onPressed: providerBdd.editProjetIndex != null
+                      ? () {
+                          Provider.of<MaderaNav>(context)
+                              .showNothingYouCanDoPopup(
+                            context,
+                            Icons.send,
+                            'Envoi de mail',
+                            'Un mail a été envoyé à l\'adresse suivante : ${providerBdd.projetWithClient.client.mail}',
+                            null,
+                          );
+                        }
+                      : null,
                   icon: Icon(
                     Icons.send,
                     color: Colors.white,
@@ -211,12 +208,11 @@ class _QuoteOverviewState extends State<QuoteOverview> {
                 ),
                 child: IconButton(
                   onPressed: () {
-                    showPopup(
+                    Provider.of<MaderaNav>(context).showPopup(
                       context,
-                      Icons.delete,
+                      Icons.warning,
                       'Suppression du projet ${providerBdd.editProjetIndex}',
                       Text('Voulez-vous vraiment supprimé ce projet ?'),
-                      Colors.red,
                       [
                         MaderaButton(
                           key: Key('ok-button'),
@@ -250,22 +246,6 @@ class _QuoteOverviewState extends State<QuoteOverview> {
       ],
     );
   }
-
-  void showPopup(BuildContext context, IconData icon, String title, Widget body,
-      Color color, List<Widget> actions) {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return MaderaDialog(
-          titleAndIconColor: color,
-          title: title,
-          icon: icon,
-          body: body,
-          actions: actions,
-        );
-      },
-    );
-  }
 }
 
 List<DataRow> _createRows(BuildContext context, AsyncSnapshot snapshot) {
@@ -277,10 +257,10 @@ List<DataRow> _createRows(BuildContext context, AsyncSnapshot snapshot) {
               //TODO passer directement l'objet projetWithClient ?
               if (Provider.of<ProviderBdd>(context).editProjetIndex ==
                   projetWithClient.projet.refProjet) {
-                Provider.of<ProviderBdd>(context).loadProjetEdit(null);
+                Provider.of<ProviderBdd>(context).loadProjetWithClient(null);
               } else {
                 Provider.of<ProviderBdd>(context)
-                    .loadProjetEdit(projetWithClient);
+                    .loadProjetWithClient(projetWithClient);
               }
             }
           },

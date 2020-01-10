@@ -297,8 +297,7 @@ class _AddModuleState extends State<AddModule> {
                   onPressed: () {
                     log.d('Canceling Module...');
                     try {
-                      providerProjet.produitModules
-                          .removeAt(providerProjet.editModuleIndex);
+                      providerProjet.deleteModule();
                       Provider.of<MaderaNav>(context)
                           .redirectToPage(context, ProductCreation(), null);
                     } catch (e) {

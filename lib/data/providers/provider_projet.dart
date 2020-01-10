@@ -463,4 +463,9 @@ class ProviderProjet with ChangeNotifier {
     }
     notifyListeners();
   }
+
+  void deleteModule() {
+    _listProduitModuleProjet.removeAt(_editModuleIndex);
+    notifyListeners();
+  }
 }

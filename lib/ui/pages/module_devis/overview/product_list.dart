@@ -190,7 +190,7 @@ class _ProductListState extends State<ProductList> {
                         context,
                         Icons.warning,
                         'Abandon du projet',
-                        'Le projet en cours de création va être supprimé.',
+                        'Les données en cours de création vont être perdues.',
                         HomePage());
                     providerProjet.validate(false);
                   },
