@@ -1,4 +1,3 @@
-import 'package:logger/logger.dart';
 import 'package:moor_flutter/moor_flutter.dart';
 import 'package:proto_madera_front/data/database/madera_database.dart';
 import 'package:proto_madera_front/data/database/tables/utilisateur.dart';

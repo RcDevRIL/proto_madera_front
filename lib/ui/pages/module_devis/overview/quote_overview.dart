@@ -152,6 +152,7 @@ class _QuoteOverviewState extends State<QuoteOverview> {
                           if (true /*TODO devisEtat <= 4 (accepté)*/) {
                             //TODO load infos projet
                             providerProjet.initAndHold();
+                            providerProjet.initProjet();
                             Provider.of<MaderaNav>(context)
                                 .redirectToPage(context, ProductList(), null);
                           }
