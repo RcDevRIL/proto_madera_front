@@ -28,7 +28,6 @@ class ProviderSize with ChangeNotifier {
     _quoteMaderaCardHightHeight = (_sizeMedia.elementAt(1) - 100) / 100 * 50;
     _addModuleMaderaCardWidth = _gradientFrameWidth / 100 * 25;
     _productListBlankWidth = _gradientFrameWidth / 100 * 10;
-    notifyListeners();
   }
 
   double get gradientFrameWidth => _gradientFrameWidth;

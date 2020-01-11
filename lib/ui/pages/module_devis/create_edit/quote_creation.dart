@@ -41,11 +41,6 @@ class _QuoteCreationState extends State<QuoteCreation> {
   }
 
   @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-  }
-
-  @override
   Widget build(BuildContext context) {
     var providerProjet = Provider.of<ProviderProjet>(context);
     var providerBdd = Provider.of<ProviderBdd>(context);
@@ -401,8 +396,8 @@ class _QuoteCreationState extends State<QuoteCreation> {
       ),
       stackAdditions: <Widget>[
         Padding(
-          padding: EdgeInsets.fromLTRB(
-              providerSize.mediaWidth * 0.94 ,providerSize.mediaHeight / 6, 0, 0),
+          padding: EdgeInsets.fromLTRB(providerSize.mediaWidth * 0.94,
+              providerSize.mediaHeight / 6, 0, 0),
           child: Column(
             children: <Widget>[
               Container(
@@ -500,7 +495,6 @@ class _QuoteCreationState extends State<QuoteCreation> {
                                     }
                                 });
                             Navigator.of(context).pop();
-                            didChangeDependencies();
                           },
                           items: providerBdd.listClient
                               .map<DropdownMenuItem<String>>(

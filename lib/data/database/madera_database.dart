@@ -35,7 +35,7 @@ class MaderaDatabase extends _$MaderaDatabase {
         );
   //Si modification du schéma alors le schemaVersion prend +1
   @override
-  int get schemaVersion => 14;
+  int get schemaVersion => 15;
 
   @override
   MigrationStrategy get migration => MigrationStrategy(onCreate: (Migrator m) {

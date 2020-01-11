@@ -167,7 +167,6 @@ class ProviderBdd with ChangeNotifier {
     await initGammes();
     await initListNatureModule();
     await initClient();
-    notifyListeners();
   }
 
   Future initClient() async {
