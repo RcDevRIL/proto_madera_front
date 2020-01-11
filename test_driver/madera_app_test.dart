@@ -123,6 +123,10 @@ void main() {
         await driver.tap(logoutButton);
         await Future.delayed(Duration(seconds: 3));
         assert(authPage != null);
+
+        await driver.waitUntilNoTransientCallbacks();
+
+        assert(homePage == null);
       } catch (e) {
         log.e("Can't expand drawer... \n $e");
         assert(false);
