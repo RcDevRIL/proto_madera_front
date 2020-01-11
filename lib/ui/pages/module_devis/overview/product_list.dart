@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:logger/logger.dart';
 import 'package:proto_madera_front/data/database/madera_database.dart';
 import 'package:proto_madera_front/data/providers/provider_login.dart';
+import 'package:proto_madera_front/data/providers/provider_size.dart';
 import 'package:provider/provider.dart';
 
 import 'package:proto_madera_front/ui/widgets/custom_widgets.dart';
@@ -42,6 +43,7 @@ class _ProductListState extends State<ProductList> {
   Widget build(BuildContext context) {
     var providerProjet = Provider.of<ProviderProjet>(context);
     var providerBdd = Provider.of<ProviderBdd>(context);
+    var providerSize = Provider.of<ProviderSize>(context);
     return MaderaScaffold(
       passedContext: context,
       child: Center(
@@ -61,7 +63,7 @@ class _ProductListState extends State<ProductList> {
                   ListView.separated(
                     shrinkWrap: true,
                     padding: EdgeInsets.symmetric(
-                      horizontal: MediaQuery.of(context).size.width / 7.3,
+                      horizontal: providerSize.productListBlankWidth,
                       vertical: 10.0,
                     ),
                     itemCount: providerProjet.listProduitProjet.length,
@@ -73,7 +75,7 @@ class _ProductListState extends State<ProductList> {
                   ),
                   Padding(
                     padding: EdgeInsets.symmetric(
-                      horizontal: MediaQuery.of(context).size.width / 7.3,
+                      horizontal: providerSize.productListBlankWidth,
                     ),
                     child: MaderaRoundedBox(
                       color: Colors.grey,
@@ -130,7 +132,7 @@ class _ProductListState extends State<ProductList> {
       stackAdditions: <Widget>[
         Padding(
           padding: EdgeInsets.fromLTRB(
-              1200, MediaQuery.of(context).size.height / 6, 0, 0),
+              providerSize.floatingButtonWidth, providerSize.mediaHeight / 6, 0, 0),
           child: Column(
             children: <Widget>[
               Container(

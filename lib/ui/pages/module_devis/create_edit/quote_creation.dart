@@ -77,8 +77,8 @@ class _QuoteCreationState extends State<QuoteCreation> {
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: <Widget>[
                       MaderaCard(
-                        cardWidth: providerSize.mediaWidth / 5,
-                        cardHeight: cTheme.Dimens.cardHeight,
+                        cardWidth: providerSize.quoteMaderaCardSmallWidth,
+                        cardHeight: providerSize.quoteMaderaCardSmallHeight,
                         header: LabelledIcon(
                           icon: Icon(
                             Icons.calendar_today,
@@ -97,8 +97,8 @@ class _QuoteCreationState extends State<QuoteCreation> {
                         ),
                       ),
                       MaderaCard(
-                        cardWidth: providerSize.mediaWidth / 5,
-                        cardHeight: cTheme.Dimens.cardHeight,
+                        cardWidth: providerSize.quoteMaderaCardMediumWidth,
+                        cardHeight: providerSize.quoteMaderaCardSmallHeight,
                         child: TextField(
                           onChanged: (String newValue) {
                             providerProjet.projetNom = newValue;
@@ -140,11 +140,11 @@ class _QuoteCreationState extends State<QuoteCreation> {
                         ),
                       ),
                       SizedBox(
-                        width: providerSize.mediaWidth / 5,
+                        width: providerSize.quoteMaderaCardSmallWidth,
                       ),
                       MaderaCard(
-                        cardWidth: providerSize.mediaWidth / 5,
-                        cardHeight: cTheme.Dimens.cardHeight,
+                        cardWidth: providerSize.quoteMaderaCardSmallWidth,
+                        cardHeight: providerSize.quoteMaderaCardSmallHeight,
                         child: Center(
                           child: providerProjet.client != null
                               ? Text(
@@ -172,8 +172,8 @@ class _QuoteCreationState extends State<QuoteCreation> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: <Widget>[
                       MaderaCard(
-                        cardWidth: MediaQuery.of(context).size.width / 3,
-                        cardHeight: cTheme.Dimens.cardHeightMedium,
+                        cardWidth: providerSize.quoteMaderaCardMediumWidth,
+                        cardHeight: providerSize.quoteMaderaCardMediumHeight,
                         header: Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 26.0),
                           child: Text(
@@ -269,8 +269,8 @@ class _QuoteCreationState extends State<QuoteCreation> {
                         ),
                       ),
                       MaderaCard(
-                        cardWidth: MediaQuery.of(context).size.width / 3,
-                        cardHeight: cTheme.Dimens.cardHeightMedium,
+                        cardWidth: providerSize.quoteMaderaCardMediumWidth,
+                        cardHeight: providerSize.quoteMaderaCardMediumHeight,
                         header: Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 26.0),
                           child: Text(
@@ -356,7 +356,7 @@ class _QuoteCreationState extends State<QuoteCreation> {
                     ],
                   ),
                   MaderaCard(
-                    cardHeight: cTheme.Dimens.cardHeightLarge,
+                    cardHeight: providerSize.quoteMaderaCardHightHeight,
                     child: TextField(
                       onTap: () => _formScrollController.jumpTo(
                           _formScrollController.position.maxScrollExtent),

@@ -163,7 +163,7 @@ class ProviderBdd with ChangeNotifier {
     notifyListeners();
   }
 
-  void initData() async {
+  Future initData() async {
     await initGammes();
     await initListNatureModule();
     await initClient();

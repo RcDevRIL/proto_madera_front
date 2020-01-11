@@ -3,18 +3,45 @@ import 'package:flutter/material.dart';
 class ProviderSize with ChangeNotifier {
   List<double> _sizeMedia = new List();
   double _gradientFrameWidth;
-  double _quoteMaderaCardWidth;
+  double _floatingButtonWidth;
+  double _quoteMaderaCardSmallWidth;
+  double _quoteMaderaCardMediumWidth;
+  double _quoteMaderaCardHightWidth;
+  double _quoteMaderaCardSmallHeight;
+  double _quoteMaderaCardMediumHeight;
+  double _quoteMaderaCardHightHeight;
   double _overviewTableWidth;
+  double _addModuleMaderaCardWidth;
+  double _productListBlankWidth;
 
   void setConfigurationSize(BuildContext context) {
     _sizeMedia.add(MediaQuery.of(context).size.width);
     _sizeMedia.add(MediaQuery.of(context).size.height);
     _gradientFrameWidth = _sizeMedia.elementAt(0) - 200;
-    _overviewTableWidth = _sizeMedia.elementAt(0) / 100 * 80;
+    _floatingButtonWidth = _sizeMedia.elementAt(0) - 50;
+    _overviewTableWidth = (_sizeMedia.elementAt(0) - 35) / 100 * 80;
+    _quoteMaderaCardSmallWidth = _gradientFrameWidth / 100 * 15;
+    _quoteMaderaCardMediumWidth = _gradientFrameWidth / 100 * 40;
+    _quoteMaderaCardHightWidth = _gradientFrameWidth / 100 * 50;
+    _quoteMaderaCardSmallHeight = (_sizeMedia.elementAt(1) - 100) / 100 * 10;
+    _quoteMaderaCardMediumHeight = (_sizeMedia.elementAt(1) - 100) / 100 * 30;
+    _quoteMaderaCardHightHeight = (_sizeMedia.elementAt(1) - 100) / 100 * 50;
+    _addModuleMaderaCardWidth = _gradientFrameWidth / 100 * 25;
+    _productListBlankWidth = _gradientFrameWidth / 100 * 10;
+    notifyListeners();
   }
 
   double get gradientFrameWidth => _gradientFrameWidth;
+  double get floatingButtonWidth => _floatingButtonWidth;
   double get tableOverviewWidth => _overviewTableWidth;
+  double get quoteMaderaCardSmallWidth => _quoteMaderaCardSmallWidth;
+  double get quoteMaderaCardMediumWidth => _quoteMaderaCardMediumWidth;
+  double get quoteMaderaCardHightWidth => _quoteMaderaCardHightWidth;
+  double get quoteMaderaCardSmallHeight => _quoteMaderaCardSmallHeight;
+  double get quoteMaderaCardMediumHeight => _quoteMaderaCardMediumHeight;
+  double get quoteMaderaCardHightHeight => _quoteMaderaCardHightHeight;
+  double get productListBlankWidth => _productListBlankWidth;
+  double get addModuleMaderaCardWidth => _addModuleMaderaCardWidth;
   double get mediaWidth => _sizeMedia.elementAt(0);
   double get mediaHeight => _sizeMedia.elementAt(1);
 }

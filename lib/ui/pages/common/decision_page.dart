@@ -50,7 +50,7 @@ class _DecisionPageState extends State<DecisionPage> {
         if (lastUserData.token != null) {
           await Provider.of<ProviderSynchro>(context).synchro();
           await Provider.of<ProviderBdd>(context).initProjetData();
-          Provider.of<ProviderBdd>(context).initData();
+          await Provider.of<ProviderBdd>(context).initData();
           redirectTo = HomePage();
           hasToken = true;
         } else {
