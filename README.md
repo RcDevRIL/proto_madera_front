@@ -37,7 +37,12 @@ If you went through all the steps on [flutter.dev][Flutter "get started"] you sh
 
 ## Run app on device
 
-To enable easy database interactions, we chose [moor_flutter]. This package use the flutter code generator ([build_runner]) engine to reduce boilerplate for developers. So at this point, you should have 100+ errors on the opened git repository. You need to run the proper command to generate missing code:
+Before all, make sure to get app packages in order to launch the app properly. To do so, you must run these commands:
+
+* `flutter pub upgrade`
+* `flutter pub get`
+
+Then, to enable easy database interactions, we chose [moor_flutter]. This package use the flutter code generator ([build_runner]) engine to reduce boilerplate for developers. So at this point, you should have 100+ errors on the opened git repository. You need to run the proper command to generate missing code:
 
 * `flutter packages pub run build_runner build`
 
