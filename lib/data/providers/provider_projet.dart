@@ -327,16 +327,19 @@ class ProviderProjet with ChangeNotifier {
   }
 
   ///Ajoute les produitsModules chargés a la liste des produitsModules du _projet
-  void initListProduitModuleProjet(List<ProduitModuleData> listProduitModule) {
-    if (listProduitModule != null) {
+  bool initListProduitModuleProjet(List<ProduitModuleData> listProduitModule) {
+    try {
       listProduitModule.forEach(
         (produitModule) => {
           _listProduitModuleProjet.add(produitModule),
         },
       );
       notifyListeners();
-    } else
-      log.e('Error in initListProduitModuleProjet()!');
+      return true;
+    } catch (e) {
+      log.e('Error in initListProduitModuleProjet() : \n $e');
+      return false;
+    }
   }
 
   void updateListProduitModuleProjet() {
