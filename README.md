@@ -1,4 +1,4 @@
-# proto_madera_front - README V1.5.0
+# proto_madera_front - README V1.5.1
 __Build status by branch__
 * __master :__ [![M_Codemagic build status][]][M_latest_build]
 * __int :__ [![I_Codemagic build status][]][I_latest_build]
@@ -130,4 +130,4 @@ This project is licensed under the GNU GENERAL PUBLIC LICENSE - see the [LICENSE
 [contributors]: https://github.com/RcDevRIL/proto_madera_front/contributors
 [LICENSE.md]: https://github.com/RcDevRIL/proto_madera_front/blob/master/LICENSE
 [SQLite]: https://www.sqlite.org
-[doc_website]: http://vps756227.ovh.net/doc_front/index.html
+[doc_website]: http://vps756227.ovh.net/
