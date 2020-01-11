@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:logger/logger.dart';
-import 'package:proto_madera_front/data/providers/provider_size.dart';
 import 'package:provider/provider.dart';
 import 'package:proto_madera_front/data/database/madera_database.dart';
 import 'package:proto_madera_front/data/providers/providers.dart'
-    show MaderaNav, ProviderBdd, ProviderSynchro;
+    show MaderaNav, ProviderBdd, ProviderSize, ProviderSynchro;
 import 'package:proto_madera_front/ui/pages/pages.dart'
     show AuthenticationPage, HomePage;
 import 'package:proto_madera_front/ui/widgets/custom_widgets.dart'
@@ -26,13 +25,22 @@ class _DecisionPageState extends State<DecisionPage> {
       future: _redirectUser(context),
       builder: (context, s) {
         if (s.hasError) {
+          Provider.of<MaderaNav>(context)
+              .redirectToPage(context, AuthenticationPage(), null);
           return FailureIcon();
         } else if (s.hasData) {
-          if (s.data == true)
+          if (s.data == true) {
+            Provider.of<MaderaNav>(context)
+                .redirectToPage(context, HomePage(), null);
             return SuccessIcon();
-          else
+          } else {
+            Provider.of<MaderaNav>(context)
+                .redirectToPage(context, AuthenticationPage(), null);
             return FailureIcon();
+          }
         } else {
+          Provider.of<MaderaNav>(context)
+              .redirectToPage(context, AuthenticationPage(), null);
           return PendingAction();
         }
       },
@@ -41,7 +49,6 @@ class _DecisionPageState extends State<DecisionPage> {
 
   Future<bool> _redirectUser(BuildContext context) async {
     bool hasToken;
-    var redirectTo;
     try {
       UtilisateurData lastUserData = await Provider.of<ProviderSynchro>(context)
           .utilisateurDao
@@ -51,24 +58,19 @@ class _DecisionPageState extends State<DecisionPage> {
           await Provider.of<ProviderSynchro>(context).synchro();
           await Provider.of<ProviderBdd>(context).initProjetData();
           Provider.of<ProviderBdd>(context).initData();
-          redirectTo = HomePage();
           hasToken = true;
         } else {
           log.e('Aucun token trouvé...');
-          redirectTo = AuthenticationPage();
           hasToken = false;
         }
       } catch (e) {
         hasToken = false;
-        redirectTo = AuthenticationPage();
         log.e('lastUserData error (token=null?):\n$e');
       }
     } catch (e) {
       hasToken = false;
-      redirectTo = AuthenticationPage();
       log.e('getUser error (db=null?):\n$e');
     }
-    Provider.of<MaderaNav>(context).redirectToPage(context, redirectTo, null);
     return hasToken;
   }
 }
