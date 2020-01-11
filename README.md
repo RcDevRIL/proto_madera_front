@@ -130,4 +130,4 @@ This project is licensed under the GNU GENERAL PUBLIC LICENSE - see the [LICENSE
 [contributors]: https://github.com/RcDevRIL/proto_madera_front/contributors
 [LICENSE.md]: https://github.com/RcDevRIL/proto_madera_front/blob/master/LICENSE
 [SQLite]: https://www.sqlite.org
-[doc_website]: https://cesi-madera.fr/madera
+[doc_website]: http://vps756227.ovh.net/doc_front/index.html
