@@ -1,4 +1,4 @@
-# proto_madera_front - README V1.5.1
+# proto_madera_front - README V1.6.0
 __Build status by branch__
 * __master :__ [![M_Codemagic build status][]][M_latest_build]
 * __int :__ [![I_Codemagic build status][]][I_latest_build]
@@ -53,16 +53,26 @@ This will install the app on the connected device and run it.
 
 _If you have a real device, just plug it to the computer using your USB cable. The Flutter plugin should notice the device and will automatically add it on the list._
 
-## Run tests
+## Run Unit Tests
 
 _This paragraph explain how to trigger tests written in the **[test]** folder of this repository._
 
-To start tests, execute this command:
+To start unit tests, execute this command:
 
 * `flutter test`
 
 This will trigger the execution of tests. Results will be printed on your console in the end.
-You may also use your IDE integrated test report tool. Depending on the IDE, you should see the results pretty easily. 
+You may also use your IDE integrated test report tool. Depending on the IDE, you should see the results pretty easily.
+
+## Run Integration Tests
+
+_This paragraph explain how to trigger tests written in the **[test_driver]** folder of this repository._
+
+To start automated integration tests, make sure you have a connected Android device and execute this command:
+
+* `flutter drive --target=test_driver/madera_app.dart`
+
+This will trigger the execution of the automated integration tests. It will launche the app on debug mode and execute implemented actions. This tool is great to enable stable integration of new releases :rocket:
 
 ## Built With
 
@@ -111,6 +121,7 @@ This project is licensed under the GNU GENERAL PUBLIC LICENSE - see the [LICENSE
 [Flutter "get started"]: https://flutter.dev/get-started/
 [Github root]: https://github.com/RcDevRIL/proto_madera_front/
 [test]: https://github.com/RcDevRIL/proto_madera_front/tree/master/test
+[test_driver]: https://github.com/RcDevRIL/proto_madera_front/tree/master/test_driver
 [Flutter]: https://github.com/flutter/flutter/
 [provider]: https://pub.dev/packages/provider
 [rxdart]: https://pub.dev/packages/rxdart
