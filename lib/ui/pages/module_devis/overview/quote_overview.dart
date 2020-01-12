@@ -49,7 +49,7 @@ class _QuoteOverviewState extends State<QuoteOverview> {
     return MaderaScaffold(
       passedContext: context,
       child: FutureBuilder(
-        future: providerBdd.initProjetData(),
+        future: providerBdd.listProjetWithClient,
         builder: (context, snapshot) {
           if (snapshot.hasError) {
             return Column(
@@ -72,7 +72,7 @@ class _QuoteOverviewState extends State<QuoteOverview> {
                   border: Border.all(color: Colors.black),
                 ),
                 width: Provider.of<ProviderSize>(context).tableOverviewWidth,
-                height: 100,
+                height: Provider.of<ProviderSize>(context).tableOverviewHeight,
                 child: DataTable(
                   horizontalMargin: 0,
                   columnSpacing: 0,

@@ -33,12 +33,11 @@ class ProjetDao extends DatabaseAccessor<MaderaDatabase> with _$ProjetDaoMixin {
     )
         .get()
         .then(
-          (rows) => rows.map(
-            (row) {
-              ProjetWithClient.fromData(row.data, db);
-              log.d('CustomQuery:  '+row.data.toString());
-            },
-          ).toList(),
+          (rows) => rows
+              .map(
+                (row) => ProjetWithClient.fromData(row.data, db),
+              )
+              .toList(),
         )
         .catchError((error) => print(error));
   }

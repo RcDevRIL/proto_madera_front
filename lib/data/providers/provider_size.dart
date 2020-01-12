@@ -11,6 +11,7 @@ class ProviderSize with ChangeNotifier {
   double _quoteMaderaCardMediumHeight;
   double _quoteMaderaCardHightHeight;
   double _overviewTableWidth;
+  double _overviewTableHeight;
   double _addModuleMaderaCardWidth;
   double _productListBlankWidth;
 
@@ -20,6 +21,7 @@ class ProviderSize with ChangeNotifier {
     _gradientFrameWidth = _sizeMedia.elementAt(0) - 200;
     _floatingButtonWidth = _sizeMedia.elementAt(0) - 50;
     _overviewTableWidth = (_sizeMedia.elementAt(0) - 35) / 100 * 80;
+    _overviewTableHeight = _sizeMedia.elementAt(1) / 100 * 80;
     _quoteMaderaCardSmallWidth = _gradientFrameWidth / 100 * 15;
     _quoteMaderaCardMediumWidth = _gradientFrameWidth / 100 * 40;
     _quoteMaderaCardHightWidth = _gradientFrameWidth / 100 * 50;
@@ -33,6 +35,7 @@ class ProviderSize with ChangeNotifier {
   double get gradientFrameWidth => _gradientFrameWidth;
   double get floatingButtonWidth => _floatingButtonWidth;
   double get tableOverviewWidth => _overviewTableWidth;
+  double get tableOverviewHeight=> _overviewTableHeight;
   double get quoteMaderaCardSmallWidth => _quoteMaderaCardSmallWidth;
   double get quoteMaderaCardMediumWidth => _quoteMaderaCardMediumWidth;
   double get quoteMaderaCardHightWidth => _quoteMaderaCardHightWidth;
