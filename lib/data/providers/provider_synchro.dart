@@ -115,7 +115,6 @@ class ProviderSynchro with ChangeNotifier {
   Future<void> synchro() async {
     // r d
     // 1 ?
-    if (http.runtimeType != MockClient) await deleteForSynchro();
     if (_refSynced) {
       // 1 1
       if (_dataSynced)
@@ -124,6 +123,7 @@ class ProviderSynchro with ChangeNotifier {
       else {
         log.i(
             'Synchronisation des référentiels déjà effectuée le ${refsLastSyncDate.toString().substring(0, 10)}!');
+        if (http.runtimeType != MockClient) await deleteForSynchro();
         _dataSynced = await synchroData();
         log.i('Synchronisation globale effectuée');
       }
@@ -134,12 +134,14 @@ class ProviderSynchro with ChangeNotifier {
       if (_dataSynced) {
         log.i(
             'Synchronisation des données déjà effectuée le ${dataLastSyncDate.toString().substring(0, 10)}!');
+        if (http.runtimeType != MockClient) await deleteForSynchro();
         _refSynced = await synchroReferentiel();
         log.i('Synchronisation globale effectuée');
       }
       // 0 0
       else {
         log.i('Synchronisation lancée...');
+        if (http.runtimeType != MockClient) await deleteForSynchro();
         _refSynced = await synchroReferentiel();
         _dataSynced = await synchroData();
         log.i('Synchronisation globale effectuée');
@@ -226,6 +228,8 @@ class ProviderSynchro with ChangeNotifier {
         )
         .map((i) => ProjetData.fromJson(i))
         .toList();
+
+    listProjet.forEach((p) => debugPrint(p.toString()));
 
     await clientDao.insertAll(listClient);
     await clientAdresseDao.insertAll(listClientAdresse);
@@ -330,19 +334,43 @@ class ProviderSynchro with ChangeNotifier {
 
   ///Méthode qui va purger la base de données sans effacer les projets non synchronisés
   Future deleteForSynchro() async {
-    await composantDao.deleteAll();
-    await gammeDao.deleteAll();
-    await moduleDao.deleteAll();
-    await moduleComposantDao.deleteAll();
-    await devisEtatDao.deleteAll();
-    await composantGroupeDao.deleteAll();
-    await clientDao.deleteAll();
-    await clientAdresseDao.deleteAll();
-    await adresseDao.deleteAll();
-    await projetDao.deleteAll();
-    await produitDao.deleteAll();
-    await produitModuleDao.deleteAll();
-    await projetProduitsDao.deleteAll();
+    if (_refSynced) {
+      log.d('delete user data');
+      //on veut seulement delete les données user
+      await clientDao.deleteAll();
+      await clientAdresseDao.deleteAll();
+      await adresseDao.deleteAll();
+      await projetDao.deleteAll();
+      await produitDao.deleteAll();
+      await produitModuleDao.deleteAll();
+      await projetProduitsDao.deleteAll();
+    } else if (_dataSynced) {
+      log.d('delete referentiels');
+      //on veut seulement delete les référentiels
+      await composantDao.deleteAll();
+      await gammeDao.deleteAll();
+      await moduleDao.deleteAll();
+      await moduleComposantDao.deleteAll();
+      await devisEtatDao.deleteAll();
+      await composantGroupeDao.deleteAll();
+      await produitModuleDao.deleteAll();
+      await produitDao.deleteAll();
+    } else {
+      log.d('delete all');
+      await composantDao.deleteAll();
+      await gammeDao.deleteAll();
+      await moduleDao.deleteAll();
+      await moduleComposantDao.deleteAll();
+      await devisEtatDao.deleteAll();
+      await composantGroupeDao.deleteAll();
+      await clientDao.deleteAll();
+      await clientAdresseDao.deleteAll();
+      await adresseDao.deleteAll();
+      await projetDao.deleteAll();
+      await produitDao.deleteAll();
+      await produitModuleDao.deleteAll();
+      await projetProduitsDao.deleteAll();
+    }
   }
 
   ///Appel serveur pour créer le projet
