@@ -1,7 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:proto_madera_front/data/database/madera_database.dart';
+import 'package:proto_madera_front/data/providers/providers.dart';
 
 import 'package:proto_madera_front/ui/widgets/custom_widgets.dart'
-    show MaderaScaffold;
+    show FailureIcon, MaderaScaffold, PendingAction;
+import 'package:proto_madera_front/ui/widgets/common/quote_gradient_frame.dart';
+import 'package:provider/provider.dart';
+import 'package:proto_madera_front/theme.dart' as cTheme;
 
 ///
 /// Profile user page
@@ -36,7 +41,36 @@ class _UserProfilePageState extends State<UserProfilePage> {
     //final args = ModalRoute.of(context).settings.arguments;
     return MaderaScaffold(
       passedContext: context,
-      child: Text('$_userName'),
+      child: Center(
+        /** Centre de la page */
+        child: GradientFrame(
+          child: FutureBuilder(
+            future:
+                Provider.of<ProviderBdd>(context).utilisateurDao.getLastUser(),
+            builder: (c, s) {
+              if (s.hasError)
+                return FailureIcon();
+              else if (s.hasData) {
+                UtilisateurData user = s.data;
+                return Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: <Widget>[
+                    CircleAvatar(
+                      radius: 80.0,
+                      backgroundColor: cTheme.MaderaColors.maderaBlueGreen,
+                      foregroundColor: cTheme.MaderaColors.maderaAccentGreen,
+                      child: Text('${user.login}'),
+                    ),
+                    Text('${user.toString()}'),
+                  ],
+                );
+              } else {
+                return PendingAction();
+              }
+            },
+          ),
+        ),
+      ),
     );
   }
 }
