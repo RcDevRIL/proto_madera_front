@@ -334,7 +334,7 @@ class ProviderSynchro with ChangeNotifier {
 
   ///Méthode qui va purger la base de données sans effacer les projets non synchronisés
   Future deleteForSynchro() async {
-    if (_refSynced) {
+    if (!_dataSynced && _refSynced) {
       log.d('delete user data');
       //on veut seulement delete les données user
       await clientDao.deleteAll();
@@ -344,7 +344,7 @@ class ProviderSynchro with ChangeNotifier {
       await produitDao.deleteAll();
       await produitModuleDao.deleteAll();
       await projetProduitsDao.deleteAll();
-    } else if (_dataSynced) {
+    } else if (!_refSynced && _dataSynced) {
       log.d('delete referentiels');
       //on veut seulement delete les référentiels
       await composantDao.deleteAll();
