@@ -1,4 +1,4 @@
-# proto_madera_front - README V1.6.0
+# proto_madera_front - README V1.7.0
 __Build status by branch__
 * __master :__ [![M_Codemagic build status][]][M_latest_build]
 * __int :__ [![I_Codemagic build status][]][I_latest_build]
@@ -37,26 +37,34 @@ If you went through all the steps on [flutter.dev][Flutter "get started"] you sh
 
 ## Run app on device
 
-Before all, make sure to get app packages in order to launch the app properly. To do so, you must run these commands:
+Before wanting to launch the app, make sure to get the packages we chose to [build][Built_With] our app. To do so, you must run these commands:
 
 * `flutter pub upgrade`
 * `flutter pub get`
 
-Then, to enable easy database interactions, we chose [moor_flutter]. This package use the flutter code generator ([build_runner]) engine to reduce boilerplate for developers. So at this point, you should have 100+ errors on the opened git repository. You need to run the proper command to generate missing code:
+Among these packages, there is one that enables easy database interactions: [moor_flutter]. This package use the flutter code generator ([build_runner]) engine to reduce boilerplate for developers. So at this point, you should have 100+ errors on the opened git repository. You need to run the proper command to generate missing code:
 
-* `flutter packages pub run build_runner build`
+`flutter packages pub run build_runner build`
 
 __(if you want to navigate between commits you may have conflicting files. To fix this, add the following tag to the build command: `--delete-conflicting-outputs`)__
 
 Now you can consider building and running the app :upside_down_face:
 
-To start build/install, execute this command:
+To start build-install-run process, execute this command:
 
-* `flutter run`
+`flutter run`
 
 This will install the app on the connected device and run it. 
 
 _If you have a real device, just plug it to the computer using your USB cable. The Flutter plugin should notice the device and will automatically add it on the list._
+
+To start building the release .apk file, consider using this command:
+
+`flutter build apk --split-per-abi`
+
+This command will output several apks in the `/build/app/outputs/apk/release/` folder of your local repository. Choose the one that better fits your device architecture. 
+
+__(We used the `app-x86_64-release.apk` to test our releases on the demonstration tablet)__
 
 ## Run Unit Tests
 
@@ -64,7 +72,7 @@ _This paragraph explain how to trigger tests written in the **[test]** folder of
 
 To start unit tests, execute this command:
 
-* `flutter test`
+`flutter test`
 
 This will trigger the execution of tests. Results will be printed on your console in the end.
 You may also use your IDE integrated test report tool. Depending on the IDE, you should see the results pretty easily.
@@ -75,7 +83,7 @@ _This paragraph explain how to trigger tests written in the **[test_driver]** fo
 
 To start automated integration tests, make sure you have a connected Android device and execute this command:
 
-* `flutter drive --target=test_driver/madera_app.dart`
+`flutter drive --target=test_driver/madera_app.dart`
 
 This will trigger the execution of the automated integration tests. It will launche the app on debug mode and execute implemented actions. This tool is great to enable stable integration of new releases :rocket:
 
@@ -125,6 +133,7 @@ This project is licensed under the GNU GENERAL PUBLIC LICENSE - see the [LICENSE
 [D_latest_build]: https://codemagic.io/apps/5da43b8a9f20ef13ab7a2017/5da5ad409f20ef6c879feffc/latest_build
 [Flutter "get started"]: https://flutter.dev/get-started/
 [Github root]: https://github.com/RcDevRIL/proto_madera_front/
+[Built_With]: https://github.com/RcDevRIL/proto_madera_front/tree/master#built-with
 [test]: https://github.com/RcDevRIL/proto_madera_front/tree/master/test
 [test_driver]: https://github.com/RcDevRIL/proto_madera_front/tree/master/test_driver
 [Flutter]: https://github.com/flutter/flutter/
