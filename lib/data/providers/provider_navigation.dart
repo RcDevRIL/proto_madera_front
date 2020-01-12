@@ -38,7 +38,7 @@ class MaderaNav with ChangeNotifier {
   void updateCurrent(Type page) {
     /**
      * Index pages :
-     * -1 : DecisionPage
+     * -2 : DecisionPage
      * -1 : AuthenticationPage
      *  0 : HomePage
      *  1 : QuoteCreation
@@ -53,7 +53,7 @@ class MaderaNav with ChangeNotifier {
       case DecisionPage:
         {
           _pageTitle = 'redirection page';
-          _pageIndex = -1;
+          _pageIndex = -2;
           // log.d('Updating current navigation properties:                        \n' +
           //     this.toString() +
           //     '                    '); //pleins d'espaces car pb avec le package logger

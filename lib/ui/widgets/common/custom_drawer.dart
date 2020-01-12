@@ -131,7 +131,7 @@ class _CustomDrawerState extends State<CustomDrawer>
                       ? () {
                           Provider.of<ProviderLogin>(context).logout();
                           Provider.of<MaderaNav>(context).redirectToPage(
-                              context, AuthenticationPage(), null);
+                              context, DecisionPage(), ['true', 'logout']);
                         }
                       : null,
                   animationController: _animationController,

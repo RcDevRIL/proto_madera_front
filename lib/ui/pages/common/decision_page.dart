@@ -20,6 +20,8 @@ class DecisionPage extends StatefulWidget {
 
 class _DecisionPageState extends State<DecisionPage> {
   final log = Logger();
+  bool showIt;
+  bool hasToken = false;
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
@@ -32,39 +34,65 @@ class _DecisionPageState extends State<DecisionPage> {
 
   @override
   Widget build(BuildContext context) {
+    List<String> args = ModalRoute.of(context).settings.arguments;
+    showIt = args[0].contains('true');
+    bool logout;
+    args.length == 2 ? logout = true : logout = false;
     var providerNav = Provider.of<MaderaNav>(context);
     return FutureBuilder<bool>(
       future: this._redirectUser(context),
       builder: (context, s) {
         switch (s.connectionState) {
           case ConnectionState.waiting:
-            return PendingAction();
+            return showIt ? PendingAction() : Container();
             break;
           case ConnectionState.none:
-            return FailureIcon();
+            return showIt ? FailureIcon() : Container();
             break;
           default:
             {
-              if (s.hasError) {
-                //de ce que j'ai testé j'ai plutot l'impression que le future est en erreur après le redirectToPage
-                // et c'est ce cas qui fait apparaitre le looking up deactivated widget. Si je mettais un PostFrame callback, ça plante, sans ça ne plante pas de mon coté
-                SchedulerBinding.instance.addPostFrameCallback((_) =>
-                    providerNav.redirectToPage(
-                        context, AuthenticationPage(), null));
-                return FailureIcon();
+              if (s.hasError || !s.hasData) {
+                if (providerNav.pageIndex != -1)//ces conditions permettent d'éviter de voir les pages "sauter" lorsqu'on fait une décision
+                showIt
+                    ? SchedulerBinding.instance.addPostFrameCallback((_) =>
+                        providerNav.redirectToPage(
+                            context, AuthenticationPage(), null))
+                    : providerNav.redirectToPage(
+                        context, AuthenticationPage(), null);
+                return PendingAction();
               } else if (s.hasData) {
                 if (s.data == true) {
-                  SchedulerBinding.instance.addPostFrameCallback((_) =>
-                      providerNav.redirectToPage(context, HomePage(), null));
-                  return SuccessIcon();
+                  if (providerNav.pageIndex != 0) {
+                    if (!logout)
+                      showIt
+                          ? SchedulerBinding.instance.addPostFrameCallback(
+                              (_) => providerNav.redirectToPage(
+                                  context, HomePage(), null))
+                          : providerNav.redirectToPage(
+                              context, HomePage(), null);
+                    else {
+                      if (providerNav.pageIndex != -1)
+                        showIt
+                            ? SchedulerBinding.instance.addPostFrameCallback(
+                                (_) => providerNav.redirectToPage(
+                                    context, AuthenticationPage(), null))
+                            : providerNav.redirectToPage(
+                                context, AuthenticationPage(), null);
+                    }
+                  }
+                  return showIt ? SuccessIcon() : Container();
                 } else {
-                  SchedulerBinding.instance.addPostFrameCallback((_) =>
-                      providerNav.redirectToPage(
-                          context, AuthenticationPage(), null));
-                  return FailureIcon();
+                  if (providerNav.pageIndex != -1)
+                    showIt
+                        ? SchedulerBinding.instance.addPostFrameCallback((_) =>
+                            providerNav.redirectToPage(
+                                context, AuthenticationPage(), null))
+                        : providerNav.redirectToPage(
+                            context, AuthenticationPage(), null);
+                  return showIt ? FailureIcon() : Container();
                 }
               } else {
-                return PendingAction();
+                return showIt ? PendingAction() : Container();
               }
             }
         }
@@ -77,24 +105,22 @@ class _DecisionPageState extends State<DecisionPage> {
       UtilisateurData lastUserData = await Provider.of<ProviderSynchro>(context)
           .utilisateurDao
           .getLastUser();
-      if (lastUserData.token != null) {
-        try {
-          Provider.of<ProviderSize>(context).setConfigurationSize(context);
-          await Provider.of<ProviderSynchro>(context).synchro();
-          await Provider.of<ProviderBdd>(context).initProjetData();
-          await Provider.of<ProviderBdd>(context).initData();
-          return true;
-        } on Exception catch (e) {
-          log.e('lastUserData error (token=null?):\n$e');
-          return false;
-        }
+      if (null != lastUserData.token) {
+        Provider.of<ProviderSize>(context).setConfigurationSize(context);
+        await Provider.of<ProviderSynchro>(context).synchro();
+        await Provider.of<ProviderBdd>(context).initProjetData();
+        await Provider.of<ProviderBdd>(context).initData();
+        hasToken = true;
+        return hasToken;
       } else {
         log.e('lastUserData error (token=null?)');
-        return false;
+        hasToken = false;
+        return hasToken;
       }
     } on Exception catch (e) {
-      log.e('getUser error (db=null?):\n$e');
-      return false;
+      log.e('Error on redirection: \n$e');
+      hasToken = false;
+      return hasToken;
     }
   }
 }

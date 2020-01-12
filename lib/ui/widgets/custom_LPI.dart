@@ -41,7 +41,7 @@ class _MyLinearProgressIndicatorState extends State<MyLinearProgressIndicator>
       ..addStatusListener((status) {
         if (status == AnimationStatus.completed) {
           Provider.of<MaderaNav>(context)
-              .redirectToPage(context, DecisionPage(), null);
+              .redirectToPage(context, DecisionPage(), ["false"]);
         }
         if (status == AnimationStatus.dismissed) {
           progressController.forward();
