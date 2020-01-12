@@ -232,7 +232,8 @@ class _AuthenticationPageState extends State<AuthenticationPage> {
       case HttpStatus.AUTHORIZED:
         {
           //on ne synchronise que si la date de dernière synchro est antérieure à la date actuelle
-          if (DateTime.now()
+          if (DateTime(
+                  DateTime.now().year, DateTime.now().month, DateTime.now().day)
               .isAfter(
                   Provider.of<ProviderSynchro>(context).refsLastSyncDate)) {
             Provider.of<ProviderSynchro>(context).synchroReferentiel().then(
@@ -241,7 +242,8 @@ class _AuthenticationPageState extends State<AuthenticationPage> {
                     : _showSynchroErrorPopup(context, 'synchroReferentiel'));
           } else
             log.i('Synchronisation des référentiels déjà effectuée!');
-          if (DateTime.now()
+          if (DateTime(
+                  DateTime.now().year, DateTime.now().month, DateTime.now().day)
               .isAfter(
                   Provider.of<ProviderSynchro>(context).dataLastSyncDate)) {
             Provider.of<ProviderSynchro>(context).synchroData().then((b) => b

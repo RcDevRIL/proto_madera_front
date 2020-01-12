@@ -8,7 +8,6 @@ import 'package:moor_flutter/moor_flutter.dart';
 import 'package:proto_madera_front/data/constants/url.dart';
 import 'package:proto_madera_front/data/database/daos.dart';
 import 'package:proto_madera_front/data/database/madera_database.dart';
-import 'package:proto_madera_front/data/models/http_status.dart';
 import 'package:proto_madera_front/data/models/projet_with_all_infos.dart';
 
 ///
@@ -100,18 +99,11 @@ class ProviderSynchro with ChangeNotifier {
   }
 
   ///Renvoie la dernière date([DateTime]) de synchronisation des données utilisateur
-  DateTime get dataLastSyncDate => _dataLastSyncDate ??= DateTime(
-        DateTime.now().year,
-        DateTime.now().month,
-        DateTime.now().day,
-      );
+  ///TODO D'ailleurs, on devrait avoir l'info dans le back: quand m dupont a sauvegardé/synchronisé la dernière fois, ça nous permettra de l'initialiser
+  DateTime get dataLastSyncDate => _dataLastSyncDate ??= DateTime(2019, 12, 02);
 
   ///Renvoie la dernière date([DateTime]) de synchronisation des référentiels
-  DateTime get refsLastSyncDate => _refLastSyncDate ??= DateTime(
-        DateTime.now().year,
-        DateTime.now().month,
-        DateTime.now().day,
-      );
+  DateTime get refsLastSyncDate => _refLastSyncDate ??= DateTime(2019, 12, 02);
 
   ///Remplace la valeur de la date de dernière synchronisation des données de cet utilisateur
   setDataLastSyncDate(DateTime newDate) => this._dataLastSyncDate = newDate;
@@ -148,7 +140,6 @@ class ProviderSynchro with ChangeNotifier {
       // 0 0
       else {
         log.i('Synchronisation lancée...');
-
         _refSynced = await synchroReferentiel();
         _dataSynced = await synchroData();
         log.i('Synchronisation globale effectuée');
@@ -339,30 +330,19 @@ class ProviderSynchro with ChangeNotifier {
 
   ///Méthode qui va purger la base de données sans effacer les projets non synchronisés
   Future deleteForSynchro() async {
-    var now = DateTime.now();
-    if (now.isAfter(dataLastSyncDate)) {
-      log.d('Delete user data');
-      await clientDao.deleteAll();
-      await clientAdresseDao.deleteAll();
-      await adresseDao.deleteAll();
-      await projetDao.deleteAll();
-      await produitDao.deleteAll();
-      await produitModuleDao.deleteAll();
-      await projetProduitsDao.deleteAll();
-      _dataSynced = false;
-    }
-    if (now.isAfter(refsLastSyncDate)) {
-      log.d('Delete referentiel');
-      await composantDao.deleteAll();
-      await gammeDao.deleteAll();
-      await moduleDao.deleteAll();
-      await moduleComposantDao.deleteAll();
-      await devisEtatDao.deleteAll();
-      await composantGroupeDao.deleteAll();
-      await produitModuleDao.deleteAll();
-      await produitDao.deleteAll();
-      _refSynced = false;
-    }
+    await composantDao.deleteAll();
+    await gammeDao.deleteAll();
+    await moduleDao.deleteAll();
+    await moduleComposantDao.deleteAll();
+    await devisEtatDao.deleteAll();
+    await composantGroupeDao.deleteAll();
+    await clientDao.deleteAll();
+    await clientAdresseDao.deleteAll();
+    await adresseDao.deleteAll();
+    await projetDao.deleteAll();
+    await produitDao.deleteAll();
+    await produitModuleDao.deleteAll();
+    await projetProduitsDao.deleteAll();
   }
 
   ///Appel serveur pour créer le projet
