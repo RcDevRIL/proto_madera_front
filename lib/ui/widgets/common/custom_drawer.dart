@@ -62,6 +62,7 @@ class _CustomDrawerState extends State<CustomDrawer>
                   height: 8.0,
                 ),
                 CollapsingListTile(
+                  key: Key('profile-tile'),
                   isSelected: Provider.of<MaderaNav>(context).pageIndex == 5,
                   onTap: () => Provider.of<MaderaNav>(context)
                       .redirectToPage(context, UserProfilePage(), null),
@@ -117,6 +118,7 @@ class _CustomDrawerState extends State<CustomDrawer>
                             });
                           },
                           isSelected: mN.pageIndex == i,
+                          key: navigationItems[i].key,
                           title: navigationItems[i].title,
                           icon: navigationItems[i].iconData,
                           animationController: _animationController,
@@ -127,6 +129,7 @@ class _CustomDrawerState extends State<CustomDrawer>
                   ),
                 ),
                 CollapsingListTile(
+                  key: Key('logout-button'),
                   onTap: !isCollapsed
                       ? () {
                           Provider.of<ProviderLogin>(context).logout();
@@ -146,6 +149,7 @@ class _CustomDrawerState extends State<CustomDrawer>
                   endIndent: 12.0,
                 ),
                 FlatButton(
+                  key: Key('expand-drawer'),
                   padding: EdgeInsets.all(0.0), //override theme
                   shape: Border.all(style: BorderStyle.none), //override theme
                   onPressed: () {

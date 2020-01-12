@@ -32,11 +32,13 @@ class CollapsingListTile extends StatefulWidget {
   final Function onTap;
 
   CollapsingListTile(
-      {@required this.title,
+      {Key key,
+      @required this.title,
       @required this.icon,
       @required this.animationController,
       this.isSelected = false,
-      this.onTap});
+      this.onTap})
+      : super(key: key);
 
   @override
   _CollapsingListTileState createState() => _CollapsingListTileState();
