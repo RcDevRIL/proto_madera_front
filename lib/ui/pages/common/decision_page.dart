@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:logger/logger.dart';
 import 'package:provider/provider.dart';
 import 'package:proto_madera_front/data/database/madera_database.dart';
@@ -31,57 +32,69 @@ class _DecisionPageState extends State<DecisionPage> {
 
   @override
   Widget build(BuildContext context) {
+    var providerNav = Provider.of<MaderaNav>(context);
     return FutureBuilder<bool>(
       future: this._redirectUser(context),
-      builder: (context, snapshot) {
-        switch (snapshot.connectionState) {
+      builder: (context, s) {
+        switch (s.connectionState) {
           case ConnectionState.waiting:
-            return Center(
-              child: PendingAction(),
-            );
+            return PendingAction();
+            break;
           case ConnectionState.none:
-            return Center(
-              child: FailureIcon(),
-            );
+            return FailureIcon();
+            break;
           default:
-            return SuccessIcon();
+            {
+              if (s.hasError) {
+                //de ce que j'ai testé j'ai plutot l'impression que le future est en erreur après le redirectToPage
+                // et c'est ce cas qui fait apparaitre le looking up deactivated widget. Si je mettais un PostFrame callback, ça plante, sans ça ne plante pas de mon coté
+                SchedulerBinding.instance.addPostFrameCallback((_) =>
+                    providerNav.redirectToPage(
+                        context, AuthenticationPage(), null));
+                return FailureIcon();
+              } else if (s.hasData) {
+                if (s.data == true) {
+                  SchedulerBinding.instance.addPostFrameCallback((_) =>
+                      providerNav.redirectToPage(context, HomePage(), null));
+                  return SuccessIcon();
+                } else {
+                  SchedulerBinding.instance.addPostFrameCallback((_) =>
+                      providerNav.redirectToPage(
+                          context, AuthenticationPage(), null));
+                  return FailureIcon();
+                }
+              } else {
+                return PendingAction();
+              }
+            }
         }
       },
     );
   }
 
   Future<bool> _redirectUser(BuildContext context) async {
-    bool hasToken;
-    var redirectTo;
     try {
       UtilisateurData lastUserData = await Provider.of<ProviderSynchro>(context)
           .utilisateurDao
           .getLastUser();
       if (lastUserData.token != null) {
         try {
-          await Provider.of<ProviderSize>(context)
-              .setConfigurationSize(context);
+          Provider.of<ProviderSize>(context).setConfigurationSize(context);
           await Provider.of<ProviderSynchro>(context).synchro();
           await Provider.of<ProviderBdd>(context).initProjetData();
           await Provider.of<ProviderBdd>(context).initData();
-          hasToken = true;
-          redirectTo = HomePage();
+          return true;
         } on Exception catch (e) {
-          hasToken = false;
-          redirectTo = AuthenticationPage();
           log.e('lastUserData error (token=null?):\n$e');
+          return false;
         }
       } else {
-        hasToken = false;
-        redirectTo = AuthenticationPage();
         log.e('lastUserData error (token=null?)');
+        return false;
       }
     } on Exception catch (e) {
-      hasToken = false;
-      redirectTo = AuthenticationPage();
       log.e('getUser error (db=null?):\n$e');
+      return false;
     }
-    Provider.of<MaderaNav>(context).redirectToPage(context, redirectTo, null);
-    return hasToken;
   }
 }
