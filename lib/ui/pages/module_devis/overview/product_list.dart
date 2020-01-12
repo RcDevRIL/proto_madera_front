@@ -159,15 +159,19 @@ class _ProductListState extends State<ProductList> {
                           .synchroData()) {
                         log.i('New project loaded from backend server');
                         providerProjet.validate(true);
+                        WidgetsBinding.instance.addPostFrameCallback((_)=>
+                            Provider.of<MaderaNav>(context)
+                                .redirectToPage(context, QuoteOverview(), null));
                       } else
                         log.e('Error when trying to synchro user data');
                     } else {
                       log.d('Application offline, register in bdd local');
                       providerBdd.createAll(providerProjet.projetWithAllInfos);
                       providerProjet.validate(true);
+                      WidgetsBinding.instance.addPostFrameCallback((_)=>
+                          Provider.of<MaderaNav>(context)
+                              .redirectToPage(context, QuoteOverview(), null));
                     }
-                    Provider.of<MaderaNav>(context)
-                        .redirectToPage(context, QuoteOverview(), null);
                   },
                   icon: Icon(
                     Icons.check,
