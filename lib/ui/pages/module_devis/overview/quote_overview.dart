@@ -5,9 +5,10 @@ import 'package:proto_madera_front/data/models/projet_with_client.dart';
 import 'package:proto_madera_front/data/providers/provider_projet.dart';
 import 'package:proto_madera_front/data/providers/provider_size.dart';
 import 'package:proto_madera_front/data/providers/providers.dart'
-    show MaderaNav, ProviderBdd;
+    show MaderaNav, ProviderBdd, ProviderSynchro;
 import 'package:proto_madera_front/theme.dart' as cTheme;
 import 'package:proto_madera_front/ui/pages/module_devis/overview/product_list.dart';
+import 'package:proto_madera_front/ui/pages/module_devis/overview/view_pdf.dart';
 import 'package:proto_madera_front/ui/widgets/custom_widgets.dart'
     show MaderaScaffold, MaderaTableCell;
 import 'package:proto_madera_front/ui/widgets/madera_button.dart';
@@ -195,6 +196,35 @@ class _QuoteOverviewState extends State<QuoteOverview> {
                       : null,
                   icon: Icon(
                     Icons.send,
+                    color: Colors.white,
+                  ),
+                ),
+              ),
+              SizedBox(height: 12),
+              Container(
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  border: Border.all(
+                      color: providerBdd.editProjetID != null
+                          ? cTheme.MaderaColors.maderaLightGreen
+                          : Colors.grey,
+                      width: 2),
+                  color: providerBdd.editProjetID != null
+                      ? cTheme.MaderaColors.maderaBlueGreen
+                      : Colors.grey,
+                ),
+                child: IconButton(
+                  onPressed: providerBdd.editProjetID != null
+                      ? () async {
+                          await Provider.of<ProviderSynchro>(context).createOrFileUrl(
+                              providerBdd.projetWithClient.projet.projetId);
+
+                          Provider.of<MaderaNav>(context)
+                              .redirectToPage(context, ViewPdf(), null);
+                        }
+                      : null,
+                  icon: Icon(
+                    Icons.picture_as_pdf,
                     color: Colors.white,
                   ),
                 ),

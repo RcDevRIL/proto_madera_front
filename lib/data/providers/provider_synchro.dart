@@ -1,10 +1,13 @@
 import 'dart:convert';
+import 'dart:io';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart';
 import 'package:http/testing.dart';
 import 'package:logger/logger.dart';
 import 'package:moor_flutter/moor_flutter.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:proto_madera_front/data/constants/url.dart';
 import 'package:proto_madera_front/data/database/daos.dart';
 import 'package:proto_madera_front/data/database/madera_database.dart';
@@ -39,6 +42,7 @@ class ProviderSynchro with ChangeNotifier {
   bool _refSynced = false;
   DateTime _dataLastSyncDate;
   bool _dataSynced = false;
+  File file;
 
   ///
   ///Constructeur par défaut de notre classe de synchronisation.
@@ -399,5 +403,49 @@ class ProviderSynchro with ChangeNotifier {
       return false;
     }
     print(response);
+  }
+
+  Future<File> createOrFileUrl(int projetId) async {
+    UtilisateurData utilisateurData;
+    if (http.runtimeType != MockClient)
+      utilisateurData = await utilisateurDao.getLastUser();
+    else
+      utilisateurData = UtilisateurData(
+          utilisateurId: 4, login: 'testuser', token: 'fesfk-feksnf-fesf');
+    var response;
+    try {
+      HttpClient client = new HttpClient();
+      client.postUrl(Uri.parse(MaderaUrl.urlProjectDevis +
+          '/${projetId}/${utilisateurData.utilisateurId}')).then((HttpClientRequest request) {
+        request.headers.add('Authorization', 'Bearer ${utilisateurData.token}');
+        return request.close();
+      }).then((HttpClientResponse response) async {
+        var bytes = await consolidateHttpClientResponseBytes(response);
+        String dir = (await getApplicationDocumentsDirectory()).path;
+        file = File("$dir/devis");
+        await file.writeAsBytes(bytes);
+        notifyListeners();
+      });
+      /*response = await http.post(
+          MaderaUrl.urlProjectDevis +
+              '/${projetId}/${utilisateurData.utilisateurId}',
+          headers: {'Authorization': 'Bearer ${utilisateurData.token}'});*/
+    } catch (e) {
+      log.e('Error when trying to call ${MaderaUrl.urlProjectDevis}:\n' +
+          e.toString());
+      return null;
+    }
+    /*if (response.statusCode == 200) {
+      if (http.runtimeType != MockClient) {
+        var bytes = response.body;
+        this.file = new File("devis");
+        await file.writeAsBytes(bytes);
+        print(bytes);
+      }
+
+    } else {
+      log.e('ErreuR.');
+      return null;
+    }*/
   }
 }

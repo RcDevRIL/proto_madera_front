@@ -20,6 +20,8 @@ dependencies:
   sqflite: ^1.2.0
   moor_flutter: ^2.0.0
   json_serializable: ^3.2.3
+  pdf_viewer_plugin: ^1.0.0
+  path_provider: ^1.5.1
 
 dev_dependencies:
   moor_generator: ^2.2.0
