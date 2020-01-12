@@ -43,6 +43,7 @@ void main() {
 
     test('Connection KO - Identifiants incorrects', () async {
       await driver.waitFor(authPage);
+      await Future.delayed(Duration(seconds: 3));
 
       await driver.tap(usernameTextFinder);
       await driver.enterText("testuser");
@@ -64,6 +65,7 @@ void main() {
 
     test('Connection OK - Identifiants corrects', () async {
       await driver.waitFor(authPage);
+      await Future.delayed(Duration(seconds: 2));
 
       await driver.tap(usernameTextFinder);
       await driver.enterText("testuser");
@@ -91,6 +93,26 @@ void main() {
 
     test('Drawer test OK', () async {
       await driver.waitFor(homePage).timeout(Duration(seconds: 12));
+      await Future.delayed(Duration(seconds: 3));
+
+      await driver.tap(quoteToolTile);
+      await Future.delayed(Duration(seconds: 4));
+      assert(quoteToolPage != null);
+
+      await driver.tap(quoteOverviewTile);
+      await Future.delayed(Duration(seconds: 2));
+      assert(quoteOverviewPage != null);
+
+      await driver.tap(notificationsTile);
+      await Future.delayed(Duration(
+        seconds: 1,
+        milliseconds: 500,
+      ));
+      assert(notificationsPage != null);
+
+      await driver.tap(settingsTile);
+      await Future.delayed(Duration(seconds: 3));
+      assert(settingsPage != null);
 
       await driver.tap(profileTile);
       await Future.delayed(Duration(seconds: 3));
@@ -100,25 +122,8 @@ void main() {
       await Future.delayed(Duration(seconds: 3));
       assert(homePage != null);
 
-      await driver.tap(quoteToolTile);
-      await Future.delayed(Duration(seconds: 3));
-      assert(quoteToolPage != null);
-
-      await driver.tap(quoteOverviewTile);
-      await Future.delayed(Duration(seconds: 3));
-      assert(quoteOverviewPage != null);
-
-      await driver.tap(notificationsTile);
-      await Future.delayed(Duration(seconds: 3));
-      assert(notificationsPage != null);
-
-      await driver.tap(settingsTile);
-      await Future.delayed(Duration(seconds: 3));
-      assert(settingsPage != null);
-
       await driver.tap(expandDrawerButton);
       await Future.delayed(Duration(seconds: 2));
-
       await driver.tap(logoutButton);
       await Future.delayed(Duration(seconds: 3));
       assert(authPage != null);
