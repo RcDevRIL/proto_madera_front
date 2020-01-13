@@ -11,7 +11,6 @@ import 'package:proto_madera_front/ui/widgets/custom_widgets.dart'
         MaderaCard,
         MaderaScaffold,
         PendingAction;
-import 'package:proto_madera_front/ui/widgets/common/quote_gradient_frame.dart';
 import 'package:provider/provider.dart';
 import 'package:proto_madera_front/theme.dart' as cTheme;
 
