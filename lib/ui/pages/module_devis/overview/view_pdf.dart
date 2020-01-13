@@ -38,13 +38,9 @@ class _ViewPdf extends State<ViewPdf> {
   Widget build(BuildContext context) {
     return MaderaScaffold(
       passedContext: context,
-      child: Provider.of<ProviderSynchro>(context).file.path != null
-          ? PDFViewerScaffold(
-              path: Provider.of<ProviderSynchro>(context).file.path,
-            )
-          : Container(
-              child: Text('Attendez un instant...'),
-            ),
+      child: PDFViewerScaffold(
+        path: Provider.of<ProviderSynchro>(context).file.path,
+      ),
     );
   }
 }
