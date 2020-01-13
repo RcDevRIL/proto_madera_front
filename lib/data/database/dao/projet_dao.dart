@@ -1,4 +1,3 @@
-import 'package:logger/logger.dart';
 import 'package:moor_flutter/moor_flutter.dart';
 import 'package:proto_madera_front/data/database/madera_database.dart';
 import 'package:proto_madera_front/data/database/tables.dart';
@@ -10,15 +9,12 @@ part 'projet_dao.g.dart';
 @UseDao(tables: [Projet, Client])
 class ProjetDao extends DatabaseAccessor<MaderaDatabase> with _$ProjetDaoMixin {
   ProjetDao(MaderaDatabase db) : super(db);
-  final log = Logger();
 
   String get selectProjetWithClient =>
       "SELECT * FROM projet JOIN client ON client.id = projet.client_id";
 
   String get queryProjetIfIsProjetSynchro =>
       "SELECT projet.projet_id FROM projet WHERE projet.is_synchro = 1 OR projet.projet_id IS NULL";
-
-  String get queryGetProjetByRef => "";
 
   Future insertAll(List<ProjetData> listProjet) async {
     await db.batch((b) =>
@@ -93,7 +89,4 @@ class ProjetDao extends DatabaseAccessor<MaderaDatabase> with _$ProjetDaoMixin {
         .go();
   }
 
-  Future getProjetWithAllInfosByRef(String refProjet) async {
-    //customSelectQuery(queryGetProjetByRef, readsFrom: [projet]).map((rows))
-  }
 }

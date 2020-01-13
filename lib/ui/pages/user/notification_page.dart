@@ -39,12 +39,7 @@ class _NotificationPageState extends State<NotificationPage> {
     return MaderaScaffold(
       passedContext: context,
       child: Center(
-        child: Consumer<MaderaNav>(
-          builder: (_, mN, c) => Text(
-            mN.pageTitle,
-            style: cTheme.MaderaTextStyles.appBarTitle,
-          ),
-        ),
+        child: Text("A venir...", style: Theme.of(context).textTheme.display1,),
       ),
     );
   }

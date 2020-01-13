@@ -68,7 +68,7 @@ class ProviderProjet with ChangeNotifier {
   List<ProduitWithModule> _listProduitProjet;
 
   ///Final Saving structure to send on our backend server or to on our local [MaderaDatabase]
-  ProjetWithAllInfos projetWithAllInfos;
+  ProjetWithAllInfos _projetWithAllInfos;
 
   ///Boolean used to avoid loosing data. Is true only after a call to validate()
   bool canInit = true;
@@ -143,7 +143,17 @@ class ProviderProjet with ChangeNotifier {
     super.dispose();
   }
 
+  ProjetWithAllInfos get  projetWithAllInfos => _projetWithAllInfos;
+
+  set projetWithAllInfos(ProjetWithAllInfos projetWithAllInfos){
+    _projetWithAllInfos = projetWithAllInfos;
+    notifyListeners();
+  }
   List<ProduitWithModule> get listProduitProjet => _listProduitProjet;
+
+  set listProduitProjet(List<ProduitWithModule> listProduitWithModule) {
+    _listProduitProjet = listProduitWithModule;
+  }
 
   ClientData get client => _client;
 
@@ -437,6 +447,11 @@ class ProviderProjet with ChangeNotifier {
     notifyListeners();
   }
 
+  void loadProjet(ProjetData projet) {
+    _projet = projet;
+    notifyListeners();
+  }
+
   void initProduitWithModule() {
     _produitWithModule = ProduitWithModule(
         ProduitData(
@@ -450,7 +465,7 @@ class ProviderProjet with ChangeNotifier {
   }
 
   void initProjetWithAllInfos() {
-    projetWithAllInfos = ProjetWithAllInfos(_projet, _listProduitProjet);
+    _projetWithAllInfos = ProjetWithAllInfos(_projet, _listProduitProjet);
     notifyListeners();
   }
 

@@ -233,7 +233,6 @@ class ProviderSynchro with ChangeNotifier {
         .map((i) => ProjetData.fromJson(i))
         .toList();
 
-    listProjet.forEach((p) => debugPrint(p.toString()));
 
     await clientDao.insertAll(listClient);
     await clientAdresseDao.insertAll(listClientAdresse);

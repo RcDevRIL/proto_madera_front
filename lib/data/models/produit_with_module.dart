@@ -9,6 +9,15 @@ class ProduitWithModule {
     this.listProduitModule,
   );
 
+  @override
+  String toString(){
+    var sb = StringBuffer();
+    sb.write(produit.toString());
+    sb.write('\n');
+    listProduitModule.forEach((p)=>sb.write(p.toString()));
+    return sb.toString();
+  }
+
   Map<String, dynamic> toJson() => {
         'produit': produit,
         'listModules': listProduitModule,

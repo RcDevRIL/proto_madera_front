@@ -15,6 +15,8 @@ class ProviderSize with ChangeNotifier {
   double _addModuleMaderaCardWidth;
   double _productListBlankWidth;
 
+  String _userTheme;
+
   void setConfigurationSize(BuildContext context) {
     _sizeMedia.add(MediaQuery.of(context).size.width);
     _sizeMedia.add(MediaQuery.of(context).size.height);
@@ -31,6 +33,8 @@ class ProviderSize with ChangeNotifier {
     _addModuleMaderaCardWidth = _gradientFrameWidth / 100 * 25;
     _productListBlankWidth = _gradientFrameWidth / 100 * 10;
   }
+
+  String get userTheme => _userTheme ?? 'Light';
 
   double get gradientFrameWidth => _gradientFrameWidth;
   double get floatingButtonWidth => _floatingButtonWidth;
