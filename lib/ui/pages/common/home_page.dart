@@ -3,11 +3,10 @@ import 'package:logger/logger.dart';
 import 'package:provider/provider.dart';
 
 import 'package:proto_madera_front/data/providers/providers.dart'
-    show MaderaNav, ProviderProjet, ProviderSynchro;
+    show MaderaNav, ProviderProjet;
 import 'package:proto_madera_front/ui/pages/pages.dart';
 import 'package:proto_madera_front/ui/widgets/custom_widgets.dart'
     show LabelledIcon, MaderaScaffold;
-import 'package:proto_madera_front/data/database/madera_database.dart';
 
 ///
 /// Home page of our application

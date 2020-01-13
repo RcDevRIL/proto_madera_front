@@ -23,12 +23,12 @@ void main() {
     testWidgets(
       'init ProviderNavigation on HomePage test',
       (WidgetTester tester) async {
-        final MaderaNav providerNavigation = MaderaNav();
         Widget testWidget = MediaQuery(
           data: MediaQueryData(),
           child: MultiProvider(
             providers: [
-              ChangeNotifierProvider(create: (context) => providerNavigation),
+              ChangeNotifierProvider(create: (context) => MaderaNav()),
+              ChangeNotifierProvider(create: (context) => providerBdd),
             ],
             child: MaterialApp(
               home: HomePage(),
@@ -151,34 +151,19 @@ void main() {
       expect(date.isAfter(providerSynchro.refsLastSyncDate),
           true); // la synchronisation n'a pas eu lieue
     });
-    testWidgets(
+    test(
       'ping test',
-      (WidgetTester tester) async {
+      () async {
         final ProviderLogin providerLogin = ProviderLogin(db: ProviderBdd.db)
           ..http = MockClient((request) async {
             return Response('', 200);
           });
-        final MaderaNav providerNavigation = MaderaNav();
-
-        Widget testWidget = MediaQuery(
-          data: MediaQueryData(),
-          child: MultiProvider(
-            providers: [
-              ChangeNotifierProvider(create: (context) => providerLogin),
-              ChangeNotifierProvider(create: (context) => providerNavigation),
-            ],
-            child: MaterialApp(
-              home: HomePage(),
-            ),
-          ),
-        );
-        await tester.pumpWidget(testWidget);
         expect(providerLogin.ping(), completion(true));
       },
     );
-    testWidgets(
+    test(
       'connection test',
-      (tester) async {
+      () async {
         final ProviderLogin providerLogin = ProviderLogin(db: ProviderBdd.db)
           ..http = MockClient((request) async {
             //On set le contenu du body et le statusCode attendu, dans notre cas le token de connection
@@ -190,21 +175,6 @@ void main() {
                 }),
                 200);
           });
-        final MaderaNav providerNavigation = MaderaNav();
-
-        Widget testWidget = MediaQuery(
-          data: MediaQueryData(),
-          child: MultiProvider(
-            providers: [
-              ChangeNotifierProvider(create: (context) => providerLogin),
-              ChangeNotifierProvider(create: (context) => providerNavigation),
-            ],
-            child: MaterialApp(
-              home: HomePage(),
-            ),
-          ),
-        );
-        await tester.pumpWidget(testWidget);
         //On execute le test, qui va alors servir du body que l'on a renseigné pour générer une response conformes aux besoins
         expect(
             providerLogin.connection('testuser', '123456'), completion(true));
@@ -215,26 +185,10 @@ void main() {
         ..http = MockClient((request) async {
           return Response('', 200);
         });
-      final MaderaNav providerNavigation = MaderaNav();
-
-      Widget testWidget = MediaQuery(
-        data: MediaQueryData(),
-        child: MultiProvider(
-          providers: [
-            ChangeNotifierProvider(create: (context) => providerLogin),
-            ChangeNotifierProvider(create: (context) => providerNavigation),
-          ],
-          child: MaterialApp(
-            home: HomePage(),
-          ),
-        ),
-      );
-      await tester.pumpWidget(testWidget);
 
       expect(providerLogin.logout(), completion(true));
     });
-    testWidgets('synchro globale test', (tester) async {
-      final MaderaNav providerNavigation = MaderaNav();
+    test('synchro globale test', () async {
       final ProviderSynchro providerSynchro = ProviderSynchro(
         db: ProviderBdd.db,
         daosSynchroList: providerBdd.daosSynchroList,
@@ -242,20 +196,6 @@ void main() {
           //On set le contenu du body et le statusCode attendu, dans notre cas le token de connection
           return Response('', 200);
         });
-
-      Widget testWidget = MediaQuery(
-        data: MediaQueryData(),
-        child: MultiProvider(
-          providers: [
-            ChangeNotifierProvider(create: (context) => providerSynchro),
-            ChangeNotifierProvider(create: (context) => providerNavigation),
-          ],
-          child: MaterialApp(
-            home: HomePage(),
-          ),
-        ),
-      );
-      await tester.pumpWidget(testWidget);
       DateTime now = DateTime.now();
       await providerSynchro.synchro();
       expect(providerSynchro.refsLastSyncDate.isAfter(now), true);

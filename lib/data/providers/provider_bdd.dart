@@ -94,7 +94,6 @@ class ProviderBdd with ChangeNotifier {
     super.dispose();
   }
 
-//TODO ajouter un boolean synchro et l'init a false, il se passe que lorsqu'il est renseigné côté serveur
   ///Méthode pour créer le projet ainsi que ses produits (infos relatives aux produits, produitModule..)
   void createAll(ProjetWithAllInfos projetWithAllInfos) async {
     int projetId = await createProject(projetWithAllInfos.projet);

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/scheduler.dart';
 import 'package:logger/logger.dart';
 import 'package:proto_madera_front/data/database/madera_database.dart';
 import 'package:proto_madera_front/data/providers/provider_login.dart';
