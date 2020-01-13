@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:logger/logger.dart';
+import 'package:proto_madera_front/data/database/madera_database.dart';
 import 'package:proto_madera_front/ui/pages/user/profile_page.dart';
 import 'package:provider/provider.dart';
 
 import 'package:proto_madera_front/data/providers/providers.dart'
-    show MaderaNav, ProviderLogin, ProviderProjet, ProviderSynchro;
+    show MaderaNav, ProviderBdd, ProviderLogin, ProviderProjet, ProviderSynchro;
 import 'package:proto_madera_front/ui/widgets/custom_widgets.dart'
-    show CollapsingListTile;
+    show CollapsingListTile, FailureIcon, PendingAction;
 import 'package:proto_madera_front/ui/pages/pages.dart';
 import 'package:proto_madera_front/data/models/navigation_model.dart';
 import 'package:proto_madera_front/theme.dart' as cTheme;
@@ -61,14 +62,29 @@ class _CustomDrawerState extends State<CustomDrawer>
                 SizedBox(
                   height: 8.0,
                 ),
-                CollapsingListTile(
-                  key: Key('profile-tile'),
-                  isSelected: Provider.of<MaderaNav>(context).pageIndex == 5,
-                  onTap: () => Provider.of<MaderaNav>(context)
-                      .redirectToPage(context, UserProfilePage(), null),
-                  title: 'Test Name',
-                  icon: Icons.person,
-                  animationController: _animationController,
+                FutureBuilder(
+                  future: Provider.of<ProviderBdd>(context)
+                      .utilisateurDao
+                      .getLastUser(),
+                  builder: (c, s) {
+                    if (s.hasError) {
+                      return FailureIcon();
+                    } else if (s.hasData) {
+                      UtilisateurData u = s.data;
+                      return CollapsingListTile(
+                        key: Key('profile-tile'),
+                        isSelected:
+                            Provider.of<MaderaNav>(context).pageIndex == 5,
+                        onTap: () => Provider.of<MaderaNav>(context)
+                            .redirectToPage(context, UserProfilePage(), null),
+                        title: '${u.login}',
+                        icon: Icons.person,
+                        animationController: _animationController,
+                      );
+                    } else {
+                      return PendingAction();
+                    }
+                  },
                 ),
                 Divider(
                   color: Colors.grey,
@@ -132,8 +148,10 @@ class _CustomDrawerState extends State<CustomDrawer>
                   key: Key('logout-button'),
                   onTap: !isCollapsed
                       ? () {
-                          Provider.of<ProviderSynchro>(context).refsLastSyncDate = null;
-                          Provider.of<ProviderSynchro>(context).dataLastSyncDate = null;
+                          Provider.of<ProviderSynchro>(context)
+                              .refsLastSyncDate = null;
+                          Provider.of<ProviderSynchro>(context)
+                              .dataLastSyncDate = null;
                           Provider.of<ProviderLogin>(context).logout();
                           Provider.of<MaderaNav>(context).redirectToPage(
                               context, DecisionPage(), ['true', 'logout']);

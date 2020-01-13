@@ -23,6 +23,7 @@ class AppBarMadera extends StatelessWidget {
       child: Consumer<MaderaNav>(
         builder: (context, mN, child) => AppBar(
           primary: true,
+          automaticallyImplyLeading: false,
           leading: mN.pageIndex == -1 ? ExitButton() : null,
           title: Text(
             mN.pageTitle,

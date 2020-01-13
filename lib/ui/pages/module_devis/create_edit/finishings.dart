@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:logger/logger.dart';
+import 'package:proto_madera_front/data/providers/provider_size.dart';
 import 'package:provider/provider.dart';
 
 import 'package:proto_madera_front/data/providers/providers.dart'
@@ -188,7 +189,10 @@ class _FinishingsState extends State<Finishings> {
       stackAdditions: <Widget>[
         Padding(
           padding: EdgeInsets.fromLTRB(
-              1200, MediaQuery.of(context).size.height / 6, 0, 0),
+              Provider.of<ProviderSize>(context).floatingButtonWidth,
+              Provider.of<ProviderSize>(context).mediaHeight / 6,
+              0,
+              0),
           child: Column(
             children: <Widget>[
               Container(
