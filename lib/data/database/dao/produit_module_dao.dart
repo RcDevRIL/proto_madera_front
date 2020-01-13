@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:moor_flutter/moor_flutter.dart';
 import 'package:proto_madera_front/data/database/madera_database.dart';
 import 'package:proto_madera_front/data/database/tables/produit_module.dart';
@@ -15,9 +16,26 @@ class ProduitModuleDao extends DatabaseAccessor<MaderaDatabase>
       "LEFT JOIN projet ON projet.projet_id = projet_produits.projet_id "
       "WHERE projet.is_synchro = 1 OR projet.projet_id IS NULL";
 
+  String get queryGetProduitByProjetId =>
+      "SELECT * FROM produit_module JOIN produit ON produit.produit_id = produit_module.produit_id JOIN projet_produits ON projet_produits.produit_id = produit.produit_id WHERE projet_produits.produit_id IN (SELECT produit_id FROM projet_produits WHERE projet_id =";
+
   ///Méthode de synchronisation
   Future insertAll(List<ProduitModuleData> listProduitModule) async {
-    await db.batch((b) => b.insertAll(produitModule, listProduitModule, mode: InsertMode.insertOrReplace));
+    await db.batch((b) => b.insertAll(produitModule, listProduitModule,
+        mode: InsertMode.insertOrReplace));
+  }
+
+  Future getListProduitModuleByProjetId(int projetId) async {
+    //Récupère la liste des produit en fonction d'un projetID
+    return await customSelectQuery(
+            queryGetProduitByProjetId + projetId.toString() + ")",
+            readsFrom: {produitModule}).get().then(
+          (rows) => rows
+              .map<ProduitModuleData>(
+                (row) => ProduitModuleData.fromData(row.data, db),
+              )
+              .toList(),
+        );
   }
 
   ///Création d'un produitModule

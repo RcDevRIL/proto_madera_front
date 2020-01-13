@@ -1,6 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:logger/logger.dart';
+import 'package:proto_madera_front/data/database/madera_database.dart';
+import 'package:proto_madera_front/data/database/tables.dart';
+import 'package:proto_madera_front/data/models/models.dart';
 import 'package:proto_madera_front/data/models/projet_with_client.dart';
 import 'package:proto_madera_front/data/providers/provider_projet.dart';
 import 'package:proto_madera_front/data/providers/provider_size.dart';
@@ -151,11 +154,38 @@ class _QuoteOverviewState extends State<QuoteOverview> {
                 ),
                 child: IconButton(
                   onPressed: providerBdd.editProjetID != null
-                      ? () {
-                          if (true /*TODO devisEtat <= 4 (accepté)*/) {
-                            //TODO load infos projet
+                      ? () async {
+                          if (providerBdd.projetWithClient.projet.devisEtatId <=
+                              4) {
+                            var projet = providerBdd.projetWithClient.projet;
+                            var client = providerBdd.projetWithClient.client;
+                            List<ProduitModuleData> produitModule =
+                                await providerBdd.produitModuleDao
+                                    .getListProduitModuleByProjetId(
+                                        projet.projetId);
+                            List<ProduitData> produitData = await providerBdd
+                                .produitDao
+                                .getListProduitByProjetId(projet.projetId);
+                            List<ProduitWithModule> produitWithModule =
+                                List<ProduitWithModule>();
+                            produitData.forEach((produitData) {
+                              List<ProduitModuleData> test = List();
+                              produitModule.forEach((produitModule) {
+                                if (produitModule.produitId ==
+                                    produitData.produitId) {
+                                  test.add(produitModule);
+                                }
+                              });
+                              produitWithModule
+                                  .add(ProduitWithModule(produitData, test));
+                            });
                             providerProjet.initAndHold();
-                            providerProjet.initProjet();
+                            providerProjet.initClientWithClient(client);
+                            providerProjet.loadProjet(projet);
+                            providerProjet.projetWithAllInfos =
+                                ProjetWithAllInfos(projet, produitWithModule);
+                            providerProjet.listProduitProjet = produitWithModule;
+                            providerProjet.loadProductCreationModel(0);
                             Provider.of<MaderaNav>(context)
                                 .redirectToPage(context, ProductList(), null);
                           }
