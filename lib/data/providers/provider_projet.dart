@@ -12,7 +12,7 @@ import 'package:proto_madera_front/data/models/models.dart'
 ///
 /// @author HELIOT David, CHEVALLIER Romain, LADOUCE Fabien
 ///
-/// @version 0.5-RELEASE
+/// @version 1.0-PRE-RELEASE
 class ProviderProjet with ChangeNotifier {
   /*
   * Variables pour la page QuoteCreation
@@ -68,7 +68,7 @@ class ProviderProjet with ChangeNotifier {
   List<ProduitWithModule> _listProduitProjet;
 
   ///Final Saving structure to send on our backend server or to on our local [MaderaDatabase]
-  ProjetWithAllInfos projetWithAllInfos;
+  ProjetWithAllInfos _projetWithAllInfos;
 
   ///Boolean used to avoid loosing data. Is true only after a call to validate()
   bool canInit = true;
@@ -221,6 +221,27 @@ class ProviderProjet with ChangeNotifier {
     notifyListeners();
   }
 
+  ProjetWithAllInfos get  projetWithAllInfos => _projetWithAllInfos;
+
+  set projetWithAllInfos(ProjetWithAllInfos projetWithAllInfos){
+    _projetWithAllInfos = projetWithAllInfos;
+    notifyListeners();
+  }
+  List<ProduitWithModule> get listProduitProjet => _listProduitProjet;
+
+  set listProduitProjet(List<ProduitWithModule> listProduitWithModule) {
+    _listProduitProjet = listProduitWithModule;
+  }
+
+  ClientData get client => _client;
+
+  ModuleData get moduleChoice => _moduleChoice;
+
+  set moduleChoice(ModuleData module) {
+    _moduleChoice = module;
+    notifyListeners();
+  }
+
   void deleteProductCreationModel(int productID) {
     _listProduitProjet.removeAt(productID);
     notifyListeners();
@@ -269,15 +290,15 @@ class ProviderProjet with ChangeNotifier {
         Map<String, Object> sections;
         if (_moduleAngle.isNotEmpty) {
           sections = {
-            'sections': [
-              {'longueur': int.parse(_moduleSection)},
-              {'longueur': int.parse(_moduleSection2)}
+            '\"sections\"': [
+              {'\"longueur\"': int.parse(_moduleSection)},
+              {'\"longueur\"': int.parse(_moduleSection2)}
             ]
           };
         } else {
           sections = {
-            'sections': [
-              {'longueur': int.parse(_moduleSection)}
+            '\"sections\"': [
+              {'\"longueur\"': int.parse(_moduleSection)}
             ]
           };
         }
@@ -294,15 +315,15 @@ class ProviderProjet with ChangeNotifier {
         Map<String, Object> sections;
         if (_moduleAngle.isNotEmpty) {
           sections = {
-            'sections': [
-              {'longueur': int.parse(_moduleSection)},
-              {'longueur': int.parse(_moduleSection2)}
+            '\"sections\"': [
+              {'\"longueur\"': int.parse(_moduleSection)},
+              {'\"longueur\"': int.parse(_moduleSection2)}
             ]
           };
         } else {
           sections = {
-            'sections': [
-              {'longueur': int.parse(_moduleSection)}
+            '\"sections\"': [
+              {'\"longueur\"': int.parse(_moduleSection)}
             ]
           };
         }
@@ -365,6 +386,11 @@ class ProviderProjet with ChangeNotifier {
           'ERROR in resetListProduitModuleProjet()! First time calling it for this product ? If so, ignore.');
   }
 
+  void loadProjet(ProjetData projet) {
+    _projet = projet;
+    notifyListeners();
+  }
+
   void initProduitWithModule() {
     _produitWithModule = ProduitWithModule(
         ProduitData(
@@ -374,6 +400,11 @@ class ProviderProjet with ChangeNotifier {
             prixProduit: 0.0,
             modele: false),
         _listProduitModuleProjet);
+    notifyListeners();
+  }
+
+  void initProjetWithAllInfos() {
+    _projetWithAllInfos = ProjetWithAllInfos(_projet, _listProduitProjet);
     notifyListeners();
   }
 
@@ -387,24 +418,11 @@ class ProviderProjet with ChangeNotifier {
     notifyListeners();
   }
 
-  void initProjetWithAllInfos() {
-    projetWithAllInfos = ProjetWithAllInfos(_projet, _listProduitProjet);
+  void deleteModule() {
+    _listProduitModuleProjet.removeAt(_editModuleIndex);
     notifyListeners();
   }
 
-  List<ProduitWithModule> get listProduitProjet => _listProduitProjet;
-
-  ClientData get client => _client;
-
-  //TODO
-  void setFinitions(String choice) {}
-
-  ModuleData get moduleChoice => _moduleChoice;
-
-  set moduleChoice(ModuleData module) {
-    _moduleChoice = module;
-    notifyListeners();
-  }
 
   set editModuleIndex(int index) {
     _editModuleIndex = index;

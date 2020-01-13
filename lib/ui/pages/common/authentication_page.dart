@@ -4,7 +4,7 @@ import 'package:logger/logger.dart';
 import 'package:provider/provider.dart';
 
 import 'package:proto_madera_front/data/blocs/authentication/login_form_bloc.dart';
-import 'package:proto_madera_front/ui/pages/pages.dart' show HomePage;
+import 'package:proto_madera_front/ui/pages/pages.dart' show DecisionPage, HomePage;
 import 'package:proto_madera_front/ui/widgets/custom_widgets.dart'
     show AppBarMadera, LabelledIcon, MaderaButton, MaderaRoundedBox;
 import 'package:proto_madera_front/data/providers/providers.dart'
@@ -17,7 +17,7 @@ import 'package:proto_madera_front/theme.dart' as cTheme;
 ///
 /// @author HELIOT David, CHEVALLIER Romain, LADOUCE Fabien
 ///
-/// @version 0.5-RELEASE
+/// @version 1.0-PRE-RELEASE
 class AuthenticationPage extends StatefulWidget {
   static const routeName = '/auth';
   @override
@@ -254,7 +254,7 @@ class _AuthenticationPageState extends State<AuthenticationPage> {
           Provider.of<ProviderBdd>(context).initProjetData();
           Provider.of<ProviderBdd>(context).initData();
           Provider.of<MaderaNav>(context)
-              .redirectToPage(context, HomePage(), null);
+              .redirectToPage(context, DecisionPage(), ['true']);
         }
         break;
       case HttpStatus.OFFLINE:

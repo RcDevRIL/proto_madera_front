@@ -4,7 +4,7 @@ import 'package:proto_madera_front/ui/pages/user/profile_page.dart';
 import 'package:provider/provider.dart';
 
 import 'package:proto_madera_front/data/providers/providers.dart'
-    show MaderaNav, ProviderLogin, ProviderProjet;
+    show MaderaNav, ProviderLogin, ProviderProjet, ProviderSynchro;
 import 'package:proto_madera_front/ui/widgets/custom_widgets.dart'
     show CollapsingListTile;
 import 'package:proto_madera_front/ui/pages/pages.dart';
@@ -15,7 +15,7 @@ import 'package:proto_madera_front/theme.dart' as cTheme;
 ///
 /// @author HELIOT David, CHEVALLIER Romain, LADOUCE Fabien
 ///
-/// @version 0.5-RELEASE
+/// @version 1.0-PRE-RELEASE
 class CustomDrawer extends StatefulWidget {
   @override
   _CustomDrawerState createState() => _CustomDrawerState();
@@ -132,9 +132,11 @@ class _CustomDrawerState extends State<CustomDrawer>
                   key: Key('logout-button'),
                   onTap: !isCollapsed
                       ? () {
+                          Provider.of<ProviderSynchro>(context).refsLastSyncDate = null;
+                          Provider.of<ProviderSynchro>(context).dataLastSyncDate = null;
                           Provider.of<ProviderLogin>(context).logout();
                           Provider.of<MaderaNav>(context).redirectToPage(
-                              context, AuthenticationPage(), null);
+                              context, DecisionPage(), ['true', 'logout']);
                         }
                       : null,
                   animationController: _animationController,

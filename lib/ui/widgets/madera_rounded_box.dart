@@ -8,7 +8,7 @@ import 'package:proto_madera_front/theme.dart' as cTheme;
 ///
 /// @author HELIOT David, CHEVALLIER Romain, LADOUCE Fabien
 ///
-/// @version 0.5-RELEASE
+/// @version 1.0-PRE-RELEASE
 class MaderaRoundedBox extends StatefulWidget {
   /// Creates a box with rounded corners.
   ///

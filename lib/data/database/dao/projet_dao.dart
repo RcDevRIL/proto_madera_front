@@ -1,6 +1,7 @@
 import 'package:moor_flutter/moor_flutter.dart';
 import 'package:proto_madera_front/data/database/madera_database.dart';
 import 'package:proto_madera_front/data/database/tables.dart';
+import 'package:proto_madera_front/data/models/models.dart';
 import 'package:proto_madera_front/data/models/projet_with_client.dart';
 
 part 'projet_dao.g.dart';
@@ -16,7 +17,8 @@ class ProjetDao extends DatabaseAccessor<MaderaDatabase> with _$ProjetDaoMixin {
       "SELECT projet.projet_id FROM projet WHERE projet.is_synchro = 1 OR projet.projet_id IS NULL";
 
   Future insertAll(List<ProjetData> listProjet) async {
-    await db.batch((b) => b.insertAll(projet, listProjet, mode: InsertMode.insertOrReplace));
+    await db.batch((b) =>
+        b.insertAll(projet, listProjet, mode: InsertMode.insertOrReplace));
   }
 
   ///Récupère toute la liste des projetWithClient
@@ -86,4 +88,5 @@ class ProjetDao extends DatabaseAccessor<MaderaDatabase> with _$ProjetDaoMixin {
           ))
         .go();
   }
+
 }

@@ -15,7 +15,7 @@ import 'package:proto_madera_front/data/models/http_status.dart';
 ///
 /// @author HELIOT David, CHEVALLIER Romain, LADOUCE Fabien
 ///
-/// @version 0.5-RELEASE
+/// @version 1.0-PRE-RELEASE
 class ProviderLogin with ChangeNotifier {
   final log = Logger();
   final int timeOut = 10;
@@ -102,7 +102,7 @@ class ProviderLogin with ChangeNotifier {
   Future<bool> logout() async {
     var utilisateurData;
     if (http.runtimeType != MockClient) {
-      utilisateurData = await utilisateurDao.getUser();
+      utilisateurData = await utilisateurDao.getLastUser();
     } else {
       utilisateurData = UtilisateurData(
           login: 'toto', token: '43er-ere3-yr543', utilisateurId: 1);

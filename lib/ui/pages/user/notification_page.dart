@@ -12,7 +12,7 @@ import 'package:proto_madera_front/theme.dart' as cTheme;
 ///
 /// @author HELIOT David, CHEVALLIER Romain, LADOUCE Fabien
 ///
-/// @version 0.5-RELEASE
+/// @version 1.0-PRE-RELEASE
 class NotificationPage extends StatefulWidget {
   static const routeName = '/bell';
 
@@ -39,12 +39,7 @@ class _NotificationPageState extends State<NotificationPage> {
     return MaderaScaffold(
       passedContext: context,
       child: Center(
-        child: Consumer<MaderaNav>(
-          builder: (_, mN, c) => Text(
-            mN.pageTitle,
-            style: cTheme.MaderaTextStyles.appBarTitle,
-          ),
-        ),
+        child: Text("A venir...", style: Theme.of(context).textTheme.display1,),
       ),
     );
   }

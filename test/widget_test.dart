@@ -15,7 +15,7 @@ import 'package:proto_madera_front/ui/pages/pages.dart';
 ///
 /// @author HELIOT David, CHEVALLIER Romain, LADOUCE Fabien
 ///
-/// @version 0.5-RELEASE
+/// @version 1.0-PRE-RELEASE
 void main() {
   final ProviderBdd providerBdd = ProviderBdd();
 
@@ -258,9 +258,7 @@ void main() {
       await tester.pumpWidget(testWidget);
       DateTime now = DateTime.now();
       await providerSynchro.synchro();
-      expect(providerSynchro.refsLastSyncDate.isAfter(now),
-          true); //isBefore parce qu'on compare a now() (yyyy-MM-dd HH:mm:SS), alors que les dates sont stockées sous la forme 'yyyy-MM-dd 00:00:00'
-
+      expect(providerSynchro.refsLastSyncDate.isAfter(now), true);
       expect(providerSynchro.dataLastSyncDate.isAfter(now), true);
       await providerSynchro
           .synchro(); // checker les logs (expect: 'Synchronisations déjà effectuées!') éventuellement utiliser package test_process pour tester la valeurs des logs?

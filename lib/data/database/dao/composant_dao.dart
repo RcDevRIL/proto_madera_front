@@ -9,11 +9,11 @@ class ComposantDao extends DatabaseAccessor<MaderaDatabase>
   ComposantDao(MaderaDatabase db) : super(db);
 
   String get querySelectComposantOfProjetSynchro => "SELECT composant.composant_id FROM composant "
-      "LEFT JOIN module_composant ON module_composant.composant_id = composant.composant_id "
-      "LEFT JOIN produit_module ON produit_module.module_id = module_composant.module_id "
-      "LEFT JOIN projet_produits ON projet_produits.produit_id = produit_module.produit_id "
-      "LEFT JOIN projet ON projet.projet_id = projet_produits.projet_id "
-      "WHERE projet.is_synchro = 1 OR projet.projet_id IS NULL GROUP BY composant.composant_id";
+      "JOIN module_composant ON module_composant.composant_id = composant.composant_id "
+      "JOIN produit_module ON produit_module.module_id = module_composant.module_id "
+      "JOIN projet_produits ON projet_produits.produit_id = produit_module.produit_id "
+      "JOIN projet ON projet.projet_id = projet_produits.projet_id "
+      "WHERE projet.is_synchro = 0 GROUP BY composant.composant_id";
 
   ///Supprime les occurences de composant
   Future<int> deleteAll() async {

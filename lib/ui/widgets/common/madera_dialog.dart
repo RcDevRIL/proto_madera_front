@@ -45,21 +45,30 @@ class MaderaDialog extends StatelessWidget {
           style: BorderStyle.solid,
         ),
       ),
-      title: LabelledIcon(
-        text: Text(title, style: TextStyle(color: titleAndIconColor)),
-        icon: Icon(
-          icon,
-          color: titleAndIconColor,
+      title: Align(
+        alignment: Alignment.centerLeft,
+        child: LabelledIcon(
+          text: Text(title, style: TextStyle(color: titleAndIconColor)),
+          icon: Icon(
+            icon,
+            color: titleAndIconColor,
+          ),
         ),
       ),
       content: body.runtimeType == Text
           ? Container(
               height: 50.0,
+              margin: const EdgeInsets.only(
+                top: 20.0,
+              ),
               child: body,
             )
           : Container(
               height: 50.0,
               width: 200.0,
+              margin: const EdgeInsets.only(
+                top: 20.0,
+              ),
               child: body,
             ),
       actions: actions,
