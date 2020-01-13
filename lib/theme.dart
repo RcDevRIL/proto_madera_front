@@ -5,7 +5,7 @@
 ///
 /// @author HELIOT David, CHEVALLIER Romain, LADOUCE Fabien
 ///
-/// @version 1.0-PRE-RELEASE
+/// @version 1.0-RELEASE
 import 'package:flutter/material.dart';
 
 // Default Font Family

@@ -1,5 +1,10 @@
 import 'package:flutter/material.dart';
 
+/// Custom widget representing a success [Icon]
+///
+/// @author HELIOT David, CHEVALLIER Romain, LADOUCE Fabien
+///
+/// @version 1.0-RELEASE
 class SuccessIcon extends StatelessWidget {
   const SuccessIcon({
     Key key,

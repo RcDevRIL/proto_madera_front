@@ -16,7 +16,7 @@ import 'data/providers/provider_size.dart';
 ///
 /// @author HELIOT David, CHEVALLIER Romain, LADOUCE Fabien
 ///
-/// @version 1.0-PRE-RELEASE
+/// @version 1.0-RELEASE
 class MaderaApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {

@@ -2,7 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:proto_madera_front/ui/widgets/custom_widgets.dart';
 import 'package:proto_madera_front/theme.dart' as cTheme;
 
+///
 /// Custom widget representing an [AlertDialog].
+///
+/// @author HELIOT David, CHEVALLIER Romain, LADOUCE Fabien
+///
+/// @version 1.0-RELEASE
 class MaderaDialog extends StatelessWidget {
   /// Creates a custom alert dialog.
   ///

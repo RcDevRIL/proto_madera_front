@@ -18,7 +18,7 @@ import 'package:proto_madera_front/data/models/projet_with_all_infos.dart';
 ///
 /// @author HELIOT David, CHEVALLIER Romain, LADOUCE Fabien
 ///
-/// @version 1.0-PRE-RELEASE
+/// @version 1.0-RELEASE
 class ProviderSynchro with ChangeNotifier {
   Client http = new Client();
   final log = Logger();

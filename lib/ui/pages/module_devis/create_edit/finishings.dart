@@ -10,15 +10,13 @@ import 'package:proto_madera_front/ui/pages/pages.dart'
 import 'package:proto_madera_front/ui/widgets/custom_widgets.dart'
     show GradientFrame, MaderaRoundedBox, MaderaScaffold;
 import 'package:proto_madera_front/theme.dart' as cTheme;
-import 'package:provider/provider.dart';
-import 'package:provider/provider.dart';
 
 ///
 /// Page to provide user some option on the module finitions
 ///
 /// @author HELIOT David, CHEVALLIER Romain, LADOUCE Fabien
 ///
-/// @version 1.0-PRE-RELEASE
+/// @version 1.0-RELEASE
 class Finishings extends StatefulWidget {
   static const routeName = '/finishModule';
 

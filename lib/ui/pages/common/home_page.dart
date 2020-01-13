@@ -13,7 +13,7 @@ import 'package:proto_madera_front/ui/widgets/custom_widgets.dart'
 ///
 /// @author HELIOT David, CHEVALLIER Romain, LADOUCE Fabien
 ///
-/// @version 1.0-PRE-RELEASE
+/// @version 1.0-RELEASE
 class HomePage extends StatelessWidget {
   static const routeName = '/home';
   final log = Logger();

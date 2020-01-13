@@ -11,6 +11,12 @@ import 'package:proto_madera_front/ui/pages/pages.dart'
 import 'package:proto_madera_front/ui/widgets/custom_widgets.dart'
     show FailureIcon, PendingAction, SuccessIcon;
 
+///
+/// Page used to redirect user on login/logout events
+///
+/// @author HELIOT David, CHEVALLIER Romain, LADOUCE Fabien
+///
+/// @version 1.0-RELEASE
 class DecisionPage extends StatefulWidget {
   static const routeName = '/redirect';
   @override

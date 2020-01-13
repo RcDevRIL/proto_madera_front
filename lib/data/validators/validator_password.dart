@@ -7,7 +7,7 @@ import 'dart:async';
 ///
 /// @author HELIOT David, CHEVALLIER Romain, LADOUCE Fabien
 ///
-/// @version 1.0-PRE-RELEASE
+/// @version 1.0-RELEASE
 class PasswordValidator {
   final StreamTransformer<String, String> validatePassword =
       StreamTransformer<String, String>.fromHandlers(

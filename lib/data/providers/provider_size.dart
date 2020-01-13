@@ -1,5 +1,11 @@
 import 'package:flutter/material.dart';
 
+///
+/// Provider to handle device screen size and store specific ui elements dimensions
+///
+/// @author HELIOT David, CHEVALLIER Romain, LADOUCE Fabien
+///
+/// @version 1.0-RELEASE
 class ProviderSize with ChangeNotifier {
   List<double> _sizeMedia = new List();
   double _gradientFrameWidth;
@@ -39,7 +45,7 @@ class ProviderSize with ChangeNotifier {
   double get gradientFrameWidth => _gradientFrameWidth;
   double get floatingButtonWidth => _floatingButtonWidth;
   double get tableOverviewWidth => _overviewTableWidth;
-  double get tableOverviewHeight=> _overviewTableHeight;
+  double get tableOverviewHeight => _overviewTableHeight;
   double get quoteMaderaCardSmallWidth => _quoteMaderaCardSmallWidth;
   double get quoteMaderaCardMediumWidth => _quoteMaderaCardMediumWidth;
   double get quoteMaderaCardHightWidth => _quoteMaderaCardHightWidth;

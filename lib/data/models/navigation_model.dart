@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 ///
 /// @author HELIOT David, CHEVALLIER Romain, LADOUCE Fabien
 ///
-/// @version 1.0-PRE-RELEASE
+/// @version 1.0-RELEASE
 class NavigationModel {
   final Key key;
   final String title;
