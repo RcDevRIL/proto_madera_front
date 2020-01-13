@@ -3,7 +3,6 @@ import 'package:flutter/scheduler.dart';
 import 'package:logger/logger.dart';
 import 'package:provider/provider.dart';
 import 'package:proto_madera_front/data/database/madera_database.dart';
-import 'package:proto_madera_front/data/database/madera_database.dart';
 import 'package:proto_madera_front/data/providers/provider_size.dart';
 import 'package:proto_madera_front/data/providers/providers.dart'
     show MaderaNav, ProviderBdd, ProviderSize, ProviderSynchro;
@@ -52,13 +51,14 @@ class _DecisionPageState extends State<DecisionPage> {
           default:
             {
               if (s.hasError || !s.hasData) {
-                if (providerNav.pageIndex != -1)//ces conditions permettent d'éviter de voir les pages "sauter" lorsqu'on fait une décision
-                showIt
-                    ? SchedulerBinding.instance.addPostFrameCallback((_) =>
-                        providerNav.redirectToPage(
-                            context, AuthenticationPage(), null))
-                    : providerNav.redirectToPage(
-                        context, AuthenticationPage(), null);
+                if (providerNav.pageIndex !=
+                    -1) //ces conditions permettent d'éviter de voir les pages "sauter" lorsqu'on fait une décision
+                  showIt
+                      ? SchedulerBinding.instance.addPostFrameCallback((_) =>
+                          providerNav.redirectToPage(
+                              context, AuthenticationPage(), null))
+                      : providerNav.redirectToPage(
+                          context, AuthenticationPage(), null);
                 return PendingAction();
               } else if (s.hasData) {
                 if (s.data == true) {

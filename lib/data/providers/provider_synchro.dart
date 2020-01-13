@@ -103,10 +103,9 @@ class ProviderSynchro with ChangeNotifier {
   }
 
   ///Renvoie la dernière date([DateTime]) de synchronisation des données utilisateur
-  ///TODO D'ailleurs, on devrait avoir l'info dans le back: quand m dupont a sauvegardé/synchronisé la dernière fois, ça nous permettra de l'initialiser
   DateTime get dataLastSyncDate => _dataLastSyncDate ??= DateTime(2019, 12, 02);
 
-  set dataLastSyncDate(DateTime date){
+  set dataLastSyncDate(DateTime date) {
     _dataLastSyncDate = date;
     notifyListeners();
   }
@@ -114,10 +113,11 @@ class ProviderSynchro with ChangeNotifier {
   ///Renvoie la dernière date([DateTime]) de synchronisation des référentiels
   DateTime get refsLastSyncDate => _refLastSyncDate ??= DateTime(2019, 12, 02);
 
-  set refsLastSyncDate(DateTime date){
+  set refsLastSyncDate(DateTime date) {
     _refLastSyncDate = date;
     notifyListeners();
   }
+
   ///Remplace la valeur de la date de dernière synchronisation des données de cet utilisateur
   setDataLastSyncDate(DateTime newDate) => this._dataLastSyncDate = newDate;
 
@@ -242,7 +242,6 @@ class ProviderSynchro with ChangeNotifier {
         .map((i) => ProjetData.fromJson(i))
         .toList();
 
-
     await clientDao.insertAll(listClient);
     await clientAdresseDao.insertAll(listClientAdresse);
     await adresseDao.insertAll(listAdresse);
@@ -269,7 +268,6 @@ class ProviderSynchro with ChangeNotifier {
             utilisateurId: 4, login: 'testuser', token: 'fesfk-feksnf-fesf');
       var response;
       try {
-        //TODO passer en param la derniere date de synchro ?
         response = await http.get(MaderaUrl.urlSynchroRef,
             headers: {'Authorization': 'Bearer ${utilisateurData.token}'});
       } catch (e) {
@@ -342,8 +340,6 @@ class ProviderSynchro with ChangeNotifier {
     await produitDao.insertAll(listProduitModele);
   }
 
-  //TODO regardez si projet is synchro
-
   ///Méthode qui va purger la base de données sans effacer les projets non synchronisés
   Future deleteForSynchro() async {
     if (!_dataSynced && _refSynced) {
@@ -413,48 +409,37 @@ class ProviderSynchro with ChangeNotifier {
     print(response);
   }
 
-  Future<File> createOrFileUrl(int projetId) async {
+  Future<void> createOrFileUrl(int projetId) async {
     UtilisateurData utilisateurData;
     if (http.runtimeType != MockClient)
       utilisateurData = await utilisateurDao.getLastUser();
     else
       utilisateurData = UtilisateurData(
           utilisateurId: 4, login: 'testuser', token: 'fesfk-feksnf-fesf');
-    var response;
     try {
       HttpClient client = new HttpClient();
-      client.postUrl(Uri.parse(MaderaUrl.urlProjectDevis +
-          '/${projetId}/${utilisateurData.utilisateurId}')).then((HttpClientRequest request) {
+      client
+          .postUrl(Uri.parse(MaderaUrl.urlProjectDevis +
+              '/$projetId/${utilisateurData.utilisateurId}'))
+          .then((HttpClientRequest request) {
         request.headers.add('Authorization', 'Bearer ${utilisateurData.token}');
         return request.close();
       }).then((HttpClientResponse response) async {
-        var bytes = await consolidateHttpClientResponseBytes(response);
-        print((await getApplicationDocumentsDirectory()).path);
-        String dir = (await getApplicationDocumentsDirectory()).path;
-        file = File("$dir/devis");
-        await file.writeAsBytes(bytes);
-        notifyListeners();
+        if (response.statusCode == 200) {
+          var bytes = await consolidateHttpClientResponseBytes(response);
+          print((await getApplicationDocumentsDirectory()).path);
+          String dir = (await getApplicationDocumentsDirectory()).path;
+          file = File("$dir/devis");
+          await file.writeAsBytes(bytes);
+          notifyListeners();
+        } else {
+          log.e('Error when trying to call ${MaderaUrl.urlProjectDevis}');
+        }
       });
-      /*response = await http.post(
-          MaderaUrl.urlProjectDevis +
-              '/${projetId}/${utilisateurData.utilisateurId}',
-          headers: {'Authorization': 'Bearer ${utilisateurData.token}'});*/
     } catch (e) {
       log.e('Error when trying to call ${MaderaUrl.urlProjectDevis}:\n' +
           e.toString());
       return null;
     }
-    /*if (response.statusCode == 200) {
-      if (http.runtimeType != MockClient) {
-        var bytes = response.body;
-        this.file = new File("devis");
-        await file.writeAsBytes(bytes);
-        print(bytes);
-      }
-
-    } else {
-      log.e('ErreuR.');
-      return null;
-    }*/
   }
 }

@@ -234,7 +234,6 @@ class _QuoteCreationState extends State<QuoteCreation> {
                                 ),
                               ),
                             ),
-                            //TODO trouver une autre implémentation pour éviter le futurebuilder?
                             providerProjet.client != null
                                 ? FutureBuilder(
                                     future: providerBdd.buildClientAdresse(

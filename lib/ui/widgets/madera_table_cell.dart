@@ -55,7 +55,7 @@ class _MaderaTableRow extends State<MaderaTableCell> {
       width: widget.width,
       color: widget.backgroundColor,
       padding: EdgeInsets.only(
-        top: 35,
+        top: widget.height / 2.2,
       ),
       child: Text(
         widget.textCell,

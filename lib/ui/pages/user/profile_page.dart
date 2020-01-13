@@ -22,12 +22,10 @@ class UserProfilePage extends StatefulWidget {
 }
 
 class _UserProfilePageState extends State<UserProfilePage> {
-  String _userName;
   //added to prepare for scaling
   @override
   void initState() {
     super.initState();
-    _userName = 'TEST NAME';
   }
 
   //added to prepare for scaling
@@ -38,7 +36,6 @@ class _UserProfilePageState extends State<UserProfilePage> {
 
   @override
   Widget build(BuildContext context) {
-    //final args = ModalRoute.of(context).settings.arguments;
     return MaderaScaffold(
       passedContext: context,
       child: Center(

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:logger/logger.dart';
 import 'package:proto_madera_front/data/database/madera_database.dart';
 import 'package:proto_madera_front/data/providers/provider_login.dart';
@@ -131,8 +132,8 @@ class _ProductListState extends State<ProductList> {
       ),
       stackAdditions: <Widget>[
         Padding(
-          padding: EdgeInsets.fromLTRB(
-              providerSize.floatingButtonWidth, providerSize.mediaHeight / 6, 0, 0),
+          padding: EdgeInsets.fromLTRB(providerSize.floatingButtonWidth,
+              providerSize.mediaHeight / 6, 0, 0),
           child: Column(
             children: <Widget>[
               Container(
@@ -166,8 +167,12 @@ class _ProductListState extends State<ProductList> {
                       providerBdd.createAll(providerProjet.projetWithAllInfos);
                       providerProjet.validate(true);
                     }
-                    Provider.of<MaderaNav>(context)
-                        .redirectToPage(context, QuoteOverview(), null);
+                    Provider.of<MaderaNav>(context).showNothingYouCanDoPopup(
+                        context,
+                        Icons.check_circle,
+                        'Projet Sauvegardé',
+                        'Le projet a été sauvegardé',
+                        QuoteOverview());
                   },
                   icon: Icon(
                     Icons.check,
@@ -192,7 +197,7 @@ class _ProductListState extends State<ProductList> {
                         context,
                         Icons.warning,
                         'Abandon du projet',
-                        'Les données en cours de création vont être perdues.',
+                        'Les données en cours de création/modification vont être perdues.',
                         HomePage());
                     providerProjet.validate(false);
                   },

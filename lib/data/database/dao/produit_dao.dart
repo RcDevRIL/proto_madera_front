@@ -1,8 +1,6 @@
-import 'package:flutter/cupertino.dart';
 import 'package:moor_flutter/moor_flutter.dart';
 import 'package:proto_madera_front/data/database/madera_database.dart';
 import 'package:proto_madera_front/data/database/tables/produit.dart';
-import 'package:proto_madera_front/data/models/models.dart';
 
 part 'produit_dao.g.dart';
 

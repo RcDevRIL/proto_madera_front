@@ -28,16 +28,19 @@ class ProductCreation extends StatefulWidget {
 class _ProductCreationState extends State<ProductCreation> {
   final log = Logger();
   bool isEditing;
+  ScrollController _formScrollController;
 
   //added to prepare for scaling
   @override
   void initState() {
     super.initState();
+    _formScrollController = ScrollController();
   }
 
   //added to prepare for scaling
   @override
   void dispose() {
+    _formScrollController?.dispose();
     super.dispose();
   }
 
@@ -73,6 +76,7 @@ class _ProductCreationState extends State<ProductCreation> {
             ),
             GradientFrame(
               child: SingleChildScrollView(
+                controller: _formScrollController,
                 child: Column(
                   children: <Widget>[
                     MaderaCard(
@@ -90,7 +94,6 @@ class _ProductCreationState extends State<ProductCreation> {
                           providerProjet.produitNom = newValue;
                         },
                         decoration: InputDecoration(
-                          //TODO style dynamique : style hint si pas de produit, style defaulttextstyle si produit nom renseigné
                           hintText: !isEditing
                               ? 'Nom du produit...'
                               : providerProjet.produitNom,
@@ -147,13 +150,19 @@ class _ProductCreationState extends State<ProductCreation> {
                                     ))
                             .toList(),
                         onChanged: (String newValue) {
+                          _formScrollController.animateTo(
+                            _formScrollController.position.maxScrollExtent,
+                            curve: Curves.ease,
+                            duration: Duration(
+                              microseconds: 300,
+                            ),
+                          );
                           providerBdd.listGammes.forEach(
                             (gamme) async => {
                               if (gamme.libelleGammes == newValue)
                                 {
                                   //Enregistre la nouvelle gamme
-                                  providerProjet.gamme =
-                                      gamme, //TODO par contre depuis quand c'est des ',' pour finir une ligne? :o
+                                  providerProjet.gamme = gamme,
                                   //Initialise la liste des modeles avec la gamme
                                   await providerBdd
                                       .initListProduitModele(gamme.gammeId),
@@ -357,7 +366,7 @@ class _ProductCreationState extends State<ProductCreation> {
                           MaderaButton(
                             onPressed: () {
                               Provider.of<ProviderProjet>(context)
-                                  .initProductCreationModel(); //TODO Corriger, le nom reste si remplit avant clic, pourtant modele bien vide
+                                  .initProductCreationModel();
                               Navigator.of(context).pop();
                             },
                             child: Text('Oui'),

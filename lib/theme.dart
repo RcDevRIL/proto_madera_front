@@ -53,8 +53,8 @@ class MaderaTheme {
       accentIconTheme:
           IconThemeData.lerp(defaultIconThemeData, IconThemeData(), 2.0),
       appBarTheme: defaultAppBarTheme,
-      cardTheme: CardTheme(), //TODO
-      dialogTheme: DialogTheme(), //TODO
+      cardTheme: CardTheme(),
+      dialogTheme: DialogTheme(),
       buttonTheme: maderaButtonTheme,
       //////////////////////////////////////////
     );
@@ -109,8 +109,6 @@ class MaderaTheme {
   /// Il est également possible des les récupérer et les transformer au runtime avec la commande:
   /// Theme.of(context).textTheme.[nomDuParamètre].apply()/.copyWith()
   ///
-  /// TODO Définir des styles pour nos éléments principaux: maderaHeader, appbartitle, titre de formulaire, etc.
-  ///
   static final TextTheme defaultTextTheme = TextTheme(
     title: MaderaTextStyles.appBarTitle,
     body1: MaderaTextStyles.defaultTextStyle,
@@ -164,33 +162,14 @@ class MaderaColors {
 
 ///
 ///Cette classe permet de stocker des dimensions.
-/// TODO SUPPRIMER CETTE CLASSE ET RENDRE L'APPLICATION RESPONSIVE
 class Dimens {
   const Dimens();
-  //problème sur certaines valeurs je pense pour le déploiement sur pleins d'écran différent...
-  //  à  terme il faudra utiliser directement dans le code des MediaQuery.of(context).size,etc.
   static const drawerMinWitdh = 72.0;
   static const drawerMaxWidth = 220.0;
   static const drawerIconSize = 40.0;
-  static const containerHeight = 580.0;
-  static const containerWidth = 1000.0;
   static const loginFormWidth = 250.0;
   static const loginFormHeight = 380.0;
   static const appBarElevation = 50.0;
-  static const quoteButtonWidth = 300.0;
-  static const quoteButtonHeight = 300.0;
-  static const buttonPaddingRight = 10.0;
-  static const buttonPaddingBottom = 0.0;
-  static const cardSizeSmall = 250.0;
-  static const cardSizeXSmall = 160.0;
-  static const cardSizeMedium = 821.0;
-  static const cardSizeLarge = 980.0;
-  static const cardHeight = 45.0;
-  static const cardHeightMedium = 185.0;
-  static const cardHeightLarge = 450.0;
-  static const boxWidth = 250.0;
-  static const boxWidthMedium = 350.0;
-  static const boxHeight = 60.0;
 }
 
 ///

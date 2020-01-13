@@ -65,7 +65,7 @@ class ProviderProjet with ChangeNotifier {
   ProduitModuleData moduleAdd;
 
   ///ProductList Model
-  List<ProduitWithModule> _listProduitProjet;
+  List<ProduitWithModule> listProduitProjet;
 
   ///Final Saving structure to send on our backend server or to on our local [MaderaDatabase]
   ProjetWithAllInfos _projetWithAllInfos;
@@ -123,7 +123,7 @@ class ProviderProjet with ChangeNotifier {
     _moduleSection2 = '';
     _moduleNom = '';
     _editModuleIndex = 0;
-    _listProduitProjet = new List();
+    listProduitProjet = new List();
     notifyListeners();
   }
 
@@ -153,13 +153,13 @@ class ProviderProjet with ChangeNotifier {
                 !(_moduleAngle.isNotEmpty ^ _moduleSection2.isNotEmpty));
         }
         break;
-      //TODO
       case 'Finishings':
         return true;
         break;
-      //TODO
       case 'ProductList':
-        return true;
+        return (listProduitProjet != null
+            ? listProduitProjet.length != 0
+            : false);
         break;
       default:
         return false;
@@ -169,7 +169,6 @@ class ProviderProjet with ChangeNotifier {
 
   bool initProjet() {
     try {
-      //TODO ajouter un champ description en bdd ?
       var r = Random();
       _projet = new ProjetData(
         projetId: -1,
@@ -215,22 +214,22 @@ class ProviderProjet with ChangeNotifier {
     _editModuleIndex = 0;
     _editProductIndex = productIndex;
     _produitModele = null;
-    _produitNom = _listProduitProjet[_editProductIndex].produit.produitNom;
+    _produitNom = listProduitProjet[_editProductIndex].produit.produitNom;
     _listProduitModuleProjet =
-        _listProduitProjet[_editProductIndex].listProduitModule;
+        listProduitProjet[_editProductIndex].listProduitModule;
     notifyListeners();
   }
 
-  ProjetWithAllInfos get  projetWithAllInfos => _projetWithAllInfos;
+  ProjetWithAllInfos get projetWithAllInfos => _projetWithAllInfos;
 
-  set projetWithAllInfos(ProjetWithAllInfos projetWithAllInfos){
+  set projetWithAllInfos(ProjetWithAllInfos projetWithAllInfos) {
     _projetWithAllInfos = projetWithAllInfos;
     notifyListeners();
   }
-  List<ProduitWithModule> get listProduitProjet => _listProduitProjet;
 
-  set listProduitProjet(List<ProduitWithModule> listProduitWithModule) {
-    _listProduitProjet = listProduitWithModule;
+  void setlistProduitProjet(List<ProduitWithModule> listProduitWithModule) {
+    this.listProduitProjet = listProduitWithModule;
+    notifyListeners();
   }
 
   ClientData get client => _client;
@@ -243,7 +242,7 @@ class ProviderProjet with ChangeNotifier {
   }
 
   void deleteProductCreationModel(int productID) {
-    _listProduitProjet.removeAt(productID);
+    listProduitProjet.removeAt(productID);
     notifyListeners();
   }
 
@@ -261,7 +260,6 @@ class ProviderProjet with ChangeNotifier {
     // Si le module est défini avec un angle, alors on récupère les valeurs des deux sections
     // et on les affecte à la bonne variable
     if (_moduleAngle.isNotEmpty) {
-      //TODO Vérifier si dans le jeu d'essai cette règle s'applique bien: pas d'angle => empty String
       _moduleSection = moduleAdd.produitModuleSectionLongueur
           .trim()
           .split('[')[1]
@@ -404,16 +402,16 @@ class ProviderProjet with ChangeNotifier {
   }
 
   void initProjetWithAllInfos() {
-    _projetWithAllInfos = ProjetWithAllInfos(_projet, _listProduitProjet);
+    _projetWithAllInfos = ProjetWithAllInfos(_projet, listProduitProjet);
     notifyListeners();
   }
 
   void updateListProduitProjet() {
-    if (_editProductIndex != _listProduitProjet.length) {
-      _listProduitProjet.removeAt(_editProductIndex);
-      _listProduitProjet.insert(_editProductIndex, _produitWithModule);
+    if (_editProductIndex != listProduitProjet.length) {
+      listProduitProjet.removeAt(_editProductIndex);
+      listProduitProjet.insert(_editProductIndex, _produitWithModule);
     } else {
-      _listProduitProjet.add(_produitWithModule);
+      listProduitProjet.add(_produitWithModule);
     }
     notifyListeners();
   }
@@ -422,7 +420,6 @@ class ProviderProjet with ChangeNotifier {
     _listProduitModuleProjet.removeAt(_editModuleIndex);
     notifyListeners();
   }
-
 
   set editModuleIndex(int index) {
     _editModuleIndex = index;

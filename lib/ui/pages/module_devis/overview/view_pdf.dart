@@ -3,8 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:logger/logger.dart';
 import 'package:flutter_full_pdf_viewer/full_pdf_viewer_scaffold.dart';
 import 'package:proto_madera_front/data/providers/provider_synchro.dart';
-import 'package:proto_madera_front/ui/widgets/custom_widgets.dart'
-    show MaderaScaffold;
+import 'package:proto_madera_front/data/providers/providers.dart';
+import 'package:proto_madera_front/ui/pages/pages.dart';
+import 'package:proto_madera_front/theme.dart' as cTheme;
 import 'package:provider/provider.dart';
 
 ///
@@ -36,9 +37,27 @@ class _ViewPdf extends State<ViewPdf> {
 
   @override
   Widget build(BuildContext context) {
-    return MaderaScaffold(
-      passedContext: context,
+    return Center(
       child: PDFViewerScaffold(
+        appBar: AppBar(
+          primary: true,
+          title: Text(
+            'Devis PDF',
+            style: cTheme.MaderaTextStyles.appBarTitle,
+          ),
+          centerTitle: false,
+          actions: <Widget>[
+            FlatButton(
+              padding: EdgeInsets.all(0.0), //override theme
+              shape: Border.all(style: BorderStyle.none), //override theme
+              onPressed: () => Provider.of<MaderaNav>(context)
+                  .redirectToPage(context, HomePage(), null),
+              child: Image(
+                image: AssetImage('assets/img/logo-madera.png'),
+              ),
+            ),
+          ],
+        ),
         path: Provider.of<ProviderSynchro>(context).file.path,
       ),
     );

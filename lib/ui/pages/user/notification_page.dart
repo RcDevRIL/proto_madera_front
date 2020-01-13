@@ -1,11 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 
-import 'package:proto_madera_front/data/providers/providers.dart'
-    show MaderaNav;
 import 'package:proto_madera_front/ui/widgets/custom_widgets.dart'
     show MaderaScaffold;
-import 'package:proto_madera_front/theme.dart' as cTheme;
 
 ///
 /// User Notification page
@@ -39,7 +35,10 @@ class _NotificationPageState extends State<NotificationPage> {
     return MaderaScaffold(
       passedContext: context,
       child: Center(
-        child: Text("A venir...", style: Theme.of(context).textTheme.display1,),
+        child: Text(
+          "A venir...",
+          style: Theme.of(context).textTheme.display1,
+        ),
       ),
     );
   }

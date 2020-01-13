@@ -6,8 +6,6 @@ import 'package:proto_madera_front/ui/widgets/custom_LPI.dart';
 /// Page to initialize application and welcome user
 ///   Data synchronization is executed directly in 'custom_lpi.dart' (error catch if token = null)
 ///
-///  - TODO faire progresser la barre de chargement en fonction de l'avancée des tâches d'initialisation
-///
 /// @author HELIOT David, CHEVALLIER Romain, LADOUCE Fabien
 ///
 /// @version 1.0-PRE-RELEASE

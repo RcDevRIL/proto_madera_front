@@ -52,7 +52,6 @@ class MaderaApp extends StatelessWidget {
             ),
           ),
         ],
-        //TODO faire la redirection si l'utilisateur est déjà conneté ? Test en envoyant le token ?
         child: MaterialApp(
           title: 'Madera Constructions',
           theme: cTheme.MaderaTheme.maderaLightTheme,

@@ -1,11 +1,11 @@
-# proto_madera_front - README V1.7.0
+# proto_madera_front - README V1.7.1
 __Build status by branch__
 * __master :__ [![M_Codemagic build status][]][M_latest_build]
 * __int :__ [![I_Codemagic build status][]][I_latest_build]
 * __dev :__ [![D_Codemagic build status][]][D_latest_build]
 
 __Tests coverage :__
- ![Coverage](https://github.com/RcDevRIL/proto_madera_front/blob/int/coverage/covbadge.svg)
+ ![Coverage](https://github.com/RcDevRIL/proto_madera_front/blob/master/coverage/covbadge.svg)
 
 Welcome on our development repository for our graduation project!! 
 
@@ -85,7 +85,9 @@ To start automated integration tests, make sure you have a connected Android dev
 
 `flutter drive --target=test_driver/madera_app.dart`
 
-This will trigger the execution of the automated integration tests. It will launche the app on debug mode and execute implemented actions. This tool is great to enable stable integration of new releases :rocket:
+This will trigger the execution of the automated integration tests. It will launch the app on debug mode and execute implemented actions. This tool is great to enable stable integration of new releases :rocket:
+
+But right now, the tests implemented are for demonstration purposes.
 
 ## Built With
 
@@ -99,6 +101,8 @@ _Direct Dependencies:_
 * [sqflite] - The package used to enable the creation and interactions on a "file-based" database ([SQLite] Flutter plugin)
 * [moor_flutter] - The package used to ease database interaction (based on [sqflite])
 * [json_serializable] - The packaged used to ease json (de)serialization
+* [flutter_full_pdf_viewer] - The packaged used to display a pdf in-app
+* [path_provider] - The packaged used to get application access to local device system file
 
 _Development Dependencies:_
 * [build_runner] - The package that let [moor_flutter] generate boilerplate code
@@ -147,6 +151,8 @@ This project is licensed under the GNU GENERAL PUBLIC LICENSE - see the [LICENSE
 [moor_generator]: https://pub.dev/packages/moor_generator
 [build_runner]: https://pub.dev/packages/build_runner
 [json_serializable]: https://pub.dev/packages/json_serializable
+[flutter_full_pdf_viewer]: https://pub.dev/packages/flutter_full_pdf_viewer
+[path_provider]: https://pub.dev/packages/path_provider
 [flutter_test]: https://api.flutter.dev/flutter/flutter_test/flutter_test-library.html
 [flutter_driver]: https://api.flutter.dev/flutter/flutter_driver/flutter_driver-library.html
 [RcDevRIL]: https://github.com/RcDevRIL
