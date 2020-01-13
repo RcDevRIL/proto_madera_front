@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:logger/logger.dart';
-import 'package:pdf_viewer_plugin/pdf_viewer_plugin.dart';
+import 'package:flutter_full_pdf_viewer/full_pdf_viewer_scaffold.dart';
 import 'package:proto_madera_front/data/providers/provider_synchro.dart';
 import 'package:proto_madera_front/ui/widgets/custom_widgets.dart'
     show MaderaScaffold;
@@ -39,8 +39,8 @@ class _ViewPdf extends State<ViewPdf> {
     return MaderaScaffold(
       passedContext: context,
       child: Provider.of<ProviderSynchro>(context).file.path != null
-          ? PdfViewer(
-              filePath: Provider.of<ProviderSynchro>(context).file.path,
+          ? PDFViewerScaffold(
+              path: Provider.of<ProviderSynchro>(context).file.path,
             )
           : Container(
               child: Text('Attendez un instant...'),

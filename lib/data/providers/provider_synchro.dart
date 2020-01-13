@@ -421,6 +421,7 @@ class ProviderSynchro with ChangeNotifier {
         return request.close();
       }).then((HttpClientResponse response) async {
         var bytes = await consolidateHttpClientResponseBytes(response);
+        print((await getApplicationDocumentsDirectory()).path);
         String dir = (await getApplicationDocumentsDirectory()).path;
         file = File("$dir/devis");
         await file.writeAsBytes(bytes);
