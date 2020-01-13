@@ -89,8 +89,8 @@ class _QuoteOverviewState extends State<QuoteOverview> {
                         backgroundColor: cTheme.MaderaColors.appBarMainColor,
                         cellFontSize: 20,
                         height: 100,
-                        width: providerSize.tableOverviewWidth / 100 * 20,
-                      ),
+                        width: providerSize.tableOverviewWidth / 100 * 15,
+                      )
                     ),
                     DataColumn(
                       label: MaderaTableCell(
@@ -98,7 +98,7 @@ class _QuoteOverviewState extends State<QuoteOverview> {
                         backgroundColor: cTheme.MaderaColors.appBarMainColor,
                         cellFontSize: 20,
                         height: 100,
-                        width: providerSize.tableOverviewWidth / 100 * 20,
+                        width: providerSize.tableOverviewWidth / 100 * 15,
                       ),
                     ),
                     DataColumn(
@@ -107,7 +107,7 @@ class _QuoteOverviewState extends State<QuoteOverview> {
                         backgroundColor: cTheme.MaderaColors.appBarMainColor,
                         cellFontSize: 20,
                         height: 100,
-                        width: providerSize.tableOverviewWidth / 100 * 20,
+                        width: providerSize.tableOverviewWidth / 100 * 15,
                       ),
                     ),
                     DataColumn(
@@ -116,7 +116,7 @@ class _QuoteOverviewState extends State<QuoteOverview> {
                         backgroundColor: cTheme.MaderaColors.appBarMainColor,
                         cellFontSize: 20,
                         height: 100,
-                        width: providerSize.tableOverviewWidth / 100 * 20,
+                        width: providerSize.tableOverviewWidth / 100 * 15,
                       ),
                     ),
                   ],
@@ -137,8 +137,8 @@ class _QuoteOverviewState extends State<QuoteOverview> {
       ),
       stackAdditions: <Widget>[
         Padding(
-          padding: EdgeInsets.fromLTRB(
-              1200, MediaQuery.of(context).size.height / 6, 0, 0),
+          padding: EdgeInsets.fromLTRB(providerSize.floatingButtonWidth,
+              providerSize.mediaHeight / 6, 0, 0),
           child: Column(
             children: <Widget>[
               Container(
@@ -246,8 +246,9 @@ class _QuoteOverviewState extends State<QuoteOverview> {
                 child: IconButton(
                   onPressed: providerBdd.editProjetID != null
                       ? () async {
-                          await Provider.of<ProviderSynchro>(context).createOrFileUrl(
-                              providerBdd.projetWithClient.projet.projetId);
+                          await Provider.of<ProviderSynchro>(context)
+                              .createOrFileUrl(
+                                  providerBdd.projetWithClient.projet.projetId);
 
                           Provider.of<MaderaNav>(context)
                               .redirectToPage(context, ViewPdf(), null);
