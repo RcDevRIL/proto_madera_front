@@ -1,5 +1,5 @@
 name: proto_madera_front
-version: 0.5.1
+version: 1.0.0
 description: >-
   This is the pubspec of the MADERA mobile app for LesCodeursEnBois graduation project. Enjoy.
 repository: https://github.com/RcDevRIL/proto_madera_front
@@ -20,6 +20,8 @@ dependencies:
   sqflite: ^1.2.0
   moor_flutter: ^2.0.0
   json_serializable: ^3.2.3
+  flutter_full_pdf_viewer: ^1.0.6
+  path_provider: ^1.5.1
 
 dev_dependencies:
   moor_generator: ^2.2.0
@@ -44,3 +46,6 @@ flutter:
    - assets/img/logo-madera.png
    - assets/img/madera.JPG
    - assets/img/icons/off.png
+   - assets/img/echeancier.PNG
+   - assets/img/suiviDevis.jpg
+   - assets/img/creationDevis.jpg

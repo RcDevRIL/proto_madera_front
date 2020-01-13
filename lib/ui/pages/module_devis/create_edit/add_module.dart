@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:logger/logger.dart';
 import 'package:proto_madera_front/data/database/madera_database.dart';
 import 'package:proto_madera_front/data/providers/provider_bdd.dart';
+import 'package:proto_madera_front/data/providers/provider_size.dart';
 import 'package:proto_madera_front/data/providers/providers.dart'
     show MaderaNav, ProviderProjet;
 import 'package:proto_madera_front/theme.dart' as cTheme;
@@ -15,7 +16,7 @@ import 'package:provider/provider.dart';
 ///
 /// @author HELIOT David, CHEVALLIER Romain, LADOUCE Fabien
 ///
-/// @version 0.5-RELEASE
+/// @version 1.0-RELEASE
 class AddModule extends StatefulWidget {
   static const routeName = '/add_module';
 
@@ -53,6 +54,7 @@ class _AddModuleState extends State<AddModule> {
   Widget build(BuildContext context) {
     var providerProjet = Provider.of<ProviderProjet>(context);
     var providerBdd = Provider.of<ProviderBdd>(context);
+    var providerSize = Provider.of<ProviderSize>(context);
     ((providerProjet.editModuleIndex != providerProjet.produitModules.length) &&
             (providerProjet.produitModules.length != 0))
         ? isEditing = true
@@ -78,8 +80,8 @@ class _AddModuleState extends State<AddModule> {
                   children: <Widget>[
                     isEditing ? Container() : _createDropDowns(providerBdd),
                     MaderaCard(
-                      cardWidth: 450.0,
-                      cardHeight: cTheme.Dimens.cardHeight,
+                      cardWidth: providerSize.addModuleMaderaCardWidth,
+                      cardHeight: providerSize.quoteMaderaCardSmallHeight,
                       child: TextField(
                         maxLines: 1,
                         keyboardType: TextInputType.text,
@@ -123,8 +125,8 @@ class _AddModuleState extends State<AddModule> {
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: <Widget>[
                         MaderaCard(
-                          cardHeight: cTheme.Dimens.cardHeight,
-                          cardWidth: 280.0,
+                          cardHeight: providerSize.quoteMaderaCardSmallHeight,
+                          cardWidth: providerSize.addModuleMaderaCardWidth,
                           header: LabelledIcon(
                             icon: Icon(Icons.straighten),
                             text: Text('Section (en centimètres)'),
@@ -159,8 +161,8 @@ class _AddModuleState extends State<AddModule> {
                           ),
                         ),
                         MaderaCard(
-                          cardHeight: cTheme.Dimens.cardHeight,
-                          cardWidth: 280.0,
+                          cardHeight: providerSize.quoteMaderaCardSmallHeight,
+                          cardWidth: providerSize.addModuleMaderaCardWidth,
                           header: LabelledIcon(
                             icon: Icon(Icons.signal_cellular_null),
                             text: Text('Angle (Entrant ou Sortant)'),
@@ -207,8 +209,10 @@ class _AddModuleState extends State<AddModule> {
                                             .moduleAdd.produitModuleAngle
                                             .contains('Sortant')))
                             ? MaderaCard(
-                                cardHeight: cTheme.Dimens.cardHeight,
-                                cardWidth: 280.0,
+                                cardHeight: Provider.of<ProviderSize>(context)
+                                    .quoteMaderaCardSmallHeight,
+                                cardWidth: Provider.of<ProviderSize>(context)
+                                    .addModuleMaderaCardWidth,
                                 header: LabelledIcon(
                                   icon: Icon(Icons.straighten),
                                   text: Text('Section (en centimètres)'),
@@ -252,8 +256,8 @@ class _AddModuleState extends State<AddModule> {
       ),
       stackAdditions: <Widget>[
         Padding(
-          padding: EdgeInsets.fromLTRB(
-              1200, MediaQuery.of(context).size.height / 6, 0, 0),
+          padding: EdgeInsets.fromLTRB(providerSize.floatingButtonWidth,
+              providerSize.mediaHeight / 6, 0, 0),
           child: Column(
             children: <Widget>[
               Container(
@@ -297,7 +301,7 @@ class _AddModuleState extends State<AddModule> {
                   onPressed: () {
                     log.d('Canceling Module...');
                     try {
-                      providerProjet.deleteModuleFromProduct();
+                      providerProjet.deleteModule();
                       Provider.of<MaderaNav>(context)
                           .redirectToPage(context, ProductCreation(), null);
                     } catch (e) {
@@ -327,8 +331,10 @@ class _AddModuleState extends State<AddModule> {
     return Column(
       children: <Widget>[
         MaderaRoundedBox(
-          boxHeight: cTheme.Dimens.boxHeight,
-          boxWidth: 450.0,
+          boxHeight:
+              Provider.of<ProviderSize>(context).quoteMaderaCardSmallHeight,
+          boxWidth:
+              Provider.of<ProviderSize>(context).quoteMaderaCardHightWidth,
           edgeInsetsPadding: EdgeInsets.all(8.0),
           child: DropdownButton<String>(
             isExpanded: true,
@@ -365,8 +371,10 @@ class _AddModuleState extends State<AddModule> {
           height: 20.0,
         ),
         MaderaRoundedBox(
-          boxHeight: cTheme.Dimens.boxHeight,
-          boxWidth: 450.0,
+          boxHeight:
+              Provider.of<ProviderSize>(context).quoteMaderaCardSmallHeight,
+          boxWidth:
+              Provider.of<ProviderSize>(context).quoteMaderaCardHightWidth,
           edgeInsetsPadding: EdgeInsets.all(8.0),
           child: DropdownButton<String>(
             isExpanded: true,

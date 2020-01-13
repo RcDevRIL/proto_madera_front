@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:logger/logger.dart';
+import 'package:proto_madera_front/data/providers/provider_size.dart';
 import 'package:provider/provider.dart';
 
 import 'package:proto_madera_front/data/providers/providers.dart'
@@ -15,7 +16,7 @@ import 'package:proto_madera_front/theme.dart' as cTheme;
 ///
 /// @author HELIOT David, CHEVALLIER Romain, LADOUCE Fabien
 ///
-/// @version 0.5-RELEASE
+/// @version 1.0-RELEASE
 class Finishings extends StatefulWidget {
   static const routeName = '/finishModule';
 
@@ -187,8 +188,8 @@ class _FinishingsState extends State<Finishings> {
       ),
       stackAdditions: <Widget>[
         Padding(
-          padding: EdgeInsets.fromLTRB(
-              1200, MediaQuery.of(context).size.height / 6, 0, 0),
+          padding: EdgeInsets.fromLTRB(Provider.of<ProviderSize>(context).floatingButtonWidth,
+              Provider.of<ProviderSize>(context).mediaHeight / 6, 0, 0),
           child: Column(
             children: <Widget>[
               Container(

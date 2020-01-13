@@ -8,14 +8,20 @@ part 'produit_dao.g.dart';
 class ProduitDao extends DatabaseAccessor<MaderaDatabase>
     with _$ProduitDaoMixin {
   ProduitDao(MaderaDatabase db) : super(db);
-  String get queryProduitOfProjetIsSynchro => "SELECT produit.produit_id from produit "
+  String get queryProduitOfProjetIsSynchro =>
+      "SELECT produit.produit_id from produit "
       "LEFT JOIN projet_produits ON projet_produits.produit_id "
       "LEFT JOIN projet ON projet.projet_id = projet_produits.projet_id "
       "WHERE projet.is_synchro = 1 OR projet.projet_id IS NULL";
 
+  String get queryGetListProduitByProjetId => "SELECT * from produit "
+      "JOIN projet_produits ON projet_produits.produit_id = produit.produit_id "
+      "WHERE projet_produits.projet_id =";
+
   ///Ajout d'une liste de produit / utilisée lors de la méthode de synchro
   Future insertAll(List<ProduitData> listProduit) async {
-    await db.batch((b) => b.insertAll(produit, listProduit, mode: InsertMode.insertOrReplace));
+    await db.batch((b) =>
+        b.insertAll(produit, listProduit, mode: InsertMode.insertOrReplace));
   }
 
   ///Création d'un produit
@@ -67,5 +73,18 @@ class ProduitDao extends DatabaseAccessor<MaderaDatabase>
             (prd) => prd.produitId.isIn(listProduitId),
           ))
         .go();
+  }
+
+  Future<List<ProduitData>> getListProduitByProjetId(int projetId) async {
+    List<ProduitData> listProduitData = await customSelectQuery(
+        queryGetListProduitByProjetId + projetId.toString(),
+            readsFrom: {produit}).get().then(
+          (rows) => rows
+              .map<ProduitData>(
+                (row) => ProduitData.fromData(row.data, db),
+              )
+              .toList(),
+        );
+    return listProduitData;
   }
 }

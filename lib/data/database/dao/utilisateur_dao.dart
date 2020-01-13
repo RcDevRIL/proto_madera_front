@@ -15,8 +15,16 @@ class UtilisateurDao extends DatabaseAccessor<MaderaDatabase>
     await db.batch((b) => b.insert(utilisateur, entry));
   }
 
-  Future<UtilisateurData> getUser() async {
-    return await (select(utilisateur)).getSingle();
+  Future<List<UtilisateurData>> getUserList() async {
+    return await (select(utilisateur)).get();
+  }
+
+  Future<UtilisateurData> getLastUser() async {
+    return await ((select(utilisateur))
+          ..where(
+            (u) => isNotNull(u.token),
+          ))
+        .getSingle();
   }
 
   //Supprime le contenu de utilisateur

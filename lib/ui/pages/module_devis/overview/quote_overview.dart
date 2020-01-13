@@ -1,12 +1,18 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:logger/logger.dart';
+import 'package:proto_madera_front/data/database/madera_database.dart';
+import 'package:proto_madera_front/data/models/models.dart';
 import 'package:proto_madera_front/data/models/projet_with_client.dart';
+import 'package:proto_madera_front/data/providers/provider_projet.dart';
+import 'package:proto_madera_front/data/providers/provider_size.dart';
 import 'package:proto_madera_front/data/providers/providers.dart'
-    show MaderaNav, ProviderBdd;
+    show MaderaNav, ProviderBdd, ProviderSynchro;
 import 'package:proto_madera_front/theme.dart' as cTheme;
-import 'package:proto_madera_front/ui/widgets/common/madera_dialog.dart';
+import 'package:proto_madera_front/ui/pages/module_devis/overview/product_list.dart';
+import 'package:proto_madera_front/ui/pages/module_devis/overview/view_pdf.dart';
 import 'package:proto_madera_front/ui/widgets/custom_widgets.dart'
-    show MaderaScaffold, MaderaTableCell;
+    show MaderaButton, MaderaRoundedBox, MaderaScaffold, MaderaTableCell;
 import 'package:provider/provider.dart';
 
 ///
@@ -14,7 +20,7 @@ import 'package:provider/provider.dart';
 ///
 /// @author HELIOT David, CHEVALLIER Romain, LADOUCE Fabien
 ///
-/// @version 0.5-RELEASE
+/// @version 1.0-RELEASE
 class QuoteOverview extends StatefulWidget {
   static const routeName = '/quoteOverview';
 
@@ -23,6 +29,7 @@ class QuoteOverview extends StatefulWidget {
 }
 
 class _QuoteOverviewState extends State<QuoteOverview> {
+  final log = Logger();
   //added to prepare for scaling
   @override
   void initState() {
@@ -38,11 +45,14 @@ class _QuoteOverviewState extends State<QuoteOverview> {
   @override
   Widget build(BuildContext context) {
     //final args = ModalRoute.of(context).settings.arguments;
+    var providerProjet = Provider.of<ProviderProjet>(context);
+    var providerBdd = Provider.of<ProviderBdd>(context);
+    var providerSize = Provider.of<ProviderSize>(context);
     return MaderaScaffold(
       passedContext: context,
-      child: Consumer<MaderaNav>(
-        builder: (_, mN, c) => FutureBuilder(
-          future: Provider.of<ProviderBdd>(context).initProjetData(),
+      child: Center(
+        child: FutureBuilder(
+          future: providerBdd.listProjetWithClient,
           builder: (context, snapshot) {
             if (snapshot.hasError) {
               return Column(
@@ -58,35 +68,37 @@ class _QuoteOverviewState extends State<QuoteOverview> {
                 ],
               );
             } else if (snapshot.hasData) {
-              return SingleChildScrollView(
-                scrollDirection: Axis.vertical,
-                child: Container(
-                  decoration: BoxDecoration(
-                    border: Border.all(color: Colors.black),
-                  ),
-                  width: 2500,
-                  height: 665,
+              return MaderaRoundedBox(
+                boxWidth: Provider.of<ProviderSize>(context).tableOverviewWidth,
+                boxHeight:
+                    Provider.of<ProviderSize>(context).tableOverviewHeight,
+                edgeInsetsPadding: const EdgeInsets.symmetric(
+                  horizontal: 4.0,
+                  vertical: 0.0,
+                ),
+                child: SingleChildScrollView(
+                  scrollDirection: Axis.vertical,
                   child: DataTable(
+                    horizontalMargin: 0,
                     columnSpacing: 0,
                     headingRowHeight: 100,
                     dataRowHeight: 100,
                     columns: [
                       DataColumn(
-                        label: MaderaTableCell(
-                          textCell: 'Date de création',
-                          backgroundColor: cTheme.MaderaColors.appBarMainColor,
-                          cellFontSize: 20,
-                          height: 100,
-                          width: 250,
-                        ),
-                      ),
+                          label: MaderaTableCell(
+                        textCell: 'Date de création',
+                        backgroundColor: cTheme.MaderaColors.appBarMainColor,
+                        cellFontSize: 20,
+                        height: 100,
+                        width: providerSize.tableOverviewWidth / 100 * 15,
+                      )),
                       DataColumn(
                         label: MaderaTableCell(
                           textCell: 'Ref.client',
                           backgroundColor: cTheme.MaderaColors.appBarMainColor,
                           cellFontSize: 20,
                           height: 100,
-                          width: 250,
+                          width: providerSize.tableOverviewWidth / 100 * 15,
                         ),
                       ),
                       DataColumn(
@@ -95,7 +107,7 @@ class _QuoteOverviewState extends State<QuoteOverview> {
                           backgroundColor: cTheme.MaderaColors.appBarMainColor,
                           cellFontSize: 20,
                           height: 100,
-                          width: 250,
+                          width: providerSize.tableOverviewWidth / 100 * 15,
                         ),
                       ),
                       DataColumn(
@@ -104,7 +116,7 @@ class _QuoteOverviewState extends State<QuoteOverview> {
                           backgroundColor: cTheme.MaderaColors.appBarMainColor,
                           cellFontSize: 20,
                           height: 100,
-                          width: 250,
+                          width: providerSize.tableOverviewWidth / 100 * 15,
                         ),
                       ),
                     ],
@@ -124,45 +136,210 @@ class _QuoteOverviewState extends State<QuoteOverview> {
           },
         ),
       ),
-    );
-  }
+      stackAdditions: <Widget>[
+        Padding(
+          padding: EdgeInsets.fromLTRB(providerSize.floatingButtonWidth,
+              providerSize.mediaHeight / 6, 0, 0),
+          child: Column(
+            children: <Widget>[
+              Container(
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  border: Border.all(
+                      color: providerBdd.editProjetID != null
+                          ? cTheme.MaderaColors.maderaLightGreen
+                          : Colors.grey,
+                      width: 2),
+                  color: providerBdd.editProjetID != null
+                      ? cTheme.MaderaColors.maderaBlueGreen
+                      : Colors.grey,
+                ),
+                child: IconButton(
+                  onPressed: providerBdd.editProjetID != null
+                      ? () async {
+                          if (providerBdd.projetWithClient.projet.devisEtatId <=
+                              4) {
+                            var projet = providerBdd.projetWithClient.projet;
+                            var client = providerBdd.projetWithClient.client;
+                            List<ProduitModuleData> produitModule =
+                                await providerBdd.produitModuleDao
+                                    .getListProduitModuleByProjetId(
+                                        projet.projetId);
+                            List<ProduitData> produitData = await providerBdd
+                                .produitDao
+                                .getListProduitByProjetId(projet.projetId);
+                            List<ProduitWithModule> produitWithModule =
+                                List<ProduitWithModule>();
+                            produitData.forEach((produitData) {
+                              List<ProduitModuleData> test = List();
+                              produitModule.forEach((produitModule) {
+                                if (produitModule.produitId ==
+                                    produitData.produitId) {
+                                  test.add(produitModule);
+                                }
+                              });
+                              produitWithModule
+                                  .add(ProduitWithModule(produitData, test));
+                            });
+                            providerProjet.initAndHold();
+                            providerProjet.initClientWithClient(client);
+                            providerProjet.loadProjet(projet);
+                            providerProjet.projetWithAllInfos =
+                                ProjetWithAllInfos(projet, produitWithModule);
+                            providerProjet
+                                .setlistProduitProjet(produitWithModule);
+                            providerProjet.loadProductCreationModel(0);
+                            Provider.of<MaderaNav>(context)
+                                .redirectToPage(context, ProductList(), null);
+                          }
+                        }
+                      : null,
+                  icon: Icon(
+                    Icons.edit,
+                    color: Colors.white,
+                  ),
+                ),
+              ),
+              SizedBox(height: 12),
+              Container(
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  border: Border.all(
+                      color: providerBdd.editProjetID != null
+                          ? cTheme.MaderaColors.maderaLightGreen
+                          : Colors.grey,
+                      width: 2),
+                  color: providerBdd.editProjetID != null
+                      ? cTheme.MaderaColors.maderaBlueGreen
+                      : Colors.grey,
+                ),
+                child: IconButton(
+                  onPressed: providerBdd.editProjetID != null
+                      ? () {
+                          Provider.of<MaderaNav>(context)
+                              .showNothingYouCanDoPopup(
+                            context,
+                            Icons.send,
+                            'Envoi de mail',
+                            'Un mail a été envoyé à l\'adresse suivante : ${providerBdd.projetWithClient.client.mail}',
+                            null,
+                          );
+                        }
+                      : null,
+                  icon: Icon(
+                    Icons.send,
+                    color: Colors.white,
+                  ),
+                ),
+              ),
+              SizedBox(height: 12),
+              Container(
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  border: Border.all(
+                      color: providerBdd.editProjetID != null
+                          ? cTheme.MaderaColors.maderaLightGreen
+                          : Colors.grey,
+                      width: 2),
+                  color: providerBdd.editProjetID != null
+                      ? cTheme.MaderaColors.maderaBlueGreen
+                      : Colors.grey,
+                ),
+                child: IconButton(
+                  onPressed: providerBdd.editProjetID != null
+                      ? () async {
+                          await Provider.of<ProviderSynchro>(context)
+                              .createOrFileUrl(
+                                  providerBdd.projetWithClient.projet.projetId);
 
-  void showPopup(BuildContext context, IconData icon, String title, Widget body,
-      Color color, List<Widget> actions) {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return MaderaDialog(
-          titleAndIconColor: color,
-          title: title,
-          icon: icon,
-          body: body,
-          actions: actions,
-        );
-      },
+                          WidgetsBinding.instance.addPostFrameCallback((_) {
+                            MaterialPageRoute newRoute = MaterialPageRoute(
+                              builder: (BuildContext context) => ViewPdf(),
+                            );
+                            Navigator.of(context).push(newRoute);
+                          });
+                        }
+                      : null,
+                  icon: Icon(
+                    Icons.picture_as_pdf,
+                    color: Colors.white,
+                  ),
+                ),
+              ),
+              SizedBox(height: 12),
+              Container(
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  border: Border.all(
+                      color: providerBdd.editProjetID != null
+                          ? cTheme.MaderaColors.maderaLightGreen
+                          : Colors.grey,
+                      width: 2),
+                  color: providerBdd.editProjetID != null
+                      ? cTheme.MaderaColors.maderaBlueGreen
+                      : Colors.grey,
+                ),
+                child: IconButton(
+                  onPressed: () {
+                    Provider.of<MaderaNav>(context).showPopup(
+                      context,
+                      Icons.warning,
+                      'Suppression du projet ${providerBdd.editProjetID}',
+                      Text('Voulez-vous vraiment supprimé ce projet ?'),
+                      [
+                        MaderaButton(
+                          key: Key('ok-button'),
+                          child: Text('Oui'),
+                          onPressed: () {
+                            //TODO appel providerSynchro pour delete
+                            //TODO remove de la liste si delete sur le serveur et mettre à jour la bdd locale !
+                            //providerBdd.listProjetWithClient
+                            Navigator.of(context).pop();
+                          },
+                        ),
+                        MaderaButton(
+                          key: Key('ko-button'),
+                          child: Text('Non'),
+                          onPressed: () {
+                            Navigator.of(context).pop();
+                          },
+                        ),
+                      ],
+                    );
+                  },
+                  icon: Icon(
+                    Icons.delete,
+                    color: Colors.white,
+                  ),
+                ),
+              )
+            ],
+          ),
+        ),
+      ],
     );
   }
 }
 
 List<DataRow> _createRows(BuildContext context, AsyncSnapshot snapshot) {
+  var providerBdd = Provider.of<ProviderBdd>(context);
   return snapshot.data
       .map<DataRow>(
         (ProjetWithClient projetWithClient) => DataRow(
           onSelectChanged: (bool selected) {
             if (selected) {
-              //TODO passer directement l'objet projetWithClient ?
-              if (Provider.of<ProviderBdd>(context).editProjetIndex ==
-                  projetWithClient.projet.refProjet) {
-                Provider.of<ProviderBdd>(context).loadProjetEdit(null);
+              if (providerBdd.editProjetID ==
+                  projetWithClient.projet.projetId) {
+                providerBdd.clearProjetWithClient();
               } else {
-                Provider.of<ProviderBdd>(context)
-                    .loadProjetEdit(projetWithClient.projet.refProjet);
+                providerBdd.loadProjetWithClient(projetWithClient);
               }
-              //Provider.of<MaderaNav>(context).redirectToPage(context, PageDevis(${projetWithClient.projet.projetId));
+            } else {
+              providerBdd.clearProjetWithClient();
             }
           },
-          selected: Provider.of<ProviderBdd>(context).editProjetIndex ==
-              projetWithClient.projet.refProjet,
+          selected:
+              providerBdd.editProjetID == projetWithClient.projet.projetId,
           cells: <DataCell>[
             DataCell(
               MaderaTableCell(

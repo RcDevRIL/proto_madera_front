@@ -5,17 +5,29 @@ import 'package:flutter/material.dart';
 ///
 /// @author HELIOT David, CHEVALLIER Romain, LADOUCE Fabien
 ///
-/// @version 0.5-RELEASE
+/// @version 1.0-RELEASE
 class NavigationModel {
+  final Key key;
   final String title;
   final IconData iconData;
-  const NavigationModel({this.iconData, this.title});
+  const NavigationModel({this.key, this.iconData, this.title});
 }
 
 const List<NavigationModel> navigationItems = [
-  NavigationModel(title: 'Accueil', iconData: Icons.apps),
-  NavigationModel(title: 'Outil Devis', iconData: Icons.assignment),
-  NavigationModel(title: 'Suivi Devis', iconData: Icons.search),
-  NavigationModel(title: 'Notifications', iconData: Icons.notifications),
-  NavigationModel(title: 'Settings', iconData: Icons.settings),
+  NavigationModel(
+      key: Key('home-tile'), title: 'Accueil', iconData: Icons.apps),
+  NavigationModel(
+      key: Key('quote_tool-tile'),
+      title: 'Outil Devis',
+      iconData: Icons.assignment),
+  NavigationModel(
+      key: Key('quote_overview-tile'),
+      title: 'Suivi Devis',
+      iconData: Icons.search),
+  NavigationModel(
+      key: Key('notifications-tile'),
+      title: 'Notifications',
+      iconData: Icons.notifications),
+  NavigationModel(
+      key: Key('settings-tile'), title: 'Settings', iconData: Icons.settings),
 ];

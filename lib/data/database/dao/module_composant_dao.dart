@@ -11,10 +11,10 @@ class ModuleComposantDao extends DatabaseAccessor<MaderaDatabase>
 
   String get querySelectModuleComposantOfProjetSynchro =>
       "SELECT module_composant.module_id FROM module_composant "
-      "LEFT JOIN produit_module ON produit_module.module_id = module_composant.module_id "
-      "LEFT JOIN projet_produits ON projet_produits.produit_id = produit_module.produit_id "
-      "LEFT JOIN projet ON projet.projet_id = projet_produits.projet_id "
-      "WHERE projet.is_synchro = 1 OR projet.projet_id IS NULL";
+      "JOIN produit_module ON produit_module.module_id = module_composant.module_id "
+      "JOIN projet_produits ON projet_produits.produit_id = produit_module.produit_id "
+      "JOIN projet ON projet.projet_id = projet_produits.projet_id "
+      "WHERE projet.is_synchro = 0 GROUP BY module_composant.module_id";
 
   Future insertAll(List<ModuleComposantData> listModuleComposant) async {
     await db.batch((b) => b.insertAll(moduleComposant, listModuleComposant, mode: InsertMode.insertOrReplace));
@@ -34,7 +34,7 @@ class ModuleComposantDao extends DatabaseAccessor<MaderaDatabase>
               .toList(),
         );
     return await (delete(moduleComposant)
-          ..where((mc) => mc.moduleId.isIn(listModuleId)))
+          ..where((mc) => mc.moduleId.isNotIn(listModuleId)))
         .go();
   }
 }

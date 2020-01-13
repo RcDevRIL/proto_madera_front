@@ -15,7 +15,7 @@ import 'package:proto_madera_front/ui/pages/pages.dart';
 ///
 /// @author HELIOT David, CHEVALLIER Romain, LADOUCE Fabien
 ///
-/// @version 0.5-RELEASE
+/// @version 1.0-RELEASE
 void main() {
   final ProviderBdd providerBdd = ProviderBdd();
 
@@ -23,12 +23,12 @@ void main() {
     testWidgets(
       'init ProviderNavigation on HomePage test',
       (WidgetTester tester) async {
-        final MaderaNav providerNavigation = MaderaNav();
         Widget testWidget = MediaQuery(
           data: MediaQueryData(),
           child: MultiProvider(
             providers: [
-              ChangeNotifierProvider(create: (context) => providerNavigation),
+              ChangeNotifierProvider(create: (context) => MaderaNav()),
+              ChangeNotifierProvider(create: (context) => providerBdd),
             ],
             child: MaterialApp(
               home: HomePage(),
@@ -59,6 +59,57 @@ void main() {
         providerProjet
             .initClientWithClient(testClient); //ajout d'un client de test
         expect(providerProjet.initProjet(), true);
+
+        providerProjet.initProductCreationModel();
+        expect(providerProjet.produitModules.length,
+            0); // 0 car initialisation de la liste des produits
+
+        expect(providerProjet.produitNom.isEmpty, true); // Nom produit vide
+        providerProjet.produitNom = "Maison modulaire standard";
+        expect(providerProjet.produitNom.isNotEmpty,
+            true); // Nom produit mis à jour
+
+        expect(providerProjet.initListProduitModuleProjet(null), false);
+        List<ProduitModuleData> listProduitModule = [
+          ProduitModuleData(
+            projetModuleId: 1,
+            moduleId: 1,
+            produitModuleNom: "Mur standard 1",
+            produitModuleAngle: "Angle Sortant",
+            produitModuleSectionLongueur: "{\"section\": {\"longueur\": 350}}",
+          )
+        ];
+        expect(providerProjet.initListProduitModuleProjet(listProduitModule),
+            true);
+
+        providerProjet.initModuleInfos();
+        expect(providerProjet.moduleNom.isEmpty, true);
+        GammeData gamme = GammeData(gammeId: 1, libelleGammes: "Standard");
+        providerProjet.gamme = gamme;
+        providerProjet.initProduitWithModule();
+        providerProjet.updateListProduitProjet();
+        expect(providerProjet.listProduitProjet.length > 0, true);
+
+        expect(providerProjet.projetWithAllInfos == null, true);
+        providerProjet.initProjetWithAllInfos();
+        expect(providerProjet.projetWithAllInfos != null, true);
+
+        providerProjet.initAndHold();
+        expect(providerProjet.gamme, gamme);
+
+        providerProjet.validate(true);
+        providerProjet.initAndHold();
+        expect(providerProjet.gamme, null);
+
+        expect(providerProjet.isFilled(''), false);
+        expect(providerProjet.isFilled('QuoteCreation'), false);
+
+        providerProjet.initClientWithClient(testClient);
+        providerProjet.initProjet();
+        providerProjet.produitNom = "Maison modulaire standard";
+        providerProjet.gamme = gamme;
+        providerProjet.initListProduitModuleProjet(listProduitModule);
+        expect(providerProjet.isFilled('ProductCreation'), true);
       },
     );
     test(
@@ -100,34 +151,19 @@ void main() {
       expect(date.isAfter(providerSynchro.refsLastSyncDate),
           true); // la synchronisation n'a pas eu lieue
     });
-    testWidgets(
+    test(
       'ping test',
-      (WidgetTester tester) async {
+      () async {
         final ProviderLogin providerLogin = ProviderLogin(db: ProviderBdd.db)
           ..http = MockClient((request) async {
             return Response('', 200);
           });
-        final MaderaNav providerNavigation = MaderaNav();
-
-        Widget testWidget = MediaQuery(
-          data: MediaQueryData(),
-          child: MultiProvider(
-            providers: [
-              ChangeNotifierProvider(create: (context) => providerLogin),
-              ChangeNotifierProvider(create: (context) => providerNavigation),
-            ],
-            child: MaterialApp(
-              home: HomePage(),
-            ),
-          ),
-        );
-        await tester.pumpWidget(testWidget);
         expect(providerLogin.ping(), completion(true));
       },
     );
-    testWidgets(
+    test(
       'connection test',
-      (tester) async {
+      () async {
         final ProviderLogin providerLogin = ProviderLogin(db: ProviderBdd.db)
           ..http = MockClient((request) async {
             //On set le contenu du body et le statusCode attendu, dans notre cas le token de connection
@@ -139,21 +175,6 @@ void main() {
                 }),
                 200);
           });
-        final MaderaNav providerNavigation = MaderaNav();
-
-        Widget testWidget = MediaQuery(
-          data: MediaQueryData(),
-          child: MultiProvider(
-            providers: [
-              ChangeNotifierProvider(create: (context) => providerLogin),
-              ChangeNotifierProvider(create: (context) => providerNavigation),
-            ],
-            child: MaterialApp(
-              home: HomePage(),
-            ),
-          ),
-        );
-        await tester.pumpWidget(testWidget);
         //On execute le test, qui va alors servir du body que l'on a renseigné pour générer une response conformes aux besoins
         expect(
             providerLogin.connection('testuser', '123456'), completion(true));
@@ -164,26 +185,10 @@ void main() {
         ..http = MockClient((request) async {
           return Response('', 200);
         });
-      final MaderaNav providerNavigation = MaderaNav();
-
-      Widget testWidget = MediaQuery(
-        data: MediaQueryData(),
-        child: MultiProvider(
-          providers: [
-            ChangeNotifierProvider(create: (context) => providerLogin),
-            ChangeNotifierProvider(create: (context) => providerNavigation),
-          ],
-          child: MaterialApp(
-            home: HomePage(),
-          ),
-        ),
-      );
-      await tester.pumpWidget(testWidget);
 
       expect(providerLogin.logout(), completion(true));
     });
-    testWidgets('synchro globale test', (tester) async {
-      final MaderaNav providerNavigation = MaderaNav();
+    test('synchro globale test', () async {
       final ProviderSynchro providerSynchro = ProviderSynchro(
         db: ProviderBdd.db,
         daosSynchroList: providerBdd.daosSynchroList,
@@ -191,25 +196,9 @@ void main() {
           //On set le contenu du body et le statusCode attendu, dans notre cas le token de connection
           return Response('', 200);
         });
-
-      Widget testWidget = MediaQuery(
-        data: MediaQueryData(),
-        child: MultiProvider(
-          providers: [
-            ChangeNotifierProvider(create: (context) => providerSynchro),
-            ChangeNotifierProvider(create: (context) => providerNavigation),
-          ],
-          child: MaterialApp(
-            home: HomePage(),
-          ),
-        ),
-      );
-      await tester.pumpWidget(testWidget);
       DateTime now = DateTime.now();
       await providerSynchro.synchro();
-      expect(providerSynchro.refsLastSyncDate.isAfter(now),
-          true); //isBefore parce qu'on compare a now() (yyyy-MM-dd HH:mm:SS), alors que les dates sont stockées sous la forme 'yyyy-MM-dd 00:00:00'
-
+      expect(providerSynchro.refsLastSyncDate.isAfter(now), true);
       expect(providerSynchro.dataLastSyncDate.isAfter(now), true);
       await providerSynchro
           .synchro(); // checker les logs (expect: 'Synchronisations déjà effectuées!') éventuellement utiliser package test_process pour tester la valeurs des logs?

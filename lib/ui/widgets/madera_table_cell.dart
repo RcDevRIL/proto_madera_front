@@ -7,7 +7,7 @@ import 'package:logger/logger.dart';
 ///
 /// @author HELIOT David, CHEVALLIER Romain, LADOUCE Fabien
 ///
-/// @version 0.5-RELEASE
+/// @version 1.0-RELEASE
 class MaderaTableCell extends StatefulWidget {
   /// Creates a widget describing a table cell.
   ///
@@ -55,7 +55,7 @@ class _MaderaTableRow extends State<MaderaTableCell> {
       width: widget.width,
       color: widget.backgroundColor,
       padding: EdgeInsets.only(
-        top: 35,
+        top: widget.height / 2.2,
       ),
       child: Text(
         widget.textCell,

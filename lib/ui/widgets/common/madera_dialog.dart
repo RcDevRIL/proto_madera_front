@@ -2,7 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:proto_madera_front/ui/widgets/custom_widgets.dart';
 import 'package:proto_madera_front/theme.dart' as cTheme;
 
+///
 /// Custom widget representing an [AlertDialog].
+///
+/// @author HELIOT David, CHEVALLIER Romain, LADOUCE Fabien
+///
+/// @version 1.0-RELEASE
 class MaderaDialog extends StatelessWidget {
   /// Creates a custom alert dialog.
   ///
@@ -45,21 +50,30 @@ class MaderaDialog extends StatelessWidget {
           style: BorderStyle.solid,
         ),
       ),
-      title: LabelledIcon(
-        text: Text(title, style: TextStyle(color: titleAndIconColor)),
-        icon: Icon(
-          icon,
-          color: titleAndIconColor,
+      title: Align(
+        alignment: Alignment.centerLeft,
+        child: LabelledIcon(
+          text: Text(title, style: TextStyle(color: titleAndIconColor)),
+          icon: Icon(
+            icon,
+            color: titleAndIconColor,
+          ),
         ),
       ),
       content: body.runtimeType == Text
           ? Container(
               height: 50.0,
+              margin: const EdgeInsets.only(
+                top: 20.0,
+              ),
               child: body,
             )
           : Container(
               height: 50.0,
               width: 200.0,
+              margin: const EdgeInsets.only(
+                top: 20.0,
+              ),
               child: body,
             ),
       actions: actions,

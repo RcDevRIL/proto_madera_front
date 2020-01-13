@@ -1,10 +1,13 @@
 import 'dart:convert';
+import 'dart:io';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart';
 import 'package:http/testing.dart';
 import 'package:logger/logger.dart';
 import 'package:moor_flutter/moor_flutter.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:proto_madera_front/data/constants/url.dart';
 import 'package:proto_madera_front/data/database/daos.dart';
 import 'package:proto_madera_front/data/database/madera_database.dart';
@@ -15,7 +18,7 @@ import 'package:proto_madera_front/data/models/projet_with_all_infos.dart';
 ///
 /// @author HELIOT David, CHEVALLIER Romain, LADOUCE Fabien
 ///
-/// @version 0.5-RELEASE
+/// @version 1.0-RELEASE
 class ProviderSynchro with ChangeNotifier {
   Client http = new Client();
   final log = Logger();
@@ -39,6 +42,7 @@ class ProviderSynchro with ChangeNotifier {
   bool _refSynced = false;
   DateTime _dataLastSyncDate;
   bool _dataSynced = false;
+  File file;
 
   ///
   ///Constructeur par défaut de notre classe de synchronisation.
@@ -99,11 +103,20 @@ class ProviderSynchro with ChangeNotifier {
   }
 
   ///Renvoie la dernière date([DateTime]) de synchronisation des données utilisateur
-  ///TODO D'ailleurs, on devrait avoir l'info dans le back: quand m dupont a sauvegardé/synchronisé la dernière fois, ça nous permettra de l'initialiser
   DateTime get dataLastSyncDate => _dataLastSyncDate ??= DateTime(2019, 12, 02);
+
+  set dataLastSyncDate(DateTime date) {
+    _dataLastSyncDate = date;
+    notifyListeners();
+  }
 
   ///Renvoie la dernière date([DateTime]) de synchronisation des référentiels
   DateTime get refsLastSyncDate => _refLastSyncDate ??= DateTime(2019, 12, 02);
+
+  set refsLastSyncDate(DateTime date) {
+    _refLastSyncDate = date;
+    notifyListeners();
+  }
 
   ///Remplace la valeur de la date de dernière synchronisation des données de cet utilisateur
   setDataLastSyncDate(DateTime newDate) => this._dataLastSyncDate = newDate;
@@ -115,7 +128,6 @@ class ProviderSynchro with ChangeNotifier {
   Future<void> synchro() async {
     // r d
     // 1 ?
-    if (http.runtimeType != MockClient) await deleteForSynchro();
     if (_refSynced) {
       // 1 1
       if (_dataSynced)
@@ -124,6 +136,7 @@ class ProviderSynchro with ChangeNotifier {
       else {
         log.i(
             'Synchronisation des référentiels déjà effectuée le ${refsLastSyncDate.toString().substring(0, 10)}!');
+        if (http.runtimeType != MockClient) await deleteForSynchro();
         _dataSynced = await synchroData();
         log.i('Synchronisation globale effectuée');
       }
@@ -134,12 +147,14 @@ class ProviderSynchro with ChangeNotifier {
       if (_dataSynced) {
         log.i(
             'Synchronisation des données déjà effectuée le ${dataLastSyncDate.toString().substring(0, 10)}!');
+        if (http.runtimeType != MockClient) await deleteForSynchro();
         _refSynced = await synchroReferentiel();
         log.i('Synchronisation globale effectuée');
       }
       // 0 0
       else {
         log.i('Synchronisation lancée...');
+        if (http.runtimeType != MockClient) await deleteForSynchro();
         _refSynced = await synchroReferentiel();
         _dataSynced = await synchroData();
         log.i('Synchronisation globale effectuée');
@@ -158,7 +173,7 @@ class ProviderSynchro with ChangeNotifier {
     } else {
       UtilisateurData utilisateurData;
       if (http.runtimeType != MockClient)
-        utilisateurData = await utilisateurDao.getUser();
+        utilisateurData = await utilisateurDao.getLastUser();
       else
         utilisateurData = UtilisateurData(
             utilisateurId: 4, login: 'testuser', token: 'fesfk-feksnf-fesf');
@@ -247,13 +262,12 @@ class ProviderSynchro with ChangeNotifier {
     } else {
       UtilisateurData utilisateurData;
       if (http.runtimeType != MockClient)
-        utilisateurData = await utilisateurDao.getUser();
+        utilisateurData = await utilisateurDao.getLastUser();
       else
         utilisateurData = UtilisateurData(
             utilisateurId: 4, login: 'testuser', token: 'fesfk-feksnf-fesf');
       var response;
       try {
-        //TODO passer en param la derniere date de synchro ?
         response = await http.get(MaderaUrl.urlSynchroRef,
             headers: {'Authorization': 'Bearer ${utilisateurData.token}'});
       } catch (e) {
@@ -326,23 +340,45 @@ class ProviderSynchro with ChangeNotifier {
     await produitDao.insertAll(listProduitModele);
   }
 
-  //TODO regardez si projet is synchro
-
   ///Méthode qui va purger la base de données sans effacer les projets non synchronisés
   Future deleteForSynchro() async {
-    await composantDao.deleteAll();
-    await gammeDao.deleteAll();
-    await moduleDao.deleteAll();
-    await moduleComposantDao.deleteAll();
-    await devisEtatDao.deleteAll();
-    await composantGroupeDao.deleteAll();
-    await clientDao.deleteAll();
-    await clientAdresseDao.deleteAll();
-    await adresseDao.deleteAll();
-    await projetDao.deleteAll();
-    await produitDao.deleteAll();
-    await produitModuleDao.deleteAll();
-    await projetProduitsDao.deleteAll();
+    if (!_dataSynced && _refSynced) {
+      log.d('delete user data');
+      //on veut seulement delete les données user
+      await clientDao.deleteAll();
+      await clientAdresseDao.deleteAll();
+      await adresseDao.deleteAll();
+      await projetDao.deleteAll();
+      await produitDao.deleteAll();
+      await produitModuleDao.deleteAll();
+      await projetProduitsDao.deleteAll();
+    } else if (!_refSynced && _dataSynced) {
+      log.d('delete referentiels');
+      //on veut seulement delete les référentiels
+      await composantDao.deleteAll();
+      await gammeDao.deleteAll();
+      await moduleDao.deleteAll();
+      await moduleComposantDao.deleteAll();
+      await devisEtatDao.deleteAll();
+      await composantGroupeDao.deleteAll();
+      await produitModuleDao.deleteAll();
+      await produitDao.deleteAll();
+    } else {
+      log.d('delete all');
+      await composantDao.deleteAll();
+      await gammeDao.deleteAll();
+      await moduleDao.deleteAll();
+      await moduleComposantDao.deleteAll();
+      await devisEtatDao.deleteAll();
+      await composantGroupeDao.deleteAll();
+      await clientDao.deleteAll();
+      await clientAdresseDao.deleteAll();
+      await adresseDao.deleteAll();
+      await projetDao.deleteAll();
+      await produitDao.deleteAll();
+      await produitModuleDao.deleteAll();
+      await projetProduitsDao.deleteAll();
+    }
   }
 
   ///Appel serveur pour créer le projet
@@ -350,7 +386,7 @@ class ProviderSynchro with ChangeNotifier {
     log.i('Création du projet sur le serveur...');
     UtilisateurData utilisateurData;
     if (http.runtimeType != MockClient)
-      utilisateurData = await utilisateurDao.getUser();
+      utilisateurData = await utilisateurDao.getLastUser();
     else
       utilisateurData = UtilisateurData(
           utilisateurId: 4, login: 'testuser', token: 'fesfk-feksnf-fesf');
@@ -371,5 +407,39 @@ class ProviderSynchro with ChangeNotifier {
       return false;
     }
     print(response);
+  }
+
+  Future<void> createOrFileUrl(int projetId) async {
+    UtilisateurData utilisateurData;
+    if (http.runtimeType != MockClient)
+      utilisateurData = await utilisateurDao.getLastUser();
+    else
+      utilisateurData = UtilisateurData(
+          utilisateurId: 4, login: 'testuser', token: 'fesfk-feksnf-fesf');
+    try {
+      HttpClient client = new HttpClient();
+      client
+          .postUrl(Uri.parse(MaderaUrl.urlProjectDevis +
+              '/$projetId/${utilisateurData.utilisateurId}'))
+          .then((HttpClientRequest request) {
+        request.headers.add('Authorization', 'Bearer ${utilisateurData.token}');
+        return request.close();
+      }).then((HttpClientResponse response) async {
+        if (response.statusCode == 200) {
+          var bytes = await consolidateHttpClientResponseBytes(response);
+          print((await getApplicationDocumentsDirectory()).path);
+          String dir = (await getApplicationDocumentsDirectory()).path;
+          file = File("$dir/devis");
+          await file.writeAsBytes(bytes);
+          notifyListeners();
+        } else {
+          log.e('Error when trying to call ${MaderaUrl.urlProjectDevis}');
+        }
+      });
+    } catch (e) {
+      log.e('Error when trying to call ${MaderaUrl.urlProjectDevis}:\n' +
+          e.toString());
+      return null;
+    }
   }
 }

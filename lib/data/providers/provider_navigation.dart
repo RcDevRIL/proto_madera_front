@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:logger/logger.dart';
-import 'package:provider/provider.dart';
 
 import 'package:proto_madera_front/ui/pages/pages.dart';
 import 'package:proto_madera_front/ui/pages/user/profile_page.dart';
@@ -13,7 +12,7 @@ import 'package:proto_madera_front/theme.dart' as cTheme;
 ///
 /// @author HELIOT David, CHEVALLIER Romain, LADOUCE Fabien
 ///
-/// @version 0.5-RELEASE
+/// @version 1.0-RELEASE
 class MaderaNav with ChangeNotifier {
   var _pageTitle;
   var _pageIndex;
@@ -38,17 +37,27 @@ class MaderaNav with ChangeNotifier {
   void updateCurrent(Type page) {
     /**
      * Index pages :
+     * -2 : DecisionPage
      * -1 : AuthenticationPage
-     * 0 : HomePage
-     * 1 : QuoteCreation
-     * 1 : Quote
-     * 1 : AddModule
-     * 2 : QuoteOverview
-     * 3 : NotificationPage
-     * 4 : SettingsPage
-     * 5 : UserProfilePage
+     *  0 : HomePage
+     *  1 : QuoteCreation
+     *  1 : Quote
+     *  1 : AddModule
+     *  2 : QuoteOverview
+     *  3 : NotificationPage
+     *  4 : SettingsPage
+     *  5 : UserProfilePage
      */
     switch (page) {
+      case DecisionPage:
+        {
+          _pageTitle = 'redirection page';
+          _pageIndex = -2;
+          // log.d('Updating current navigation properties:                        \n' +
+          //     this.toString() +
+          //     '                    '); //pleins d'espaces car pb avec le package logger
+        }
+        break;
       case AuthenticationPage:
         {
           _pageTitle = 'Bienvenue sur l\'application métier MADERA !';
@@ -178,8 +187,7 @@ class MaderaNav with ChangeNotifier {
             builder: (BuildContext context) => page,
             settings: RouteSettings(arguments: args));
         Navigator.of(context).pushReplacement(newRoute);
-        var maderaNav = Provider.of<MaderaNav>(context);
-        maderaNav.updateCurrent(page.runtimeType);
+        updateCurrent(page.runtimeType);
       });
     else
       WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -187,8 +195,7 @@ class MaderaNav with ChangeNotifier {
           builder: (BuildContext context) => page,
         );
         Navigator.of(context).pushReplacement(newRoute);
-        var maderaNav = Provider.of<MaderaNav>(context);
-        maderaNav.updateCurrent(page.runtimeType);
+        updateCurrent(page.runtimeType);
       });
   }
 

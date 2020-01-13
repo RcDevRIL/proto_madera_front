@@ -3,18 +3,17 @@ import 'package:logger/logger.dart';
 import 'package:provider/provider.dart';
 
 import 'package:proto_madera_front/data/providers/providers.dart'
-    show MaderaNav, ProviderProjet, ProviderSynchro;
+    show MaderaNav, ProviderProjet;
 import 'package:proto_madera_front/ui/pages/pages.dart';
 import 'package:proto_madera_front/ui/widgets/custom_widgets.dart'
-    show MaderaScaffold;
-import 'package:proto_madera_front/data/database/madera_database.dart';
+    show LabelledIcon, MaderaScaffold;
 
 ///
 /// Home page of our application
 ///
 /// @author HELIOT David, CHEVALLIER Romain, LADOUCE Fabien
 ///
-/// @version 0.5-RELEASE
+/// @version 1.0-RELEASE
 class HomePage extends StatelessWidget {
   static const routeName = '/home';
   final log = Logger();
@@ -40,78 +39,48 @@ class HomePage extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: <Widget>[
-                  Container(
-                    height: 150.0,
-                    width: 150.0,
-                    child: RaisedButton(
-                      onPressed: () {
-                        mN.redirectToPage(context, QuoteOverview(), null);
-                      },
-                      child: Text('Suivi de devis'),
-                    ),
+                  Column(
+                    children: <Widget>[
+                      LabelledIcon(
+                        icon: Icon(Icons.search),
+                        text: Text('Suivi de devis'),
+                      ),
+                      InkWell(
+                        onTap: () {
+                          mN.redirectToPage(context, QuoteOverview(), null);
+                        },
+                        child: Container(
+                          height: 250.0,
+                          width: 250.0,
+                          child: Image(
+                            image: AssetImage('assets/img/suiviDevis.jpg'),
+                            fit: BoxFit.cover,
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
-                  Container(
-                    height: 150.0,
-                    width: 150.0,
-                    child: RaisedButton(
-                      onPressed: () {
-                        Provider.of<ProviderProjet>(context).initAndHold();
-                        mN.redirectToPage(context, QuoteCreation(), null);
-                      },
-                      child: Text('Création de devis'),
-                    ),
-                  ),
-                  Container(
-                    height: 150.0,
-                    width: 150.0,
-                    child: RaisedButton(
-                      onPressed: () {
-                        mN.redirectToPage(context, SettingsPage(), null);
-                      },
-                      child: Text('Paramètres'),
-                    ),
-                  ),
-                ],
-              ),
-              Row(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: <Widget>[
-                  Container(
-                    height: 150.0,
-                    width: 150.0,
-                    child: RaisedButton(
-                      onPressed: () async {
-                        List<DevisEtatData> names =
-                            await Provider.of<ProviderSynchro>(context)
-                                .devisEtatDao
-                                .getDevisEtatData();
-                        for (DevisEtatData deD in names) {
-                          log.d(deD.devisEtatLibelle);
-                        }
-                      },
-                      child: Text('Log libélllés états possibles des devis'),
-                    ),
-                  ),
-                  Container(
-                    height: 150.0,
-                    width: 150.0,
-                    child: RaisedButton(
-                      onPressed: () {
-                        log.d('COUCOU JE SUIS UN LOG');
-                      },
-                      child: Text('Log me'),
-                    ),
-                  ),
-                  Container(
-                    height: 150.0,
-                    width: 150.0,
-                    child: RaisedButton(
-                      onPressed: () {
-                        mN.redirectToPage(context, NotificationPage(), null);
-                      },
-                      child: Text('Lien vers Notifications'),
-                    ),
+                  Column(
+                    children: <Widget>[
+                      LabelledIcon(
+                        icon: Icon(Icons.assignment),
+                        text: Text('Création de devis'),
+                      ),
+                      InkWell(
+                        onTap: () {
+                          Provider.of<ProviderProjet>(context).initAndHold();
+                          mN.redirectToPage(context, QuoteCreation(), null);
+                        },
+                        child: Container(
+                          height: 250.0,
+                          width: 250.0,
+                          child: Image(
+                            image: AssetImage('assets/img/creationDevis.jpg'),
+                            fit: BoxFit.cover,
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
                 ],
               ),

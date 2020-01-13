@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:logger/logger.dart';
 import 'package:proto_madera_front/data/database/madera_database.dart';
 import 'package:proto_madera_front/data/providers/provider_login.dart';
+import 'package:proto_madera_front/data/providers/provider_size.dart';
 import 'package:provider/provider.dart';
 
 import 'package:proto_madera_front/ui/widgets/custom_widgets.dart';
@@ -16,7 +17,7 @@ import 'package:proto_madera_front/theme.dart' as cTheme;
 ///
 /// @author HELIOT David, CHEVALLIER Romain, LADOUCE Fabien
 ///
-/// @version 0.5-RELEASE
+/// @version 1.0-RELEASE
 class ProductList extends StatefulWidget {
   static const routeName = '/quote';
 
@@ -42,6 +43,7 @@ class _ProductListState extends State<ProductList> {
   Widget build(BuildContext context) {
     var providerProjet = Provider.of<ProviderProjet>(context);
     var providerBdd = Provider.of<ProviderBdd>(context);
+    var providerSize = Provider.of<ProviderSize>(context);
     return MaderaScaffold(
       passedContext: context,
       child: Center(
@@ -61,7 +63,7 @@ class _ProductListState extends State<ProductList> {
                   ListView.separated(
                     shrinkWrap: true,
                     padding: EdgeInsets.symmetric(
-                      horizontal: MediaQuery.of(context).size.width / 7.3,
+                      horizontal: providerSize.productListBlankWidth,
                       vertical: 10.0,
                     ),
                     itemCount: providerProjet.listProduitProjet.length,
@@ -73,7 +75,7 @@ class _ProductListState extends State<ProductList> {
                   ),
                   Padding(
                     padding: EdgeInsets.symmetric(
-                      horizontal: MediaQuery.of(context).size.width / 7.3,
+                      horizontal: providerSize.productListBlankWidth,
                     ),
                     child: MaderaRoundedBox(
                       color: Colors.grey,
@@ -129,8 +131,8 @@ class _ProductListState extends State<ProductList> {
       ),
       stackAdditions: <Widget>[
         Padding(
-          padding: EdgeInsets.fromLTRB(
-              1200, MediaQuery.of(context).size.height / 6, 0, 0),
+          padding: EdgeInsets.fromLTRB(providerSize.floatingButtonWidth,
+              providerSize.mediaHeight / 6, 0, 0),
           child: Column(
             children: <Widget>[
               Container(
@@ -164,8 +166,12 @@ class _ProductListState extends State<ProductList> {
                       providerBdd.createAll(providerProjet.projetWithAllInfos);
                       providerProjet.validate(true);
                     }
-                    Provider.of<MaderaNav>(context)
-                        .redirectToPage(context, QuoteOverview(), null);
+                    Provider.of<MaderaNav>(context).showNothingYouCanDoPopup(
+                        context,
+                        Icons.check_circle,
+                        'Projet Sauvegardé',
+                        'Le projet a été sauvegardé',
+                        QuoteOverview());
                   },
                   icon: Icon(
                     Icons.check,
@@ -190,7 +196,7 @@ class _ProductListState extends State<ProductList> {
                         context,
                         Icons.warning,
                         'Abandon du projet',
-                        'Le projet en cours de création va être supprimé.',
+                        'Les données en cours de création/modification vont être perdues.',
                         HomePage());
                     providerProjet.validate(false);
                   },

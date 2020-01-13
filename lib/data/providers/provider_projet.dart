@@ -12,7 +12,7 @@ import 'package:proto_madera_front/data/models/models.dart'
 ///
 /// @author HELIOT David, CHEVALLIER Romain, LADOUCE Fabien
 ///
-/// @version 0.5-RELEASE
+/// @version 1.0-RELEASE
 class ProviderProjet with ChangeNotifier {
   /*
   * Variables pour la page QuoteCreation
@@ -65,10 +65,10 @@ class ProviderProjet with ChangeNotifier {
   ProduitModuleData moduleAdd;
 
   ///ProductList Model
-  List<ProduitWithModule> _listProduitProjet;
+  List<ProduitWithModule> listProduitProjet;
 
   ///Final Saving structure to send on our backend server or to on our local [MaderaDatabase]
-  ProjetWithAllInfos projetWithAllInfos;
+  ProjetWithAllInfos _projetWithAllInfos;
 
   ///Boolean used to avoid loosing data. Is true only after a call to validate()
   bool canInit = true;
@@ -123,7 +123,7 @@ class ProviderProjet with ChangeNotifier {
     _moduleSection2 = '';
     _moduleNom = '';
     _editModuleIndex = 0;
-    _listProduitProjet = new List();
+    listProduitProjet = new List();
     notifyListeners();
   }
 
@@ -153,13 +153,13 @@ class ProviderProjet with ChangeNotifier {
                 !(_moduleAngle.isNotEmpty ^ _moduleSection2.isNotEmpty));
         }
         break;
-      //TODO
       case 'Finishings':
         return true;
         break;
-      //TODO
       case 'ProductList':
-        return true;
+        return (listProduitProjet != null
+            ? listProduitProjet.length != 0
+            : false);
         break;
       default:
         return false;
@@ -169,7 +169,6 @@ class ProviderProjet with ChangeNotifier {
 
   bool initProjet() {
     try {
-      //TODO ajouter un champ description en bdd ?
       var r = Random();
       _projet = new ProjetData(
         projetId: -1,
@@ -215,14 +214,35 @@ class ProviderProjet with ChangeNotifier {
     _editModuleIndex = 0;
     _editProductIndex = productIndex;
     _produitModele = null;
-    _produitNom = _listProduitProjet[_editProductIndex].produit.produitNom;
+    _produitNom = listProduitProjet[_editProductIndex].produit.produitNom;
     _listProduitModuleProjet =
-        _listProduitProjet[_editProductIndex].listProduitModule;
+        listProduitProjet[_editProductIndex].listProduitModule;
+    notifyListeners();
+  }
+
+  ProjetWithAllInfos get projetWithAllInfos => _projetWithAllInfos;
+
+  set projetWithAllInfos(ProjetWithAllInfos projetWithAllInfos) {
+    _projetWithAllInfos = projetWithAllInfos;
+    notifyListeners();
+  }
+
+  void setlistProduitProjet(List<ProduitWithModule> listProduitWithModule) {
+    this.listProduitProjet = listProduitWithModule;
+    notifyListeners();
+  }
+
+  ClientData get client => _client;
+
+  ModuleData get moduleChoice => _moduleChoice;
+
+  set moduleChoice(ModuleData module) {
+    _moduleChoice = module;
     notifyListeners();
   }
 
   void deleteProductCreationModel(int productID) {
-    _listProduitProjet.removeAt(productID);
+    listProduitProjet.removeAt(productID);
     notifyListeners();
   }
 
@@ -240,7 +260,6 @@ class ProviderProjet with ChangeNotifier {
     // Si le module est défini avec un angle, alors on récupère les valeurs des deux sections
     // et on les affecte à la bonne variable
     if (_moduleAngle.isNotEmpty) {
-      //TODO Vérifier si dans le jeu d'essai cette règle s'applique bien: pas d'angle => empty String
       _moduleSection = moduleAdd.produitModuleSectionLongueur
           .trim()
           .split('[')[1]
@@ -269,15 +288,15 @@ class ProviderProjet with ChangeNotifier {
         Map<String, Object> sections;
         if (_moduleAngle.isNotEmpty) {
           sections = {
-            'sections': [
-              {'longueur': int.parse(_moduleSection)},
-              {'longueur': int.parse(_moduleSection2)}
+            '\"sections\"': [
+              {'\"longueur\"': int.parse(_moduleSection)},
+              {'\"longueur\"': int.parse(_moduleSection2)}
             ]
           };
         } else {
           sections = {
-            'sections': [
-              {'longueur': int.parse(_moduleSection)}
+            '\"sections\"': [
+              {'\"longueur\"': int.parse(_moduleSection)}
             ]
           };
         }
@@ -294,15 +313,15 @@ class ProviderProjet with ChangeNotifier {
         Map<String, Object> sections;
         if (_moduleAngle.isNotEmpty) {
           sections = {
-            'sections': [
-              {'longueur': int.parse(_moduleSection)},
-              {'longueur': int.parse(_moduleSection2)}
+            '\"sections\"': [
+              {'\"longueur\"': int.parse(_moduleSection)},
+              {'\"longueur\"': int.parse(_moduleSection2)}
             ]
           };
         } else {
           sections = {
-            'sections': [
-              {'longueur': int.parse(_moduleSection)}
+            '\"sections\"': [
+              {'\"longueur\"': int.parse(_moduleSection)}
             ]
           };
         }
@@ -327,16 +346,19 @@ class ProviderProjet with ChangeNotifier {
   }
 
   ///Ajoute les produitsModules chargés a la liste des produitsModules du _projet
-  void initListProduitModuleProjet(List<ProduitModuleData> listProduitModule) {
-    if (listProduitModule != null) {
+  bool initListProduitModuleProjet(List<ProduitModuleData> listProduitModule) {
+    try {
       listProduitModule.forEach(
         (produitModule) => {
           _listProduitModuleProjet.add(produitModule),
         },
       );
       notifyListeners();
-    } else
-      log.e('Error in initListProduitModuleProjet()!');
+      return true;
+    } catch (e) {
+      log.e('Error in initListProduitModuleProjet() : \n $e');
+      return false;
+    }
   }
 
   void updateListProduitModuleProjet() {
@@ -362,6 +384,11 @@ class ProviderProjet with ChangeNotifier {
           'ERROR in resetListProduitModuleProjet()! First time calling it for this product ? If so, ignore.');
   }
 
+  void loadProjet(ProjetData projet) {
+    _projet = projet;
+    notifyListeners();
+  }
+
   void initProduitWithModule() {
     _produitWithModule = ProduitWithModule(
         ProduitData(
@@ -374,32 +401,23 @@ class ProviderProjet with ChangeNotifier {
     notifyListeners();
   }
 
+  void initProjetWithAllInfos() {
+    _projetWithAllInfos = ProjetWithAllInfos(_projet, listProduitProjet);
+    notifyListeners();
+  }
+
   void updateListProduitProjet() {
-    if (_editProductIndex != _listProduitProjet.length) {
-      _listProduitProjet.removeAt(_editProductIndex);
-      _listProduitProjet.insert(_editProductIndex, _produitWithModule);
+    if (_editProductIndex != listProduitProjet.length) {
+      listProduitProjet.removeAt(_editProductIndex);
+      listProduitProjet.insert(_editProductIndex, _produitWithModule);
     } else {
-      _listProduitProjet.add(_produitWithModule);
+      listProduitProjet.add(_produitWithModule);
     }
     notifyListeners();
   }
 
-  void initProjetWithAllInfos() {
-    projetWithAllInfos = ProjetWithAllInfos(_projet, _listProduitProjet);
-    notifyListeners();
-  }
-
-  List<ProduitWithModule> get listProduitProjet => _listProduitProjet;
-
-  ClientData get client => _client;
-
-  //TODO
-  void setFinitions(String choice) {}
-
-  ModuleData get moduleChoice => _moduleChoice;
-
-  set moduleChoice(ModuleData module) {
-    _moduleChoice = module;
+  void deleteModule() {
+    _listProduitModuleProjet.removeAt(_editModuleIndex);
     notifyListeners();
   }
 

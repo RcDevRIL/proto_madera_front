@@ -9,7 +9,7 @@ import 'package:proto_madera_front/theme.dart' as cTheme;
 ///
 /// @author HELIOT David, CHEVALLIER Romain, LADOUCE Fabien
 ///
-/// @version 0.5-RELEASE
+/// @version 1.0-RELEASE
 class CollapsingListTile extends StatefulWidget {
   /// Creates a collapsible list of tiles.
   ///
@@ -32,11 +32,13 @@ class CollapsingListTile extends StatefulWidget {
   final Function onTap;
 
   CollapsingListTile(
-      {@required this.title,
+      {Key key,
+      @required this.title,
       @required this.icon,
       @required this.animationController,
       this.isSelected = false,
-      this.onTap});
+      this.onTap})
+      : super(key: key);
 
   @override
   _CollapsingListTileState createState() => _CollapsingListTileState();

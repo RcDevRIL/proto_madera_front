@@ -1,18 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 
-import 'package:proto_madera_front/data/providers/providers.dart'
-    show MaderaNav;
 import 'package:proto_madera_front/ui/widgets/custom_widgets.dart'
     show MaderaScaffold;
-import 'package:proto_madera_front/theme.dart' as cTheme;
 
 ///
 /// User Notification page
 ///
 /// @author HELIOT David, CHEVALLIER Romain, LADOUCE Fabien
 ///
-/// @version 0.5-RELEASE
+/// @version 1.0-RELEASE
 class NotificationPage extends StatefulWidget {
   static const routeName = '/bell';
 
@@ -39,11 +35,9 @@ class _NotificationPageState extends State<NotificationPage> {
     return MaderaScaffold(
       passedContext: context,
       child: Center(
-        child: Consumer<MaderaNav>(
-          builder: (_, mN, c) => Text(
-            mN.pageTitle,
-            style: cTheme.MaderaTextStyles.appBarTitle,
-          ),
+        child: Text(
+          "A venir...",
+          style: Theme.of(context).textTheme.display1,
         ),
       ),
     );

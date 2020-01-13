@@ -1,6 +1,12 @@
 import 'package:moor_flutter/moor_flutter.dart';
 import 'package:proto_madera_front/data/database/madera_database.dart';
 
+///
+/// Model used to store a [ProjetData] with a [ClientData]
+///
+/// @author HELIOT David, CHEVALLIER Romain, LADOUCE Fabien
+///
+/// @version 1.0-RELEASE
 class ProjetWithClient {
   final ProjetData projet;
   final ClientData client;

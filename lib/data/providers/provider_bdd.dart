@@ -14,7 +14,7 @@ import 'package:proto_madera_front/data/models/projet_with_client.dart';
 ///
 /// @author HELIOT David, CHEVALLIER Romain, LADOUCE Fabien
 ///
-/// @version 0.5-RELEASE
+/// @version 1.0-RELEASE
 class ProviderBdd with ChangeNotifier {
   final log = Logger();
   static final MaderaDatabase db = new MaderaDatabase();
@@ -44,7 +44,8 @@ class ProviderBdd with ChangeNotifier {
   List<String> listNatureModule;
   List<ModuleData> listModule;
 
-  String _editProjetIndex;
+  int _editProjetID;
+  ProjetWithClient projetWithClient;
 
   ///
   ///Constructeur par défaut de notre classe d'interaction avec la bdd.
@@ -93,7 +94,6 @@ class ProviderBdd with ChangeNotifier {
     super.dispose();
   }
 
-//TODO ajouter un boolean synchro et l'init a false, il se passe que lorsqu'il est renseigné côté serveur
   ///Méthode pour créer le projet ainsi que ses produits (infos relatives aux produits, produitModule..)
   void createAll(ProjetWithAllInfos projetWithAllInfos) async {
     int projetId = await createProject(projetWithAllInfos.projet);
@@ -148,18 +148,24 @@ class ProviderBdd with ChangeNotifier {
     return this.listProjetWithClient;
   }
 
-  String get editProjetIndex => _editProjetIndex;
+  int get editProjetID => _editProjetID;
 
-  void loadProjetEdit(String refProjet) {
-    _editProjetIndex = refProjet;
+  void loadProjetWithClient(ProjetWithClient projetWithClient) {
+    this.projetWithClient = projetWithClient;
+    _editProjetID = projetWithClient.projet.projetId;
     notifyListeners();
   }
 
-  void initData() async {
+  void clearProjetWithClient() {
+    this.projetWithClient = null;
+    _editProjetID = null;
+    notifyListeners();
+  }
+
+  Future initData() async {
     await initGammes();
     await initListNatureModule();
     await initClient();
-    notifyListeners();
   }
 
   Future initClient() async {
@@ -209,4 +215,7 @@ class ProviderBdd with ChangeNotifier {
   Future initListNatureModule() async {
     listNatureModule = await moduleDao.getNatureModule();
   }
+
+  ///Méthode appelée lors de l'édition
+  Future loadProjetWithAllInfos() async {}
 }

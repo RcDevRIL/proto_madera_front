@@ -1,6 +1,7 @@
 export 'common/initialization_page.dart';
 export 'common/authentication_page.dart';
 export 'common/home_page.dart';
+export 'common/decision_page.dart';
 export 'user/settings_page.dart';
 export 'user/notification_page.dart';
 export 'module_devis/overview/quote_overview.dart';

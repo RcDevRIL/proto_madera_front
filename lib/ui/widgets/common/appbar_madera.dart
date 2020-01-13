@@ -11,7 +11,7 @@ import 'package:proto_madera_front/ui/pages/pages.dart' show HomePage;
 ///
 /// @author HELIOT David, CHEVALLIER Romain, LADOUCE Fabien
 ///
-/// @version 0.5-RELEASE
+/// @version 1.0-RELEASE
 class AppBarMadera extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -23,6 +23,7 @@ class AppBarMadera extends StatelessWidget {
       child: Consumer<MaderaNav>(
         builder: (context, mN, child) => AppBar(
           primary: true,
+          automaticallyImplyLeading: false,
           leading: mN.pageIndex == -1 ? ExitButton() : null,
           title: Text(
             mN.pageTitle,
