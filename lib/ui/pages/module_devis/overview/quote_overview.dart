@@ -68,17 +68,16 @@ class _QuoteOverviewState extends State<QuoteOverview> {
                 ],
               );
             } else if (snapshot.hasData) {
-              return SingleChildScrollView(
-                scrollDirection: Axis.vertical,
-                child: MaderaRoundedBox(
-                  boxWidth:
-                      Provider.of<ProviderSize>(context).tableOverviewWidth,
-                  boxHeight:
-                      Provider.of<ProviderSize>(context).tableOverviewHeight,
-                  edgeInsetsPadding: const EdgeInsets.symmetric(
-                    horizontal: 4.0,
-                    vertical: 0.0,
-                  ),
+              return MaderaRoundedBox(
+                boxWidth: Provider.of<ProviderSize>(context).tableOverviewWidth,
+                boxHeight:
+                    Provider.of<ProviderSize>(context).tableOverviewHeight,
+                edgeInsetsPadding: const EdgeInsets.symmetric(
+                  horizontal: 4.0,
+                  vertical: 0.0,
+                ),
+                child: SingleChildScrollView(
+                  scrollDirection: Axis.vertical,
                   child: DataTable(
                     horizontalMargin: 0,
                     columnSpacing: 0,

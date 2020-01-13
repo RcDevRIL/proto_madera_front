@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:logger/logger.dart';
+import 'package:proto_madera_front/data/providers/provider_size.dart';
 import 'package:provider/provider.dart';
 
 import 'package:proto_madera_front/data/providers/providers.dart'
@@ -9,6 +10,8 @@ import 'package:proto_madera_front/ui/pages/pages.dart'
 import 'package:proto_madera_front/ui/widgets/custom_widgets.dart'
     show GradientFrame, MaderaRoundedBox, MaderaScaffold;
 import 'package:proto_madera_front/theme.dart' as cTheme;
+import 'package:provider/provider.dart';
+import 'package:provider/provider.dart';
 
 ///
 /// Page to provide user some option on the module finitions
@@ -187,8 +190,8 @@ class _FinishingsState extends State<Finishings> {
       ),
       stackAdditions: <Widget>[
         Padding(
-          padding: EdgeInsets.fromLTRB(
-              1200, MediaQuery.of(context).size.height / 6, 0, 0),
+          padding: EdgeInsets.fromLTRB(Provider.of<ProviderSize>(context).floatingButtonWidth,
+              Provider.of<ProviderSize>(context).mediaHeight / 6, 0, 0),
           child: Column(
             children: <Widget>[
               Container(
