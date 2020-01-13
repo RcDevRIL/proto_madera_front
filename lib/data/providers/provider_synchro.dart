@@ -106,9 +106,18 @@ class ProviderSynchro with ChangeNotifier {
   ///TODO D'ailleurs, on devrait avoir l'info dans le back: quand m dupont a sauvegardé/synchronisé la dernière fois, ça nous permettra de l'initialiser
   DateTime get dataLastSyncDate => _dataLastSyncDate ??= DateTime(2019, 12, 02);
 
+  set dataLastSyncDate(DateTime date){
+    _dataLastSyncDate = date;
+    notifyListeners();
+  }
+
   ///Renvoie la dernière date([DateTime]) de synchronisation des référentiels
   DateTime get refsLastSyncDate => _refLastSyncDate ??= DateTime(2019, 12, 02);
 
+  set refsLastSyncDate(DateTime date){
+    _refLastSyncDate = date;
+    notifyListeners();
+  }
   ///Remplace la valeur de la date de dernière synchronisation des données de cet utilisateur
   setDataLastSyncDate(DateTime newDate) => this._dataLastSyncDate = newDate;
 
