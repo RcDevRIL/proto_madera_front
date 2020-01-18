@@ -1,5 +1,7 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:logger/logger.dart';
+import 'package:moor/moor_web.dart';
 import 'package:moor_flutter/moor_flutter.dart';
 import 'package:proto_madera_front/data/database/dao/database_dao.dart';
 import 'package:proto_madera_front/data/database/daos.dart';
@@ -17,7 +19,18 @@ import 'package:proto_madera_front/data/models/projet_with_client.dart';
 /// @version 1.0-RELEASE
 class ProviderBdd with ChangeNotifier {
   final log = Logger();
-  static final MaderaDatabase db = new MaderaDatabase();
+  static final MaderaDatabase db = kIsWeb
+      ? MaderaDatabase(
+          FlutterQueryExecutor.inDatabaseFolder(
+            path: 'madera_db.sqlite',
+          ),
+        )
+      : MaderaDatabase(
+          WebDatabase(
+            'madera_db',
+            logStatements: true,
+          ),
+        );
   UtilisateurDao utilisateurDao;
   ComposantDao composantDao;
   GammeDao gammeDao;
