@@ -47,7 +47,7 @@ class _DecisionPageState extends State<DecisionPage> {
     return FutureBuilder<bool>(
       future: this._redirectUser(context),
       builder: (context, s) {
-        switch (s.connectionState) {
+        /*  switch (s.connectionState) {
           case ConnectionState.waiting:
             return showIt ? PendingAction() : Container();
             break;
@@ -55,53 +55,51 @@ class _DecisionPageState extends State<DecisionPage> {
             return showIt ? FailureIcon() : Container();
             break;
           default:
-            {
-              if (s.hasError || !s.hasData) {
-                if (providerNav.pageIndex !=
-                    -1) //ces conditions permettent d'éviter de voir les pages "sauter" lorsqu'on fait une décision
+            { */
+        if (s.hasError || !s.hasData) {
+          if (providerNav.pageIndex !=
+              -1) //ces conditions permettent d'éviter de voir les pages "sauter" lorsqu'on fait une décision
+            showIt
+                ? SchedulerBinding.instance.addPostFrameCallback((_) =>
+                    providerNav.redirectToPage(
+                        context, AuthenticationPage(), null))
+                : providerNav.redirectToPage(
+                    context, AuthenticationPage(), null);
+          return PendingAction();
+        } else if (s.hasData) {
+          if (s.data == true) {
+            if (providerNav.pageIndex != 0) {
+              if (!logout)
+                showIt
+                    ? SchedulerBinding.instance.addPostFrameCallback((_) =>
+                        providerNav.redirectToPage(context, HomePage(), null))
+                    : providerNav.redirectToPage(context, HomePage(), null);
+              else {
+                if (providerNav.pageIndex != -1)
                   showIt
                       ? SchedulerBinding.instance.addPostFrameCallback((_) =>
                           providerNav.redirectToPage(
                               context, AuthenticationPage(), null))
                       : providerNav.redirectToPage(
                           context, AuthenticationPage(), null);
-                return PendingAction();
-              } else if (s.hasData) {
-                if (s.data == true) {
-                  if (providerNav.pageIndex != 0) {
-                    if (!logout)
-                      showIt
-                          ? SchedulerBinding.instance.addPostFrameCallback(
-                              (_) => providerNav.redirectToPage(
-                                  context, HomePage(), null))
-                          : providerNav.redirectToPage(
-                              context, HomePage(), null);
-                    else {
-                      if (providerNav.pageIndex != -1)
-                        showIt
-                            ? SchedulerBinding.instance.addPostFrameCallback(
-                                (_) => providerNav.redirectToPage(
-                                    context, AuthenticationPage(), null))
-                            : providerNav.redirectToPage(
-                                context, AuthenticationPage(), null);
-                    }
-                  }
-                  return showIt ? SuccessIcon() : Container();
-                } else {
-                  if (providerNav.pageIndex != -1)
-                    showIt
-                        ? SchedulerBinding.instance.addPostFrameCallback((_) =>
-                            providerNav.redirectToPage(
-                                context, AuthenticationPage(), null))
-                        : providerNav.redirectToPage(
-                            context, AuthenticationPage(), null);
-                  return showIt ? FailureIcon() : Container();
-                }
-              } else {
-                return showIt ? PendingAction() : Container();
               }
             }
+            return showIt ? SuccessIcon() : Container();
+          } else {
+            if (providerNav.pageIndex != -1)
+              showIt
+                  ? SchedulerBinding.instance.addPostFrameCallback((_) =>
+                      providerNav.redirectToPage(
+                          context, AuthenticationPage(), null))
+                  : providerNav.redirectToPage(
+                      context, AuthenticationPage(), null);
+            return showIt ? FailureIcon() : Container();
+          }
+        } else {
+          return showIt ? PendingAction() : Container();
         }
+        /*    }
+        } */
       },
     );
   }
