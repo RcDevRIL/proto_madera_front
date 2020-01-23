@@ -15,7 +15,7 @@ import 'package:provider/provider.dart';
 ///
 /// @author HELIOT David, CHEVALLIER Romain, LADOUCE Fabien
 ///
-/// @version 1.0-RELEASE
+/// @version 1.1-RELEASE
 class QuoteCreation extends StatefulWidget {
   static const routeName = '/quote_create';
 

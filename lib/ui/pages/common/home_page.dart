@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:logger/logger.dart';
 import 'package:provider/provider.dart';
 
 import 'package:proto_madera_front/data/providers/providers.dart'
@@ -13,10 +12,9 @@ import 'package:proto_madera_front/ui/widgets/custom_widgets.dart'
 ///
 /// @author HELIOT David, CHEVALLIER Romain, LADOUCE Fabien
 ///
-/// @version 1.0-RELEASE
+/// @version 1.1-RELEASE
 class HomePage extends StatelessWidget {
   static const routeName = '/home';
-  final log = Logger();
 
   @override
   Widget build(BuildContext context) {

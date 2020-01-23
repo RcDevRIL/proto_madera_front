@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 ///
 /// @author HELIOT David, CHEVALLIER Romain, LADOUCE Fabien
 ///
-/// @version 1.0-RELEASE
+/// @version 1.1-RELEASE
 class ProviderSize with ChangeNotifier {
   List<double> _sizeMedia = new List();
   double _gradientFrameWidth;
