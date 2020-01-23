@@ -18,7 +18,7 @@ import 'package:proto_madera_front/data/models/projet_with_all_infos.dart';
 ///
 /// @author HELIOT David, CHEVALLIER Romain, LADOUCE Fabien
 ///
-/// @version 1.0-RELEASE
+/// @version 1.1.1
 class ProviderSynchro with ChangeNotifier {
   Client http = new Client();
   final log = Logger();
@@ -427,10 +427,15 @@ class ProviderSynchro with ChangeNotifier {
       }).then((HttpClientResponse response) async {
         if (response.statusCode == 200) {
           var bytes = await consolidateHttpClientResponseBytes(response);
-          print((await getApplicationDocumentsDirectory()).path);
-          String dir = (await getApplicationDocumentsDirectory()).path;
-          file = File("$dir/devis");
-          await file.writeAsBytes(bytes);
+          String dir;
+          if (!kIsWeb) {
+            print((await getApplicationDocumentsDirectory()).path);
+            dir = (await getApplicationDocumentsDirectory()).path;
+            file = File("${dir ?? 'toto'}/devis");
+            await file.writeAsBytes(bytes);
+          } else {
+            throw UnimplementedError("Web is not supported yet");
+          }
           notifyListeners();
         } else {
           log.e('Error when trying to call ${MaderaUrl.urlProjectDevis}');
