@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:logger/logger.dart';
 
 /// A custom widget representing a button.
 ///
@@ -7,7 +6,7 @@ import 'package:logger/logger.dart';
 ///
 /// @author HELIOT David, CHEVALLIER Romain, LADOUCE Fabien
 ///
-/// @version 1.0-RELEASE
+/// @version 1.1-RELEASE
 class MaderaButton extends StatelessWidget {
   /// Creates a custom [RaisedButton].
   ///
@@ -21,7 +20,6 @@ class MaderaButton extends StatelessWidget {
   ///
   /// Often a [Text] widget.
   final Widget child;
-  final Logger log = Logger();
 
   MaderaButton({
     Key key,

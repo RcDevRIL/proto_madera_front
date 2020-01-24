@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 ///
 /// @author HELIOT David, CHEVALLIER Romain, LADOUCE Fabien
 ///
-/// @version 1.0-RELEASE
+/// @version 1.1-RELEASE
 class SuccessIcon extends StatelessWidget {
   const SuccessIcon({
     Key key,

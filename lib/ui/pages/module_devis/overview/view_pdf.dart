@@ -1,6 +1,5 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:logger/logger.dart';
 import 'package:flutter_full_pdf_viewer/full_pdf_viewer_scaffold.dart';
 import 'package:proto_madera_front/data/providers/provider_synchro.dart';
 import 'package:proto_madera_front/data/providers/providers.dart';
@@ -13,7 +12,7 @@ import 'package:provider/provider.dart';
 ///
 /// @author HELIOT David, CHEVALLIER Romain, LADOUCE Fabien
 ///
-/// @version 1.0-RELEASE
+/// @version 1.1.1
 class ViewPdf extends StatefulWidget {
   static const routeName = '/quoteOverview';
 
@@ -22,7 +21,6 @@ class ViewPdf extends StatefulWidget {
 }
 
 class _ViewPdf extends State<ViewPdf> {
-  final log = Logger();
   //added to prepare for scaling
   @override
   void initState() {
@@ -58,8 +56,20 @@ class _ViewPdf extends State<ViewPdf> {
             ),
           ],
         ),
-        path: Provider.of<ProviderSynchro>(context).file.path,
+        path: Provider.of<ProviderSynchro>(context).file != null
+            ? Provider.of<ProviderSynchro>(context).file.path
+            : _showError(context),
       ),
     );
+  }
+
+  _showError(BuildContext context) {
+    Provider.of<MaderaNav>(context).showNothingYouCanDoPopup(
+        context,
+        Icons.warning,
+        'Plateforme non supportée',
+        'La vue PDF n\'est pas implémentée en version web!',
+        null);
+    return null;
   }
 }

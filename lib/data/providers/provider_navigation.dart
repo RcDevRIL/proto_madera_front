@@ -12,7 +12,7 @@ import 'package:proto_madera_front/theme.dart' as cTheme;
 ///
 /// @author HELIOT David, CHEVALLIER Romain, LADOUCE Fabien
 ///
-/// @version 1.0-RELEASE
+/// @version 1.1-RELEASE
 class MaderaNav with ChangeNotifier {
   var _pageTitle;
   var _pageIndex;
@@ -53,108 +53,66 @@ class MaderaNav with ChangeNotifier {
         {
           _pageTitle = 'redirection page';
           _pageIndex = -2;
-          // log.d('Updating current navigation properties:                        \n' +
-          //     this.toString() +
-          //     '                    '); //pleins d'espaces car pb avec le package logger
         }
         break;
       case AuthenticationPage:
         {
           _pageTitle = 'Bienvenue sur l\'application métier MADERA !';
           _pageIndex = -1;
-          // log.d('Updating current navigation properties:                        \n' +
-          //     this.toString() +
-          //     '                    '); //pleins d'espaces car pb avec le package logger
         }
         break;
       case HomePage:
         {
           _pageTitle = 'Page d\'accueil';
           _pageIndex = 0;
-          // log.d(
-          //     'Updating current navigation properties:                        \n' +
-          //         this.toString() +
-          //         '                    ');
         }
         break;
       case QuoteCreation:
         {
           _pageTitle = 'Outil de création de devis';
           _pageIndex = 1;
-          // log.d(
-          //     'Updating current navigation properties:                        \n' +
-          //         this.toString() +
-          //         '                    ');
         }
         break;
       case QuoteOverview:
         {
           _pageTitle = 'Suivi des devis enregistrés';
           _pageIndex = 2;
-          // log.d(
-          //     'Updating current navigation properties:                        \n' +
-          //         this.toString() +
-          //         '                    ');
         }
         break;
       case NotificationPage:
         {
           _pageTitle = 'Page des notifications';
           _pageIndex = 3;
-          // log.d(
-          //     'Updating current navigation properties:                        \n' +
-          //         this.toString() +
-          //         '                    ');
         }
         break;
       case SettingsPage:
         {
           _pageTitle = 'Paramètres';
           _pageIndex = 4;
-          // log.d(
-          //     'Updating current navigation properties:                        \n' +
-          //         this.toString() +
-          //         '                    ');
         }
         break;
       case ProductCreation:
         {
           _pageTitle = 'Outil de création de devis';
           _pageIndex = 1;
-          // log.d(
-          //     'Updating current navigation properties:                        \n' +
-          //         this.toString() +
-          //         '                    ');
         }
         break;
       case AddModule:
         {
           _pageTitle = 'Outil de création de devis';
           _pageIndex = 1;
-          // log.d(
-          //     'Updating current navigation properties:                        \n' +
-          //         this.toString() +
-          //         '                    ');
         }
         break;
       case Finishings:
         {
           _pageTitle = 'Outil de création de devis';
           _pageIndex = 1;
-          // log.d(
-          //     'Updating current navigation properties:                        \n' +
-          //         this.toString() +
-          //         '                    ');
         }
         break;
       case ProductList:
         {
           _pageTitle = 'Outil de création de devis';
           _pageIndex = 1;
-          // log.d(
-          //     'Updating current navigation properties:                        \n' +
-          //         this.toString() +
-          //         '                    ');
         }
         break;
       case UserProfilePage:

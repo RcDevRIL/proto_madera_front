@@ -17,7 +17,7 @@ import 'package:proto_madera_front/theme.dart' as cTheme;
 ///
 /// @author HELIOT David, CHEVALLIER Romain, LADOUCE Fabien
 ///
-/// @version 1.0-RELEASE
+/// @version 1.1-RELEASE
 class AuthenticationPage extends StatefulWidget {
   static const routeName = '/auth';
   @override
@@ -211,7 +211,7 @@ class _AuthenticationPageState extends State<AuthenticationPage> {
             child: MaderaButton(
               key: Key('connect'),
               onPressed: snapshot.hasData && snapshot.data == true
-                  ? () async {
+                  ? () {
                       submit();
                       // Provider.of<MaderaNav>(context)
                       //     .redirectToPage(context, HomePage());

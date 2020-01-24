@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:logger/logger.dart';
 
 /// A customizable cell to display content
 ///
@@ -7,7 +6,7 @@ import 'package:logger/logger.dart';
 ///
 /// @author HELIOT David, CHEVALLIER Romain, LADOUCE Fabien
 ///
-/// @version 1.0-RELEASE
+/// @version 1.1-RELEASE
 class MaderaTableCell extends StatefulWidget {
   /// Creates a widget describing a table cell.
   ///
@@ -37,7 +36,6 @@ class MaderaTableCell extends StatefulWidget {
 }
 
 class _MaderaTableRow extends State<MaderaTableCell> {
-  final Logger log = Logger();
   @override
   void initState() {
     super.initState();

@@ -3,12 +3,14 @@
 ///
 /// @authors HELIOT David, CHEVALLIER Romain, LADOUCE Fabien
 ///
-/// @version 1.0-RELEASE
+/// @version 1.1-RELEASE
 class MaderaUrl {
   const MaderaUrl();
 
-  static const String baseUrl = 'https://cesi-madera.fr/api';
-  //static const String baseUrl = 'http://10.0.2.2:8081/api';
+  static const String baseUrl =
+      'https://cesi-madera.fr/api'; // Android Production URL
+  // static const String baseUrl = 'http://10.0.2.2:8081/api'; // Android Virtual Device for backend running on local
+  // static const String baseUrl = 'http://127.0.0.1:8081/api'; // Web for backend running on local
 
   static const String urlAuthentification = baseUrl + '/authentification';
   static const String urlDeconnection = baseUrl + '/deconnection';
