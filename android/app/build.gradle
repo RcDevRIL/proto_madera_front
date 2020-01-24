@@ -25,6 +25,12 @@ apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply from: "$flutterRoot/packages/flutter_tools/gradle/flutter.gradle"
 
+def keystoreProperties = new Properties()
+   def keystorePropertiesFile = rootProject.file('key.properties')
+   if (keystorePropertiesFile.exists()) {
+       keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
+   }
+
 android {
     compileSdkVersion 28
 
@@ -37,7 +43,6 @@ android {
     }
 
     defaultConfig {
-        // TODO: Specify your own unique Application ID (https://developer.android.com/studio/build/application-id.html).
         applicationId "com.lceb.proto_madera_front"
         minSdkVersion 16
         targetSdkVersion 28
@@ -47,17 +52,10 @@ android {
     } 
     signingConfigs {
            release {
-               if (System.getenv()["CI"]) { // CI=true is exported by Codemagic
-                   storeFile file(System.getenv()["FCI_BUILD_DIR"] + "/keystore.jks")
-                   storePassword System.getenv()["FCI_KEYSTORE_PASSWORD"]
-                   keyAlias System.getenv()["FCI_KEY_ALIAS"]
-                   keyPassword System.getenv()["FCI_KEY_PASSWORD"]
-               } else {
-                   storeFile file("../../keystore_madera_release.keystore")
-                   storePassword "madera!k3yst0r3"
-                   keyAlias "maderaRELEASE"
-                   keyPassword "madera!k3yst0r3"
-               }
+              keyAlias keystoreProperties['keyAlias']
+              keyPassword keystoreProperties['keyPassword']
+              storeFile keystoreProperties['storeFile'] ? file(keystoreProperties['storeFile']) : null
+              storePassword keystoreProperties['storePassword']
            }
        }
 

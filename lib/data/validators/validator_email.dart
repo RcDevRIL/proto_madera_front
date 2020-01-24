@@ -9,7 +9,7 @@ const String _kRule = r'^[a-z]+$';
 ///
 /// @author HELIOT David, CHEVALLIER Romain, LADOUCE Fabien
 ///
-/// @version 1.0-RELEASE
+/// @version 1.1-RELEASE
 class EmailValidator {
   final StreamTransformer<String, String> validateEmail =
       StreamTransformer<String, String>.fromHandlers(handleData: (email, sink) {

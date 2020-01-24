@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/scheduler.dart';
+// import 'package:flutter/scheduler.dart';
 import 'package:logger/logger.dart';
 import 'package:provider/provider.dart';
 import 'package:proto_madera_front/data/database/madera_database.dart';
@@ -16,7 +16,7 @@ import 'package:proto_madera_front/ui/widgets/custom_widgets.dart'
 ///
 /// @author HELIOT David, CHEVALLIER Romain, LADOUCE Fabien
 ///
-/// @version 1.0-RELEASE
+/// @version 1.1.1
 class DecisionPage extends StatefulWidget {
   static const routeName = '/redirect';
   @override
@@ -39,6 +39,7 @@ class _DecisionPageState extends State<DecisionPage> {
 
   @override
   Widget build(BuildContext context) {
+    Provider.of<ProviderSize>(context).setConfigurationSize(context);
     List<String> args = ModalRoute.of(context).settings.arguments;
     showIt = args[0].contains('true');
     bool logout;
@@ -49,58 +50,65 @@ class _DecisionPageState extends State<DecisionPage> {
       builder: (context, s) {
         switch (s.connectionState) {
           case ConnectionState.waiting:
-            return showIt ? PendingAction() : Container();
-            break;
-          case ConnectionState.none:
-            return showIt ? FailureIcon() : Container();
-            break;
-          default:
             {
               if (s.hasError || !s.hasData) {
                 if (providerNav.pageIndex !=
                     -1) //ces conditions permettent d'éviter de voir les pages "sauter" lorsqu'on fait une décision
-                  showIt
+                  /*   showIt
                       ? SchedulerBinding.instance.addPostFrameCallback((_) =>
                           providerNav.redirectToPage(
                               context, AuthenticationPage(), null))
-                      : providerNav.redirectToPage(
-                          context, AuthenticationPage(), null);
+                      :  */
+                  providerNav.redirectToPage(
+                      context, AuthenticationPage(), null);
                 return PendingAction();
               } else if (s.hasData) {
                 if (s.data == true) {
                   if (providerNav.pageIndex != 0) {
-                    if (!logout)
-                      showIt
+                    if (!logout) {
+                      /*  showIt
                           ? SchedulerBinding.instance.addPostFrameCallback(
                               (_) => providerNav.redirectToPage(
                                   context, HomePage(), null))
-                          : providerNav.redirectToPage(
-                              context, HomePage(), null);
-                    else {
+                          : */
+                      Provider.of<ProviderSynchro>(context).synchro();
+                      Provider.of<ProviderBdd>(context).initProjetData();
+                      Provider.of<ProviderBdd>(context).initData();
+                      providerNav.redirectToPage(context, HomePage(), null);
+                    } else {
                       if (providerNav.pageIndex != -1)
-                        showIt
+                        /* showIt
                             ? SchedulerBinding.instance.addPostFrameCallback(
                                 (_) => providerNav.redirectToPage(
                                     context, AuthenticationPage(), null))
-                            : providerNav.redirectToPage(
-                                context, AuthenticationPage(), null);
+                            :  */
+                        providerNav.redirectToPage(
+                            context, AuthenticationPage(), null);
                     }
                   }
                   return showIt ? SuccessIcon() : Container();
                 } else {
                   if (providerNav.pageIndex != -1)
-                    showIt
+                    /*   showIt
                         ? SchedulerBinding.instance.addPostFrameCallback((_) =>
                             providerNav.redirectToPage(
                                 context, AuthenticationPage(), null))
-                        : providerNav.redirectToPage(
-                            context, AuthenticationPage(), null);
+                        : */
+                    providerNav.redirectToPage(
+                        context, AuthenticationPage(), null);
                   return showIt ? FailureIcon() : Container();
                 }
               } else {
-                return showIt ? PendingAction() : Container();
+                return /* showIt ? */ PendingAction() /*  : Container() */;
               }
             }
+            break;
+          case ConnectionState.none:
+            return FailureIcon();
+            break;
+          default:
+            return FailureIcon();
+            break;
         }
       },
     );
@@ -112,10 +120,6 @@ class _DecisionPageState extends State<DecisionPage> {
           .utilisateurDao
           .getLastUser();
       if (null != lastUserData.token) {
-        Provider.of<ProviderSize>(context).setConfigurationSize(context);
-        await Provider.of<ProviderSynchro>(context).synchro();
-        await Provider.of<ProviderBdd>(context).initProjetData();
-        await Provider.of<ProviderBdd>(context).initData();
         hasToken = true;
         return hasToken;
       } else {

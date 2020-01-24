@@ -1,4 +1,4 @@
-import 'package:moor_flutter/moor_flutter.dart';
+import 'package:moor/moor.dart';
 
 import 'package:proto_madera_front/data/database/tables.dart';
 
@@ -9,7 +9,7 @@ part 'madera_database.g.dart';
 ///
 /// @author HELIOT David, CHEVALLIER Romain, LADOUCE Fabien
 ///
-/// @version 1.0-RELEASE
+/// @version 1.1-RELEASE
 @UseMoor(tables: [
   Utilisateur,
   Composant,
@@ -27,12 +27,7 @@ part 'madera_database.g.dart';
   ComposantGroupe,
 ])
 class MaderaDatabase extends _$MaderaDatabase {
-  MaderaDatabase()
-      : super(
-          FlutterQueryExecutor.inDatabaseFolder(
-            path: 'madera_db.sqlite',
-          ),
-        );
+  MaderaDatabase(QueryExecutor e) : super(e);
   //Si modification du schéma alors le schemaVersion prend +1
   @override
   int get schemaVersion => 15;

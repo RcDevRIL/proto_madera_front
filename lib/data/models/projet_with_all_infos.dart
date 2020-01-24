@@ -6,7 +6,7 @@ import 'package:proto_madera_front/data/models/produit_with_module.dart';
 ///
 /// @author HELIOT David, CHEVALLIER Romain, LADOUCE Fabien
 ///
-/// @version 1.0-RELEASE
+/// @version 1.1-RELEASE
 class ProjetWithAllInfos {
   final ProjetData projet;
   final List<ProduitWithModule> listProduitWithModule;

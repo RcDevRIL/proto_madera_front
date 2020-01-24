@@ -15,7 +15,7 @@ import 'package:proto_madera_front/data/models/http_status.dart';
 ///
 /// @author HELIOT David, CHEVALLIER Romain, LADOUCE Fabien
 ///
-/// @version 1.0-RELEASE
+/// @version 1.1-RELEASE
 class ProviderLogin with ChangeNotifier {
   final log = Logger();
   final int timeOut = 10;

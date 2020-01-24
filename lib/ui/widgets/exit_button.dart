@@ -5,7 +5,7 @@ import 'package:flutter/services.dart';
 ///
 /// @author HELIOT David, CHEVALLIER Romain, LADOUCE Fabien
 ///
-/// @version 1.0-RELEASE
+/// @version 1.1-RELEASE
 class ExitButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {

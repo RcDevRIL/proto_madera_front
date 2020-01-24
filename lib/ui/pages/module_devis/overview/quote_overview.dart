@@ -1,6 +1,5 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:logger/logger.dart';
 import 'package:proto_madera_front/data/database/madera_database.dart';
 import 'package:proto_madera_front/data/models/models.dart';
 import 'package:proto_madera_front/data/models/projet_with_client.dart';
@@ -20,7 +19,7 @@ import 'package:provider/provider.dart';
 ///
 /// @author HELIOT David, CHEVALLIER Romain, LADOUCE Fabien
 ///
-/// @version 1.0-RELEASE
+/// @version 1.1-RELEASE
 class QuoteOverview extends StatefulWidget {
   static const routeName = '/quoteOverview';
 
@@ -29,7 +28,6 @@ class QuoteOverview extends StatefulWidget {
 }
 
 class _QuoteOverviewState extends State<QuoteOverview> {
-  final log = Logger();
   //added to prepare for scaling
   @override
   void initState() {

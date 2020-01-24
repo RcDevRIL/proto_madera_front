@@ -3,7 +3,7 @@
 ///
 /// @author HELIOT David, CHEVALLIER Romain, LADOUCE Fabien
 ///
-/// @version 1.0-RELEASE
+/// @version 1.1-RELEASE
 enum HttpStatus {
   ONLINE,
   OFFLINE,
