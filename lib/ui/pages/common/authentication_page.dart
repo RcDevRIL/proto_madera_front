@@ -212,9 +212,9 @@ class _AuthenticationPageState extends State<AuthenticationPage> {
               key: Key('connect'),
               onPressed: snapshot.hasData && snapshot.data == true
                   ? () {
-                      submit();
-                      // Provider.of<MaderaNav>(context)
-                      //     .redirectToPage(context, HomePage());
+                     // submit();
+                       Provider.of<MaderaNav>(context)
+                           .redirectToPage(context, HomePage());
                     }
                   : null,
               child: Text('Connexion'),
